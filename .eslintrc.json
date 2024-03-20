@@ -12,5 +12,6 @@
         "useTabs": false
       }
     ]
-  }
+  },
+  "ignorePatterns": ["node_modules/", "lib/"]
 }
