@@ -1,6 +1,6 @@
 //
 //  File.swift
-//  RnOmhMapsCoreExample
+//  RnOmhMapsExample
 //
 
 import Foundation

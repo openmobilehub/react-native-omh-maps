@@ -222,8 +222,8 @@ Functionalities provided by these files is already provided by the root-level pr
      "compilerOptions": {
        "paths": {
          // ...
-         "@omh/react-native-maps-plugin-googlemap": [
-           "./packages/plugin-googlemap/src/index"
+         "@omh/react-native-maps-plugin-googlemaps": [
+           "./packages/plugin-googlemaps/src/index"
          ]
        }
      }

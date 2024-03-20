@@ -1,4 +1,4 @@
-package com.rnomhmapscoreexample
+package com.openmobilehub.android.rn.maps.sample
 
 import android.app.Application
 import com.facebook.react.PackageList

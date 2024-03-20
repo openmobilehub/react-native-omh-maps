@@ -2560,9 +2560,9 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@omh/react-native-maps-plugin-googlemap@workspace:^, @omh/react-native-maps-plugin-googlemap@workspace:packages/plugin-googlemap":
+"@omh/react-native-maps-plugin-googlemaps@workspace:^, @omh/react-native-maps-plugin-googlemaps@workspace:packages/plugin-googlemaps":
   version: 0.0.0-use.local
-  resolution: "@omh/react-native-maps-plugin-googlemap@workspace:packages/plugin-googlemap"
+  resolution: "@omh/react-native-maps-plugin-googlemaps@workspace:packages/plugin-googlemaps"
   dependencies:
     del-cli: "*"
     eslint: "*"
@@ -2582,7 +2582,7 @@ __metadata:
   resolution: "@omh/react-native-maps-sample-app@workspace:sample-app"
   dependencies:
     "@omh/react-native-maps-core": "workspace:^"
-    "@omh/react-native-maps-plugin-googlemap": "workspace:^"
+    "@omh/react-native-maps-plugin-googlemaps": "workspace:^"
     react: 18.2.0
     react-native: 0.73.6
   languageName: unknown

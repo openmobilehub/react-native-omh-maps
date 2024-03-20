@@ -74,9 +74,9 @@ android {
   buildToolsVersion rootProject.ext.buildToolsVersion
   compileSdk rootProject.ext.compileSdkVersion
 
-  namespace "com.rnomhmapscoreexample"
+  namespace "com.openmobilehub.android.rn.maps.sample"
   defaultConfig {
-    applicationId "com.rnomhmapscoreexample"
+    applicationId "com.openmobilehub.android.rn.maps.sample"
     minSdkVersion rootProject.ext.minSdkVersion
     targetSdkVersion rootProject.ext.targetSdkVersion
     versionCode 1
