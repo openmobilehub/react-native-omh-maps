@@ -1,0 +1,4 @@
+{
+  "extends": "./tsconfig",
+  "exclude": ["sample-app", "*.config.ts"]
+}

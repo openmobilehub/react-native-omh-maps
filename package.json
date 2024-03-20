@@ -1,0 +1,68 @@
+{
+  "name": "@omh/rn-maps",
+  "version": "1.0.0-beta",
+  "description": "React Native OMH Maps Workspace",
+  "private": true,
+  "keywords": [
+    "react-native",
+    "ios",
+    "android"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/openmobilehub/rn-omh-maps.git"
+  },
+  "author": "OpenMobileHub <contact@openmobilehub.com> (https://github.com/openmobilehub)",
+  "license": "Apache-2.0",
+  "bugs": {
+    "url": "https://github.com/openmobilehub/rn-omh-maps/issues"
+  },
+  "homepage": "https://github.com/openmobilehub/rn-omh-maps#readme",
+  "publishConfig": {
+    "registry": "https://registry.npmjs.org/"
+  },
+  "devDependencies": {
+    "@commitlint/config-conventional": "^17.0.2",
+    "@evilmartians/lefthook": "^1.5.0",
+    "@react-native/eslint-config": "^0.73.1",
+    "@release-it/conventional-changelog": "^5.0.0",
+    "@types/jest": "^29.5.5",
+    "@types/react": "^18.2.44",
+    "commitlint": "^17.0.2",
+    "del-cli": "^5.1.0",
+    "eslint": "^8.51.0",
+    "eslint-config-prettier": "^9.0.0",
+    "eslint-plugin-prettier": "^5.0.1",
+    "jest": "^29.7.0",
+    "prettier": "^3.0.3",
+    "react": "18.2.0",
+    "react-native": "0.73.6",
+    "react-native-builder-bob": "^0.20.0",
+    "release-it": "^15.0.0",
+    "turbo": "^1.10.7",
+    "typescript": "^5.4.2"
+  },
+  "scripts": {
+    "sample-app": "yarn workspace @omh/rn-maps-sample-app",
+    "core": "yarn workspace @omh/rn-maps-core",
+    "build": "yarn run prepare",
+    "test": "yarn workspaces foreach -Ap run test",
+    "typecheck": "yarn workspaces foreach -p --exclude @omh/rn-maps-sample-app run typecheck",
+    "lint": "yarn workspaces foreach -p --exclude @omh/rn-maps-sample-app run lint",
+    "clean": "yarn workspaces foreach -p --exclude @omh/rn-maps-sample-app run clean",
+    "prepare": "yarn workspaces foreach -p --exclude @omh/rn-maps-sample-app run prepare",
+    "release": "yarn workspaces foreach -p --exclude @omh/rn-maps-sample-app run release"
+  },
+  "resolutions": {
+    "@types/react": "^18.2.44"
+  },
+  "peerDependencies": {
+    "react": "*",
+    "react-native": "*"
+  },
+  "workspaces": [
+    "sample-app",
+    "packages/*"
+  ],
+  "packageManager": "yarn@3.6.1"
+}
