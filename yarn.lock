@@ -2524,25 +2524,25 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@omh/rn-maps-core@workspace:^, @omh/rn-maps-core@workspace:packages/core":
+"@omh/react-native-maps-core@workspace:^, @omh/react-native-maps-core@workspace:packages/core":
   version: 0.0.0-use.local
-  resolution: "@omh/rn-maps-core@workspace:packages/core"
+  resolution: "@omh/react-native-maps-core@workspace:packages/core"
   languageName: unknown
   linkType: soft
 
-"@omh/rn-maps-sample-app@workspace:sample-app":
+"@omh/react-native-maps-sample-app@workspace:sample-app":
   version: 0.0.0-use.local
-  resolution: "@omh/rn-maps-sample-app@workspace:sample-app"
+  resolution: "@omh/react-native-maps-sample-app@workspace:sample-app"
   dependencies:
-    "@omh/rn-maps-core": "workspace:^"
+    "@omh/react-native-maps-core": "workspace:^"
     react: 18.2.0
     react-native: 0.73.6
   languageName: unknown
   linkType: soft
 
-"@omh/rn-maps@workspace:.":
+"@omh/react-native-maps@workspace:.":
   version: 0.0.0-use.local
-  resolution: "@omh/rn-maps@workspace:."
+  resolution: "@omh/react-native-maps@workspace:."
   dependencies:
     "@babel/core": ^7.24.3
     "@babel/preset-env": ^7.24.3

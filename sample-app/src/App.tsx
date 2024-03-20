@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { StyleSheet, View } from 'react-native';
 
-import { RnOmhMapsCoreView } from '@omh/rn-maps-core';
+import { RnOmhMapsCoreView } from '@omh/react-native-maps-core';
 
 export default function App() {
   return (

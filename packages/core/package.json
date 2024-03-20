@@ -1,5 +1,5 @@
 {
-  "name": "@omh/rn-maps-core",
+  "name": "@omh/react-native-maps-core",
   "version": "1.0.0-beta",
   "description": "React Native OMH Maps Core package",
   "main": "lib/commonjs/index",

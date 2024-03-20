@@ -5,14 +5,14 @@ React Native OMH Maps Core package
 ## Installation
 
 ```sh
-npm install --save @omh/rn-maps-core
-npm install --save @omh/rn-maps-plugin-...
+npm install --save @omh/react-native-maps-core
+npm install --save @omh/react-native-maps-plugin-...
 ```
 
 ## Usage
 
 ```js
-import {RnOmhMapsCoreView} from '@omh/rn-maps';
+import { RnOmhMapsCoreView } from '@omh/react-native-maps';
 
 // ...
 

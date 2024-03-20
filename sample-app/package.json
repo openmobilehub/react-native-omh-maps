@@ -1,6 +1,6 @@
 {
-  "name": "@omh/rn-maps-sample-app",
-  "version": "0.0.1",
+  "name": "@omh/react-native-maps-sample-app",
+  "version": "1.0.0",
   "private": true,
   "scripts": {
     "android": "react-native run-android",
@@ -10,7 +10,7 @@
     "build:ios": "cd ios && xcodebuild -workspace RnOmhMapsCoreExample.xcworkspace -scheme RnOmhMapsCoreExample -configuration Debug -sdk iphonesimulator CC=clang CPLUSPLUS=clang++ LD=clang LDPLUSPLUS=clang++ GCC_OPTIMIZATION_LEVEL=0 GCC_PRECOMPILE_PREFIX_HEADER=YES ASSETCATALOG_COMPILER_OPTIMIZATION=time DEBUG_INFORMATION_FORMAT=dwarf COMPILER_INDEX_STORE_ENABLE=NO"
   },
   "dependencies": {
-    "@omh/rn-maps-core": "workspace:^",
+    "@omh/react-native-maps-core": "workspace:^",
     "react": "18.2.0",
     "react-native": "0.73.6"
   },

@@ -19,9 +19,7 @@ The [example app](/sample-app/) demonstrates usage of the library. You need to r
 
 It is configured to use the local version of the library, so any changes you make to the library's source code will be reflected in the example app. Changes to the library's JavaScript code will be reflected in the example app without a rebuild, but native code changes will require a rebuild of the example app.
 
-If you want to use Android Studio or XCode to edit the native code, you can open the `sample-app/android` or `sample-app/ios` directories respectively in those editors. To edit the Objective-C or Swift files, open `sample-app/ios/RnOmhMapsCoreExample.xcworkspace` in XCode and find the source files at `Pods > Development Pods > rn-omh-maps-core`.
-
-To edit the Java or Kotlin files, open `sample-app/android` in Android studio and find the source files at `rn-omh-maps-core` under `Android`.
+To edit the Java or Kotlin files, open `sample-app/android` in Android studio and find the source files at `omh_rn-maps-core` under `Android`.
 
 You can use various commands from the root directory to work with the project.
 
@@ -124,7 +122,7 @@ To create a new package, use `create-react-native-library` by issuing the follow
 
 When asked for information information, be sure to pass in:
 
-- `@omh/rn-maps-<package-name>` for the package name
+- `@omh/react-native-maps-<package-name>` for the package name
 - `React Native OMH Maps <package-name>` for the package description
 - `native view` for the package type
 - `Kotlin/Swift` for the languages

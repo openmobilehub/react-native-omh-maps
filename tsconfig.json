@@ -2,7 +2,7 @@
   "compilerOptions": {
     "rootDir": ".",
     "paths": {
-      "@omh/rn-maps-core": ["./packages/core/src/index"]
+      "@omh/react-native-maps-core": ["./packages/core/src/index"]
     },
     "allowUnreachableCode": false,
     "allowUnusedLabels": false,
