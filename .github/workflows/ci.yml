@@ -1,8 +1,9 @@
 name: CI
+
 on:
-  push:
-    branches:
-      - main
+  pull_request:
+    branches: [main, develop, 'release/**']
+    types: [opened, synchronize]
 
 jobs:
   lint:
@@ -44,5 +45,5 @@ jobs:
       - name: Setup
         uses: ./.github/actions/setup
 
-      - name: Build package
-        run: yarn prepare
+      - name: Build packages
+        run: yarn build

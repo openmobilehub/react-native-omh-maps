@@ -2,10 +2,7 @@ import type { Config } from 'jest';
 
 const config: Config = {
   preset: 'react-native',
-  modulePathIgnorePatterns: [
-    '<rootDir>/sample-app/node_modules',
-    '<rootDir>/packages/core/lib',
-  ],
+  modulePathIgnorePatterns: ['node_modules', 'lib'],
 };
 
 export default config;

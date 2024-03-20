@@ -11,6 +11,7 @@
   },
   "dependencies": {
     "@omh/react-native-maps-core": "workspace:^",
+    "@omh/react-native-maps-plugin-googlemap": "workspace:^",
     "react": "18.2.0",
     "react-native": "0.73.6"
   },

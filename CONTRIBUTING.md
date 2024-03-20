@@ -99,9 +99,13 @@ The `package.json` file contains various scripts for common tasks:
 - `yarn typecheck`: type-check files with TypeScript.
 - `yarn lint`: lint files with ESLint.
 - `yarn test`: run unit tests with Jest.
-- `yarn sample-app start`: start the Metro server for the example app.
-- `yarn sample-app android`: run the example app on Android.
-- `yarn sample-app ios`: run the example app on iOS.
+- `yarn build`: build the library.
+- `yarn sample-app *`: alias for running scripts in the example app workspace, e.g.:
+  - `yarn sample-app start`: start the Metro server for the example app.
+  - `yarn sample-app android`: run the example app on Android.
+  - `yarn sample-app ios`: run the example app on iOS.
+  - `yarn sample-app build:android`: build the example app for Android.
+    - `yarn sample-app build:ios`: build the example app for iOS.
 
 ### Sending a pull request
 
@@ -117,15 +121,111 @@ When you're sending a pull request:
 
 ### Creating a new package
 
-To create a new package, use `create-react-native-library` by issuing the following command inside `packages/`:
-`npx create-react-native-library@latest <package-name>`
+To create a new package,perform the following:
+
+1. Use `create-react-native-library` by issuing the following command inside `packages/`:
+   `npx create-react-native-library@latest <package-name>`
 
 When asked for information information, be sure to pass in:
 
 - `@omh/react-native-maps-<package-name>` for the package name
 - `React Native OMH Maps <package-name>` for the package description
-- `native view` for the package type
-- `Kotlin/Swift` for the languages
+- `Native view` for the package type
+- `Kotlin & Swift` for the languages
+- `https://github.com/openmobilehub/react-native-omh-maps` for the repository URL
 
-Finally, add a peer dependency to the `sample-app` workspace by running:
-`yarn sample-app add @omh/<package-name>`
+2. Delete the following obsolete files / folders from the newly-created `packages/<package-directory>` directory:
+
+- `.github/`
+- `.yarn/`
+- `example/`
+- `.editorconfig`
+- `.gitignore`
+- `.gitattributes`
+- `.nvmrc`
+- `.yarnrc`
+- `LICENSE`
+- `README.md`
+- `CONTRIBUTING.md`
+- `CODE_OF_CONDUCT.md`
+- `lefthook.yml`
+- `tsconfig.json`
+- `tsconfig.build.json`
+- `turbo.json`
+
+Functionalities provided by these files is already provided by the root-level project files to reduce redundancy.
+
+3. Remove the following entries from `packages/<package-directory>/package.json`:
+
+- `example` script
+- entries:
+  - `devDependencies`
+  - `resolutions`
+  - `workspaces`
+  - `jest`
+  - `commitlint`
+  - `release-it`
+  - `eslintConfig`
+  - `prettier`
+  - `eslintIgnore`
+
+4. Since in yarn sub-workspaces still need to reference CLI dependencies in their respective `devDependencies`, place the following after `peerDependencies`:
+
+   ```json
+   "devDependencies": {
+       "del-cli": "*",
+       "eslint": "*",
+       "jest": "*",
+       "react-native-builder-bob": "*",
+       "release-it": "*",
+       "typescript": "*",
+       "ts-node": "*"
+   },
+   ```
+
+5. Create `packages/<package-directory>/tsconfig.json` with the following contents:
+
+   ```json
+   {
+     "extends": "../../tsconfig"
+   }
+   ```
+
+6. Create `packages/<package-directory>/tsconfig.build.json` with the following contents:
+
+   ```json
+   {
+     "extends": "./tsconfig",
+     "exclude": ["lib", "node_modules"]
+   }
+   ```
+
+7. Create a `jest.config.ts` file with the following contents:
+
+   ```typescript
+   import type { Config } from 'jest';
+
+   const config: Config = {
+     preset: 'react-native',
+     modulePathIgnorePatterns: ['node_modules', 'lib'],
+   };
+
+   export default config;
+   ```
+
+8. Add a peer dependency to the newly created package in `sample-app` workspace by running: `yarn sample-app add @omh/<package-name>` from the root workspace.
+
+9. Add an alias entry to root workspace's `tsconfig.json`:
+
+   ```json
+   {
+     "compilerOptions": {
+       "paths": {
+         // ...
+         "@omh/react-native-maps-plugin-googlemap": [
+           "./packages/plugin-googlemap/src/index"
+         ]
+       }
+     }
+   }
+   ```

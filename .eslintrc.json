@@ -13,5 +13,5 @@
       }
     ]
   },
-  "ignorePatterns": ["node_modules/", "lib/"]
+  "ignorePatterns": ["node_modules/", "lib/", "coverage/"]
 }
