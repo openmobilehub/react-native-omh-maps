@@ -4,7 +4,9 @@
   "private": true,
   "scripts": {
     "android": "react-native run-android",
+    "android:release": "react-native run-android --mode=release",
     "ios": "react-native run-ios",
+    "ios:release": "react-native run-ios --mode=Release",
     "start": "react-native start",
     "build:android:debug": "cd android && ./gradlew assembleDebug --no-daemon --console=plain -PreactNativeArchitectures=arm64-v8a",
     "build:ios:debug": "cd ios && xcodebuild -workspace RnOmhMapsExample.xcworkspace -scheme RnOmhMapsExample -configuration Debug -sdk iphonesimulator CC=clang CPLUSPLUS=clang++ LD=clang LDPLUSPLUS=clang++ GCC_OPTIMIZATION_LEVEL=0 GCC_PRECOMPILE_PREFIX_HEADER=YES ASSETCATALOG_COMPILER_OPTIMIZATION=time DEBUG_INFORMATION_FORMAT=dwarf COMPILER_INDEX_STORE_ENABLE=NO",
@@ -16,13 +18,9 @@
     "@omh/react-native-maps-plugin-googlemaps": "workspace:^"
   },
   "devDependencies": {
-    "react": "*",
     "react-native": "*"
   },
   "engines": {
     "node": ">=18"
-  },
-  "installConfig": {
-    "hoistingLimits": "workspaces"
   }
 }

@@ -2875,7 +2875,6 @@ __metadata:
   dependencies:
     "@omh/react-native-maps-core": "workspace:^"
     "@omh/react-native-maps-plugin-googlemaps": "workspace:^"
-    react: "*"
     react-native: "*"
   languageName: unknown
   linkType: soft
@@ -11420,7 +11419,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"react@npm:*, react@npm:18.2.0":
+"react@npm:18.2.0":
   version: 18.2.0
   resolution: "react@npm:18.2.0"
   dependencies:
