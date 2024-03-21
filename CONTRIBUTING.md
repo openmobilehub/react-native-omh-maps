@@ -213,19 +213,29 @@ Functionalities provided by these files is already provided by the root-level pr
    export default config;
    ```
 
-8. Add a peer dependency to the newly created package in `sample-app` workspace by running: `yarn sample-app add @omh/<package-name>` from the root workspace.
-
-9. Add an alias entry to root workspace's `tsconfig.json`:
+8. Create a `turbo.json` file with the following contents:
 
    ```json
    {
-     "compilerOptions": {
-       "paths": {
-         // ...
-         "@omh/react-native-maps-plugin-googlemaps": [
-           "./packages/plugin-googlemaps/src/index"
-         ]
-       }
-     }
+     "$schema": "https://turbo.build/schema.json",
+     "extends": ["//"],
+     "pipeline": {}
    }
    ```
+
+9. Add a peer dependency to the newly created package in `sample-app` workspace by running: `yarn sample-app add @omh/<package-name>` from the root workspace.
+
+10. Add an alias entry to root workspace's `tsconfig.json`:
+
+    ```json
+    {
+      "compilerOptions": {
+        "paths": {
+          // ...
+          "@omh/react-native-maps-plugin-googlemaps": [
+            "./packages/plugin-googlemaps/src/index"
+          ]
+        }
+      }
+    }
+    ```
