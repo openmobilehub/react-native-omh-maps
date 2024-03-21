@@ -4,12 +4,16 @@ on:
   push:
     branches:
       - main
+      - ci/sample-app-publishing
 
 jobs:
   sample-app-android:
     runs-on: ubuntu-latest
+
     env:
       TURBO_CACHE_DIR: .turbo/android
+      APK_PATH: sample-app/android/app/build/outputs/apk/debug/app-debug.apk
+
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -66,6 +70,18 @@ jobs:
           JAVA_OPTS: '-XX:MaxHeapSize=6g'
         run: |
           yarn turbo run build:android --cache-dir="${{ env.TURBO_CACHE_DIR }}"
+
+      # Publishes the app to App Center
+      - name: Publish app to App Center
+        uses: wzieba/AppCenter-Github-Action@v1
+        with:
+          appName: ${{ secrets.APP_CENTER_APP_NAME }}
+          group: ${{ secrets.APP_CENTER_GROUP }}
+          token: ${{ secrets.APP_CENTER_TOKEN }}
+          file: ${{ env.APK_PATH }}
+          notifyTesters: true
+          debug: true
+          gitReleaseNotes: true
 
   # sample-app-ios:
   #   runs-on: macos-14
