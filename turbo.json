@@ -14,7 +14,7 @@
         "!android/build",
         "!android/app/build"
       ],
-      "outputs": []
+      "outputs": ["android/app/build/outputs/**"]
     },
     "build:ios": {
       "inputs": [

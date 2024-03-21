@@ -43,12 +43,6 @@ jobs:
           java-version: '17'
           distribution: 'zulu'
 
-      - name: Setup Gradle
-        if: env.turbo_cache_hit != 1
-        uses: gradle/actions/setup-gradle@v3
-        with:
-          cache-read-only: false
-
       - name: Finalize Android SDK
         if: env.turbo_cache_hit != 1
         run: |
