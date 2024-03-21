@@ -47,17 +47,16 @@
     "scripts": "cross-env FORCE_COLOR=1 yarn workspace @omh/react-native-maps-scripts",
     "core": "cross-env FORCE_COLOR=1 yarn workspace @omh/react-native-maps-core",
     "build:packages": "yarn run prepare",
-    "build:android": "npx turbo build:android",
-    "build:ios": "npx turbo build:ios",
+    "build:android:debug": "npx turbo build:android:debug",
+    "build:ios:debug": "npx turbo build:ios:debug",
+    "build:android:release": "npx turbo build:android:release",
+    "build:ios:release": "npx turbo build:ios:release",
     "test": "cross-env FORCE_COLOR=1 yarn workspaces foreach -Ap run test",
     "typecheck": "cross-env FORCE_COLOR=1 yarn workspaces foreach -p --exclude @omh/react-native-maps-sample-app run typecheck",
     "lint": "cross-env FORCE_COLOR=1 yarn workspaces foreach -p --exclude @omh/react-native-maps-sample-app run lint",
     "clean": "cross-env FORCE_COLOR=1 yarn workspaces foreach -p --exclude @omh/react-native-maps-sample-app run clean",
     "prepare": "cross-env FORCE_COLOR=1 yarn workspaces foreach -p --exclude @omh/react-native-maps-sample-app run prepare",
     "release": "cross-env FORCE_COLOR=1 yarn workspaces foreach -p --exclude @omh/react-native-maps-sample-app run release"
-  },
-  "resolutions": {
-    "@types/react": "^18.2.44"
   },
   "workspaces": [
     "sample-app",
