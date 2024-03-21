@@ -18,6 +18,7 @@
     "@omh/react-native-maps-plugin-googlemaps": "workspace:^"
   },
   "devDependencies": {
+    "react": "*",
     "react-native": "*"
   },
   "engines": {
