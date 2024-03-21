@@ -1,0 +1,13 @@
+{
+  "name": "@omh/react-native-maps-scripts",
+  "version": "1.0.0",
+  "description": "React Native OMH Maps scripts Workspace",
+  "private": true,
+  "devDependencies": {
+    "tsx": "*"
+  },
+  "scripts": {
+    "createPackage": "tsx createPackage.ts"
+  },
+  "packageManager": "yarn@3.6.1"
+}
