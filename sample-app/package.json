@@ -11,11 +11,16 @@
   },
   "dependencies": {
     "@omh/react-native-maps-core": "workspace:^",
-    "@omh/react-native-maps-plugin-googlemaps": "workspace:^",
-    "react": "18.2.0",
-    "react-native": "0.73.6"
+    "@omh/react-native-maps-plugin-googlemaps": "workspace:^"
+  },
+  "devDependencies": {
+    "react": "*",
+    "react-native": "*"
   },
   "engines": {
     "node": ">=18"
+  },
+  "installConfig": {
+    "hoistingLimits": "workspaces"
   }
 }
