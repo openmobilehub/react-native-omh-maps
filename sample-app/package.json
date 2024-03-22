@@ -3,9 +3,11 @@
   "version": "1.0.0",
   "private": true,
   "scripts": {
-    "android": "react-native run-android",
+    "android": "yarn run android:debug",
+    "android:debug": "react-native run-android",
     "android:release": "react-native run-android --mode=release",
-    "ios": "react-native run-ios",
+    "ios": "yarn run ios:debug",
+    "ios:debug": "react-native run-ios",
     "ios:release": "react-native run-ios --mode=Release",
     "start": "react-native start",
     "build:android:debug": "cd android && ./gradlew assembleDebug --no-daemon --console=plain -PreactNativeArchitectures=arm64-v8a",
