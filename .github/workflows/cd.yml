@@ -4,7 +4,6 @@ on:
   push:
     branches:
       - main
-      - ci/sample-app-publishing
 
 jobs:
   sample-app-android:

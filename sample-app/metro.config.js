@@ -29,8 +29,6 @@ const config = {
       acc[name] = path.join(__dirname, 'node_modules', name);
       return acc;
     }, {}),
-
-    unstable_enableSymlinks: true,
   },
 
   transformer: {
