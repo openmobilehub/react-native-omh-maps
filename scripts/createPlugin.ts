@@ -1,15 +1,12 @@
 import fs from 'fs';
 import path from 'path';
-import { fileURLToPath } from 'url';
 
 import { validate as validateEmail } from 'email-validator';
 import ora from 'ora';
 import prompts, { PromptObject } from 'prompts';
 import validateNpmPackage from 'validate-npm-package-name';
 
-import { PLUGIN_NAME_PREFIX } from './src/constants';
-import * as Templates from './src/templates';
-import { spawnWrapper } from './src/utils';
+import { Constants, Templates, Utils } from './src';
 
 let bPluginNamePrefilled = false;
 const questions: PromptObject[] = [
@@ -22,17 +19,17 @@ const questions: PromptObject[] = [
         ? // check if valid package name
           !validateNpmPackage(value).errors?.length
           ? // ensure the package name starts with a proper prefix
-            value.startsWith(PLUGIN_NAME_PREFIX)
+            value.startsWith(Constants.PLUGIN_NAME_PREFIX)
             ? true
-            : `Plugin name must start with '${PLUGIN_NAME_PREFIX}'`
+            : `Plugin name must start with '${Constants.PLUGIN_NAME_PREFIX}'`
           : 'Invalid plugin name (must be a valid NPM package name)'
         : 'Plugin name cannot be empty',
     format: value => value.trim().toLowerCase(),
     onRender(this: any) {
       // prefill the input with the default prefix if nothing provided by the user
       if (!bPluginNamePrefilled) {
-        this.value = PLUGIN_NAME_PREFIX;
-        this.cursor = PLUGIN_NAME_PREFIX.length;
+        this.value = Constants.PLUGIN_NAME_PREFIX;
+        this.cursor = Constants.PLUGIN_NAME_PREFIX.length;
         bPluginNamePrefilled = true;
       }
     },
@@ -105,9 +102,9 @@ const questions: PromptObject[] = [
     process.exit(-1);
   }
 
-  const scriptsWorkspacePath = path.dirname(fileURLToPath(import.meta.url)),
+  const scriptsWorkspacePath = path.dirname(__filename),
     pluginDirName = `plugin-${pluginSlug
-      .replace(/^@/, '')
+      .replace(Constants.PLUGIN_NAME_PREFIX, '')
       .replace(/\//g, '-')}`,
     packagesPath = path.join(scriptsWorkspacePath, '..', 'packages'),
     newPackagePath = path.join(packagesPath, pluginDirName),
@@ -127,10 +124,14 @@ const questions: PromptObject[] = [
   spinner.text = 'Creating new plugin...';
 
   try {
-    await spawnWrapper(
-      'npx',
+    await Utils.spawnWrapper(
+      path.join(
+        rootWorkspacePath,
+        'node_modules',
+        '.bin',
+        'create-react-native-library'
+      ),
       [
-        'create-react-native-library',
         pluginDirName,
         `--slug=${pluginSlug}`, // NPM package name
         `--description="React Native OMH Maps ${pluginDescription}"`,
@@ -149,7 +150,7 @@ const questions: PromptObject[] = [
     );
   } catch (err: any) {
     spinner.fail(
-      `Failed to create the new plugin (CRNP exited with code ${err.code}). Full output below:`
+      `Failed to create the new plugin (CRNL exited with code ${err.code}). Full output below:`
     );
     process.exit(err.code ?? -1);
   }
@@ -211,6 +212,8 @@ const questions: PromptObject[] = [
     'ts-node': '*',
   };
 
+  fs.writeFileSync(packageJsonPath, JSON.stringify(packageJson, null, 2));
+
   // create config files
   fs.writeFileSync(
     path.join(newPackagePath, 'tsconfig.json'),
@@ -227,36 +230,19 @@ const questions: PromptObject[] = [
     Templates.JEST_CONFIG_TS_TEMPLATE
   );
 
-  fs.writeFileSync(packageJsonPath, JSON.stringify(packageJson, null, 2));
-
-  spinner.text =
-    'Adding a peer dependency to the new package in root workspace';
-
-  // add the new package to the root workspace
-  try {
-    spawnWrapper('yarn', ['sample-app', 'add', pluginSlug], {
-      cwd: rootWorkspacePath,
-    });
-  } catch (err: any) {
-    spinner.fail(
-      `Failed to create the new plugin (yarn exited with code ${err.code}). Full output below:`
-    );
-    process.exit(err.code ?? -2);
-  }
-
-  spinner.text = "Adding an aliast to root workspace's tsconfig.json";
+  spinner.text = "Adding an alias to root workspace's tsconfig.json";
 
   // add an alias to root workspace's tsconfig.json
   const rootTsConfigPath = path.join(rootWorkspacePath, 'tsconfig.json');
   const rootTsConfig = JSON.parse(fs.readFileSync(rootTsConfigPath, 'utf-8'));
-  rootTsConfig.compilerOptions.paths[`${PLUGIN_NAME_PREFIX}${pluginSlug}`] = [
+  rootTsConfig.compilerOptions.paths[pluginSlug] = [
     `./packages/${pluginDirName}/src/index`,
   ];
 
   fs.writeFileSync(rootTsConfigPath, JSON.stringify(rootTsConfig, null, 2));
 
   spinner.text = 'Customizing package name in Android project';
-  const androidPackageName = `com.openmobilehub.android.rn.maps.plugin.${pluginSlug.replace(PLUGIN_NAME_PREFIX, '')}`;
+  const androidPackageName = `com.openmobilehub.android.rn.maps.plugin.${pluginSlug.replace(Constants.PLUGIN_NAME_PREFIX, '')}`;
   const androidSrcDirPath = path.join(
       newPackagePath,
       'android',
@@ -313,7 +299,7 @@ const questions: PromptObject[] = [
   // run 'yarn install' in root workspace so that all workspaces are resolved & dependencies are linked to the new plugin
   spinner.text = 'Running yarn install in root workspace...';
   try {
-    await spawnWrapper('yarn', [], {
+    await Utils.spawnWrapper('yarn', ['install'], {
       cwd: rootWorkspacePath,
     });
   } catch (err: any) {
@@ -321,6 +307,21 @@ const questions: PromptObject[] = [
       `Failed to install dependencies in root workspace (yarn exited with code ${err.code}). Full output below:`
     );
     process.exit(err.code ?? -3);
+  }
+
+  spinner.text =
+    'Adding a peer dependency to the new package in sample-app workspace';
+
+  // add the new package to the root workspace
+  try {
+    await Utils.spawnWrapper('yarn', ['sample-app', 'add', pluginSlug], {
+      cwd: rootWorkspacePath,
+    });
+  } catch (err: any) {
+    spinner.fail(
+      `Failed to create the new plugin (yarn exited with code ${err.code}). Full output below:`
+    );
+    process.exit(err.code ?? -2);
   }
 
   spinner.succeed(

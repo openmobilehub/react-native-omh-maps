@@ -10,12 +10,13 @@ export const TSCONFIG_BUILD_TEMPLATE = JSON.stringify({
 });
 
 export const JEST_CONFIG_TS_TEMPLATE = dedent(`
-    import type { Config } from 'jest';
+  import type { Config } from 'jest';
 
-    const config: Config = {
-        preset: 'react-native',
-        modulePathIgnorePatterns: ['node_modules', 'lib'],
-    };
+  const config: Config = {
+      preset: 'react-native',
+      modulePathIgnorePatterns: ['node_modules', 'lib'],
+  };
 
-    export default config;
+  export default config;
+
 `);

@@ -1,7 +1,7 @@
 {
-  "name": "@omh/react-native-maps-core",
-  "version": "1.0.0-beta",
-  "description": "React Native OMH Maps Core Plugin",
+  "name": "@omh/react-native-maps-plugin-mapbox",
+  "version": "0.1.0",
+  "description": "React Native OMH Maps Mapbox Plugin",
   "main": "lib/commonjs/index",
   "module": "lib/module/index",
   "types": "lib/typescript/src/index.d.ts",
@@ -29,7 +29,7 @@
     "test": "jest",
     "typecheck": "tsc --noEmit",
     "lint": "eslint \"**/*.{js,ts,tsx}\"",
-    "clean": "del-cli android/build sample-app/android/build sample-app/android/app/build sample-app/ios/build lib",
+    "clean": "del-cli lib",
     "prepare": "bob build",
     "release": "release-it"
   },
@@ -42,7 +42,7 @@
     "type": "git",
     "url": "git+https://github.com/openmobilehub/react-native-omh-maps.git"
   },
-  "author": "OpenMobileHub <contact@openmobilehub.com> (https://github.com/openmobilehub)",
+  "author": "Open Mobile Hub <contact@openmobilehub.com> (https://openmobilehub.com)",
   "license": "MIT",
   "bugs": {
     "url": "https://github.com/openmobilehub/react-native-omh-maps/issues"
@@ -54,16 +54,6 @@
   "peerDependencies": {
     "react": "*",
     "react-native": "*"
-  },
-  "devDependencies": {
-    "@types/node": "*",
-    "del-cli": "*",
-    "eslint": "*",
-    "jest": "*",
-    "react-native-builder-bob": "*",
-    "release-it": "*",
-    "ts-node": "*",
-    "typescript": "*"
   },
   "packageManager": "yarn@3.6.1",
   "react-native-builder-bob": {
@@ -79,5 +69,14 @@
         }
       ]
     ]
+  },
+  "devDependencies": {
+    "del-cli": "*",
+    "eslint": "*",
+    "jest": "*",
+    "react-native-builder-bob": "*",
+    "release-it": "*",
+    "ts-node": "*",
+    "typescript": "*"
   }
 }

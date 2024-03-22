@@ -1,7 +1,7 @@
 {
   "name": "@omh/react-native-maps-plugin-googlemaps",
   "version": "1.0.0-beta",
-  "description": "React Native OMH Maps Plugin Googlemap package",
+  "description": "React Native OMH Maps Googlemaps Plugin",
   "main": "lib/commonjs/index",
   "module": "lib/module/index",
   "types": "lib/typescript/src/index.d.ts",

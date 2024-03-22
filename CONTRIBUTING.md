@@ -121,4 +121,4 @@ When you're sending a pull request:
 
 ### Creating a new package
 
-To create a new package, use the interactive CLI tool: `yarn scripts createPackage`. The whole package along with scripts, configuration and dependencies will be bootstrapped for you. Yarn dependencies will be installed automatically and the package will be added to aliases in `tsconfig.json` and as a dependency to the sample app.
+To create a new package, use the interactive CLI tool: `yarn scripts createPlugin`. The whole package along with scripts, configuration and dependencies will be bootstrapped for you. Yarn dependencies will be installed automatically and the package will be added to aliases in `tsconfig.json` and as a dependency to the sample app.

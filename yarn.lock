@@ -3712,6 +3712,23 @@ __metadata:
   languageName: unknown
   linkType: soft
 
+"@omh/react-native-maps-plugin-azuremaps@workspace:^, @omh/react-native-maps-plugin-azuremaps@workspace:packages/plugin-azuremaps":
+  version: 0.0.0-use.local
+  resolution: "@omh/react-native-maps-plugin-azuremaps@workspace:packages/plugin-azuremaps"
+  dependencies:
+    del-cli: "*"
+    eslint: "*"
+    jest: "*"
+    react-native-builder-bob: "*"
+    release-it: "*"
+    ts-node: "*"
+    typescript: "*"
+  peerDependencies:
+    react: "*"
+    react-native: "*"
+  languageName: unknown
+  linkType: soft
+
 "@omh/react-native-maps-plugin-googlemaps@workspace:^, @omh/react-native-maps-plugin-googlemaps@workspace:packages/plugin-googlemaps":
   version: 0.0.0-use.local
   resolution: "@omh/react-native-maps-plugin-googlemaps@workspace:packages/plugin-googlemaps"
@@ -3730,12 +3747,67 @@ __metadata:
   languageName: unknown
   linkType: soft
 
+"@omh/react-native-maps-plugin-mapbox@workspace:^, @omh/react-native-maps-plugin-mapbox@workspace:packages/plugin-mapbox":
+  version: 0.0.0-use.local
+  resolution: "@omh/react-native-maps-plugin-mapbox@workspace:packages/plugin-mapbox"
+  dependencies:
+    del-cli: "*"
+    eslint: "*"
+    jest: "*"
+    react-native-builder-bob: "*"
+    release-it: "*"
+    ts-node: "*"
+    typescript: "*"
+  peerDependencies:
+    react: "*"
+    react-native: "*"
+  languageName: unknown
+  linkType: soft
+
+"@omh/react-native-maps-plugin-openstreetmap@workspace:^, @omh/react-native-maps-plugin-openstreetmap@workspace:packages/plugin-openstreetmap":
+  version: 0.0.0-use.local
+  resolution: "@omh/react-native-maps-plugin-openstreetmap@workspace:packages/plugin-openstreetmap"
+  dependencies:
+    del-cli: "*"
+    eslint: "*"
+    jest: "*"
+    react-native-builder-bob: "*"
+    release-it: "*"
+    ts-node: "*"
+    typescript: "*"
+  peerDependencies:
+    react: "*"
+    react-native: "*"
+  languageName: unknown
+  linkType: soft
+
+"@omh/react-native-maps-plugin-x@workspace:^, @omh/react-native-maps-plugin-x@workspace:packages/plugin-x":
+  version: 0.0.0-use.local
+  resolution: "@omh/react-native-maps-plugin-x@workspace:packages/plugin-x"
+  dependencies:
+    del-cli: "*"
+    eslint: "*"
+    jest: "*"
+    react-native-builder-bob: "*"
+    release-it: "*"
+    ts-node: "*"
+    typescript: "*"
+  peerDependencies:
+    react: "*"
+    react-native: "*"
+  languageName: unknown
+  linkType: soft
+
 "@omh/react-native-maps-sample-app@workspace:sample-app":
   version: 0.0.0-use.local
   resolution: "@omh/react-native-maps-sample-app@workspace:sample-app"
   dependencies:
     "@omh/react-native-maps-core": "workspace:^"
+    "@omh/react-native-maps-plugin-azuremaps": "workspace:^"
     "@omh/react-native-maps-plugin-googlemaps": "workspace:^"
+    "@omh/react-native-maps-plugin-mapbox": "workspace:^"
+    "@omh/react-native-maps-plugin-openstreetmap": "workspace:^"
+    "@omh/react-native-maps-plugin-x": "workspace:^"
     react: "*"
     react-native: "*"
   languageName: unknown

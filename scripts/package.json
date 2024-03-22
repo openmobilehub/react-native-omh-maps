@@ -7,7 +7,7 @@
     "tsx": "*"
   },
   "scripts": {
-    "createPackage": "tsx createPackage.ts"
+    "createPlugin": "tsx createPlugin.ts"
   },
   "packageManager": "yarn@3.6.1"
 }

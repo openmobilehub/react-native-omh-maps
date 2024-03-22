@@ -15,7 +15,10 @@
   },
   "dependencies": {
     "@omh/react-native-maps-core": "workspace:^",
-    "@omh/react-native-maps-plugin-googlemaps": "workspace:^"
+    "@omh/react-native-maps-plugin-azuremaps": "workspace:^",
+    "@omh/react-native-maps-plugin-googlemaps": "workspace:^",
+    "@omh/react-native-maps-plugin-mapbox": "workspace:^",
+    "@omh/react-native-maps-plugin-openstreetmap": "workspace:^"
   },
   "devDependencies": {
     "react": "*",
