@@ -8,34 +8,55 @@ import Layout from '@theme/Layout';
 
 import styles from './index.module.css';
 
-function HomepageHeader() {
-  const { siteConfig } = useDocusaurusContext();
-  return (
-    <header className={clsx('hero hero--primary', styles.heroBanner)}>
-      <div className="container">
-        <Heading as="h1" className="hero__title">
-          {siteConfig.title}
-        </Heading>
-        <p className="hero__subtitle">{siteConfig.tagline}</p>
-        <div className={styles.buttons}>
-          <Link
-            className="button button--secondary button--lg"
-            to="/docs/intro">
-            Get started 🚀
-          </Link>
-        </div>
-      </div>
-    </header>
-  );
-}
+type HomepageLink = Record<'text' | 'link', string>;
+
+const HOMEPAGE_LINKS: HomepageLink[] = [
+  {
+    text: 'Get started 🚀',
+    link: '/docs/getting-started',
+  },
+  {
+    text: 'API reference 📚',
+    link: '/docs/api',
+  },
+  {
+    text: 'Contribute 🤝',
+    link: '/docs/contributing',
+  },
+];
 
 export default function Home(): JSX.Element {
   const { siteConfig } = useDocusaurusContext();
   return (
     <Layout
-      title={`Hello from ${siteConfig.title}`}
-      description="Description will go into a meta tag in <head />">
-      <HomepageHeader />
+      title="RN OMH Maps landing page"
+      description="OMH Maps for React Native">
+      <header className={clsx('hero hero--primary', styles.heroBanner)}>
+        <div className="container">
+          <Heading as="h1" className="hero__title">
+            {siteConfig.title}
+          </Heading>
+
+          <p className="hero__subtitle">{siteConfig.tagline}</p>
+
+          <div className={styles.buttons}>
+            {[
+              HOMEPAGE_LINKS.map(({ text, link }, index) => (
+                <Link
+                  key={index}
+                  className={clsx(
+                    'button button--secondary button--lg',
+                    styles.homepageButton
+                  )}
+                  to={link}>
+                  {text}
+                </Link>
+              )),
+            ]}
+          </div>
+        </div>
+      </header>
+
       <main>
         <HomepageFeatures />
       </main>

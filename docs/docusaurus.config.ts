@@ -5,8 +5,8 @@ import type * as Preset from '@docusaurus/preset-classic';
 import entryPoints from './entrypoints.json';
 
 const config: Config = {
-  title: 'My Site',
-  tagline: 'Dinosaurs are cool',
+  title: 'RN OMH Maps',
+  tagline: 'OMH Maps bindings for React Native',
   favicon: 'img/favicon.ico',
 
   // Set the production url of your site here
@@ -69,7 +69,7 @@ const config: Config = {
           type: 'docSidebar',
           sidebarId: 'apiSidebar',
           position: 'left',
-          label: 'API reference',
+          label: 'API',
         },
         {
           type: 'docSidebar',

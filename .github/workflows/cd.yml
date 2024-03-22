@@ -5,76 +5,119 @@ on:
     branches:
       - main
 
+# GITHUB_TOKEN needs to be granted the permissions required to make a Pages deployment
+permissions:
+  contents: read
+  pages: write # to deploy to Pages
+  id-token: write # to verify the deployment originates from an appropriate source
+
 jobs:
-  sample-app-android:
+  build-documentation:
+    name: Build documentation
     runs-on: ubuntu-latest
 
-    env:
-      TURBO_CACHE_DIR: .turbo/android
-      APK_PATH: sample-app/android/app/build/outputs/apk/release/app-release.apk
-
     steps:
-      - name: Checkout
+      - name: Check out code
         uses: actions/checkout@v4
 
       - name: Setup
         uses: ./.github/actions/setup
 
-      - name: Cache turborepo for Android
-        uses: actions/cache@v3
+      - name: Setup Pages
+        id: pages
+        uses: actions/configure-pages@v4
+
+      - name: Build documentation with Docusaurus
+        run: yarn docs build
+
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v1
         with:
-          path: ${{ env.TURBO_CACHE_DIR }}
-          key: ${{ runner.os }}-turborepo-android-${{ hashFiles('yarn.lock') }}
-          restore-keys: |
-            ${{ runner.os }}-turborepo-android-
+          path: docs/build
 
-      - name: Check turborepo cache for Android
-        run: |
-          TURBO_CACHE_STATUS=$(node -p "($(yarn turbo run build:android:release --cache-dir="${{ env.TURBO_CACHE_DIR }}" --dry=json)).tasks.find(t => t.task === 'build:android:release').cache.status")
+  deploy-documentation:
+    name: Deploy documentation to GitHub Pages
+    needs: build-documentation
+    runs-on: ubuntu-latest
 
-          if [[ $TURBO_CACHE_STATUS == "HIT" ]]; then
-            echo "turbo_cache_hit=1" >> $GITHUB_ENV
-          fi
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
 
-      - name: Set up JDK 11 for x64
-        uses: actions/setup-java@v4
-        with:
-          java-version: '17'
-          distribution: 'zulu'
+    steps:
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v2
 
-      - name: Finalize Android SDK
-        if: env.turbo_cache_hit != 1
-        run: |
-          /bin/bash -c "yes | $ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager --licenses > /dev/null"
+  # sample-app-android:
+  #   runs-on: ubuntu-latest
 
-      - name: Cache Gradle
-        if: env.turbo_cache_hit != 1
-        uses: actions/cache@v3
-        with:
-          path: |
-            ~/.gradle/wrapper
-            ~/.gradle/caches
-          key: ${{ runner.os }}-gradle-${{ hashFiles('sample-app/android/gradle/wrapper/gradle-wrapper.properties') }}
-          restore-keys: |
-            ${{ runner.os }}-gradle-
+  #   env:
+  #     TURBO_CACHE_DIR: .turbo/android
+  #     APK_PATH: sample-app/android/app/build/outputs/apk/release/app-release.apk
 
-      - name: Build example for Android
-        env:
-          JAVA_OPTS: '-XX:MaxHeapSize=6g'
-        run: |
-          yarn turbo run build:android:release --cache-dir="${{ env.TURBO_CACHE_DIR }}"
+  #   steps:
+  #     - name: Checkout
+  #       uses: actions/checkout@v4
 
-      # Publishes the app to App Center
-      - name: Publish app to App Center
-        uses: wzieba/AppCenter-Github-Action@v1
-        with:
-          appName: ${{ secrets.APP_CENTER_APP_NAME }}
-          group: ${{ secrets.APP_CENTER_GROUP }}
-          token: ${{ secrets.APP_CENTER_TOKEN }}
-          file: ${{ env.APK_PATH }}
-          notifyTesters: true
-          debug: true
-          gitReleaseNotes: true
+  #     - name: Setup
+  #       uses: ./.github/actions/setup
+
+  #     - name: Cache turborepo for Android
+  #       uses: actions/cache@v3
+  #       with:
+  #         path: ${{ env.TURBO_CACHE_DIR }}
+  #         key: ${{ runner.os }}-turborepo-android-${{ hashFiles('yarn.lock') }}
+  #         restore-keys: |
+  #           ${{ runner.os }}-turborepo-android-
+
+  #     - name: Check turborepo cache for Android
+  #       run: |
+  #         TURBO_CACHE_STATUS=$(node -p "($(yarn turbo run build:android:release --cache-dir="${{ env.TURBO_CACHE_DIR }}" --dry=json)).tasks.find(t => t.task === 'build:android:release').cache.status")
+
+  #         if [[ $TURBO_CACHE_STATUS == "HIT" ]]; then
+  #           echo "turbo_cache_hit=1" >> $GITHUB_ENV
+  #         fi
+
+  #     - name: Set up JDK 11 for x64
+  #       uses: actions/setup-java@v4
+  #       with:
+  #         java-version: '17'
+  #         distribution: 'zulu'
+
+  #     - name: Finalize Android SDK
+  #       if: env.turbo_cache_hit != 1
+  #       run: |
+  #         /bin/bash -c "yes | $ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager --licenses > /dev/null"
+
+  #     - name: Cache Gradle
+  #       if: env.turbo_cache_hit != 1
+  #       uses: actions/cache@v3
+  #       with:
+  #         path: |
+  #           ~/.gradle/wrapper
+  #           ~/.gradle/caches
+  #         key: ${{ runner.os }}-gradle-${{ hashFiles('sample-app/android/gradle/wrapper/gradle-wrapper.properties') }}
+  #         restore-keys: |
+  #           ${{ runner.os }}-gradle-
+
+  #     - name: Build example for Android
+  #       env:
+  #         JAVA_OPTS: '-XX:MaxHeapSize=6g'
+  #       run: |
+  #         yarn turbo run build:android:release --cache-dir="${{ env.TURBO_CACHE_DIR }}"
+
+  #     # Publishes the app to App Center
+  #     - name: Publish app to App Center
+  #       uses: wzieba/AppCenter-Github-Action@v1
+  #       with:
+  #         appName: ${{ secrets.APP_CENTER_APP_NAME }}
+  #         group: ${{ secrets.APP_CENTER_GROUP }}
+  #         token: ${{ secrets.APP_CENTER_TOKEN }}
+  #         file: ${{ env.APK_PATH }}
+  #         notifyTesters: true
+  #         debug: true
+  #         gitReleaseNotes: true
 
   # sample-app-ios:
   #   runs-on: macos-14
@@ -125,38 +168,3 @@ jobs:
   #     - name: Build example for iOS
   #       run: |
   #         yarn turbo run build:ios --cache-dir="${{ env.TURBO_CACHE_DIR }}"
-
-  build-documentation:
-    needs: maps-plugins
-    name: Build documentation
-    runs-on: ubuntu-latest
-
-    steps:
-      - name: Check out code
-        uses: actions/checkout@v4
-
-      - name: Setup Pages
-        id: pages
-        uses: actions/configure-pages@v4
-
-      - name: Build documentation with Docusaurus
-        run: yarn docs build
-
-      - name: Upload artifact
-        uses: actions/upload-pages-artifact@v1
-        with:
-          path: docs/build
-
-  deploy-documentation:
-    name: Deploy documentation to GitHub Pages
-    needs: build-documentation
-    runs-on: ubuntu-latest
-
-    environment:
-      name: github-pages
-      url: ${{ steps.deployment.outputs.page_url }}
-
-    steps:
-      - name: Deploy to GitHub Pages
-        id: deployment
-        uses: actions/deploy-pages@v2
