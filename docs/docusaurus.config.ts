@@ -148,6 +148,9 @@ const config: Config = {
       theme: prismThemes.github,
       darkTheme: prismThemes.dracula,
     },
+    colorMode: {
+      defaultMode: 'dark',
+    },
   } satisfies Preset.ThemeConfig,
   plugins: [
     [

@@ -203,7 +203,7 @@ const questions: PromptObject[] = [
     delete packageJson[obsoletePackageJsonKey];
   }
 
-  packageJson.version = '1.0.0';
+  packageJson.version = '1.0.0-beta';
 
   delete packageJson.scripts.example;
   packageJson.devDependencies = {
