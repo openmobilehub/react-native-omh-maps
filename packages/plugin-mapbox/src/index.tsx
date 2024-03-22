@@ -1,3 +1,8 @@
+/**
+ * React Native OMH Maps Mapbox Plugin
+ * @module @omh/react-native-maps-plugin-mapbox
+ */
+
 import {
   requireNativeComponent,
   UIManager,

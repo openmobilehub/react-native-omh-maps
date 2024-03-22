@@ -12,11 +12,11 @@ npm install --save @omh/react-native-maps-plugin-...
 ## Usage
 
 ```js
-import { RnOmhMapsCoreView } from '@omh/react-native-maps';
+import { ReactNativeOmhMapsCoreView } from '@omh/react-native-maps';
 
 // ...
 
-<RnOmhMapsCoreView color="tomato" />;
+<ReactNativeOmhMapsCoreView color="tomato" />;
 ```
 
 ## Contributing

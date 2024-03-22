@@ -1,8 +1,8 @@
-@objc(RnOmhMapsCoreViewManager)
-class RnOmhMapsCoreViewManager: RCTViewManager {
+@objc(ReactNativeOmhMapsCoreViewManager)
+class ReactNativeOmhMapsCoreViewManager: RCTViewManager {
 
-  override func view() -> (RnOmhMapsCoreView) {
-    return RnOmhMapsCoreView()
+  override func view() -> (ReactNativeOmhMapsCoreView) {
+    return ReactNativeOmhMapsCoreView()
   }
 
   @objc override static func requiresMainQueueSetup() -> Bool {
@@ -10,7 +10,7 @@ class RnOmhMapsCoreViewManager: RCTViewManager {
   }
 }
 
-class RnOmhMapsCoreView : UIView {
+class ReactNativeOmhMapsCoreView : UIView {
 
   @objc var color: String = "" {
     didSet {

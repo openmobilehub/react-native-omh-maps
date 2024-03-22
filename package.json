@@ -45,6 +45,7 @@
     "turbo": "^1.12.5",
     "typedoc": "^0.25.12",
     "typedoc-plugin-markdown": "^3.17.1",
+    "typedoc-plugin-replace-text": "^3.3.0",
     "typescript": "^5.4.3",
     "validate-npm-package-name": "^5.0.0"
   },

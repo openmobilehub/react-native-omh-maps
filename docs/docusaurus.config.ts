@@ -2,21 +2,23 @@ import { themes as prismThemes } from 'prism-react-renderer';
 import type { Config } from '@docusaurus/types';
 import type * as Preset from '@docusaurus/preset-classic';
 
+import entryPoints from './entrypoints.json';
+
 const config: Config = {
   title: 'My Site',
   tagline: 'Dinosaurs are cool',
   favicon: 'img/favicon.ico',
 
   // Set the production url of your site here
-  url: 'https://your-docusaurus-site.example.com',
+  url: 'https://legendary-broccoli-93ze846.pages.github.io',
   // Set the /<baseUrl>/ pathname under which your site is served
   // For GitHub pages deployment, it is often '/<projectName>/'
   baseUrl: '/',
 
   // GitHub pages deployment config.
   // If you aren't using GitHub pages, you don't need these.
-  organizationName: 'facebook', // Usually your GitHub org/user name.
-  projectName: 'docusaurus', // Usually your repo name.
+  organizationName: 'openmobilehub', // Usually your GitHub org/user name.
+  projectName: 'react-native-omh-maps', // Usually your repo name.
 
   onBrokenLinks: 'throw',
   onBrokenMarkdownLinks: 'warn',
@@ -51,17 +53,35 @@ const config: Config = {
     // Replace with your project's social card
     image: 'img/docusaurus-social-card.jpg',
     navbar: {
-      title: 'My Site',
+      title: 'React Native OMH Maps',
       logo: {
-        alt: 'My Site Logo',
+        alt: 'Logo',
         src: 'img/logo.svg',
       },
       items: [
         {
           type: 'docSidebar',
-          sidebarId: 'tutorialSidebar',
+          sidebarId: 'gettingStartedSidebar',
           position: 'left',
-          label: 'Tutorial',
+          label: 'Getting started',
+        },
+        {
+          type: 'docSidebar',
+          sidebarId: 'apiSidebar',
+          position: 'left',
+          label: 'API reference',
+        },
+        {
+          type: 'docSidebar',
+          sidebarId: 'advancedUsageSidebar',
+          position: 'left',
+          label: 'Advanced usage',
+        },
+        {
+          type: 'docSidebar',
+          sidebarId: 'contributingSidebar',
+          position: 'left',
+          label: 'Contributing',
         },
         {
           href: 'https://github.com/openmobilehub/react-native-omh-maps',
@@ -74,11 +94,15 @@ const config: Config = {
       style: 'dark',
       links: [
         {
-          title: 'Guides & documentation',
+          title: 'Documentation & guides',
           items: [
             {
-              label: 'Tutorial',
-              to: '/docs/intro',
+              label: 'Getting started',
+              to: '/docs/getting-started',
+            },
+            {
+              label: 'Advanced usage',
+              to: '/docs/advanced-usage',
             },
           ],
         },
@@ -86,8 +110,8 @@ const config: Config = {
           title: 'API Reference',
           items: [
             {
-              label: 'Tutorial',
-              to: '/docs/intro',
+              label: 'API Reference',
+              to: '/docs/api',
             },
           ],
         },
@@ -125,6 +149,32 @@ const config: Config = {
       darkTheme: prismThemes.dracula,
     },
   } satisfies Preset.ThemeConfig,
+  plugins: [
+    [
+      'docusaurus-plugin-typedoc',
+      // docusaurus-plugin-typedoc / TypeDoc options
+      {
+        entryPoints,
+        tsconfig: '../tsconfig.json',
+        cleanOutputDir: true,
+
+        // sanitize README.md link to CONTRIBUTING.md
+        plugin: ['typedoc-plugin-replace-text'],
+        replaceText: {
+          inCodeCommentText: true,
+          inCodeCommentTags: true,
+          inIncludedFiles: true,
+          replacements: [
+            {
+              pattern: ']\\(CONTRIBUTING.md\\)',
+              replace: '](../contributing.mdx)',
+            },
+          ],
+        },
+      } as import('typedoc').TypeDocOptionMap &
+        import('typedoc-plugin-replace-text').Config as any,
+    ],
+  ],
 };
 
 export default config;

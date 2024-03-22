@@ -1,6 +1,9 @@
-# Website
+# React Native OMH Maps Documentation
 
 This website is built using [Docusaurus](https://docusaurus.io/), a modern static website generator.
+
+API docs are generated automatically using [docusaurus-plugin-typedoc](https://www.npmjs.com/package/docusaurus-plugin-typedoc). Typedoc entrypoints are loaded from [`entrypoints.json`](./entrypoints.json) via [`docusaurus.config.ts`](docusaurus.config.ts) and corresponding Markdown outputs are emitted to [`/docs/docs/api`](./docs/api).
+The [`/docs/docs/contributing.mdx`](/docs/docs/contributing.mdx) file is a wrapper that imports & renders root project's [`CONTRIBUTING.md`](/CONTRIBUTING.md) file to reduce redundancy. This `contributing.mdx` file - apart from functioning standalone - is processed by `typedoc-plugin-replace-text` to replace `CONTRIBUTING.md`'s relative links with Docusaurus docs files tree links.
 
 ### Installation
 

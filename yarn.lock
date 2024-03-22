@@ -3716,6 +3716,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@omh/react-native-maps-plugin-azuremaps@workspace:packages/plugin-azuremaps"
   dependencies:
+    "@types/node": "*"
     del-cli: "*"
     eslint: "*"
     jest: "*"
@@ -3751,6 +3752,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@omh/react-native-maps-plugin-mapbox@workspace:packages/plugin-mapbox"
   dependencies:
+    "@types/node": "*"
     del-cli: "*"
     eslint: "*"
     jest: "*"
@@ -3768,23 +3770,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@omh/react-native-maps-plugin-openstreetmap@workspace:packages/plugin-openstreetmap"
   dependencies:
-    del-cli: "*"
-    eslint: "*"
-    jest: "*"
-    react-native-builder-bob: "*"
-    release-it: "*"
-    ts-node: "*"
-    typescript: "*"
-  peerDependencies:
-    react: "*"
-    react-native: "*"
-  languageName: unknown
-  linkType: soft
-
-"@omh/react-native-maps-plugin-x@workspace:^, @omh/react-native-maps-plugin-x@workspace:packages/plugin-x":
-  version: 0.0.0-use.local
-  resolution: "@omh/react-native-maps-plugin-x@workspace:packages/plugin-x"
-  dependencies:
+    "@types/node": "*"
     del-cli: "*"
     eslint: "*"
     jest: "*"
@@ -3807,7 +3793,6 @@ __metadata:
     "@omh/react-native-maps-plugin-googlemaps": "workspace:^"
     "@omh/react-native-maps-plugin-mapbox": "workspace:^"
     "@omh/react-native-maps-plugin-openstreetmap": "workspace:^"
-    "@omh/react-native-maps-plugin-x": "workspace:^"
     react: "*"
     react-native: "*"
   languageName: unknown
@@ -3874,6 +3859,7 @@ __metadata:
     turbo: ^1.12.5
     typedoc: ^0.25.12
     typedoc-plugin-markdown: ^3.17.1
+    typedoc-plugin-replace-text: ^3.3.0
     typescript: ^5.4.3
     validate-npm-package-name: ^5.0.0
   languageName: unknown
@@ -19168,6 +19154,15 @@ __metadata:
   peerDependencies:
     typedoc: ">=0.24.0"
   checksum: f12494bfc98ef532be63fb5e7630ff0aa2de17bb22b1d0b6260c416fe8b62cb537ddd3576cadc90c57c4aae2371722994ed873dc3220b23660e149a3eb676c04
+  languageName: node
+  linkType: hard
+
+"typedoc-plugin-replace-text@npm:^3.3.0":
+  version: 3.3.0
+  resolution: "typedoc-plugin-replace-text@npm:3.3.0"
+  peerDependencies:
+    typedoc: ^0.24.8 || 0.25.x
+  checksum: a606adf3d6f4e724c1067260bc74e7c4adcd7aa98bc55b9abc0d17ed6437faddfd5419168902205aed8446eaa783f47c470b58d9ae198f0c7b7a595723947807
   languageName: node
   linkType: hard
 

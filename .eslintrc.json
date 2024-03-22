@@ -17,5 +17,5 @@
   "env": {
     "node": true
   },
-  "ignorePatterns": ["node_modules/", "lib/", "coverage/"]
+  "ignorePatterns": ["node_modules/", "lib/", "coverage/", "docs/"]
 }

@@ -1,12 +1,12 @@
 import * as React from 'react';
 import { StyleSheet, View } from 'react-native';
 
-import { RnOmhMapsCoreView } from '@omh/react-native-maps-core';
+import { ReactNativeOmhMapsCoreView } from '@omh/react-native-maps-core';
 
 export default function App() {
   return (
     <View style={styles.container}>
-      <RnOmhMapsCoreView color="#32a852" style={styles.box} />
+      <ReactNativeOmhMapsCoreView color="#32a852" style={styles.box} />
     </View>
   );
 }

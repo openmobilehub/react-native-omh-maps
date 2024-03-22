@@ -1,3 +1,8 @@
+/**
+ * React Native OMH Maps Core Plugin
+ * @module @omh/react-native-maps-core
+ */
+
 import {
   requireNativeComponent,
   UIManager,
@@ -11,22 +16,22 @@ const LINKING_ERROR =
   '- You rebuilt the app after installing the package\n' +
   '- You are not using Expo Go\n';
 
-type RnOmhMapsCoreProps = {
+type ReactNativeOmhMapsCoreProps = {
   /** Test color property */
   color: string;
   /** Test style property */
   style: ViewStyle;
 };
 
-const ComponentName = 'RnOmhMapsCoreView';
+const ComponentName = 'ReactNativeOmhMapsCoreView';
 
 /**
  * The root map view component. Actual implementation is picked based on the platform capabilities (GMS or non-GMS)
  * and availability of installed providers (`@omh/react-native-maps-plugin-*`).
  */
-export const RnOmhMapsCoreView =
+export const ReactNativeOmhMapsCoreView =
   UIManager.getViewManagerConfig(ComponentName) != null
-    ? requireNativeComponent<RnOmhMapsCoreProps>(ComponentName)
+    ? requireNativeComponent<ReactNativeOmhMapsCoreProps>(ComponentName)
     : () => {
         throw new Error(LINKING_ERROR);
       };

@@ -1,6 +1,7 @@
 import fs from 'fs';
 import path from 'path';
 
+import dedent from 'dedent';
 import { validate as validateEmail } from 'email-validator';
 import ora from 'ora';
 import prompts, { PromptObject } from 'prompts';
@@ -203,6 +204,7 @@ const questions: PromptObject[] = [
 
   delete packageJson.scripts.example;
   packageJson.devDependencies = {
+    '@types/node': '*',
     'del-cli': '*',
     'eslint': '*',
     'jest': '*',
@@ -229,6 +231,22 @@ const questions: PromptObject[] = [
     path.join(newPackagePath, 'jest.config.ts'),
     Templates.JEST_CONFIG_TS_TEMPLATE
   );
+
+  spinner.text = 'Adding entrypoint to docs configuration';
+
+  // add the new plugin to the docs configuration
+  const docsConfigEntrypointsPath = path.join(
+    rootWorkspacePath,
+    'docs',
+    'entrypoints.json'
+  );
+  const docsConfigEntrypointsJson = JSON.parse(
+    fs.readFileSync(docsConfigEntrypointsPath, 'utf-8')
+  );
+
+  docsConfigEntrypointsJson.push(`../packages/${pluginDirName}/src/index.tsx`);
+
+  fs.writeFileSync(docsConfigEntrypointsPath, docsConfigEntrypointsJson);
 
   spinner.text = "Adding an alias to root workspace's tsconfig.json";
 
@@ -311,6 +329,22 @@ const questions: PromptObject[] = [
 
   spinner.text =
     'Adding a peer dependency to the new package in sample-app workspace';
+
+  // add a @module typedoc tag to TS entrypoint
+  const entrypointPath = path.join(newPackagePath, 'src', 'index.tsx');
+  const entrypointContent = fs.readFileSync(entrypointPath, 'utf-8');
+
+  fs.writeFileSync(
+    entrypointPath,
+    dedent(`
+      /**
+       * ${pluginDescription}
+       * @module ${pluginSlug}
+       */
+
+      ${entrypointContent}
+    `)
+  );
 
   // add the new package to the root workspace
   try {

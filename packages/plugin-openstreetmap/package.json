@@ -1,6 +1,6 @@
 {
   "name": "@omh/react-native-maps-plugin-openstreetmap",
-  "version": "0.1.0",
+  "version": "1.0.0-beta",
   "description": "React Native OMH Maps OpenStreetMap Plugin",
   "main": "lib/commonjs/index",
   "module": "lib/module/index",
@@ -71,6 +71,7 @@
     ]
   },
   "devDependencies": {
+    "@types/node": "*",
     "del-cli": "*",
     "eslint": "*",
     "jest": "*",

@@ -1,0 +1,7 @@
+[
+  "../packages/core/src/index.tsx",
+  "../packages/plugin-googlemaps/src/index.tsx",
+  "../packages/plugin-openstreetmap/src/index.tsx",
+  "../packages/plugin-mapbox/src/index.tsx",
+  "../packages/plugin-azuremaps/src/index.tsx"
+]

@@ -125,3 +125,38 @@ jobs:
   #     - name: Build example for iOS
   #       run: |
   #         yarn turbo run build:ios --cache-dir="${{ env.TURBO_CACHE_DIR }}"
+
+  build-documentation:
+    needs: maps-plugins
+    name: Build documentation
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Check out code
+        uses: actions/checkout@v4
+
+      - name: Setup Pages
+        id: pages
+        uses: actions/configure-pages@v4
+
+      - name: Build documentation with Docusaurus
+        run: yarn docs build
+
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v1
+        with:
+          path: docs/build
+
+  deploy-documentation:
+    name: Deploy documentation to GitHub Pages
+    needs: build-documentation
+    runs-on: ubuntu-latest
+
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+
+    steps:
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v2

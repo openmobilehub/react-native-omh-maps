@@ -6,8 +6,8 @@ import com.facebook.react.uimanager.SimpleViewManager
 import com.facebook.react.uimanager.ThemedReactContext
 import com.facebook.react.uimanager.annotations.ReactProp
 
-class RnOmhMapsCoreViewManager : SimpleViewManager<View>() {
-  override fun getName() = "RnOmhMapsCoreView"
+class ReactNativeOmhMapsCoreViewManager : SimpleViewManager<View>() {
+  override fun getName() = "ReactNativeOmhMapsCoreView"
 
   override fun createViewInstance(reactContext: ThemedReactContext): View {
     return View(reactContext)

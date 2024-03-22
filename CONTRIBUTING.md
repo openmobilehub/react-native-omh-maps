@@ -1,11 +1,10 @@
-# Contributing
-
-## Development workflow
+# Development workflow
 
 This project is a monorepo managed using [Yarn workspaces](https://yarnpkg.com/features/workspaces). It contains the following packages:
 
-- The library package in the root directory.
 - An example app in the `sample-app/` directory.
+- The core library in the `packages/react-native-maps-core/` directory.
+- Plugin packages in the `packages/react-native-maps-plugin-*/` directories.
 
 To get started with the project, run `yarn` in the root directory to install the required dependencies for each package:
 
@@ -60,38 +59,11 @@ Remember to add tests for your change if possible. Run the unit tests by:
 yarn test
 ```
 
-### Commit message convention
+## Creating a new package
 
-We follow the [conventional commits specification](https://www.conventionalcommits.org/en) for our commit messages:
+To create a new package, use the interactive CLI tool: `yarn scripts createPlugin`. The whole package along with scripts, configuration and dependencies will be bootstrapped for you. Yarn dependencies will be installed automatically and the package will be added to aliases in `tsconfig.json` and as a dependency to the sample app.
 
-- `fix`: bug fixes, e.g. fix crash due to deprecated method.
-- `feat`: new features, e.g. add new method to the module.
-- `refactor`: code refactor, e.g. migrate from class components to hooks.
-- `docs`: changes into documentation, e.g. add usage example for the module..
-- `test`: adding or updating tests, e.g. add integration tests using detox.
-- `chore`: tooling changes, e.g. change CI config.
-
-Our pre-commit hooks verify that your commit message matches this format when committing.
-
-### Linting and tests
-
-[ESLint](https://eslint.org/), [Prettier](https://prettier.io/), [TypeScript](https://www.typescriptlang.org/)
-
-We use [TypeScript](https://www.typescriptlang.org/) for type checking, [ESLint](https://eslint.org/) with [Prettier](https://prettier.io/) for linting and formatting the code, and [Jest](https://jestjs.io/) for testing.
-
-Our pre-commit hooks verify that the linter and tests pass when committing.
-
-### Publishing to npm
-
-We use [release-it](https://github.com/release-it/release-it) to make it easier to publish new versions. It handles common tasks like bumping version based on semver, creating tags and releases etc.
-
-To publish new versions, run the following:
-
-```sh
-yarn release
-```
-
-### Scripts
+## Scripts
 
 The `package.json` file contains various scripts for common tasks:
 
@@ -107,7 +79,50 @@ The `package.json` file contains various scripts for common tasks:
   - `yarn sample-app build:android:{debug,release}`: build the example app for Android.
     - `yarn sample-app build:ios:{debug,release}`: build the example app for iOS.
 
-### Sending a pull request
+## Commit message convention
+
+We follow the [conventional commits specification](https://www.conventionalcommits.org/en) for our commit messages:
+
+- `fix`: bug fixes, e.g. fix crash due to deprecated method.
+- `feat`: new features, e.g. add new method to the module.
+- `refactor`: code refactor, e.g. migrate from class components to hooks.
+- `docs`: changes into documentation, e.g. add usage example for the module..
+- `test`: adding or updating tests, e.g. add integration tests using detox.
+- `chore`: tooling changes, e.g. change CI config.
+
+Our pre-commit hooks verify that your commit message matches this format when committing.
+
+## Linting and tests
+
+[ESLint](https://eslint.org/), [Prettier](https://prettier.io/), [TypeScript](https://www.typescriptlang.org/)
+
+We use [TypeScript](https://www.typescriptlang.org/) for type checking, [ESLint](https://eslint.org/) with [Prettier](https://prettier.io/) for linting and formatting the code, and [Jest](https://jestjs.io/) for testing.
+
+Our pre-commit hooks verify that the linter and tests pass when committing.
+
+## Publishing to npm
+
+We use [release-it](https://github.com/release-it/release-it) to make it easier to publish new versions. It handles common tasks like bumping version based on semver, creating tags and releases etc.
+
+To publish new versions, run the following:
+
+```sh
+yarn release
+```
+
+## Writing documentation
+
+Documentation is located under [`/docs/`](/docs/). We use [Docusaurus](https://docusaurus.io/) to generate the documentation website and [docusaurus-plugin-typedoc](https://www.npmjs.com/package/docusaurus-plugin-typedoc) to generate API documentation from TypeScript docstrings. The API documentation is built automatically with Github Actions and published GitHub Pages upon merging to the `main` branch with [this workflow file](/.github/workflows/cd.yml).
+
+Remember to document your code according to [JSDoc reference](https://www.typescriptlang.org/docs/handbook/jsdoc-supported-types.html) and to write proper Markdown documentation manually when needed in the `/docs/docs/` directory. Specifically, there exists a [`/docs/docs/advanced-usage`](/docs/docs/advanced-usage) directory that makes an advanced usage section in the documentation that you can browse through to get a sense of how to document advanced usage of the library, or consider to add your pages directly there.
+
+You can view information about the documentation and its scripts in the [README](/docs/README.md). To simply run documentation locally, you can run:
+
+```bash
+yarn docs start
+```
+
+## Sending a pull request
 
 > **Working on your first pull request?** You can learn how from this _free_ series: [How to Contribute to an Open Source Project on GitHub](https://app.egghead.io/playlists/how-to-contribute-to-an-open-source-project-on-github).
 
@@ -118,7 +133,3 @@ When you're sending a pull request:
 - Review the documentation to make sure it looks good.
 - Follow the pull request template when opening a pull request.
 - For pull requests that change the API or implementation, discuss with maintainers first by opening an issue.
-
-### Creating a new package
-
-To create a new package, use the interactive CLI tool: `yarn scripts createPlugin`. The whole package along with scripts, configuration and dependencies will be bootstrapped for you. Yarn dependencies will be installed automatically and the package will be added to aliases in `tsconfig.json` and as a dependency to the sample app.

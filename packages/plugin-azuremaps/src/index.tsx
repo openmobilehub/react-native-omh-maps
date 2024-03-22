@@ -1,3 +1,8 @@
+/**
+ * React Native OMH Maps Azure Maps Plugin
+ * @module @omh/react-native-maps-plugin-azuremaps
+ */
+
 import {
   requireNativeComponent,
   UIManager,
