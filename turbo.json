@@ -1,7 +1,7 @@
 {
   "$schema": "https://turbo.build/schema.json",
   "pipeline": {
-    "build:android": {
+    "build:android:debug": {
       "inputs": [
         "package.json",
         "android",
@@ -14,9 +14,38 @@
         "!android/build",
         "!android/app/build"
       ],
+      "outputs": ["android/app/build/outputs/apk/debug/**"]
+    },
+    "build:android:release": {
+      "inputs": [
+        "package.json",
+        "android",
+        "!android/build",
+        "src/*.ts",
+        "src/*.tsx",
+        "package.json",
+        "android",
+        "!android/.gradle",
+        "!android/build",
+        "!android/app/build"
+      ],
+      "outputs": ["android/app/build/outputs/apk/release/**"]
+    },
+    "build:ios:debug": {
+      "inputs": [
+        "package.json",
+        "*.podspec",
+        "ios",
+        "src/*.ts",
+        "src/*.tsx",
+        "package.json",
+        "ios",
+        "!ios/build",
+        "!ios/Pods"
+      ],
       "outputs": []
     },
-    "build:ios": {
+    "build:ios:release": {
       "inputs": [
         "package.json",
         "*.podspec",

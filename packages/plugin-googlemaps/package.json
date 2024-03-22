@@ -56,6 +56,7 @@
     "react-native": "*"
   },
   "devDependencies": {
+    "@types/node": "*",
     "del-cli": "*",
     "eslint": "*",
     "jest": "*",

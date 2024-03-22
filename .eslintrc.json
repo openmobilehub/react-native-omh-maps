@@ -13,5 +13,8 @@
       }
     ]
   },
+  "env": {
+    "node": true
+  },
   "ignorePatterns": ["node_modules/", "lib/", "coverage/"]
 }

@@ -1,48 +1,15 @@
-import { spawn, type SpawnOptionsWithoutStdio } from 'child_process';
 import fs from 'fs';
 import path from 'path';
 import { fileURLToPath } from 'url';
 
-import validateNpmPackage from 'validate-npm-package-name';
 import { validate as validateEmail } from 'email-validator';
 import ora from 'ora';
 import prompts, { PromptObject } from 'prompts';
+import validateNpmPackage from 'validate-npm-package-name';
 
-import * as Templates from './templates';
-
-async function spawnWrapper(
-  command: string,
-  args?: readonly string[] | undefined,
-  options?: SpawnOptionsWithoutStdio | undefined
-) {
-  let child = spawn(command, args, options);
-  let stdout = '';
-  let stderr = '';
-
-  child.stdout?.setEncoding('utf8');
-  child.stdout?.on('data', data => {
-    stdout += data;
-  });
-
-  child.stderr?.setEncoding('utf8');
-  child.stderr?.on('data', data => {
-    stderr += data;
-  });
-
-  await new Promise<void>((resolve, reject) => {
-    child.on('close', code => {
-      if (code !== 0) {
-        console.log(stdout);
-        console.log(stderr);
-        reject([code, stdout, stderr]);
-      } else {
-        resolve();
-      }
-    });
-  });
-}
-
-const PLUGIN_NAME_PREFIX = '@omh/react-native-maps-plugin-';
+import { PLUGIN_NAME_PREFIX } from './src/constants';
+import * as Templates from './src/templates';
+import { spawnWrapper } from './src/utils';
 
 let bPluginNamePrefilled = false;
 const questions: PromptObject[] = [
