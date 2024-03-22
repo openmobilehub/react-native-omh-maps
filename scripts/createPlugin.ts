@@ -1,15 +1,15 @@
-import fs from 'fs';
-import path from 'path';
-import { fileURLToPath } from 'url';
-
 import { validate as validateEmail } from 'email-validator';
+import libxmljs, { Element } from 'libxmljs2';
+import fs from 'node:fs';
+import path from 'node:path';
 import ora from 'ora';
+import * as prettier from 'prettier';
 import prompts, { PromptObject } from 'prompts';
 import validateNpmPackage from 'validate-npm-package-name';
 
-import { PLUGIN_NAME_PREFIX } from './src/constants';
-import * as Templates from './src/templates';
-import { spawnWrapper } from './src/utils';
+import { Constants, Templates, Utils } from './src';
+import { scriptsWorkspacePath } from './src/constants';
+import getPrettierConfig from './src/prettierConfig';
 
 let bPluginNamePrefilled = false;
 const questions: PromptObject[] = [
@@ -22,17 +22,17 @@ const questions: PromptObject[] = [
         ? // check if valid package name
           !validateNpmPackage(value).errors?.length
           ? // ensure the package name starts with a proper prefix
-            value.startsWith(PLUGIN_NAME_PREFIX)
+            value.startsWith(Constants.PLUGIN_NAME_PREFIX)
             ? true
-            : `Plugin name must start with '${PLUGIN_NAME_PREFIX}'`
+            : `Plugin name must start with '${Constants.PLUGIN_NAME_PREFIX}'`
           : 'Invalid plugin name (must be a valid NPM package name)'
         : 'Plugin name cannot be empty',
     format: value => value.trim().toLowerCase(),
     onRender(this: any) {
       // prefill the input with the default prefix if nothing provided by the user
       if (!bPluginNamePrefilled) {
-        this.value = PLUGIN_NAME_PREFIX;
-        this.cursor = PLUGIN_NAME_PREFIX.length;
+        this.value = Constants.PLUGIN_NAME_PREFIX;
+        this.cursor = Constants.PLUGIN_NAME_PREFIX.length;
         bPluginNamePrefilled = true;
       }
     },
@@ -105,9 +105,8 @@ const questions: PromptObject[] = [
     process.exit(-1);
   }
 
-  const scriptsWorkspacePath = path.dirname(fileURLToPath(import.meta.url)),
-    pluginDirName = `plugin-${pluginSlug
-      .replace(/^@/, '')
+  const pluginDirName = `plugin-${pluginSlug
+      .replace(Constants.PLUGIN_NAME_PREFIX, '')
       .replace(/\//g, '-')}`,
     packagesPath = path.join(scriptsWorkspacePath, '..', 'packages'),
     newPackagePath = path.join(packagesPath, pluginDirName),
@@ -127,10 +126,14 @@ const questions: PromptObject[] = [
   spinner.text = 'Creating new plugin...';
 
   try {
-    await spawnWrapper(
-      'npx',
+    await Utils.spawnWrapper(
+      path.join(
+        rootWorkspacePath,
+        'node_modules',
+        '.bin',
+        'create-react-native-library'
+      ),
       [
-        'create-react-native-library',
         pluginDirName,
         `--slug=${pluginSlug}`, // NPM package name
         `--description="React Native OMH Maps ${pluginDescription}"`,
@@ -149,7 +152,7 @@ const questions: PromptObject[] = [
     );
   } catch (err: any) {
     spinner.fail(
-      `Failed to create the new plugin (CRNP exited with code ${err.code}). Full output below:`
+      `Failed to create the new plugin (CRNL exited with code ${err.code}). Full output below:`
     );
     process.exit(err.code ?? -1);
   }
@@ -200,8 +203,11 @@ const questions: PromptObject[] = [
     delete packageJson[obsoletePackageJsonKey];
   }
 
+  packageJson.version = '1.0.0-beta';
+
   delete packageJson.scripts.example;
   packageJson.devDependencies = {
+    '@types/node': '*',
     'del-cli': '*',
     'eslint': '*',
     'jest': '*',
@@ -211,61 +217,75 @@ const questions: PromptObject[] = [
     'ts-node': '*',
   };
 
+  fs.writeFileSync(
+    packageJsonPath,
+    await prettier.format(
+      JSON.stringify(packageJson),
+      getPrettierConfig('json')
+    )
+  );
+
   // create config files
   fs.writeFileSync(
     path.join(newPackagePath, 'tsconfig.json'),
-    Templates.TSCONFIG_TEMPLATE
+    await Templates.TSCONFIG_TEMPLATE
   );
 
   fs.writeFileSync(
     path.join(newPackagePath, 'tsconfig.build.json'),
-    Templates.TSCONFIG_BUILD_TEMPLATE
+    await Templates.TSCONFIG_BUILD_TEMPLATE
   );
 
   fs.writeFileSync(
     path.join(newPackagePath, 'jest.config.ts'),
-    Templates.JEST_CONFIG_TS_TEMPLATE
+    await Templates.JEST_CONFIG_TS_TEMPLATE
   );
 
-  fs.writeFileSync(packageJsonPath, JSON.stringify(packageJson, null, 2));
+  spinner.text = 'Adding entrypoint to docs configuration';
 
-  spinner.text =
-    'Adding a peer dependency to the new package in root workspace';
+  // add the new plugin to the docs configuration
+  const docsConfigEntrypointsPath = path.join(
+    rootWorkspacePath,
+    'docs',
+    'entrypoints.json'
+  );
+  const docsConfigEntrypointsJson = JSON.parse(
+    fs.readFileSync(docsConfigEntrypointsPath, 'utf-8')
+  );
 
-  // add the new package to the root workspace
-  try {
-    spawnWrapper('yarn', ['sample-app', 'add', pluginSlug], {
-      cwd: rootWorkspacePath,
-    });
-  } catch (err: any) {
-    spinner.fail(
-      `Failed to create the new plugin (yarn exited with code ${err.code}). Full output below:`
-    );
-    process.exit(err.code ?? -2);
-  }
+  docsConfigEntrypointsJson.push(`../packages/${pluginDirName}/src/index.tsx`);
 
-  spinner.text = "Adding an aliast to root workspace's tsconfig.json";
+  fs.writeFileSync(
+    docsConfigEntrypointsPath,
+    await prettier.format(
+      JSON.stringify(docsConfigEntrypointsJson),
+      getPrettierConfig('json')
+    )
+  );
+
+  spinner.text = "Adding an alias to root workspace's tsconfig.json";
 
   // add an alias to root workspace's tsconfig.json
   const rootTsConfigPath = path.join(rootWorkspacePath, 'tsconfig.json');
   const rootTsConfig = JSON.parse(fs.readFileSync(rootTsConfigPath, 'utf-8'));
-  rootTsConfig.compilerOptions.paths[`${PLUGIN_NAME_PREFIX}${pluginSlug}`] = [
+  rootTsConfig.compilerOptions.paths[pluginSlug] = [
     `./packages/${pluginDirName}/src/index`,
   ];
 
-  fs.writeFileSync(rootTsConfigPath, JSON.stringify(rootTsConfig, null, 2));
+  fs.writeFileSync(
+    rootTsConfigPath,
+    await prettier.format(
+      JSON.stringify(rootTsConfig),
+      getPrettierConfig('json')
+    )
+  );
 
   spinner.text = 'Customizing package name in Android project';
-  const androidPackageName = `com.openmobilehub.android.rn.maps.plugin.${pluginSlug.replace(PLUGIN_NAME_PREFIX, '')}`;
-  const androidSrcDirPath = path.join(
-      newPackagePath,
-      'android',
-      'src',
-      'main',
-      'java'
-    ),
+  const androidPackageName = `com.openmobilehub.android.rn.maps.plugin.${pluginSlug.replace(Constants.PLUGIN_NAME_PREFIX, '')}`;
+  const androidSrcDirPath = path.join(newPackagePath, 'android', 'src', 'main'),
+    androidSrcJavaDirPath = path.join(androidSrcDirPath, 'java'),
     androidEndSrcPackageDirPath = path.join(
-      androidSrcDirPath,
+      androidSrcJavaDirPath,
       ...androidPackageName.split('.')
     );
 
@@ -273,12 +293,14 @@ const questions: PromptObject[] = [
     recursive: true,
   });
 
-  const files = fs.readdirSync(androidSrcDirPath, { recursive: true });
+  const files = fs.readdirSync(androidSrcJavaDirPath, { recursive: true });
 
   let filesToBeWritten: { [filePath: string]: string } = {};
   console.log(); // new line
   for (const fileFullPath of files
-    .map(fileRelPath => path.join(androidSrcDirPath, fileRelPath.toString()))
+    .map(fileRelPath =>
+      path.join(androidSrcJavaDirPath, fileRelPath.toString())
+    )
     .filter(pth => pth.endsWith('.kt') && fs.lstatSync(pth).isFile())) {
     const fileContent = fs.readFileSync(fileFullPath, 'utf-8');
 
@@ -299,8 +321,8 @@ const questions: PromptObject[] = [
   }
 
   // delete all java/ src tree files before the buffer is written
-  fs.rmSync(androidSrcDirPath, { recursive: true });
-  fs.mkdirSync(androidSrcDirPath, { recursive: true }); // restore the directory
+  fs.rmSync(androidSrcJavaDirPath, { recursive: true });
+  fs.mkdirSync(androidSrcJavaDirPath, { recursive: true }); // restore the directory
 
   for (const [destFilePath, newFileContent] of Object.entries(
     filesToBeWritten
@@ -310,10 +332,25 @@ const questions: PromptObject[] = [
   }
   filesToBeWritten = {}; // clear the buffer
 
+  // overwrite AndroidManifest.xml changing the package name
+  const androidManifestPath = path.join(
+    androidSrcDirPath,
+    'AndroidManifest.xml'
+  );
+  var xml = fs.readFileSync(androidManifestPath, 'utf-8');
+
+  var xmlDoc = libxmljs.parseXml(xml);
+
+  // query using xpath syntax
+  var manifestNode = xmlDoc.get('//manifest') as Element;
+  manifestNode.attr('package')!.value(androidPackageName);
+
+  fs.writeFileSync(androidManifestPath, xmlDoc.toString());
+
   // run 'yarn install' in root workspace so that all workspaces are resolved & dependencies are linked to the new plugin
   spinner.text = 'Running yarn install in root workspace...';
   try {
-    await spawnWrapper('yarn', [], {
+    await Utils.spawnWrapper('yarn', ['install'], {
       cwd: rootWorkspacePath,
     });
   } catch (err: any) {
@@ -321,6 +358,40 @@ const questions: PromptObject[] = [
       `Failed to install dependencies in root workspace (yarn exited with code ${err.code}). Full output below:`
     );
     process.exit(err.code ?? -3);
+  }
+
+  spinner.text =
+    'Adding a peer dependency to the new package in sample-app workspace';
+
+  // add a @module typedoc tag to TS entrypoint
+  const entrypointPath = path.join(newPackagePath, 'src', 'index.tsx');
+  const entrypointContent = fs.readFileSync(entrypointPath, 'utf-8');
+
+  fs.writeFileSync(
+    entrypointPath,
+    await prettier.format(
+      `
+        /**
+         * ${pluginDescription}
+         * @module ${pluginSlug}
+         */
+
+        ${entrypointContent}
+      `,
+      getPrettierConfig('typescript')
+    )
+  );
+
+  // add the new package to the root workspace
+  try {
+    await Utils.spawnWrapper('yarn', ['sample-app', 'add', pluginSlug], {
+      cwd: rootWorkspacePath,
+    });
+  } catch (err: any) {
+    spinner.fail(
+      `Failed to create the new plugin (yarn exited with code ${err.code}). Full output below:`
+    );
+    process.exit(err.code ?? -2);
   }
 
   spinner.succeed(

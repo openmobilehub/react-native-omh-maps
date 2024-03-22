@@ -1,4 +1,5 @@
 {
+  "$schema": "https://json.schemastore.org/eslintrc.json",
   "root": true,
   "extends": ["@react-native", "prettier"],
   "rules": {
@@ -16,5 +17,5 @@
   "env": {
     "node": true
   },
-  "ignorePatterns": ["node_modules/", "lib/", "coverage/"]
+  "ignorePatterns": ["node_modules/", "lib/", "coverage/", "docs/"]
 }

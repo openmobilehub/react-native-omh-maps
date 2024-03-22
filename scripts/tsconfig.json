@@ -3,6 +3,7 @@
   "compilerOptions": {
     "rootDir": ".",
     "noUnusedLocals": false,
-    "esModuleInterop": true
+    "esModuleInterop": true,
+    "noEmit": true
   }
 }

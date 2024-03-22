@@ -1,4 +1,4 @@
-package com.openmobilehub.android.rn.maps.core
+package com.openmobilehub.android.rn.maps.plugin.openstreetmap
 
 import android.graphics.Color
 import android.view.View
@@ -6,8 +6,8 @@ import com.facebook.react.uimanager.SimpleViewManager
 import com.facebook.react.uimanager.ThemedReactContext
 import com.facebook.react.uimanager.annotations.ReactProp
 
-class RnOmhMapsCoreViewManager : SimpleViewManager<View>() {
-  override fun getName() = "RnOmhMapsCoreView"
+class ReactNativeMapsPluginOpenstreetmapViewManager : SimpleViewManager<View>() {
+  override fun getName() = "ReactNativeMapsPluginOpenstreetmapView"
 
   override fun createViewInstance(reactContext: ThemedReactContext): View {
     return View(reactContext)

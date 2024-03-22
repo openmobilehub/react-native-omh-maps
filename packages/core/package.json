@@ -1,7 +1,7 @@
 {
   "name": "@omh/react-native-maps-core",
   "version": "1.0.0-beta",
-  "description": "React Native OMH Maps Core package",
+  "description": "React Native OMH Maps Core Plugin",
   "main": "lib/commonjs/index",
   "module": "lib/module/index",
   "types": "lib/typescript/src/index.d.ts",

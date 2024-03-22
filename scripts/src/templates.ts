@@ -1,21 +1,32 @@
-import dedent from 'dedent';
+import * as prettier from 'prettier';
 
-export const TSCONFIG_TEMPLATE = JSON.stringify({
-  extends: '../../tsconfig',
-});
+import getPrettierConfig from './prettierConfig';
 
-export const TSCONFIG_BUILD_TEMPLATE = JSON.stringify({
-  extends: './tsconfig',
-  exclude: ['lib', 'node_modules'],
-});
+export const TSCONFIG_TEMPLATE = prettier.format(
+  JSON.stringify({
+    extends: '../../tsconfig',
+  }),
+  getPrettierConfig('json')
+);
 
-export const JEST_CONFIG_TS_TEMPLATE = dedent(`
-    import type { Config } from 'jest';
+export const TSCONFIG_BUILD_TEMPLATE = prettier.format(
+  JSON.stringify({
+    extends: './tsconfig',
+    exclude: ['lib', 'node_modules'],
+  }),
+  getPrettierConfig('json')
+);
 
-    const config: Config = {
-        preset: 'react-native',
-        modulePathIgnorePatterns: ['node_modules', 'lib'],
-    };
+export const JEST_CONFIG_TS_TEMPLATE = prettier.format(
+  `
+  import type { Config } from 'jest';
 
-    export default config;
-`);
+  const config: Config = {
+      preset: 'react-native',
+      modulePathIgnorePatterns: ['node_modules', 'lib'],
+  };
+
+  export default config;
+  `,
+  getPrettierConfig('typescript')
+);

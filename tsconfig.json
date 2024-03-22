@@ -4,6 +4,15 @@
       "@omh/react-native-maps-core": ["./packages/core/src/index"],
       "@omh/react-native-maps-plugin-googlemaps": [
         "./packages/plugin-googlemaps/src/index"
+      ],
+      "@omh/react-native-maps-plugin-openstreetmap": [
+        "./packages/plugin-openstreetmap/src/index"
+      ],
+      "@omh/react-native-maps-plugin-mapbox": [
+        "./packages/plugin-mapbox/src/index"
+      ],
+      "@omh/react-native-maps-plugin-azuremaps": [
+        "./packages/plugin-azuremaps/src/index"
       ]
     },
     "allowUnreachableCode": false,
@@ -26,5 +35,5 @@
     "strict": true,
     "target": "esnext"
   },
-  "exclude": ["**/*.config.ts", "**/node_modules"]
+  "exclude": ["**/*.config.ts", "**/node_modules", "docs/"]
 }

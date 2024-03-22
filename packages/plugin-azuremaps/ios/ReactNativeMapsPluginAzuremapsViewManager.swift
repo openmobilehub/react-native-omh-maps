@@ -1,8 +1,8 @@
-@objc(RnOmhMapsCoreViewManager)
-class RnOmhMapsCoreViewManager: RCTViewManager {
+@objc(ReactNativeMapsPluginAzuremapsViewManager)
+class ReactNativeMapsPluginAzuremapsViewManager: RCTViewManager {
 
-  override func view() -> (RnOmhMapsCoreView) {
-    return RnOmhMapsCoreView()
+  override func view() -> (ReactNativeMapsPluginAzuremapsView) {
+    return ReactNativeMapsPluginAzuremapsView()
   }
 
   @objc override static func requiresMainQueueSetup() -> Bool {
@@ -10,7 +10,7 @@ class RnOmhMapsCoreViewManager: RCTViewManager {
   }
 }
 
-class RnOmhMapsCoreView : UIView {
+class ReactNativeMapsPluginAzuremapsView : UIView {
 
   @objc var color: String = "" {
     didSet {
