@@ -26,5 +26,5 @@
     "strict": true,
     "target": "esnext"
   },
-  "exclude": ["**/*.config.ts", "**/node_modules"]
+  "exclude": ["**/*.config.ts", "**/node_modules", "docs/"]
 }
