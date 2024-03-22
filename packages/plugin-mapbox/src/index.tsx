@@ -1,5 +1,5 @@
 /**
- * React Native OMH Maps Mapbox Plugin
+ * Mapbox Plugin
  * @module @omh/react-native-maps-plugin-mapbox
  */
 

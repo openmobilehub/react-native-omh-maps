@@ -1,5 +1,5 @@
 /**
- * React Native OMH Maps Azure Maps Plugin
+ * Azure Maps Plugin
  * @module @omh/react-native-maps-plugin-azuremaps
  */
 

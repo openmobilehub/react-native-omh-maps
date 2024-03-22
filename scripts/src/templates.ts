@@ -1,15 +1,24 @@
-import dedent from 'dedent';
+import * as prettier from 'prettier';
 
-export const TSCONFIG_TEMPLATE = JSON.stringify({
-  extends: '../../tsconfig',
-});
+import getPrettierConfig from './prettierConfig';
 
-export const TSCONFIG_BUILD_TEMPLATE = JSON.stringify({
-  extends: './tsconfig',
-  exclude: ['lib', 'node_modules'],
-});
+export const TSCONFIG_TEMPLATE = prettier.format(
+  JSON.stringify({
+    extends: '../../tsconfig',
+  }),
+  getPrettierConfig('json')
+);
 
-export const JEST_CONFIG_TS_TEMPLATE = dedent(`
+export const TSCONFIG_BUILD_TEMPLATE = prettier.format(
+  JSON.stringify({
+    extends: './tsconfig',
+    exclude: ['lib', 'node_modules'],
+  }),
+  getPrettierConfig('json')
+);
+
+export const JEST_CONFIG_TS_TEMPLATE = prettier.format(
+  `
   import type { Config } from 'jest';
 
   const config: Config = {
@@ -18,5 +27,6 @@ export const JEST_CONFIG_TS_TEMPLATE = dedent(`
   };
 
   export default config;
-
-`);
+  `,
+  getPrettierConfig('typescript')
+);

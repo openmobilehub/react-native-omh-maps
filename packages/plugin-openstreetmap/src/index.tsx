@@ -1,5 +1,5 @@
 /**
- * React Native OMH Maps OpenStreetMap Plugin
+ * OpenStreetMap Plugin
  * @module @omh/react-native-maps-plugin-openstreetmap
  */
 

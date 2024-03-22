@@ -3,6 +3,7 @@
   "version": "1.0.0",
   "description": "React Native OMH Maps scripts Workspace",
   "private": true,
+  "type": "module",
   "devDependencies": {
     "tsx": "*"
   },

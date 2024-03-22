@@ -1,13 +1,15 @@
-import fs from 'fs';
-import path from 'path';
-
-import dedent from 'dedent';
 import { validate as validateEmail } from 'email-validator';
+import libxmljs, { Element } from 'libxmljs2';
+import fs from 'node:fs';
+import path from 'node:path';
 import ora from 'ora';
+import * as prettier from 'prettier';
 import prompts, { PromptObject } from 'prompts';
 import validateNpmPackage from 'validate-npm-package-name';
 
 import { Constants, Templates, Utils } from './src';
+import { scriptsWorkspacePath } from './src/constants';
+import getPrettierConfig from './src/prettierConfig';
 
 let bPluginNamePrefilled = false;
 const questions: PromptObject[] = [
@@ -103,8 +105,7 @@ const questions: PromptObject[] = [
     process.exit(-1);
   }
 
-  const scriptsWorkspacePath = path.dirname(__filename),
-    pluginDirName = `plugin-${pluginSlug
+  const pluginDirName = `plugin-${pluginSlug
       .replace(Constants.PLUGIN_NAME_PREFIX, '')
       .replace(/\//g, '-')}`,
     packagesPath = path.join(scriptsWorkspacePath, '..', 'packages'),
@@ -202,6 +203,8 @@ const questions: PromptObject[] = [
     delete packageJson[obsoletePackageJsonKey];
   }
 
+  packageJson.version = '1.0.0';
+
   delete packageJson.scripts.example;
   packageJson.devDependencies = {
     '@types/node': '*',
@@ -214,22 +217,28 @@ const questions: PromptObject[] = [
     'ts-node': '*',
   };
 
-  fs.writeFileSync(packageJsonPath, JSON.stringify(packageJson, null, 2));
+  fs.writeFileSync(
+    packageJsonPath,
+    await prettier.format(
+      JSON.stringify(packageJson),
+      getPrettierConfig('json')
+    )
+  );
 
   // create config files
   fs.writeFileSync(
     path.join(newPackagePath, 'tsconfig.json'),
-    Templates.TSCONFIG_TEMPLATE
+    await Templates.TSCONFIG_TEMPLATE
   );
 
   fs.writeFileSync(
     path.join(newPackagePath, 'tsconfig.build.json'),
-    Templates.TSCONFIG_BUILD_TEMPLATE
+    await Templates.TSCONFIG_BUILD_TEMPLATE
   );
 
   fs.writeFileSync(
     path.join(newPackagePath, 'jest.config.ts'),
-    Templates.JEST_CONFIG_TS_TEMPLATE
+    await Templates.JEST_CONFIG_TS_TEMPLATE
   );
 
   spinner.text = 'Adding entrypoint to docs configuration';
@@ -246,7 +255,13 @@ const questions: PromptObject[] = [
 
   docsConfigEntrypointsJson.push(`../packages/${pluginDirName}/src/index.tsx`);
 
-  fs.writeFileSync(docsConfigEntrypointsPath, docsConfigEntrypointsJson);
+  fs.writeFileSync(
+    docsConfigEntrypointsPath,
+    await prettier.format(
+      JSON.stringify(docsConfigEntrypointsJson),
+      getPrettierConfig('json')
+    )
+  );
 
   spinner.text = "Adding an alias to root workspace's tsconfig.json";
 
@@ -257,19 +272,20 @@ const questions: PromptObject[] = [
     `./packages/${pluginDirName}/src/index`,
   ];
 
-  fs.writeFileSync(rootTsConfigPath, JSON.stringify(rootTsConfig, null, 2));
+  fs.writeFileSync(
+    rootTsConfigPath,
+    await prettier.format(
+      JSON.stringify(rootTsConfig),
+      getPrettierConfig('json')
+    )
+  );
 
   spinner.text = 'Customizing package name in Android project';
   const androidPackageName = `com.openmobilehub.android.rn.maps.plugin.${pluginSlug.replace(Constants.PLUGIN_NAME_PREFIX, '')}`;
-  const androidSrcDirPath = path.join(
-      newPackagePath,
-      'android',
-      'src',
-      'main',
-      'java'
-    ),
+  const androidSrcDirPath = path.join(newPackagePath, 'android', 'src', 'main'),
+    androidSrcJavaDirPath = path.join(androidSrcDirPath, 'java'),
     androidEndSrcPackageDirPath = path.join(
-      androidSrcDirPath,
+      androidSrcJavaDirPath,
       ...androidPackageName.split('.')
     );
 
@@ -277,12 +293,14 @@ const questions: PromptObject[] = [
     recursive: true,
   });
 
-  const files = fs.readdirSync(androidSrcDirPath, { recursive: true });
+  const files = fs.readdirSync(androidSrcJavaDirPath, { recursive: true });
 
   let filesToBeWritten: { [filePath: string]: string } = {};
   console.log(); // new line
   for (const fileFullPath of files
-    .map(fileRelPath => path.join(androidSrcDirPath, fileRelPath.toString()))
+    .map(fileRelPath =>
+      path.join(androidSrcJavaDirPath, fileRelPath.toString())
+    )
     .filter(pth => pth.endsWith('.kt') && fs.lstatSync(pth).isFile())) {
     const fileContent = fs.readFileSync(fileFullPath, 'utf-8');
 
@@ -303,8 +321,8 @@ const questions: PromptObject[] = [
   }
 
   // delete all java/ src tree files before the buffer is written
-  fs.rmSync(androidSrcDirPath, { recursive: true });
-  fs.mkdirSync(androidSrcDirPath, { recursive: true }); // restore the directory
+  fs.rmSync(androidSrcJavaDirPath, { recursive: true });
+  fs.mkdirSync(androidSrcJavaDirPath, { recursive: true }); // restore the directory
 
   for (const [destFilePath, newFileContent] of Object.entries(
     filesToBeWritten
@@ -313,6 +331,21 @@ const questions: PromptObject[] = [
     fs.writeFileSync(destFilePath, newFileContent);
   }
   filesToBeWritten = {}; // clear the buffer
+
+  // overwrite AndroidManifest.xml changing the package name
+  const androidManifestPath = path.join(
+    androidSrcDirPath,
+    'AndroidManifest.xml'
+  );
+  var xml = fs.readFileSync(androidManifestPath, 'utf-8');
+
+  var xmlDoc = libxmljs.parseXml(xml);
+
+  // query using xpath syntax
+  var manifestNode = xmlDoc.get('//manifest') as Element;
+  manifestNode.attr('package')!.value(androidPackageName);
+
+  fs.writeFileSync(androidManifestPath, xmlDoc.toString());
 
   // run 'yarn install' in root workspace so that all workspaces are resolved & dependencies are linked to the new plugin
   spinner.text = 'Running yarn install in root workspace...';
@@ -336,14 +369,17 @@ const questions: PromptObject[] = [
 
   fs.writeFileSync(
     entrypointPath,
-    dedent(`
-      /**
-       * ${pluginDescription}
-       * @module ${pluginSlug}
-       */
+    await prettier.format(
+      `
+        /**
+         * ${pluginDescription}
+         * @module ${pluginSlug}
+         */
 
-      ${entrypointContent}
-    `)
+        ${entrypointContent}
+      `,
+      getPrettierConfig('typescript')
+    )
   );
 
   // add the new package to the root workspace
