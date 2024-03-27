@@ -14,7 +14,7 @@ yarn
 
 > Since the project relies on Yarn workspaces, you cannot use [`npm`](https://github.com/npm/cli) for development.
 
-The [example app](https://github.com/openmobilehub/react-native-omh-maps/sample-app/) demonstrates usage of the library. You need to run it to test any changes you make.
+The [example app](https://github.com/openmobilehub/react-native-omh-maps/tree/main/sample-app/) demonstrates usage of the library. You need to run it to test any changes you make.
 
 It is configured to use the local version of the library, so any changes you make to the library's source code will be reflected in the example app. Changes to the library's JavaScript code will be reflected in the example app without a rebuild, but native code changes will require a rebuild of the example app.
 
@@ -112,11 +112,11 @@ yarn release
 
 ## Writing documentation
 
-Documentation is located under [`/docs/`](https://github.com/openmobilehub/react-native-omh-maps/docs/). We use [Docusaurus](https://docusaurus.io/) to generate the documentation website and [docusaurus-plugin-typedoc](https://www.npmjs.com/package/docusaurus-plugin-typedoc) to generate API documentation from TypeScript docstrings. The API documentation is built automatically with Github Actions and published GitHub Pages upon merging to the `main` branch with [this workflow file](https://github.com/openmobilehub/react-native-omh-maps/.github/workflows/cd.yml).
+Documentation is located under [`/docs/`](https://github.com/openmobilehub/react-native-omh-maps/tree/main/docs/). We use [Docusaurus](https://docusaurus.io/) to generate the documentation website and [docusaurus-plugin-typedoc](https://www.npmjs.com/package/docusaurus-plugin-typedoc) to generate API documentation from TypeScript docstrings. The API documentation is built automatically with Github Actions and published GitHub Pages upon merging to the `main` branch with [this workflow file](https://github.com/openmobilehub/react-native-omh-maps/tree/main/.github/workflows/cd.yml).
 
-Remember to document your code according to [JSDoc reference](https://www.typescriptlang.org/docs/handbook/jsdoc-supported-types.html) and to write proper Markdown documentation manually when needed in the `/docs/docs/` directory. Specifically, there exists a [`/docs/docs/advanced-usage`](https://github.com/openmobilehub/react-native-omh-maps/docs/docs/advanced-usage) directory that makes an advanced usage section in the documentation that you can browse through to get a sense of how to document advanced usage of the library, or consider to add your pages directly there.
+Remember to document your code according to [JSDoc reference](https://www.typescriptlang.org/docs/handbook/jsdoc-supported-types.html) and to write proper Markdown documentation manually when needed in the `/docs/docs/` directory. Specifically, there exists a [`/docs/docs/advanced-usage`](https://github.com/openmobilehub/react-native-omh-maps/tree/main/docs/docs/advanced-usage) directory that makes an advanced usage section in the documentation that you can browse through to get a sense of how to document advanced usage of the library, or consider to add your pages directly there.
 
-You can view information about the documentation and its scripts in the [README](https://github.com/openmobilehub/react-native-omh-maps/docs/README.md). To simply run documentation locally, you can run:
+You can view information about the documentation and its scripts in the [README](https://github.com/openmobilehub/react-native-omh-maps/tree/main/docs/README.md). To simply run documentation locally, you can run:
 
 ```bash
 yarn docs start
