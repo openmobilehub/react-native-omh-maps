@@ -2,12 +2,13 @@ pre-commit:
   parallel: true
   commands:
     lint-android:
+      glob: '*.kt'
       run: cd sample-app/android && ./gradlew detekt -PautoCorrect=true --parallel --continue
     lint-ts:
       glob: '*.{js,ts,jsx,tsx}'
       run: npx eslint {staged_files}
     types:
-      glob: '*.{js,ts, jsx, tsx}'
+      glob: '*.{js,ts,jsx,tsx}'
       run: npx tsc-files --noEmit {staged_files}
 commit-msg:
   parallel: true
@@ -17,5 +18,5 @@ commit-msg:
 pre-push:
   parallel: true
   commands:
-    test:
+    unit-test:
       run: yarn test

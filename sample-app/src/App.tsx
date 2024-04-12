@@ -1,12 +1,12 @@
 import * as React from 'react';
 import { StyleSheet, View } from 'react-native';
 
-import { ReactNativeOmhMapsCoreMapView } from '@omh/react-native-maps-core';
+import { OmhMapView } from '@omh/react-native-maps-core';
 
 export default function App() {
   return (
     <View style={styles.container}>
-      <ReactNativeOmhMapsCoreMapView style={styles.mapView} />
+      <OmhMapView style={styles.mapView} />
     </View>
   );
 }

@@ -40,7 +40,7 @@ import com.openmobilehub.android.maps.core.presentation.interfaces.maps.OmhOnMap
 class ReactNativeOmhMapsCoreMapViewManager(private val reactContext: ReactApplicationContext) :
     ViewGroupManager<FrameLayout>(), OmhOnMapReadyCallback {
 
-    private val REACT_CLASS = "RNOmhMapsCoreMapViewManager"
+    private val REACT_CLASS = "RNOmhMapViewManager"
     val COMMAND_CREATE_FRAGMENT = 1
     private var width: Int? = null
     private var height: Int? = null
