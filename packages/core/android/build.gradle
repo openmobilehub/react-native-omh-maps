@@ -43,6 +43,10 @@ def supportsNamespace() {
 }
 
 android {
+  buildFeatures {
+    dataBinding true
+  }
+
   if (supportsNamespace()) {
     namespace "com.openmobilehub.android.rn.maps.core"
 
@@ -58,7 +62,6 @@ android {
   defaultConfig {
     minSdkVersion getExtOrIntegerDefault("minSdkVersion")
     targetSdkVersion getExtOrIntegerDefault("targetSdkVersion")
-
   }
 
   buildTypes {
@@ -77,12 +80,8 @@ android {
   }
 }
 
-repositories {
-  mavenCentral()
-  google()
-}
-
 def kotlin_version = getExtOrDefault("kotlinVersion")
+def omhMapsVersion = "2.0.0-SNAPSHOT"
 
 dependencies {
   // For < 0.71, this will be from the local maven repo
@@ -91,5 +90,10 @@ dependencies {
   implementation "com.facebook.react:react-native:+"
   implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
 
-  implementation "com.openmobilehub.android.maps:plugin-googlemaps:2.0.0-beta"
+  api "com.openmobilehub.android.maps:plugin-googlemaps:$omhMapsVersion"
+  api "com.openmobilehub.android.maps:plugin-openstreetmap:$omhMapsVersion"
+  api "com.openmobilehub.android.maps:plugin-mapbox:$omhMapsVersion"
+  api("com.openmobilehub.android.maps:plugin-azuremaps:$omhMapsVersion") {
+    exclude group: "org.maplibre.gl", module: "android-sdk-geojson"
+  }
 }

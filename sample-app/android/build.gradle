@@ -7,14 +7,27 @@ buildscript {
     ndkVersion = "25.1.8937393"
     kotlinVersion = "1.8.21"
   }
+
   repositories {
     google()
     mavenCentral()
   }
+
   dependencies {
     classpath("com.android.tools.build:gradle")
     classpath("com.facebook.react:react-native-gradle-plugin")
     classpath("org.jetbrains.kotlin:kotlin-gradle-plugin")
+    classpath "com.google.android.libraries.mapsplatform.secrets-gradle-plugin:secrets-gradle-plugin:2.0.1"
+  }
+}
+
+allprojects {
+  repositories { repositoryHandler ->
+    google()
+    mavenCentral()
+    MavenUtilsKt.setupOmhMapsSnapshotsRepository(repositoryHandler, project)
+    MavenUtilsKt.configureMapboxMavenRepository(repositoryHandler, project)
+    MavenUtilsKt.configureAzureMapsMavenRepository(repositoryHandler, project)
   }
 }
 

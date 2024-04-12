@@ -13,8 +13,8 @@ class ReactNativeMapsPluginOpenstreetmapViewManager : SimpleViewManager<View>() 
     return View(reactContext)
   }
 
-  @ReactProp(name = "color")
-  fun setColor(view: View, color: String) {
+  @ReactProp(name = "provider")
+  fun setProvider(view: View, color: String) {
     view.setBackgroundColor(Color.parseColor(color))
   }
 }

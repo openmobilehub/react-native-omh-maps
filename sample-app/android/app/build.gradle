@@ -1,6 +1,10 @@
-apply plugin: "com.android.application"
-apply plugin: "org.jetbrains.kotlin.android"
-apply plugin: "com.facebook.react"
+plugins {
+  id("com.android.application")
+  id("org.jetbrains.kotlin.android")
+  id("com.facebook.react")
+  id("com.google.android.libraries.mapsplatform.secrets-gradle-plugin")
+  id("io.gitlab.arturbosch.detekt") version "1.22.0"
+}
 
 /**
  * This is the configuration block to customize your React Native Android app.
@@ -108,12 +112,18 @@ dependencies {
   // The version of react-native is set by the React Native Gradle Plugin
   implementation("com.facebook.react:react-android")
   implementation("com.facebook.react:flipper-integration")
+  implementation("io.gitlab.arturbosch.detekt:detekt-gradle-plugin:1.22.0")
+  detektPlugins("io.gitlab.arturbosch.detekt:detekt-formatting:1.22.0")
 
   if (hermesEnabled.toBoolean()) {
     implementation("com.facebook.react:hermes-android")
   } else {
     implementation jscFlavor
   }
+}
+
+detekt {
+  autoCorrect = true
 }
 
 apply from: file("../../../node_modules/@react-native-community/cli-platform-android/native_modules.gradle"); applyNativeModulesAppBuildGradle(project)

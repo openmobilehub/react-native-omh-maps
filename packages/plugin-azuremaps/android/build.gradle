@@ -77,11 +77,6 @@ android {
   }
 }
 
-repositories {
-  mavenCentral()
-  google()
-}
-
 def kotlin_version = getExtOrDefault("kotlinVersion")
 
 dependencies {
