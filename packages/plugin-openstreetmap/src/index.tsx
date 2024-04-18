@@ -3,5 +3,5 @@
  * @module @omh/react-native-maps-plugin-openstreetmap
  */
 
-export { default as ReactNativeMapsPluginOpenstreetmapView } from './ReactNativeMapsPluginOpenstreetmapViewNativeComponent';
-export * from './ReactNativeMapsPluginOpenstreetmapViewNativeComponent';
+export { default as RNOmhMapsPluginOpenstreetmapView } from './RNOmhMapsPluginOpenstreetmapViewNativeComponent';
+export * from './RNOmhMapsPluginOpenstreetmapViewNativeComponent';

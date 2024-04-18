@@ -289,6 +289,7 @@ const questions: PromptObject[] = [
   const androidPackageName = `com.openmobilehub.android.rn.maps.plugin.${pluginSlug.replace(Constants.PLUGIN_NAME_PREFIX, '').replace(/-/, '.')}`;
   const androidProjectDirPath = path.join(newPackagePath, 'android'),
     iosProjectDirPath = path.join(newPackagePath, 'ios');
+  console.log(); // new line
   for (const fullFilePath of (
     [
       ...fs
@@ -326,6 +327,10 @@ const questions: PromptObject[] = [
 
     if (newFilePath !== oldFilePath) fs.rmSync(oldFilePath);
 
+    console.log(
+      `Re-writing source file ${oldFilePath.replace(rootWorkspacePath, '')} to ${newFilePath.replace(rootWorkspacePath, '')}`
+    );
+
     fs.writeFileSync(newFilePath, newFileContent);
   }
 
@@ -333,7 +338,9 @@ const questions: PromptObject[] = [
   const tsSourcesDirPath = path.join(newPackagePath, 'src');
   for (const fullFilePath of fs
     .readdirSync(tsSourcesDirPath)
-    .filter(fileRelPath => fileRelPath.endsWith('.ts'))
+    .filter(
+      fileRelPath => fileRelPath.endsWith('.ts') || fileRelPath.endsWith('.tsx')
+    )
     .map(fileRelPath => [
       path.join(tsSourcesDirPath, fileRelPath),
       tsSourcesDirPath,
@@ -344,10 +351,13 @@ const questions: PromptObject[] = [
       'RNOmhMapsPlugin'
     );
 
+    console.log(
+      `Re-writing TS source file ${fullFilePath[0].replace(rootWorkspacePath, '')}}`
+    );
+
     fs.rmSync(fullFilePath[0]);
     fs.writeFileSync(
       fullFilePath[0].replace(/ReactNativeMapsPlugin/, 'RNOmhMapsPlugin'),
-
       await prettier.format(newFileContent, getPrettierConfig('typescript'))
     );
   }

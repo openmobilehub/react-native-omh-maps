@@ -3,5 +3,5 @@
  * @module @omh/react-native-maps-plugin-googlemaps
  */
 
-export { default as RNOmhMapsPluginGooglemaps } from './RNOmhMapsPluginGooglemapsViewNativeComponent';
+export { default as RNOmhMapsPluginGooglemapsView } from './RNOmhMapsPluginGooglemapsViewNativeComponent';
 export * from './RNOmhMapsPluginGooglemapsViewNativeComponent';

@@ -3,5 +3,5 @@
  * @module @omh/react-native-maps-plugin-azuremaps
  */
 
-export { default as ReactNativeMapsPluginAzuremapsView } from './ReactNativeMapsPluginAzuremapsViewNativeComponent';
-export * from './ReactNativeMapsPluginAzuremapsViewNativeComponent';
+export { default as RNOmhMapsPluginAzuremapsView } from './RNOmhMapsPluginAzuremapsViewNativeComponent';
+export * from './RNOmhMapsPluginAzuremapsViewNativeComponent';

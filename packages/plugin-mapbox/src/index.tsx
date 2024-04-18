@@ -3,5 +3,5 @@
  * @module @omh/react-native-maps-plugin-mapbox
  */
 
-export { default as ReactNativeMapsPluginMapboxView } from './ReactNativeMapsPluginMapboxViewNativeComponent';
-export * from './ReactNativeMapsPluginMapboxViewNativeComponent';
+export { default as RNOmhMapsPluginMapboxView } from './RNOmhMapsPluginMapboxViewNativeComponent';
+export * from './RNOmhMapsPluginMapboxViewNativeComponent';

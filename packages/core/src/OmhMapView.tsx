@@ -39,9 +39,10 @@ export const OmhMapView = ({
       onLayout={event => {
         // since the Fragment size is measured manually in Android native code,
         // RN needs to calculate the actual size of the container (i.e., the available size)
-        const { width, height } = event.nativeEvent.layout;
+        const { width: laidOutWidth, height: laidOutHeight } =
+          event.nativeEvent.layout;
 
-        setComponentSize({ width, height });
+        setComponentSize({ width: laidOutWidth, height: laidOutHeight });
       }}
       style={[
         styles.mapContainer,
