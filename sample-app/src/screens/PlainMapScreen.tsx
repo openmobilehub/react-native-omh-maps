@@ -2,26 +2,23 @@ import React, { useMemo, useState } from 'react';
 import { StyleSheet, View } from 'react-native';
 import { Button, MD2Colors } from 'react-native-paper';
 
-import { OmhMapView } from '@omh/react-native-maps-core';
+import { OmhMapView, OmhMapsModule } from '@omh/react-native-maps-core';
 import Slider from '@react-native-community/slider';
 
-const PROVIDERS = {
-  osm: 'com.openmobilehub.android.maps.plugin.openstreetmap.presentation.OmhMapFactoryImpl',
-  gmaps:
-    'com.openmobilehub.android.maps.plugin.googlemaps.presentation.OmhMapFactoryImpl',
-};
+import { MapProvider } from '../../../packages/core/src/NativeOmhMapsCoreModule';
+import MapProviderPicker from '../components/MapProviderPicker';
 
 export const PlainMapScreen = () => {
   const [width, setWidth] = useState(40);
   const [height, setHeight] = useState(40);
-  const [isGmaps, setIsGmaps] = useState(true);
+  const [provider, setProvider] = useState<MapProvider>(() =>
+    OmhMapsModule.getDefaultMapProvider()
+  );
 
   const demoSizeModified = useMemo(
     () => width !== 100 || height !== 100,
     [width, height]
   );
-
-  const provider = isGmaps ? PROVIDERS.gmaps : PROVIDERS.osm;
 
   return (
     <View style={styles.rootContainer}>
@@ -31,23 +28,22 @@ export const PlainMapScreen = () => {
           width={`${width}%`}
           height={`${height}%`}
           paths={{
-            gmsPath: provider,
-            nonGmsPath: provider,
+            gmsPath: provider.path,
+            nonGmsPath: provider.path,
           }}
         />
       </View>
 
       <View style={styles.demoControlsContainer}>
-        <Button
-          onPress={() => {
-            setIsGmaps(!isGmaps);
-          }}>
-          TEST
-        </Button>
+        <MapProviderPicker
+          onChange={newProvider => {
+            setProvider(newProvider);
+          }}
+        />
+
         <Slider
           minimumValue={0}
           maximumValue={100}
-          // value={width}
           onValueChange={value => {
             setWidth(value);
           }}
@@ -59,7 +55,6 @@ export const PlainMapScreen = () => {
         <Slider
           minimumValue={0}
           maximumValue={100}
-          // value={height}
           onValueChange={value => {
             setHeight(value);
           }}

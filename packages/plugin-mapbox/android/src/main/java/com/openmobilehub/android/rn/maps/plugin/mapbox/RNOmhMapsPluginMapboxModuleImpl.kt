@@ -1,13 +1,11 @@
 package com.openmobilehub.android.rn.maps.plugin.mapbox
 
-import com.facebook.react.bridge.Promise
-import com.facebook.react.bridge.ReactApplicationContext
+import com.mapbox.common.MapboxOptions
 
-class RNOmhMapsPluginMapboxModuleImpl(private val reactContext: ReactApplicationContext) {
-    fun getCameraCoordinate(viewRef: Double, promise: Promise) {
+object RNOmhMapsPluginMapboxModuleImpl {
+    fun setPublicToken(publicToken: String) {
+        MapboxOptions.accessToken = publicToken
     }
 
-    companion object {
-        const val NAME = "RNOmhMapsPluginMapboxModule"
-    }
+    const val NAME = "RNOmhMapsPluginMapboxModule"
 }

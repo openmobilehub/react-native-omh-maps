@@ -10,14 +10,12 @@ import com.facebook.react.module.annotations.ReactModule
 class RNOmhMapsPluginMapboxModule(
     reactContext: ReactApplicationContext
 ) : ReactContextBaseJavaModule(reactContext) {
-    private val moduleImpl = RNOmhMapsPluginMapboxModule(reactContext)
+    @ReactMethod
+    fun setPublicToken(publicToken: String) {
+        RNOmhMapsPluginMapboxModuleImpl.setPublicToken(publicToken)
+    }
 
     override fun getName() = NAME
-
-    @ReactMethod
-    fun getCameraCoordinate(viewRef: Double, promise: Promise) {
-        return moduleImpl.getCameraCoordinate(viewRef, promise)
-    }
 
     companion object {
         const val NAME = RNOmhMapsPluginMapboxModule.NAME

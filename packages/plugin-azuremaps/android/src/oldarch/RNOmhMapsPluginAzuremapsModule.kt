@@ -10,14 +10,12 @@ import com.facebook.react.module.annotations.ReactModule
 class RNOmhMapsPluginAzuremapsModule(
     reactContext: ReactApplicationContext
 ) : ReactContextBaseJavaModule(reactContext) {
-    private val moduleImpl = RNOmhMapsPluginAzuremapsModule(reactContext)
+    @ReactMethod
+    fun setSubscriptionKey(subscriptionKey: String) {
+        RNOmhMapsPluginAzuremapsModuleImpl.setSubscriptionKey(subscriptionKey)
+    }
 
     override fun getName() = NAME
-
-    @ReactMethod
-    fun getCameraCoordinate(viewRef: Double, promise: Promise) {
-        return moduleImpl.getCameraCoordinate(viewRef, promise)
-    }
 
     companion object {
         const val NAME = RNOmhMapsPluginAzuremapsModule.NAME

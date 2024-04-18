@@ -14,7 +14,6 @@ import com.facebook.react.common.MapBuilder
 import com.facebook.react.uimanager.ThemedReactContext
 import com.facebook.react.uimanager.UIManagerHelper
 import com.openmobilehub.android.maps.core.factories.OmhMapProvider
-import com.openmobilehub.android.rn.maps.core.Constants
 import com.openmobilehub.android.rn.maps.core.events.OnOmhMapReadyEvent
 import com.openmobilehub.android.rn.maps.core.fragments.FragmentUtils
 import com.openmobilehub.android.rn.maps.core.fragments.OmhMapViewFragment
@@ -144,16 +143,13 @@ class RNOmhMapsCoreViewManagerImpl(private val reactContext: ReactContext) {
     }
 
     fun setPaths(view: FragmentContainerView, paths: ReadableMap?) {
-        val gmsPath = paths?.getString("gmsPath") ?: Constants.GOOGLE_MAPS_PATH
-        val nonGmsPath = paths?.getString("nonGmsPath") ?: Constants.OPEN_STREET_MAP_PATH
-
         if (viewMounted) {
             unmountFragment(view)
         }
 
         OmhMapProvider.Initiator()
-            .addGmsPath(gmsPath)
-            .addNonGmsPath(nonGmsPath)
+            .addGmsPath(paths?.getString("gmsPath"))
+            .addNonGmsPath(paths?.getString("nonGmsPath"))
             .initialize()
 
         mountFragment(view)

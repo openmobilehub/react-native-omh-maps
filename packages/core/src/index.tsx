@@ -7,4 +7,4 @@ export { default as OmhMapView } from './OmhMapView';
 export * from './RNOmhMapsCoreViewNativeComponent';
 export * from './OmhMapView';
 
-export { default as OMHMapsModule } from './NativeOmhMapsCoreModule';
+export { default as OmhMapsModule } from './NativeOmhMapsCoreModule';

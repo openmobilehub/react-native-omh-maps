@@ -110,7 +110,7 @@ dependencies {
     implementation "com.facebook.react:react-native:+"
     implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
 
-    api("com.openmobilehub.android.maps:plugin-azuremaps:2.0.0") {
+    api("com.openmobilehub.android.maps:plugin-azuremaps:2.0.0-SNAPSHOT") {
         exclude(group: "org.maplibre.gl", module: "android-sdk-geojson")
     }
 }
@@ -118,7 +118,7 @@ dependencies {
 if (isNewArchitectureEnabled()) {
     react {
         jsRootDir = file("../src/")
-        libraryName = "RNOmhMapsPluginAzuremapsView"
+        libraryName = "RNOmhMapsPluginAzuremaps"
         codegenJavaPackageName = "com.openmobilehub.android.rn.maps.plugin.azuremaps"
     }
 }

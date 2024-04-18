@@ -1,13 +1,11 @@
 package com.openmobilehub.android.rn.maps.plugin.azuremaps
 
-import com.facebook.react.bridge.Promise
-import com.facebook.react.bridge.ReactApplicationContext
+import com.azure.android.maps.control.AzureMaps
 
-class RNOmhMapsPluginAzuremapsModuleImpl(private val reactContext: ReactApplicationContext) {
-    fun getCameraCoordinate(viewRef: Double, promise: Promise) {
+object RNOmhMapsPluginAzuremapsModuleImpl {
+    fun setSubscriptionKey(subscriptionKey: String) {
+        AzureMaps.setSubscriptionKey(subscriptionKey)
     }
 
-    companion object {
-        const val NAME = "RNOmhMapsPluginAzuremapsModule"
-    }
+    const val NAME = "RNOmhMapsPluginAzuremapsModule"
 }
