@@ -1,4 +1,4 @@
-package com.openmobilehub.android.rn.maps.core.viewmanager
+package com.openmobilehub.android.rn.maps.core.viewmanagers
 
 import android.content.Context
 import android.graphics.Point
@@ -15,9 +15,9 @@ import com.facebook.react.uimanager.ThemedReactContext
 import com.facebook.react.uimanager.UIManagerHelper
 import com.openmobilehub.android.maps.core.factories.OmhMapProvider
 import com.openmobilehub.android.rn.maps.core.Constants
-import com.openmobilehub.android.rn.maps.core.event.OnOmhMapReadyEvent
-import com.openmobilehub.android.rn.maps.core.fragment.FragmentUtils
-import com.openmobilehub.android.rn.maps.core.fragment.OmhMapViewFragment
+import com.openmobilehub.android.rn.maps.core.events.OnOmhMapReadyEvent
+import com.openmobilehub.android.rn.maps.core.fragments.FragmentUtils
+import com.openmobilehub.android.rn.maps.core.fragments.OmhMapViewFragment
 
 class RNOmhMapsCoreViewManagerImpl(private val reactContext: ReactContext) {
     var height: Int? = null

@@ -5,3 +5,5 @@
 
 export { default as RNOmhMapsPluginAzuremapsView } from './RNOmhMapsPluginAzuremapsViewNativeComponent';
 export * from './RNOmhMapsPluginAzuremapsViewNativeComponent';
+
+export { default as OMHMapsPluginAzureMapsModule } from './NativeOmhMapsPluginAzureMapsModule';

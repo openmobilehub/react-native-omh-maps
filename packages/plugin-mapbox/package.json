@@ -72,7 +72,7 @@
   },
   "codegenConfig": {
     "name": "RNOmhMapsPluginMapbox",
-    "type": "components",
+    "type": "all",
     "jsSrcsDir": "src"
   },
   "devDependencies": {

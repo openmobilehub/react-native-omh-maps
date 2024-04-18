@@ -5,3 +5,5 @@
 
 export { default as RNOmhMapsPluginMapboxView } from './RNOmhMapsPluginMapboxViewNativeComponent';
 export * from './RNOmhMapsPluginMapboxViewNativeComponent';
+
+export { default as OMHMapsPluginMapboxModule } from './NativeOmhMapsPluginMapboxModule';

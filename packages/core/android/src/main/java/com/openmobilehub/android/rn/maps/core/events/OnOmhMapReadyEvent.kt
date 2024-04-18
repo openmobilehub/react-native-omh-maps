@@ -1,4 +1,4 @@
-package com.openmobilehub.android.rn.maps.core.event
+package com.openmobilehub.android.rn.maps.core.events
 
 import com.facebook.react.bridge.Arguments
 import com.facebook.react.bridge.WritableMap

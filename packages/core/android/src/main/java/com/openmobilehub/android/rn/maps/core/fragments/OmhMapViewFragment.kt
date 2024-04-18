@@ -1,4 +1,4 @@
-package com.openmobilehub.android.rn.maps.core.fragment
+package com.openmobilehub.android.rn.maps.core.fragments
 
 import android.os.Bundle
 import android.view.LayoutInflater

@@ -72,8 +72,11 @@
   },
   "codegenConfig": {
     "name": "RNOmhMapsCore",
-    "type": "components",
-    "jsSrcsDir": "src"
+    "type": "all",
+    "jsSrcsDir": "src",
+    "android": {
+      "javaPackageName": "com.openmobilehub.android.rn.maps.core"
+    }
   },
   "devDependencies": {
     "@types/node": "*",

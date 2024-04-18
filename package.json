@@ -77,7 +77,7 @@
     "clean": "cross-env FORCE_COLOR=1 yarn workspaces foreach -p --exclude @omh/react-native-maps-sample-app run clean",
     "prepare": "cross-env FORCE_COLOR=1 yarn workspaces foreach -p --exclude @omh/react-native-maps-sample-app run prepare",
     "release": "cross-env FORCE_COLOR=1 yarn workspaces foreach -p --exclude @omh/react-native-maps-sample-app run release",
-    "postinstall": "npx lefthook install",
+    "postinstall": "npx lefthook install && yarn codegen",
     "codegen": "yarn codegen:android && yarn codegen:ios",
     "codegen:android": "./sample-app/android/gradlew -p sample-app/android generateCodegenArtifactsFromSchema",
     "codegen:ios": "node node_modules/react-native/scripts/generate-codegen-artifacts.js --path . --outputPath ./sample-app/ios"

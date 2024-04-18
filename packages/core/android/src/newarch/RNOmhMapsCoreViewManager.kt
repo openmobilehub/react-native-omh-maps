@@ -1,4 +1,4 @@
-package com.openmobilehub.android.rn.maps.core.viewmanager
+package com.openmobilehub.android.rn.maps.core.viewmanagers
 
 import androidx.fragment.app.FragmentContainerView
 import com.facebook.react.bridge.Dynamic
@@ -9,7 +9,7 @@ import com.facebook.react.uimanager.ThemedReactContext
 import com.facebook.react.uimanager.annotations.ReactProp
 import com.facebook.react.uimanager.annotations.ReactPropGroup
 import com.facebook.react.viewmanagers.RNOmhMapsCoreViewManagerInterface
-import com.openmobilehub.android.rn.maps.core.fragment.OmhMapViewFragment
+import com.openmobilehub.android.rn.maps.core.fragments.OmhMapViewFragment
 
 @ReactModule(name = OmhMapViewFragment.NAME)
 class RNOmhMapsCoreViewManager :
