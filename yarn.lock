@@ -3824,6 +3824,7 @@ __metadata:
     "@omh/react-native-maps-plugin-googlemaps": "workspace:^"
     "@omh/react-native-maps-plugin-mapbox": "workspace:^"
     "@omh/react-native-maps-plugin-openstreetmap": "workspace:^"
+    "@react-native-community/slider": 4.5.0
     "@react-navigation/native": ^6.1.17
     "@react-navigation/native-stack": ^6.9.26
     react: "*"
@@ -4126,6 +4127,13 @@ __metadata:
   bin:
     react-native: build/bin.js
   checksum: 0a410ddcd3d86acfd0a6ec93b220169c416e26f8b08b11d991e1defa4089c460cfec019c5d1ce6d71ac013ad09fc2e522c7a8c2948256a167e8fd89458f5a65c
+  languageName: node
+  linkType: hard
+
+"@react-native-community/slider@npm:4.5.0":
+  version: 4.5.0
+  resolution: "@react-native-community/slider@npm:4.5.0"
+  checksum: 65f0399ab0b3a052b257ae4004364cb0ea01a0e8749c7547dcf24d7f2f448a807a49eb6c1daaa3b0037b2ac576d86372a7818ffe8b4421cddf3d307c3744d709
   languageName: node
   linkType: hard
 

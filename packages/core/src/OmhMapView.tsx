@@ -3,19 +3,23 @@ import { PixelRatio, StyleSheet, View, ViewStyle } from 'react-native';
 
 import RNOmhMapsCoreViewNativeComponent from './RNOmhMapsCoreViewNativeComponent';
 
+type Percentage = `${number}%`;
+
 /**
  * The root map view component. Actual implementation is picked based on the platform capabilities (GMS or non-GMS)
  * and availability of installed providers (`@omh/react-native-maps-plugin-*`).
  */
 export type OmhMapViewProps = {
   /** The style to be applied to the map container */
-  style: ViewStyle;
+  style: Omit<ViewStyle, 'width' | 'height'> | null;
+  width: number | Percentage;
+  height: number | Percentage;
 };
 
 /**
  * OMH Maps Map View
  */
-export const OmhMapView = ({ style }: OmhMapViewProps) => {
+export const OmhMapView = ({ style, width, height }: OmhMapViewProps) => {
   const [componentSize, setComponentSize] = useState({ width: 0, height: 0 });
 
   const ref = React.useRef<typeof RNOmhMapsCoreViewNativeComponent | null>(
@@ -37,8 +41,8 @@ export const OmhMapView = ({ style }: OmhMapViewProps) => {
           ...style,
           // below: since the native child component does not impose proper size when in controlled size mode,
           // always provide fallback values that fill the available space by default
-          width: style.width ?? '100%',
-          height: style.height ?? '100%',
+          width: width ?? '100%',
+          height: height ?? '100%',
         },
       ]}>
       <RNOmhMapsCoreViewNativeComponent
