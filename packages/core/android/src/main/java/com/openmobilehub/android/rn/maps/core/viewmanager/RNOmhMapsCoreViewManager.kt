@@ -1,4 +1,4 @@
-package com.openmobilehub.android.rn.maps.core
+package com.openmobilehub.android.rn.maps.core.viewmanager
 
 import androidx.fragment.app.FragmentContainerView
 import com.facebook.react.bridge.Arguments

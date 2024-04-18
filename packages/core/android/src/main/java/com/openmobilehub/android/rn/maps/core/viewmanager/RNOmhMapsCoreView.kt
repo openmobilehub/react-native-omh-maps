@@ -1,4 +1,4 @@
-package com.openmobilehub.android.rn.maps.core
+package com.openmobilehub.android.rn.maps.core.viewmanager
 
 import android.content.Context
 import android.util.AttributeSet

@@ -32,6 +32,7 @@ export const OmhMapView = ({ style }: OmhMapViewProps) => {
         setComponentSize({ width, height });
       }}
       style={[
+        styles.mapContainer,
         {
           ...style,
           // below: since the native child component does not impose proper size when in controlled size mode,
@@ -39,7 +40,6 @@ export const OmhMapView = ({ style }: OmhMapViewProps) => {
           width: style.width ?? '100%',
           height: style.height ?? '100%',
         },
-        styles.mapContainer,
       ]}>
       <RNOmhMapsCoreViewNativeComponent
         style={{
