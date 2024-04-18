@@ -1,7 +1,6 @@
 package com.openmobilehub.android.rn.maps.sample
 
 import android.app.Application
-import com.azure.android.maps.control.AzureMaps
 import com.facebook.react.PackageList
 import com.facebook.react.ReactApplication
 import com.facebook.react.ReactHost
@@ -12,7 +11,6 @@ import com.facebook.react.defaults.DefaultReactHost.getDefaultReactHost
 import com.facebook.react.defaults.DefaultReactNativeHost
 import com.facebook.react.flipper.ReactNativeFlipper
 import com.facebook.soloader.SoLoader
-import com.mapbox.common.MapboxOptions
 
 class MainApplication : Application(), ReactApplication {
 
@@ -43,11 +41,5 @@ class MainApplication : Application(), ReactApplication {
             load()
         }
         ReactNativeFlipper.initializeFlipper(this, reactNativeHost.reactInstanceManager)
-
-        // Azure maps setup:
-        AzureMaps.setSubscriptionKey(BuildConfig.AZURE_MAPS_SUBSCRIPTION_KEY)
-
-        // Mapbox setup:
-        MapboxOptions.accessToken = BuildConfig.MAPBOX_PUBLIC_TOKEN
     }
 }

@@ -7,8 +7,8 @@ export const PlainMapScreen = () => <OmhMapView style={styles.mapView} />;
 
 const styles = StyleSheet.create({
   mapView: {
-    width: '100%',
-    height: '100%',
+    width: '50%',
+    height: '50%',
   },
 });
 

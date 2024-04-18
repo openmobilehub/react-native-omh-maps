@@ -1,6 +1,1 @@
-{
-  "extends": "../../tsconfig",
-  "compilerOptions": {
-    "rootDir": "."
-  }
-}
+{ "extends": "../../tsconfig" }

@@ -1,6 +1,6 @@
 buildscript {
     // Buildscript is evaluated before everything else so we can't use getExtOrDefault
-    def kotlin_version = rootProject.ext.has("kotlinVersion") ? rootProject.ext.get("kotlinVersion") : project.properties["ReactNativeOmhMapsCore_kotlinVersion"]
+    def kotlin_version = rootProject.ext.has("kotlinVersion") ? rootProject.ext.get("kotlinVersion") : project.properties["RNOmhMapsCore_kotlinVersion"]
 
     repositories {
         google()
@@ -26,11 +26,11 @@ if (isNewArchitectureEnabled()) {
 }
 
 def getExtOrDefault(name) {
-    return rootProject.ext.has(name) ? rootProject.ext.get(name) : project.properties["ReactNativeOmhMapsCore_" + name]
+    return rootProject.ext.has(name) ? rootProject.ext.get(name) : project.properties["RNOmhMapsCore_" + name]
 }
 
 def getExtOrIntegerDefault(name) {
-    return rootProject.ext.has(name) ? rootProject.ext.get(name) : (project.properties["ReactNativeOmhMapsCore_" + name]).toInteger()
+    return rootProject.ext.has(name) ? rootProject.ext.get(name) : (project.properties["RNOmhMapsCore_" + name]).toInteger()
 }
 
 def supportsNamespace() {
@@ -43,10 +43,6 @@ def supportsNamespace() {
 }
 
 android {
-    buildFeatures {
-        dataBinding true
-    }
-
     if (supportsNamespace()) {
         namespace "com.openmobilehub.android.rn.maps.core"
 
@@ -62,6 +58,12 @@ android {
     defaultConfig {
         minSdkVersion getExtOrIntegerDefault("minSdkVersion")
         targetSdkVersion getExtOrIntegerDefault("targetSdkVersion")
+        buildConfigField "boolean", "IS_NEW_ARCHITECTURE_ENABLED", isNewArchitectureEnabled().toString()
+
+    }
+
+    buildFeatures {
+        buildConfig true
     }
 
     buildTypes {
@@ -78,10 +80,28 @@ android {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
     }
+
+    sourceSets {
+        main {
+            if (isNewArchitectureEnabled()) {
+                java.srcDirs += [
+                        "src/newarch",
+                        // This is needed to build Kotlin project with NewArch enabled
+                        "${project.buildDir}/generated/source/codegen/java"
+                ]
+            } else {
+                java.srcDirs += ["src/oldarch"]
+            }
+        }
+    }
+}
+
+repositories {
+    mavenCentral()
+    google()
 }
 
 def kotlin_version = getExtOrDefault("kotlinVersion")
-def omhMapsVersion = "2.0.0-SNAPSHOT"
 
 dependencies {
     // For < 0.71, this will be from the local maven repo
@@ -90,10 +110,13 @@ dependencies {
     implementation "com.facebook.react:react-native:+"
     implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
 
-    api "com.openmobilehub.android.maps:plugin-googlemaps:$omhMapsVersion"
-    api "com.openmobilehub.android.maps:plugin-openstreetmap:$omhMapsVersion"
-    api "com.openmobilehub.android.maps:plugin-mapbox:$omhMapsVersion"
-    api("com.openmobilehub.android.maps:plugin-azuremaps:$omhMapsVersion") {
-        exclude group: "org.maplibre.gl", module: "android-sdk-geojson"
+    api "com.openmobilehub.android.maps:core:2.0.0"
+}
+
+if (isNewArchitectureEnabled()) {
+    react {
+        jsRootDir = file("../src/")
+        libraryName = "RNOmhMapsCore"
+        codegenJavaPackageName = "com.openmobilehub.android.rn.maps.core"
     }
 }

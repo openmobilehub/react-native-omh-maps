@@ -3865,6 +3865,7 @@ __metadata:
     "@react-native/typescript-config": 0.75.0-main
     "@release-it/conventional-changelog": ^8.0.1
     "@types/jest": ^29.5.12
+    "@types/lodash": ^4.17.0
     "@types/node": ^20.11.30
     "@types/prompts": ^2.4.9
     "@types/react": ^18.2.67
@@ -5102,6 +5103,13 @@ __metadata:
   version: 7.0.15
   resolution: "@types/json-schema@npm:7.0.15"
   checksum: 97ed0cb44d4070aecea772b7b2e2ed971e10c81ec87dd4ecc160322ffa55ff330dace1793489540e3e318d90942064bb697cc0f8989391797792d919737b3b98
+  languageName: node
+  linkType: hard
+
+"@types/lodash@npm:^4.17.0":
+  version: 4.17.0
+  resolution: "@types/lodash@npm:4.17.0"
+  checksum: 3f98c0b67a93994cbc3403d4fa9dbaf52b0b6bb7f07a764d73875c2dcd5ef91222621bd5bcf8eee7b417a74d175c2f7191b9f595f8603956fd06f0674c0cba93
   languageName: node
   linkType: hard
 

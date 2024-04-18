@@ -1,6 +1,6 @@
 buildscript {
     // Buildscript is evaluated before everything else so we can't use getExtOrDefault
-    def kotlin_version = rootProject.ext.has("kotlinVersion") ? rootProject.ext.get("kotlinVersion") : project.properties["ReactNativeMapsPluginGooglemap_kotlinVersion"]
+    def kotlin_version = rootProject.ext.has("kotlinVersion") ? rootProject.ext.get("kotlinVersion") : project.properties["RNOmhMapsPluginGooglemaps_kotlinVersion"]
 
     repositories {
         google()
@@ -26,11 +26,11 @@ if (isNewArchitectureEnabled()) {
 }
 
 def getExtOrDefault(name) {
-    return rootProject.ext.has(name) ? rootProject.ext.get(name) : project.properties["ReactNativeMapsPluginGooglemap_" + name]
+    return rootProject.ext.has(name) ? rootProject.ext.get(name) : project.properties["RNOmhMapsPluginGooglemaps_" + name]
 }
 
 def getExtOrIntegerDefault(name) {
-    return rootProject.ext.has(name) ? rootProject.ext.get(name) : (project.properties["ReactNativeMapsPluginGooglemap_" + name]).toInteger()
+    return rootProject.ext.has(name) ? rootProject.ext.get(name) : (project.properties["RNOmhMapsPluginGooglemaps_" + name]).toInteger()
 }
 
 def supportsNamespace() {
@@ -44,7 +44,7 @@ def supportsNamespace() {
 
 android {
     if (supportsNamespace()) {
-        namespace "com.omh.reactnativemapsplugingooglemap"
+        namespace "com.omh.RNOmhMapsPluginGooglemaps"
 
         sourceSets {
             main {
@@ -58,7 +58,12 @@ android {
     defaultConfig {
         minSdkVersion getExtOrIntegerDefault("minSdkVersion")
         targetSdkVersion getExtOrIntegerDefault("targetSdkVersion")
+        buildConfigField "boolean", "IS_NEW_ARCHITECTURE_ENABLED", isNewArchitectureEnabled().toString()
 
+    }
+
+    buildFeatures {
+        buildConfig true
     }
 
     buildTypes {
@@ -75,6 +80,25 @@ android {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
     }
+
+    sourceSets {
+        main {
+            if (isNewArchitectureEnabled()) {
+                java.srcDirs += [
+                        "src/newarch",
+                        // This is needed to build Kotlin project with NewArch enabled
+                        "${project.buildDir}/generated/source/codegen/java"
+                ]
+            } else {
+                java.srcDirs += ["src/oldarch"]
+            }
+        }
+    }
+}
+
+repositories {
+    mavenCentral()
+    google()
 }
 
 def kotlin_version = getExtOrDefault("kotlinVersion")
@@ -86,5 +110,13 @@ dependencies {
     implementation "com.facebook.react:react-native:+"
     implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
 
-    implementation "com.openmobilehub.android.maps:core:2.0.0-beta"
+    api "com.openmobilehub.android.maps:plugin-googlemaps:2.0.0"
+}
+
+if (isNewArchitectureEnabled()) {
+    react {
+        jsRootDir = file("../src/")
+        libraryName = "RNOmhMapsPluginGooglemaps"
+        codegenJavaPackageName = "com.openmobilehub.android.rn.maps.plugin.googlemaps"
+    }
 }

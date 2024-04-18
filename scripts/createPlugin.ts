@@ -49,7 +49,7 @@ const questions: PromptObject[] = [
     type: 'text',
     name: 'plugin-author-name',
     message: 'Author name',
-    initial: 'Open Mobile Hub',
+    initial: 'OpenMobileHub',
     validate: value =>
       value.trim().length > 0 ? true : 'Author name cannot be empty',
   },
@@ -70,7 +70,7 @@ const questions: PromptObject[] = [
     type: 'text',
     name: 'plugin-author-url',
     message: 'Author URL',
-    initial: 'https://openmobilehub.com',
+    initial: 'https://github.com/openmobilehub',
     validate: value =>
       value.trim().length > 0
         ? // check if URL is valid
@@ -141,8 +141,8 @@ const questions: PromptObject[] = [
         `--author-email="${pluginAuthorEmail}"`,
         `--author-url="${pluginAuthorUrl}"`,
         `--repo-url=https://github.com/openmobilehub/react-native-omh-maps`,
-        `--type=view-legacy`, // see https://github.com/callstack/react-native-builder-bob/blob/main/packages/create-react-native-library/src/index.ts#L176
-        `--languages=kotlin-swift`, // see https://github.com/callstack/react-native-builder-bob/blob/main/packages/create-react-native-library/src/index.ts#L176
+        `--type=view-mixed`, // use new architecture (Fabric views) with backward compat; see https://github.com/callstack/react-native-builder-bob/blob/main/packages/create-react-native-library/src/index.ts#L176
+        `--languages=kotlin-objc`, // see https://github.com/callstack/react-native-builder-bob/blob/main/packages/create-react-native-library/src/index.ts#L92
         `--local=false`, // create a library in the directory passed in as first positional arg
         `--example=false`, // don't create an example app
       ],
@@ -202,6 +202,10 @@ const questions: PromptObject[] = [
   ]) {
     delete packageJson[obsoletePackageJsonKey];
   }
+
+  packageJson.codegenConfig.name = packageJson.codegenConfig.name
+    .replace(/RNReactNativeMaps/, 'RNOmhMaps')
+    .replace(/ViewSpec/, '');
 
   packageJson.version = '1.0.0-beta';
 
@@ -280,38 +284,138 @@ const questions: PromptObject[] = [
     )
   );
 
+  spinner.text =
+    'Customizing package name and plugin name in Android gradle files';
+  const androidPackageName = `com.openmobilehub.android.rn.maps.plugin.${pluginSlug.replace(Constants.PLUGIN_NAME_PREFIX, '').replace(/-/, '.')}`;
+  const androidProjectDirPath = path.join(newPackagePath, 'android'),
+    iosProjectDirPath = path.join(newPackagePath, 'ios');
+  for (const fullFilePath of (
+    [
+      ...fs
+        .readdirSync(androidProjectDirPath)
+        .map(fileRelPath => [
+          path.join(androidProjectDirPath, fileRelPath),
+          androidProjectDirPath,
+        ]),
+      ...fs
+        .readdirSync(iosProjectDirPath)
+        .map(fileRelPath => [
+          path.join(iosProjectDirPath, fileRelPath),
+          iosProjectDirPath,
+        ]),
+    ] as Array<[string, string]>
+  ).filter(([fileRelPath, _]) =>
+    ['.gradle', '.properties', '.h', '.m', '.mm'].some(extension =>
+      fileRelPath.endsWith(extension)
+    )
+  )) {
+    const oldFilePath = fullFilePath[0],
+      fileContent = fs.readFileSync(oldFilePath, 'utf-8');
+    const newFileContent = fileContent
+      .replace(/ReactNativeMapsPlugin/g, 'RNOmhMapsPlugin')
+      .replace(/ReactNativeMapsPlugin(.*)View/g, 'RNOmhMapsPlugin$1')
+      .replace(
+        /"com\.omh\.reactnativemapsplugin.*"/g,
+        `"${androidPackageName}"`
+      );
+
+    const newFilePath = oldFilePath.replace(
+      /ReactNativeMapsPlugin/g,
+      'RNOmhMapsPlugin'
+    );
+
+    if (newFilePath !== oldFilePath) fs.rmSync(oldFilePath);
+
+    fs.writeFileSync(newFilePath, newFileContent);
+  }
+
+  spinner.text = 'Customizing names in TS files';
+  const tsSourcesDirPath = path.join(newPackagePath, 'src');
+  for (const fullFilePath of fs
+    .readdirSync(tsSourcesDirPath)
+    .filter(fileRelPath => fileRelPath.endsWith('.ts'))
+    .map(fileRelPath => [
+      path.join(tsSourcesDirPath, fileRelPath),
+      tsSourcesDirPath,
+    ]) as Array<[string, string]>) {
+    const fileContent = fs.readFileSync(fullFilePath[0], 'utf-8');
+    const newFileContent = fileContent.replace(
+      /ReactNativeMapsPlugin/g,
+      'RNOmhMapsPlugin'
+    );
+
+    fs.rmSync(fullFilePath[0]);
+    fs.writeFileSync(
+      fullFilePath[0].replace(/ReactNativeMapsPlugin/, 'RNOmhMapsPlugin'),
+
+      await prettier.format(newFileContent, getPrettierConfig('typescript'))
+    );
+  }
+
   spinner.text = 'Customizing package name in Android project';
-  const androidPackageName = `com.openmobilehub.android.rn.maps.plugin.${pluginSlug.replace(Constants.PLUGIN_NAME_PREFIX, '')}`;
-  const androidSrcDirPath = path.join(newPackagePath, 'android', 'src', 'main'),
-    androidSrcJavaDirPath = path.join(androidSrcDirPath, 'java'),
-    androidEndSrcPackageDirPath = path.join(
-      androidSrcJavaDirPath,
+  const androidNewArchDirPath = path.join(
+      androidProjectDirPath,
+      'src',
+      'newarch'
+    ),
+    androidOldArchDirPath = path.join(androidProjectDirPath, 'src', 'oldarch'),
+    androidMainSrcDirPath = path.join(newPackagePath, 'android', 'src', 'main'),
+    androidSrcMainJavaDirPath = path.join(androidMainSrcDirPath, 'java'),
+    androidTargetSrcPackageDirPath = path.join(
+      androidSrcMainJavaDirPath,
       ...androidPackageName.split('.')
     );
 
-  fs.mkdirSync(androidEndSrcPackageDirPath, {
+  fs.mkdirSync(androidTargetSrcPackageDirPath, {
     recursive: true,
   });
 
-  const files = fs.readdirSync(androidSrcJavaDirPath, { recursive: true });
+  const files: Array<[filePath: string, targetDirPath: string]> = fs
+    .readdirSync(androidSrcMainJavaDirPath, {
+      recursive: true,
+    })
+    .map(fileRelPath => [
+      path.join(androidSrcMainJavaDirPath, fileRelPath.toString()),
+      androidTargetSrcPackageDirPath,
+    ]);
+
+  // include newarch .kt files
+  files.push(
+    ...(fs
+      .readdirSync(androidNewArchDirPath)
+      .map(fileRelPath => [
+        path.join(androidNewArchDirPath, fileRelPath),
+        androidNewArchDirPath,
+      ]) as Array<[string, string]>)
+  );
+
+  // include oldarch .kt files
+  files.push(
+    ...(fs
+      .readdirSync(androidOldArchDirPath)
+      .map(fileRelPath => [
+        path.join(androidOldArchDirPath, fileRelPath),
+        androidOldArchDirPath,
+      ]) as Array<[string, string]>)
+  );
 
   let filesToBeWritten: { [filePath: string]: string } = {};
   console.log(); // new line
-  for (const fileFullPath of files
-    .map(fileRelPath =>
-      path.join(androidSrcJavaDirPath, fileRelPath.toString())
-    )
-    .filter(pth => pth.endsWith('.kt') && fs.lstatSync(pth).isFile())) {
+  for (const [fileFullPath, targetDirPath] of files.filter(
+    ([filePath, _]) =>
+      filePath.endsWith('.kt') && fs.lstatSync(filePath).isFile()
+  )) {
     const fileContent = fs.readFileSync(fileFullPath, 'utf-8');
 
-    const newFileContent = fileContent.replace(
-      /^package .*$/m,
-      `package ${androidPackageName}`
-    );
+    const newFileContent = fileContent
+      .replace(/^package .*$/m, `package ${androidPackageName}`)
+      .replace(/ReactNativeMapsPlugin/g, 'RNOmhMapsPlugin');
 
     const destFilePath = path.join(
-      androidEndSrcPackageDirPath,
-      path.basename(fileFullPath)
+      targetDirPath,
+      path.basename(
+        fileFullPath.replace(/ReactNativeMapsPlugin/g, 'RNOmhMapsPlugin')
+      )
     );
     console.log(
       `Re-writing source Kotlin file ${fileFullPath.replace(rootWorkspacePath, '')} to ${destFilePath.replace(rootWorkspacePath, '')}`
@@ -321,8 +425,12 @@ const questions: PromptObject[] = [
   }
 
   // delete all java/ src tree files before the buffer is written
-  fs.rmSync(androidSrcJavaDirPath, { recursive: true });
-  fs.mkdirSync(androidSrcJavaDirPath, { recursive: true }); // restore the directory
+  fs.rmSync(androidSrcMainJavaDirPath, { recursive: true });
+  fs.mkdirSync(androidSrcMainJavaDirPath, { recursive: true }); // restore the directory
+  fs.rmSync(androidNewArchDirPath, { recursive: true });
+  fs.mkdirSync(androidNewArchDirPath, { recursive: true }); // restore the directory
+  fs.rmSync(androidOldArchDirPath, { recursive: true });
+  fs.mkdirSync(androidOldArchDirPath, { recursive: true }); // restore the directory
 
   for (const [destFilePath, newFileContent] of Object.entries(
     filesToBeWritten
@@ -334,7 +442,7 @@ const questions: PromptObject[] = [
 
   // overwrite AndroidManifest.xml changing the package name
   const androidManifestPath = path.join(
-    androidSrcDirPath,
+    androidMainSrcDirPath,
     'AndroidManifest.xml'
   );
   var xml = fs.readFileSync(androidManifestPath, 'utf-8');
@@ -360,8 +468,7 @@ const questions: PromptObject[] = [
     process.exit(err.code ?? -3);
   }
 
-  spinner.text =
-    'Adding a peer dependency to the new package in sample-app workspace';
+  spinner.text = 'Adding @module typdoc tag to TS entrypoint';
 
   // add a @module typedoc tag to TS entrypoint
   const entrypointPath = path.join(newPackagePath, 'src', 'index.tsx');
@@ -372,7 +479,7 @@ const questions: PromptObject[] = [
     await prettier.format(
       `
         /**
-         * ${pluginDescription}
+         * React Native OMH Maps ${pluginDescription}
          * @module ${pluginSlug}
          */
 
@@ -383,6 +490,9 @@ const questions: PromptObject[] = [
   );
 
   // add the new package to the root workspace
+  spinner.text =
+    'Adding a peer dependency to the new package in sample-app workspace';
+
   try {
     await Utils.spawnWrapper('yarn', ['sample-app', 'add', pluginSlug], {
       cwd: rootWorkspacePath,
