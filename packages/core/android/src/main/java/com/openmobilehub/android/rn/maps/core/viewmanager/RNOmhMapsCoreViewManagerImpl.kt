@@ -46,7 +46,6 @@ class RNOmhMapsCoreViewManagerImpl(private val reactContext: ReactContext) {
     }
 
     fun mountFragment(view: FragmentContainerView) {
-
         UiThreadUtil.assertOnUiThread()
         val fragmentManager = FragmentUtils.getFragmentManager(view)
 
@@ -74,14 +73,6 @@ class RNOmhMapsCoreViewManagerImpl(private val reactContext: ReactContext) {
     }
 
     private fun layoutChildren(view: View) {
-//        val width = width
-//        val height = height
-//
-//        view.measure(
-//            View.MeasureSpec.makeMeasureSpec(width, View.MeasureSpec.EXACTLY),
-//            View.MeasureSpec.makeMeasureSpec(height, View.MeasureSpec.EXACTLY)
-//        )
-//        view.layout(0, 0, width, height)
         if (width == null || height == null) {
             //  if no size specified by RN, take the whole screen
             val windowManager: WindowManager =
@@ -119,12 +110,10 @@ class RNOmhMapsCoreViewManagerImpl(private val reactContext: ReactContext) {
         }
 
         if (index == 0) {
-//            width = PixelUtil.toPixelFromDIP(value.asDouble()).toInt()
             width = value.asInt()
         }
 
         if (index == 1) {
-//            height = PixelUtil.toPixelFromDIP(value.asDouble()).toInt()
             height = value.asInt()
         }
 

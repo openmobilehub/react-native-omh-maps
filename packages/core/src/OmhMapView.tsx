@@ -1,7 +1,9 @@
 import React, { useState } from 'react';
 import { PixelRatio, StyleSheet, View, ViewStyle } from 'react-native';
 
-import RNOmhMapsCoreViewNativeComponent from './RNOmhMapsCoreViewNativeComponent';
+import RNOmhMapsCoreViewNativeComponent, {
+  NativeOmhMapViewProps,
+} from './RNOmhMapsCoreViewNativeComponent';
 
 type Percentage = `${number}%`;
 
@@ -14,12 +16,18 @@ export type OmhMapViewProps = {
   style: Omit<ViewStyle, 'width' | 'height'> | null;
   width: number | Percentage;
   height: number | Percentage;
+  paths: NativeOmhMapViewProps['paths'];
 };
 
 /**
  * OMH Maps Map View
  */
-export const OmhMapView = ({ style, width, height }: OmhMapViewProps) => {
+export const OmhMapView = ({
+  style,
+  width,
+  height,
+  paths,
+}: OmhMapViewProps) => {
   const [componentSize, setComponentSize] = useState({ width: 0, height: 0 });
 
   const ref = React.useRef<typeof RNOmhMapsCoreViewNativeComponent | null>(
@@ -50,6 +58,7 @@ export const OmhMapView = ({ style, width, height }: OmhMapViewProps) => {
           width: PixelRatio.getPixelSizeForLayoutSize(componentSize.width), // convert dpi to px
           height: PixelRatio.getPixelSizeForLayoutSize(componentSize.height), // convert dpi to px
         }}
+        paths={paths}
         // @ts-ignore next line: missing typing for 'ref' prop on HostComponent
         ref={ref}
       />
