@@ -1,9 +1,33 @@
 name: Setup
 description: Setup Node.js and install dependencies
 
+inputs:
+  MAPBOX_SECRET_TOKEN:
+    description: 'Mapbox secret token'
+    required: true
+  MAPBOX_PUBLIC_TOKEN:
+    description: 'Mapbox public token'
+    required: true
+  GOOGLE_MAPS_API_KEY:
+    description: 'Googlemaps API token'
+    required: true
+  AZURE_MAPS_SUBSCRIPTION_KEY:
+    description: 'Azure Maps token'
+    required: true
+
 runs:
   using: composite
   steps:
+    - name: Set up JDK 17 for x64
+      uses: actions/setup-java@v4
+      with:
+        java-version: '17'
+        distribution: 'zulu'
+
+    - name: Setup secrets
+      run: bash ./.github/scripts/setup_secrets.sh "${{ inputs.MAPBOX_SECRET_TOKEN }}" "${{ inputs.GOOGLE_MAPS_API_KEY }}" "${{ inputs.MAPBOX_PUBLIC_TOKEN }}" "${{ inputs.AZURE_MAPS_SUBSCRIPTION_KEY }}"
+      shell: bash
+
     - name: Setup Node.js
       uses: actions/setup-node@v4
       with:
