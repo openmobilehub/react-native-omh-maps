@@ -14,6 +14,7 @@ import com.facebook.react.common.MapBuilder
 import com.facebook.react.uimanager.ThemedReactContext
 import com.facebook.react.uimanager.UIManagerHelper
 import com.openmobilehub.android.maps.core.factories.OmhMapProvider
+import com.openmobilehub.android.maps.core.utils.MapProvidersUtils
 import com.openmobilehub.android.rn.maps.core.events.OnOmhMapReadyEvent
 import com.openmobilehub.android.rn.maps.core.fragments.FragmentUtils
 import com.openmobilehub.android.rn.maps.core.fragments.OmhMapViewFragment
@@ -21,8 +22,6 @@ import com.openmobilehub.android.rn.maps.core.fragments.OmhMapViewFragment
 class RNOmhMapsCoreViewManagerImpl(private val reactContext: ReactContext) {
     var height: Int? = null
     var width: Int? = null
-
-    var viewMounted = false
 
     fun createViewInstance(reactContext: ThemedReactContext): FragmentContainerView {
         return FragmentContainerView(reactContext)
@@ -41,7 +40,6 @@ class RNOmhMapsCoreViewManagerImpl(private val reactContext: ReactContext) {
                 transaction.commitNowAllowingStateLoss()
             }
         }
-        viewMounted = false
     }
 
     fun mountFragment(view: FragmentContainerView) {
@@ -58,7 +56,8 @@ class RNOmhMapsCoreViewManagerImpl(private val reactContext: ReactContext) {
                 return
             }
 
-            val newFragment = OmhMapViewFragment()
+            val defaultProviderPath = MapProvidersUtils().getDefaultMapProvider(reactContext).path
+            val newFragment = OmhMapViewFragment(defaultProviderPath)
             view.removeAllViews()
             val transaction = fragmentManager.beginTransaction()
             transaction.add(newFragment, FragmentUtils.getFragmentTag(view.id))
@@ -67,7 +66,6 @@ class RNOmhMapsCoreViewManagerImpl(private val reactContext: ReactContext) {
                 layoutChildren(view)
             }
             transaction.commitNowAllowingStateLoss()
-            viewMounted = true
         }
     }
 
@@ -125,7 +123,7 @@ class RNOmhMapsCoreViewManagerImpl(private val reactContext: ReactContext) {
         val viewID = view.id
 
         FragmentUtils.findFragment(reactContext, viewID)?.setOnMapReadyListener(object :
-            OmhMapViewFragment.MapEventsListener {
+            OmhMapViewFragment.OnMapReadyListener {
             override fun onMapReady() {
                 UIManagerHelper.getEventDispatcherForReactTag(reactContext, viewID)
                     ?.dispatchEvent(
@@ -143,16 +141,12 @@ class RNOmhMapsCoreViewManagerImpl(private val reactContext: ReactContext) {
     }
 
     fun setPaths(view: FragmentContainerView, paths: ReadableMap?) {
-        if (viewMounted) {
-            unmountFragment(view)
-        }
-
         OmhMapProvider.Initiator()
             .addGmsPath(paths?.getString("gmsPath"))
             .addNonGmsPath(paths?.getString("nonGmsPath"))
             .initialize()
 
-        mountFragment(view)
+        FragmentUtils.findFragment(view)?.reinitializeFragmentContents()
     }
 
     companion object {

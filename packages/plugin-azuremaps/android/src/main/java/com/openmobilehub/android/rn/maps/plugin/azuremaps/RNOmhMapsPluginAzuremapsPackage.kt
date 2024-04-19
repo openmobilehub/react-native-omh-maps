@@ -54,6 +54,6 @@ class OmhMapsPluginAzuremapsTurboPackage : TurboReactPackage() {
         /**
          * Here declare the list of exported native components
          */
-        return emptyList()
+        return listOf(RNOmhMapsPluginAzuremapsViewManager())
     }
 }

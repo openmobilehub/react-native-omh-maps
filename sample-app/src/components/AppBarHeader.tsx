@@ -1,5 +1,5 @@
 import React from 'react';
-import { Appbar } from 'react-native-paper';
+import { Appbar, useTheme } from 'react-native-paper';
 
 import { getHeaderTitle } from '@react-navigation/elements';
 import { NativeStackHeaderProps } from '@react-navigation/native-stack';
@@ -12,10 +12,11 @@ export function AppBarHeader({
   options,
   back,
 }: NativeStackHeaderProps) {
+  const theme = useTheme();
   const title = getHeaderTitle(options, route.name);
 
   return (
-    <Appbar.Header style={options.headerStyle}>
+    <Appbar.Header style={[options.headerStyle, styles.header]}>
       <Appbar.BackAction disabled={!back} onPress={navigation.goBack} />
 
       <Appbar.Content title={title} style={styles.headerTitle} />
@@ -26,6 +27,7 @@ export function AppBarHeader({
           onPress={() => {
             navigation.push(Route.aboutScreen);
           }}
+          color={theme.colors.onSurface}
         />
       )}
     </Appbar.Header>
@@ -33,6 +35,9 @@ export function AppBarHeader({
 }
 
 const styles = {
+  header: {
+    backgroundColor: '#BB86FC',
+  },
   headerTitle: {
     marginLeft: 8,
   },

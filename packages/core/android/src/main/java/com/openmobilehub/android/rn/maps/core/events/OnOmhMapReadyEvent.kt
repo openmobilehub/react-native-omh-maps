@@ -15,7 +15,7 @@ class OnOmhMapReadyEvent(
     }
 
     companion object {
-        const val NAME = "topMapReady"
+        const val NAME = "omhOnMapReadyEvent"
         const val EVENT_PROP_NAME = "onMapReady"
     }
 }

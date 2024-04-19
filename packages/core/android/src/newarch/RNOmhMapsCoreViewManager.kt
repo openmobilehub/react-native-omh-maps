@@ -17,6 +17,12 @@ class RNOmhMapsCoreViewManager :
     RNOmhMapsCoreViewManagerInterface<FragmentContainerView> {
     private lateinit var omhMapViewManagerImpl: RNOmhMapsCoreViewManagerImpl
 
+    override fun addEventEmitters(reactContext: ThemedReactContext, view: FragmentContainerView) {
+        omhMapViewManagerImpl.mountFragment(view)
+        omhMapViewManagerImpl.addEventEmitters(reactContext, view)
+        super.addEventEmitters(reactContext, view)
+    }
+
     override fun createViewInstance(reactContext: ThemedReactContext): FragmentContainerView {
         omhMapViewManagerImpl = RNOmhMapsCoreViewManagerImpl(reactContext)
         return omhMapViewManagerImpl.createViewInstance(reactContext)

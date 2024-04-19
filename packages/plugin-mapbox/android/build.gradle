@@ -110,7 +110,7 @@ dependencies {
     implementation "com.facebook.react:react-native:+"
     implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
 
-    api "com.openmobilehub.android.maps:plugin-mapbox:2.0.0-SNAPSHOT"
+    api group: "com.openmobilehub.android.maps", name: "plugin-mapbox", version: "2.0.0-SNAPSHOT", changing: true
 }
 
 if (isNewArchitectureEnabled()) {

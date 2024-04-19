@@ -7,6 +7,7 @@ import com.facebook.react.module.annotations.ReactModule
 import com.facebook.react.module.model.ReactModuleInfo
 import com.facebook.react.module.model.ReactModuleInfoProvider
 import com.facebook.react.turbomodule.core.interfaces.TurboModule
+import com.facebook.react.uimanager.ViewManager
 
 class OmhMapsPluginMapboxTurboPackage : TurboReactPackage() {
     /**
@@ -47,5 +48,12 @@ class OmhMapsPluginMapboxTurboPackage : TurboReactPackage() {
                 )
         }
         return ReactModuleInfoProvider { reactModuleInfoMap }
+    }
+
+    override fun createViewManagers(reactContext: ReactApplicationContext): List<ViewManager<*, *>> {
+        /**
+         * Here declare the list of exported native components
+         */
+        return listOf(RNOmhMapsPluginMapboxViewManager())
     }
 }

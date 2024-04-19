@@ -12,22 +12,27 @@ import com.openmobilehub.android.maps.core.factories.OmhMapProvider
 import com.openmobilehub.android.maps.core.presentation.interfaces.maps.OmhMap
 import com.openmobilehub.android.maps.core.presentation.interfaces.maps.OmhMapView
 import com.openmobilehub.android.maps.core.presentation.interfaces.maps.OmhOnMapReadyCallback
+import com.openmobilehub.android.maps.core.presentation.models.OmhCoordinate
+import com.openmobilehub.android.rn.maps.core.extensions.toWritableMap
 
 @Suppress("TooManyFunctions")
-class OmhMapViewFragment : Fragment(), OmhOnMapReadyCallback {
+class OmhMapViewFragment(private var defaultProviderPath: String) :
+    Fragment(), OmhOnMapReadyCallback {
     private var _binding: FragmentOmhMapBinding? = null
     private val binding get() = _binding!!
+
+    private var _savedInstanceState: Bundle? = null
 
     private var omhMapView: OmhMapView? = null
     private var omhMap: OmhMap? = null
 
-    interface MapEventsListener {
+    fun interface OnMapReadyListener {
         fun onMapReady()
     }
 
-    private var mListener: MapEventsListener? = null
+    private var mListener: OnMapReadyListener? = null
 
-    fun setOnMapReadyListener(listener: MapEventsListener?) {
+    fun setOnMapReadyListener(listener: OnMapReadyListener?) {
         mListener = listener
     }
 
@@ -36,14 +41,38 @@ class OmhMapViewFragment : Fragment(), OmhOnMapReadyCallback {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        omhMapView = context?.let { OmhMapProvider.getInstance().provideOmhMapView(it) }
-        omhMapView?.onCreate(savedInstanceState)
+        _savedInstanceState = savedInstanceState
         _binding = FragmentOmhMapBinding.inflate(inflater, container, false)
+
+        OmhMapProvider.Initiator()
+            .addGmsPath(defaultProviderPath)
+            .addNonGmsPath(defaultProviderPath)
+            .initialize()
+        reinitializeFragmentContents()
+
+        return binding.root
+    }
+
+    fun reinitializeFragmentContents() {
+        val wasOmhMapInitialized = omhMapView != null
+        if (wasOmhMapInitialized) {
+            binding.frameLayoutMapContainer.removeAllViews()
+        }
+
+        omhMap = null
+        omhMapView = context?.let { OmhMapProvider.getInstance().provideOmhMapView(it) }
+        omhMapView?.onCreate(_savedInstanceState)
+
         val mapView = omhMapView?.getView()
         if (mapView != null) {
             binding.frameLayoutMapContainer.addView(mapView)
         }
-        return binding.root
+
+        if (wasOmhMapInitialized) {
+            // only run this from here if the map was already initialized
+            // in case this is run from onCreate(), getMapAsync will be called in onViewCreated()
+            omhMapView?.getMapAsync(this)
+        }
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -94,7 +123,14 @@ class OmhMapViewFragment : Fragment(), OmhOnMapReadyCallback {
     fun getCameraPositionCoordinate(promise: Promise) {
         UiThreadUtil.runOnUiThread {
             val coords = omhMap?.getCameraPositionCoordinate()
-            promise.resolve(coords.toString())
+            promise.resolve(coords?.toWritableMap())
+        }
+    }
+
+    fun setCameraPositionCoordinate(coordinate: OmhCoordinate, zoomLevel: Float, promise: Promise) {
+        UiThreadUtil.runOnUiThread {
+            omhMap?.moveCamera(coordinate, zoomLevel)
+            promise.resolve(null)
         }
     }
 

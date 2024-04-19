@@ -2,6 +2,7 @@ package com.openmobilehub.android.rn.maps.core
 
 import com.facebook.react.bridge.Promise
 import com.facebook.react.bridge.ReactApplicationContext
+import com.facebook.react.bridge.ReadableMap
 import com.facebook.react.bridge.WritableArray
 import com.facebook.react.bridge.WritableMap
 import com.facebook.react.module.annotations.ReactModule
@@ -13,7 +14,16 @@ class RNOmhMapsCoreModule(
     private val moduleImpl = RNOmhMapsCoreModuleImpl(reactContext)
 
     override fun getCameraCoordinate(viewRef: Double, promise: Promise) {
-        return moduleImpl.getCameraCoordinate(viewRef, promise)
+        moduleImpl.getCameraCoordinate(viewRef, promise)
+    }
+
+    override fun setCameraCoordinate(
+        viewRef: Double,
+        coordinate: ReadableMap,
+        zoomLevel: Double,
+        promise: Promise
+    ) {
+        moduleImpl.setCameraCoordinate(viewRef, coordinate, zoomLevel, promise)
     }
 
     override fun getAvailableMapProviders(): WritableArray {

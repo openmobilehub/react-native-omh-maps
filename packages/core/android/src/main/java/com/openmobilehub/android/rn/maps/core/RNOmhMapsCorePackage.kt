@@ -10,7 +10,7 @@ import com.facebook.react.turbomodule.core.interfaces.TurboModule
 import com.facebook.react.uimanager.ViewManager
 import com.openmobilehub.android.rn.maps.core.viewmanagers.RNOmhMapsCoreViewManager
 
-class OmhMapsCoreTurboPackage : TurboReactPackage() {
+class RNOmhMapsCoreTurboPackage : TurboReactPackage() {
     /**
      * Initialize and export modules based on the name of the required module
      */

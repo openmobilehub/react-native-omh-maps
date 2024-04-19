@@ -1,6 +1,6 @@
 import React from 'react';
 import { StyleSheet } from 'react-native';
-import { List } from 'react-native-paper';
+import { List, useTheme } from 'react-native-paper';
 
 import { useNavigation } from '@react-navigation/native';
 
@@ -14,6 +14,7 @@ export type MenuListItemProps = {
 
 export function MenuListItem({ title, route, description }: MenuListItemProps) {
   const navigate = useNavigation();
+  const theme = useTheme();
 
   return (
     <List.Item
@@ -25,7 +26,10 @@ export function MenuListItem({ title, route, description }: MenuListItemProps) {
           route
         );
       }}
-      style={styles.listItem}
+      style={[
+        styles.listItem,
+        theme.dark ? styles.borderDarkTheme : styles.borderLightTheme,
+      ]}
     />
   );
 }
@@ -33,6 +37,14 @@ export function MenuListItem({ title, route, description }: MenuListItemProps) {
 const styles = StyleSheet.create({
   listItem: {
     paddingVertical: 10,
+    borderBottomWidth: 0.5,
+    borderStyle: 'solid',
+  },
+  borderLightTheme: {
+    borderBottomColor: '#121212',
+  },
+  borderDarkTheme: {
+    borderBottomColor: '#646464',
   },
 });
 

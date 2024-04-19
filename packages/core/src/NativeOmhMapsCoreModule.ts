@@ -6,8 +6,18 @@ export interface MapProvider {
   path: string;
 }
 
+export interface OmhCoordinate {
+  latitude: number;
+  longitude: number;
+}
+
 export interface Spec extends TurboModule {
-  getCameraCoordinate(viewRef: number): Promise<string>;
+  getCameraCoordinate(viewRef: number): Promise<OmhCoordinate | null>;
+  setCameraCoordinate(
+    viewRef: number,
+    coordinate: OmhCoordinate,
+    zoomLevel: number
+  ): Promise<void>;
   getAvailableMapProviders(): MapProvider[];
   getDefaultMapProvider(): MapProvider;
 }

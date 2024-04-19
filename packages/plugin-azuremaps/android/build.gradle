@@ -112,6 +112,7 @@ dependencies {
 
     api("com.openmobilehub.android.maps:plugin-azuremaps:2.0.0-SNAPSHOT") {
         exclude(group: "org.maplibre.gl", module: "android-sdk-geojson")
+        changing(true)
     }
 }
 

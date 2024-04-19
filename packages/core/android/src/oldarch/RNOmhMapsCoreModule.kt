@@ -7,6 +7,7 @@ import com.facebook.react.bridge.ReactMethod
 import com.facebook.react.module.annotations.ReactModule
 import com.facebook.react.bridge.WritableArray
 import com.facebook.react.bridge.WritableMap
+import com.facebook.react.bridge.ReadableMap
 
 @ReactModule(name = OmhMapModule.NAME)
 class RNOmhMapsCoreModule(
@@ -18,7 +19,17 @@ class RNOmhMapsCoreModule(
 
     @ReactMethod
     fun getCameraCoordinate(viewRef: Double, promise: Promise) {
-        return moduleImpl.getCameraCoordinate(viewRef, promise)
+        moduleImpl.getCameraCoordinate(viewRef, promise)
+    }
+
+    @ReactMethod
+    fun setCameraCoordinate(
+        viewRef: Double,
+        coordinate: ReadableMap,
+        zoomLevel: Double,
+        promise: Promise
+    ) {
+        moduleImpl.setCameraCoordinate(viewRef, coordinate, zoomLevel, promise)
     }
 
     @ReactMethod
