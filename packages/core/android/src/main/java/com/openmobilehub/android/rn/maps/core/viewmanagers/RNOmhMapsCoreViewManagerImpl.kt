@@ -18,7 +18,6 @@ import com.openmobilehub.android.maps.core.factories.OmhMapProvider
 import com.openmobilehub.android.maps.core.presentation.interfaces.maps.OmhMap
 import com.openmobilehub.android.maps.core.utils.MapProvidersUtils
 import com.openmobilehub.android.rn.maps.core.entities.OmhMapEntity
-import com.openmobilehub.android.rn.maps.core.entities.OmhMarkerEntity
 import com.openmobilehub.android.rn.maps.core.events.OnOmhMapReadyEvent
 import com.openmobilehub.android.rn.maps.core.fragments.FragmentUtils
 import com.openmobilehub.android.rn.maps.core.fragments.OmhMapViewFragment
@@ -28,16 +27,28 @@ class RNOmhMapsCoreViewManagerImpl(private val reactContext: ReactContext) {
     var width: Int? = null
     private var lastGmsPath: String? = null
     private var lastNonGmsPath: String? = null
-    private var mountedChildren = HashMap<Int, OmhMapEntity<*, *>>()
+    private var mountedChildren = HashMap<Int, OmhMapEntity<*>>()
     private var addEntitiesQueue = mutableListOf<Pair<View, Int>>()
 
     fun createViewInstance(reactContext: ThemedReactContext): FragmentContainerView {
         return FragmentContainerView(reactContext)
     }
 
-    private fun getMapOrThrow(parent: FragmentContainerView): OmhMap {
-        return FragmentUtils.findFragment(reactContext, parent.id)?.omhMap
+    private fun getFragmentOrThrow(parent: FragmentContainerView): OmhMapViewFragment {
+        return FragmentUtils.findFragment(reactContext, parent.id)
             ?: error(ERRORS.MAP_FRAGMENT_NOT_FOUND)
+    }
+
+    private fun getMapOrThrow(parent: FragmentContainerView): OmhMap {
+        return getFragmentOrThrow(parent).omhMap ?: error(ERRORS.MAP_INSTANCE_NOT_AVAILABLE)
+    }
+
+    private fun getMapOrThrow(fragment: OmhMapViewFragment): OmhMap {
+        return fragment.omhMap ?: error(ERRORS.MAP_INSTANCE_NOT_AVAILABLE)
+    }
+
+    fun getChildAt(index: Int): OmhMapEntity<*> {
+        return mountedChildren[index]!!
     }
 
     fun addView(
@@ -47,14 +58,15 @@ class RNOmhMapsCoreViewManagerImpl(private val reactContext: ReactContext) {
         entityComesFromQueue: Boolean = false
     ) {
         try {
-            val omhMap = getMapOrThrow(parent)
+            val fragment = getFragmentOrThrow(parent)
+            val omhMap = getMapOrThrow(fragment)
 
             var addToRegistry = true
 
             when (child) {
-                // TODO: handle index
-                is OmhMarkerEntity -> {
-                    omhMap.addMarker(child.initialOptions)
+                is OmhMapEntity<*> -> {
+                    // TODO: handle index - set zIndex
+                    child.mountEntity(omhMap)
                 }
 
                 else -> {
@@ -68,7 +80,7 @@ class RNOmhMapsCoreViewManagerImpl(private val reactContext: ReactContext) {
             }
 
             if (addToRegistry) {
-                mountedChildren[index] = child as OmhMapEntity<*, *>
+                mountedChildren[index] = child as OmhMapEntity<*>
             }
         } catch (@Suppress("SwallowedException") e: IllegalStateException) {
             if (entityComesFromQueue) {
@@ -84,21 +96,7 @@ class RNOmhMapsCoreViewManagerImpl(private val reactContext: ReactContext) {
 
         val child = mountedChildren[index] ?: error(ERRORS.REMOVE_VIEW_AT_CHILD_NOT_FOUND)
 
-        // the below is just to perform a common null-check
-        if (child.getEntity() == null) return
-
-        when (child) {
-            is OmhMarkerEntity -> {
-                child.getEntity()?.remove()
-            }
-
-            else -> {
-                Log.w(
-                    NAME,
-                    "${ERRORS.UNSUPPORTED_CHILD_VIEW_TYPE}: ${child.javaClass.simpleName}"
-                )
-            }
-        }
+        child.unmountEntity()
 
         mountedChildren.remove(index)
     }
@@ -258,8 +256,11 @@ class RNOmhMapsCoreViewManagerImpl(private val reactContext: ReactContext) {
             )
 
         object ERRORS {
+            const val MAP_INSTANCE_NOT_AVAILABLE =
+                "RN-managed OmhMap instance not available. Did you wait for the map to become ready?"
+
             const val MAP_FRAGMENT_NOT_FOUND =
-                "RN-managed OmhMap fragment not found. Did you wait for the map to become ready?"
+                "RN-managed OmhMap fragment not found. Did you wait for the map to mount?"
 
             const val UNSUPPORTED_CHILD_VIEW_TYPE =
                 "Unsupported child view type mounted inside RN OmhMap"

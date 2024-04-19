@@ -19,7 +19,7 @@ import com.openmobilehub.android.rn.maps.core.extensions.toWritableMap
 class OmhMapViewFragment(private var defaultProviderPath: String) :
     Fragment(), OmhOnMapReadyCallback {
     private var _binding: FragmentOmhMapBinding? = null
-    private val binding get() = _binding!!
+    internal val binding get() = _binding!!
 
     private var _savedInstanceState: Bundle? = null
 

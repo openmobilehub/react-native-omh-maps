@@ -6,12 +6,12 @@ import com.openmobilehub.android.maps.core.presentation.interfaces.maps.OmhMarke
 import com.openmobilehub.android.maps.core.presentation.models.OmhMarkerOptions
 
 class OmhMarkerEntity(context: Context) :
-    OmhMapEntity<OmhMarker, OmhMarkerOptions>(context) {
+    OmhMapEntity<OmhMarker>(context) {
 
     internal val initialOptions = OmhMarkerOptions()
 
-    override fun mountEntity(omhMap: OmhMap, options: OmhMarkerOptions) {
-        val marker = omhMap.addMarker(options)
+    override fun mountEntity(omhMap: OmhMap) {
+        val marker = omhMap.addMarker(initialOptions)
             ?: error("Failed to add marker to the map")
 
         setEntity(marker)

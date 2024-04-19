@@ -1,6 +1,6 @@
-import React, { useRef } from 'react';
+import React, { useRef, useState } from 'react';
 import { ScrollView, StyleSheet, View } from 'react-native';
-import { Subheading } from 'react-native-paper';
+import { Checkbox, Subheading } from 'react-native-paper';
 
 import { OmhMapView, OmhMapViewRef } from '@omh/react-native-maps-core';
 
@@ -12,6 +12,8 @@ import { Constants } from '../utils/Constants';
 export const MarkerMapScreen = () => {
   const logger = useLogger('MarkerMapScreen');
   const defaultMapProvider = useChosenMapProvider();
+
+  const [mountCustomizableMarker, setMountCustomizableMarker] = useState(true);
 
   const omhMapRef = useRef<OmhMapViewRef | null>(null);
 
@@ -34,7 +36,9 @@ export const MarkerMapScreen = () => {
             gmsPath: defaultMapProvider.path,
             nonGmsPath: defaultMapProvider.path,
           }}>
-          <OmhMarker position={Constants.Maps.GREENWICH_COORDINATE} />
+          {mountCustomizableMarker && (
+            <OmhMarker position={Constants.Maps.GREENWICH_COORDINATE} />
+          )}
         </OmhMapView>
       </View>
 
@@ -42,6 +46,14 @@ export const MarkerMapScreen = () => {
         <ScrollView
           contentContainerStyle={styles.demoControlsScrollViewContentContainer}>
           <Subheading style={styles.centeredHeading}>Demo controls</Subheading>
+
+          <Checkbox.Item
+            label="Mount customizable <OmhMarker/>"
+            status={mountCustomizableMarker ? 'checked' : 'unchecked'}
+            onPress={() => {
+              setMountCustomizableMarker(!mountCustomizableMarker);
+            }}
+          />
         </ScrollView>
       </View>
     </View>

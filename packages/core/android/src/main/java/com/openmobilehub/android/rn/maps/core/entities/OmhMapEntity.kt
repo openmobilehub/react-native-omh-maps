@@ -4,12 +4,11 @@ import android.content.Context
 import com.facebook.react.views.view.ReactViewGroup
 import com.openmobilehub.android.maps.core.presentation.interfaces.maps.OmhMap
 
-abstract class OmhMapEntity<E, EOptions>(context: Context) : ReactViewGroup(context) {
+abstract class OmhMapEntity<E>(context: Context) : ReactViewGroup(context) {
     private var entity: E? = null
 
     abstract fun mountEntity(
-        omhMap: OmhMap,
-        options: EOptions
+        omhMap: OmhMap
     )
 
     abstract fun unmountEntity()

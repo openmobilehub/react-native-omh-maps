@@ -21,6 +21,10 @@ class RNOmhMapsCoreViewManager :
         omhMapViewManagerImpl.addView(parent, child, index)
     }
 
+    override fun getChildAt(parent: FragmentContainerView?, index: Int): View {
+        return omhMapViewManagerImpl.getChildAt(index)
+    }
+
     override fun removeViewAt(parent: FragmentContainerView, index: Int) {
         omhMapViewManagerImpl.removeViewAt(parent, index)
     }
