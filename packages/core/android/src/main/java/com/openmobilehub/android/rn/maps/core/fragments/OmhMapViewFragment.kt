@@ -24,7 +24,7 @@ class OmhMapViewFragment(private var defaultProviderPath: String) :
     private var _savedInstanceState: Bundle? = null
 
     private var omhMapView: OmhMapView? = null
-    private var omhMap: OmhMap? = null
+    internal var omhMap: OmhMap? = null
 
     fun interface OnMapReadyListener {
         fun onMapReady()

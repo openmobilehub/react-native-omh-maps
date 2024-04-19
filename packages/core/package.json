@@ -71,7 +71,7 @@
     ]
   },
   "codegenConfig": {
-    "name": "RNOmhMapsCore",
+    "name": "RNOmhMaps",
     "type": "all",
     "jsSrcsDir": "src",
     "android": {

@@ -3,6 +3,7 @@ import {
   PixelRatio,
   StyleSheet,
   View,
+  ViewProps,
   ViewStyle,
   findNodeHandle,
 } from 'react-native';
@@ -31,7 +32,7 @@ enum MapErrors {
 /**
  * The OMH Map View properties.
  */
-export type OmhMapViewProps = {
+export type OmhMapViewProps = Omit<ViewProps, 'style'> & {
   onMapReady?: () => void;
   /** The style to be applied to the map container */
   style: Omit<ViewStyle, 'width' | 'height'> | null;
@@ -45,7 +46,10 @@ export type OmhMapViewProps = {
  * and availability of installed providers (`@omh/react-native-maps-plugin-*`).
  */
 export const OmhMapView = forwardRef<OmhMapViewRef, OmhMapViewProps>(
-  ({ style, width, height, paths, onMapReady = () => {} }, forwardedRef) => {
+  (
+    { style, width, height, paths, onMapReady = () => {}, children },
+    forwardedRef
+  ) => {
     const [componentSize, setComponentSize] = useState({ width: 0, height: 0 });
 
     const nativeComponentRef = React.useRef<
@@ -120,8 +124,9 @@ export const OmhMapView = forwardRef<OmhMapViewRef, OmhMapViewProps>(
           onMapReady={onMapReady}
           paths={paths}
           // @ts-ignore next line: missing typing for 'ref' prop on HostComponent
-          ref={nativeComponentRef}
-        />
+          ref={nativeComponentRef}>
+          {children}
+        </RNOmhMapsCoreViewNativeComponent>
       </View>
     );
   }

@@ -1,21 +1,29 @@
 package com.openmobilehub.android.rn.maps.core.viewmanagers
 
+import android.view.View
 import androidx.fragment.app.FragmentContainerView
 import com.facebook.react.bridge.Dynamic
 import com.facebook.react.bridge.ReadableMap
 import com.facebook.react.module.annotations.ReactModule
-import com.facebook.react.uimanager.SimpleViewManager
 import com.facebook.react.uimanager.ThemedReactContext
+import com.facebook.react.uimanager.ViewGroupManager
 import com.facebook.react.uimanager.annotations.ReactProp
 import com.facebook.react.uimanager.annotations.ReactPropGroup
 import com.facebook.react.viewmanagers.RNOmhMapsCoreViewManagerInterface
-import com.openmobilehub.android.rn.maps.core.fragments.OmhMapViewFragment
 
-@ReactModule(name = OmhMapViewFragment.NAME)
+@ReactModule(name = RNOmhMapsCoreViewManagerImpl.NAME)
 class RNOmhMapsCoreViewManager :
-    SimpleViewManager<FragmentContainerView>(),
+    ViewGroupManager<FragmentContainerView>(),
     RNOmhMapsCoreViewManagerInterface<FragmentContainerView> {
     private lateinit var omhMapViewManagerImpl: RNOmhMapsCoreViewManagerImpl
+
+    override fun addView(parent: FragmentContainerView, child: View, index: Int) {
+        omhMapViewManagerImpl.addView(parent, child, index)
+    }
+
+    override fun removeViewAt(parent: FragmentContainerView?, index: Int) {
+        super.removeViewAt(parent, index)
+    }
 
     override fun addEventEmitters(reactContext: ThemedReactContext, view: FragmentContainerView) {
         omhMapViewManagerImpl.mountFragment(view)

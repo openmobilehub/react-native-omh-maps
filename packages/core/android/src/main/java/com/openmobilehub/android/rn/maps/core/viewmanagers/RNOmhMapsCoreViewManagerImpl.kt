@@ -3,6 +3,7 @@ package com.openmobilehub.android.rn.maps.core.viewmanagers
 import android.content.Context
 import android.graphics.Point
 import android.os.Build
+import android.util.Log
 import android.view.View
 import android.view.WindowManager
 import androidx.fragment.app.FragmentContainerView
@@ -15,6 +16,7 @@ import com.facebook.react.uimanager.ThemedReactContext
 import com.facebook.react.uimanager.UIManagerHelper
 import com.openmobilehub.android.maps.core.factories.OmhMapProvider
 import com.openmobilehub.android.maps.core.utils.MapProvidersUtils
+import com.openmobilehub.android.rn.maps.core.entities.OmhMarkerEntity
 import com.openmobilehub.android.rn.maps.core.events.OnOmhMapReadyEvent
 import com.openmobilehub.android.rn.maps.core.fragments.FragmentUtils
 import com.openmobilehub.android.rn.maps.core.fragments.OmhMapViewFragment
@@ -25,6 +27,25 @@ class RNOmhMapsCoreViewManagerImpl(private val reactContext: ReactContext) {
 
     fun createViewInstance(reactContext: ThemedReactContext): FragmentContainerView {
         return FragmentContainerView(reactContext)
+    }
+
+    fun addView(parent: FragmentContainerView, child: View, index: Int) {
+        // TODO: handle index
+        val omhMap = FragmentUtils.findFragment(reactContext, parent.id)?.omhMap
+            ?: error("RN-managed OmhMap fragment not found. Did wait for the map to become ready?")
+
+        when (child) {
+            is OmhMarkerEntity -> {
+                omhMap.addMarker(child.initialOptions)
+            }
+
+            else -> {
+                Log.w(
+                    NAME,
+                    "Unsupported child view type inside RN OmhMap: ${child.javaClass.simpleName}"
+                )
+            }
+        }
     }
 
     fun unmountFragment(view: FragmentContainerView) {

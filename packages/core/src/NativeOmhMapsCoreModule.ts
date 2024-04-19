@@ -6,10 +6,10 @@ export interface MapProvider {
   path: string;
 }
 
-export interface OmhCoordinate {
+export type OmhCoordinate = {
   latitude: number;
   longitude: number;
-}
+};
 
 export interface Spec extends TurboModule {
   getCameraCoordinate(viewRef: number): Promise<OmhCoordinate | null>;

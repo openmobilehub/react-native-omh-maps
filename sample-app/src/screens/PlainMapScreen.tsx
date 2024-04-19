@@ -11,6 +11,7 @@ import {
 import Slider from '@react-native-community/slider';
 
 import { MapProvider } from '../../../packages/core/src/NativeOmhMapsCoreModule';
+import OmhMarker from '../../../packages/core/src/OmhMarker';
 import ControlParagraph from '../components/ControlParagraph';
 import MapProviderPicker from '../components/MapProviderPicker';
 import useLogger from '../hooks/useLogger';
@@ -86,8 +87,9 @@ export const PlainMapScreen = () => {
           paths={{
             gmsPath: provider.path,
             nonGmsPath: provider.path,
-          }}
-        />
+          }}>
+          <OmhMarker position={Constants.Maps.GREENWICH_COORDINATE} />
+        </OmhMapView>
       </View>
 
       <View style={styles.demoControlsScrollViewContainer}>

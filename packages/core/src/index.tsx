@@ -3,8 +3,6 @@
  * @module @omh/react-native-maps-core
  */
 
-export * from './RNOmhMapsCoreViewNativeComponent';
-
 export * from './OmhMapView';
 export { default as OmhMapView } from './OmhMapView';
 

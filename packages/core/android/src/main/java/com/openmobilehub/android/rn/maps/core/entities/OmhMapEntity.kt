@@ -2,13 +2,27 @@ package com.openmobilehub.android.rn.maps.core.entities
 
 import android.content.Context
 import com.facebook.react.views.view.ReactViewGroup
+import com.openmobilehub.android.maps.core.presentation.interfaces.maps.OmhMap
 
-abstract class OmhMapEntity<E>(context: Context, private var entity: E) : ReactViewGroup(context) {
-    fun mountEntity() {}
+abstract class OmhMapEntity<E, EOptions>(context: Context) : ReactViewGroup(context) {
+    private var entity: E? = null
 
-    fun unmountEntity() {}
+    abstract fun mountEntity(
+        omhMap: OmhMap,
+        options: EOptions
+    )
 
-    fun getEntity(): E {
+    abstract fun unmountEntity()
+
+    fun setEntity(entity: E) {
+        this.entity = entity
+    }
+
+    fun getEntity(): E? {
         return entity
+    }
+
+    fun isMounted(): Boolean {
+        return entity != null
     }
 }
