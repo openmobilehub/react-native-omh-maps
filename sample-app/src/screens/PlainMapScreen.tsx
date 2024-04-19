@@ -3,24 +3,20 @@ import React, { useCallback, useMemo, useRef, useState } from 'react';
 import { ScrollView, StyleSheet, View } from 'react-native';
 import { MD2Colors, Subheading, useTheme } from 'react-native-paper';
 
-import {
-  OmhMapView,
-  OmhMapViewRef,
-  OmhMapsModule,
-} from '@omh/react-native-maps-core';
+import { OmhMapView, OmhMapViewRef } from '@omh/react-native-maps-core';
 import Slider from '@react-native-community/slider';
 
 import { MapProvider } from '../../../packages/core/src/NativeOmhMapsCoreModule';
-import OmhMarker from '../../../packages/core/src/OmhMarker';
 import ControlParagraph from '../components/ControlParagraph';
 import MapProviderPicker from '../components/MapProviderPicker';
+import useChosenMapProvider from '../hooks/useChosenMapProvider';
 import useLogger from '../hooks/useLogger';
 import { Constants } from '../utils/Constants';
 
 export const PlainMapScreen = () => {
   const theme = useTheme();
   const logger = useLogger('PlainMapScreen');
-  // const defaultMapProvider = useChosenMapProvider();
+  const defaultMapProvider = useChosenMapProvider();
 
   const [tintedColor, untintedColor] = useMemo(
     () => [theme.colors.primary, theme.colors.secondary],
@@ -29,9 +25,7 @@ export const PlainMapScreen = () => {
 
   const [width, setWidth] = useState(100);
   const [height, setHeight] = useState(100);
-  const [provider, setProvider] = useState<MapProvider>(() =>
-    OmhMapsModule.getDefaultMapProvider()
-  );
+  const [provider, setProvider] = useState<MapProvider>(defaultMapProvider);
 
   const omhMapRef = useRef<OmhMapViewRef | null>(null);
 
@@ -87,9 +81,8 @@ export const PlainMapScreen = () => {
           paths={{
             gmsPath: provider.path,
             nonGmsPath: provider.path,
-          }}>
-          <OmhMarker position={Constants.Maps.GREENWICH_COORDINATE} />
-        </OmhMapView>
+          }}
+        />
       </View>
 
       <View style={styles.demoControlsScrollViewContainer}>
@@ -98,7 +91,7 @@ export const PlainMapScreen = () => {
           <Subheading style={styles.centeredHeading}>Demo controls</Subheading>
 
           <MapProviderPicker
-            defaultProvider={OmhMapsModule.getDefaultMapProvider()}
+            defaultProvider={defaultMapProvider}
             label="Live map provider override"
             onChange={newProvider => {
               logger.log(

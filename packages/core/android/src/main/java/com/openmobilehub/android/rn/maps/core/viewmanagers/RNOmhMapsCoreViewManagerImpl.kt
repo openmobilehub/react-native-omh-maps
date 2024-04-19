@@ -15,7 +15,9 @@ import com.facebook.react.common.MapBuilder
 import com.facebook.react.uimanager.ThemedReactContext
 import com.facebook.react.uimanager.UIManagerHelper
 import com.openmobilehub.android.maps.core.factories.OmhMapProvider
+import com.openmobilehub.android.maps.core.presentation.interfaces.maps.OmhMap
 import com.openmobilehub.android.maps.core.utils.MapProvidersUtils
+import com.openmobilehub.android.rn.maps.core.entities.OmhMapEntity
 import com.openmobilehub.android.rn.maps.core.entities.OmhMarkerEntity
 import com.openmobilehub.android.rn.maps.core.events.OnOmhMapReadyEvent
 import com.openmobilehub.android.rn.maps.core.fragments.FragmentUtils
@@ -24,28 +26,81 @@ import com.openmobilehub.android.rn.maps.core.fragments.OmhMapViewFragment
 class RNOmhMapsCoreViewManagerImpl(private val reactContext: ReactContext) {
     var height: Int? = null
     var width: Int? = null
+    private var lastGmsPath: String? = null
+    private var lastNonGmsPath: String? = null
+    private var mountedChildren = HashMap<Int, OmhMapEntity<*, *>>()
+    private var addEntitiesQueue = mutableListOf<Pair<View, Int>>()
 
     fun createViewInstance(reactContext: ThemedReactContext): FragmentContainerView {
         return FragmentContainerView(reactContext)
     }
 
-    fun addView(parent: FragmentContainerView, child: View, index: Int) {
-        // TODO: handle index
-        val omhMap = FragmentUtils.findFragment(reactContext, parent.id)?.omhMap
-            ?: error("RN-managed OmhMap fragment not found. Did wait for the map to become ready?")
+    private fun getMapOrThrow(parent: FragmentContainerView): OmhMap {
+        return FragmentUtils.findFragment(reactContext, parent.id)?.omhMap
+            ?: error(ERRORS.MAP_FRAGMENT_NOT_FOUND)
+    }
+
+    fun addView(
+        parent: FragmentContainerView,
+        child: View,
+        index: Int,
+        entityComesFromQueue: Boolean = false
+    ) {
+        try {
+            val omhMap = getMapOrThrow(parent)
+
+            var addToRegistry = true
+
+            when (child) {
+                // TODO: handle index
+                is OmhMarkerEntity -> {
+                    omhMap.addMarker(child.initialOptions)
+                }
+
+                else -> {
+                    addToRegistry = false
+
+                    Log.w(
+                        NAME,
+                        "${ERRORS.UNSUPPORTED_CHILD_VIEW_TYPE}: ${child.javaClass.simpleName}"
+                    )
+                }
+            }
+
+            if (addToRegistry) {
+                mountedChildren[index] = child as OmhMapEntity<*, *>
+            }
+        } catch (@Suppress("SwallowedException") e: IllegalStateException) {
+            if (entityComesFromQueue) {
+                throw e
+            } else {
+                addEntitiesQueue.add(Pair(child, index))
+            }
+        }
+    }
+
+    fun removeViewAt(parent: FragmentContainerView, index: Int) {
+        getMapOrThrow(parent) // ensure the map is mounted
+
+        val child = mountedChildren[index] ?: error(ERRORS.REMOVE_VIEW_AT_CHILD_NOT_FOUND)
+
+        // the below is just to perform a common null-check
+        if (child.getEntity() == null) return
 
         when (child) {
             is OmhMarkerEntity -> {
-                omhMap.addMarker(child.initialOptions)
+                child.getEntity()?.remove()
             }
 
             else -> {
                 Log.w(
                     NAME,
-                    "Unsupported child view type inside RN OmhMap: ${child.javaClass.simpleName}"
+                    "${ERRORS.UNSUPPORTED_CHILD_VIEW_TYPE}: ${child.javaClass.simpleName}"
                 )
             }
         }
+
+        mountedChildren.remove(index)
     }
 
     fun unmountFragment(view: FragmentContainerView) {
@@ -77,8 +132,11 @@ class RNOmhMapsCoreViewManagerImpl(private val reactContext: ReactContext) {
                 return
             }
 
-            val defaultProviderPath = MapProvidersUtils().getDefaultMapProvider(reactContext).path
-            val newFragment = OmhMapViewFragment(defaultProviderPath)
+            val defaultProvider = MapProvidersUtils().getDefaultMapProvider(reactContext)
+            lastGmsPath = defaultProvider.path
+            lastNonGmsPath = defaultProvider.path
+
+            val newFragment = OmhMapViewFragment(defaultProvider.path)
             view.removeAllViews()
             val transaction = fragmentManager.beginTransaction()
             transaction.add(newFragment, FragmentUtils.getFragmentTag(view.id))
@@ -146,6 +204,11 @@ class RNOmhMapsCoreViewManagerImpl(private val reactContext: ReactContext) {
         FragmentUtils.findFragment(reactContext, viewID)?.setOnMapReadyListener(object :
             OmhMapViewFragment.OnMapReadyListener {
             override fun onMapReady() {
+                addEntitiesQueue.forEach { (child, index) ->
+                    addView(view, child, index, entityComesFromQueue = true)
+                }
+                addEntitiesQueue.clear()
+
                 UIManagerHelper.getEventDispatcherForReactTag(reactContext, viewID)
                     ?.dispatchEvent(
                         OnOmhMapReadyEvent(
@@ -162,12 +225,27 @@ class RNOmhMapsCoreViewManagerImpl(private val reactContext: ReactContext) {
     }
 
     fun setPaths(view: FragmentContainerView, paths: ReadableMap?) {
-        OmhMapProvider.Initiator()
-            .addGmsPath(paths?.getString("gmsPath"))
-            .addNonGmsPath(paths?.getString("nonGmsPath"))
-            .initialize()
+        val gmsPath = paths?.getString("gmsPath")
+        val nonGmsPath = paths?.getString("nonGmsPath")
 
-        FragmentUtils.findFragment(view)?.reinitializeFragmentContents()
+        if (lastGmsPath != gmsPath || lastNonGmsPath != nonGmsPath) {
+            OmhMapProvider.Initiator()
+                .addGmsPath(gmsPath)
+                .addNonGmsPath(nonGmsPath)
+                .initialize()
+
+            FragmentUtils.findFragment(view)?.reinitializeFragmentContents()
+            // after the map is reinitialized, no entities will be present and they won't be added
+            // since the RN component tree has not changed; thus, here the current entites are stored for re-addition
+            mountedChildren.forEach { (index, entity) ->
+                addView(view, entity, index)
+            }
+
+            layoutChildren(view)
+
+            lastGmsPath = gmsPath
+            lastNonGmsPath = nonGmsPath
+        }
     }
 
     companion object {
@@ -178,5 +256,16 @@ class RNOmhMapsCoreViewManagerImpl(private val reactContext: ReactContext) {
                 OnOmhMapReadyEvent.NAME,
                 MapBuilder.of("registrationName", OnOmhMapReadyEvent.EVENT_PROP_NAME),
             )
+
+        object ERRORS {
+            const val MAP_FRAGMENT_NOT_FOUND =
+                "RN-managed OmhMap fragment not found. Did you wait for the map to become ready?"
+
+            const val UNSUPPORTED_CHILD_VIEW_TYPE =
+                "Unsupported child view type mounted inside RN OmhMap"
+
+            const val REMOVE_VIEW_AT_CHILD_NOT_FOUND =
+                "Child to be removed via removeViewAt() not found in mounted children registry"
+        }
     }
 }

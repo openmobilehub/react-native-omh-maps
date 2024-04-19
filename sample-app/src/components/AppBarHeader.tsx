@@ -21,11 +21,11 @@ export function AppBarHeader({
 
       <Appbar.Content title={title} style={styles.headerTitle} />
 
-      {route.name !== Route.aboutScreen && (
+      {route.name !== Route.about && (
         <Appbar.Action
           icon="information-outline"
           onPress={() => {
-            navigation.push(Route.aboutScreen);
+            navigation.push(Route.about);
           }}
           color={theme.colors.onSurface}
         />

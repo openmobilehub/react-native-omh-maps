@@ -1,5 +1,5 @@
 import React from 'react';
-import { ScrollView } from 'react-native';
+import { ScrollView, StyleSheet } from 'react-native';
 import { useTheme } from 'react-native-paper';
 
 import Route, { RoutesDescriptions } from '../Routes';
@@ -8,7 +8,7 @@ import MenuListItem from '../components/MenuListItem';
 import useLogger from '../hooks/useLogger';
 import useMapProviderChoiceContext from '../hooks/useMapProviderChoice';
 
-const menuRoutes: Route[] = [Route.plainMapScreen];
+const menuRoutes: Route[] = [Route.plainMap, Route.markerMap];
 
 export const MenuScreen = () => {
   const theme = useTheme();
@@ -22,6 +22,7 @@ export const MenuScreen = () => {
         backgroundColor: theme.colors.background,
       }}>
       <MapProviderPicker
+        style={styles.mapProviderPicker}
         defaultProvider={defaultMapProvider}
         onChange={newProvider => {
           logger.log(
@@ -30,6 +31,7 @@ export const MenuScreen = () => {
 
           changeMapProvider(newProvider);
         }}
+        centeredLabel={false}
       />
 
       {menuRoutes.map((route, index) => (
@@ -43,5 +45,11 @@ export const MenuScreen = () => {
     </ScrollView>
   );
 };
+
+const styles = StyleSheet.create({
+  mapProviderPicker: {
+    marginTop: 20,
+  },
+});
 
 export default MenuScreen;

@@ -21,8 +21,8 @@ class RNOmhMapsCoreViewManager :
         omhMapViewManagerImpl.addView(parent, child, index)
     }
 
-    override fun removeViewAt(parent: FragmentContainerView?, index: Int) {
-        super.removeViewAt(parent, index)
+    override fun removeViewAt(parent: FragmentContainerView, index: Int) {
+        omhMapViewManagerImpl.removeViewAt(parent, index)
     }
 
     override fun addEventEmitters(reactContext: ThemedReactContext, view: FragmentContainerView) {

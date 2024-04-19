@@ -35,7 +35,7 @@ enum MapErrors {
 export type OmhMapViewProps = Omit<ViewProps, 'style'> & {
   onMapReady?: () => void;
   /** The style to be applied to the map container */
-  style: Omit<ViewStyle, 'width' | 'height'> | null;
+  style?: Omit<ViewStyle, 'width' | 'height'> | null;
   width: number | Percentage;
   height: number | Percentage;
   paths: NativeOmhMapViewProps['paths'];

@@ -30,10 +30,10 @@ class OmhMapViewFragment(private var defaultProviderPath: String) :
         fun onMapReady()
     }
 
-    private var mListener: OnMapReadyListener? = null
+    private var onMapReadyListener: OnMapReadyListener? = null
 
     fun setOnMapReadyListener(listener: OnMapReadyListener?) {
-        mListener = listener
+        onMapReadyListener = listener
     }
 
     override fun onCreateView(
@@ -67,6 +67,7 @@ class OmhMapViewFragment(private var defaultProviderPath: String) :
         if (mapView != null) {
             binding.frameLayoutMapContainer.addView(mapView)
         }
+
 
         if (wasOmhMapInitialized) {
             // only run this from here if the map was already initialized
@@ -144,6 +145,6 @@ class OmhMapViewFragment(private var defaultProviderPath: String) :
 
     override fun onMapReady(omhMap: OmhMap) {
         this.omhMap = omhMap
-        mListener?.onMapReady()
+        onMapReadyListener?.onMapReady()
     }
 }

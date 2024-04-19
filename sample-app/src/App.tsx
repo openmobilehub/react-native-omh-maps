@@ -9,6 +9,7 @@ import AppBarHeader from './components/AppBarHeader';
 import { MapProviderChoiceContextProvider } from './context/MapProviderChoiceContext';
 import useCreateAdaptiveTheme from './hooks/useCreateAdaptiveTheme';
 import AboutScreen from './screens/AboutScreen';
+import MarkerMapScreen from './screens/MarkerMapScreen';
 import MenuScreen from './screens/MenuScreen';
 import PlainMapScreen from './screens/PlainMapScreen';
 
@@ -34,20 +35,28 @@ export default function App() {
             screenOptions={{
               header: AppBarHeader,
             }}
-            initialRouteName={Route.menuScreen}>
+            initialRouteName={Route.menu}>
             <Stack.Screen
-              name={Route.menuScreen}
+              name={Route.menu}
               component={MenuScreen}
               options={screenOptions}
             />
+
             <Stack.Screen
-              name={Route.aboutScreen}
+              name={Route.about}
               component={AboutScreen}
               options={screenOptions}
             />
+
             <Stack.Screen
-              name={Route.plainMapScreen}
+              name={Route.plainMap}
               component={PlainMapScreen}
+              options={screenOptions}
+            />
+
+            <Stack.Screen
+              name={Route.markerMap}
+              component={MarkerMapScreen}
               options={screenOptions}
             />
           </Stack.Navigator>
