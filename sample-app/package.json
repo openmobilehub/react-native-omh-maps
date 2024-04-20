@@ -21,6 +21,7 @@
     "@omh/react-native-maps-plugin-googlemaps": "workspace:^",
     "@omh/react-native-maps-plugin-mapbox": "workspace:^",
     "@omh/react-native-maps-plugin-openstreetmap": "workspace:^",
+    "@react-native-community/hooks": "^3.0.0",
     "@react-native-community/slider": "4.5.0",
     "@react-native-picker/picker": "^2.7.5",
     "@react-navigation/native": "^6.1.17",

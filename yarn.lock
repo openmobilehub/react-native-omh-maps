@@ -3824,6 +3824,7 @@ __metadata:
     "@omh/react-native-maps-plugin-googlemaps": "workspace:^"
     "@omh/react-native-maps-plugin-mapbox": "workspace:^"
     "@omh/react-native-maps-plugin-openstreetmap": "workspace:^"
+    "@react-native-community/hooks": ^3.0.0
     "@react-native-community/slider": 4.5.0
     "@react-native-picker/picker": ^2.7.5
     "@react-navigation/native": ^6.1.17
@@ -4131,6 +4132,16 @@ __metadata:
   bin:
     react-native: build/bin.js
   checksum: 0a410ddcd3d86acfd0a6ec93b220169c416e26f8b08b11d991e1defa4089c460cfec019c5d1ce6d71ac013ad09fc2e522c7a8c2948256a167e8fd89458f5a65c
+  languageName: node
+  linkType: hard
+
+"@react-native-community/hooks@npm:^3.0.0":
+  version: 3.0.0
+  resolution: "@react-native-community/hooks@npm:3.0.0"
+  peerDependencies:
+    react: ">=17.0.2"
+    react-native: ">=0.65"
+  checksum: 4fefcc22883ca7e21ad26e12830671e7287e29eed8fc51fdebebbccdd27b53f7743f64f55d640a74ea2dae4fed1f44b7be40410938564e736a2c3bbb9a770d3e
   languageName: node
   linkType: hard
 

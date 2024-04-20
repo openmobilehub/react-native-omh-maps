@@ -1,11 +1,12 @@
 import React, { useMemo, useRef } from 'react';
-import { View } from 'react-native';
+import { StyleSheet, View } from 'react-native';
 
 import {
   OmhMapView,
   OmhMapViewRef,
   OmhMapsModule,
 } from '@omh/react-native-maps-core';
+import { useDeviceOrientation } from '@react-native-community/hooks';
 
 import useLogger from '../hooks/useLogger';
 import { demoStyles } from '../styles/demoStyles';
@@ -17,13 +18,20 @@ export const MultipleMapsScreen = () => {
     () => OmhMapsModule.getAvailableMapProviders(),
     []
   );
+  const orientation = useDeviceOrientation();
 
   const omhMapRefs = useRef<{
     [providerPath: string]: OmhMapViewRef | null | undefined;
   }>({});
 
   return (
-    <View style={demoStyles.rootContainer}>
+    <View
+      style={[
+        demoStyles.rootContainer,
+        orientation === 'landscape'
+          ? styles.landscapeContainer
+          : styles.verticalContainer,
+      ]}>
       {availableProviders.map(provider => (
         <View
           style={[
@@ -57,5 +65,14 @@ export const MultipleMapsScreen = () => {
     </View>
   );
 };
+
+const styles = StyleSheet.create({
+  landscapeContainer: {
+    flexDirection: 'row',
+  },
+  verticalContainer: {
+    flexDirection: 'column',
+  },
+});
 
 export default MultipleMapsScreen;
