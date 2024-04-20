@@ -4,10 +4,11 @@ import { Platform, StyleSheet, View } from 'react-native';
 import { Headline, Subheading } from 'react-native-paper';
 
 import { version as appVersion } from '../../package.json';
+import { demoStyles } from '../styles/demoStyles';
 
 export const AboutScreen = () => {
   return (
-    <View style={styles.container}>
+    <View style={[demoStyles.rootContainer, styles.container]}>
       <Headline>React Native OMH Maps Sample</Headline>
       <Subheading>App v{appVersion}</Subheading>
       <Subheading>
@@ -24,9 +25,6 @@ export const AboutScreen = () => {
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
     rowGap: 2.5,
   },
 });

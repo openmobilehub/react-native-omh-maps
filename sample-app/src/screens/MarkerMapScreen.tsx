@@ -1,5 +1,5 @@
 import React, { useRef, useState } from 'react';
-import { ScrollView, StyleSheet, View } from 'react-native';
+import { ScrollView, View } from 'react-native';
 import { Checkbox, Subheading } from 'react-native-paper';
 
 import { OmhMapView, OmhMapViewRef } from '@omh/react-native-maps-core';
@@ -7,6 +7,7 @@ import { OmhMapView, OmhMapViewRef } from '@omh/react-native-maps-core';
 import OmhMarker from '../../../packages/core/src/OmhMarker';
 import useChosenMapProvider from '../hooks/useChosenMapProvider';
 import useLogger from '../hooks/useLogger';
+import { demoStyles } from '../styles/demoStyles';
 import { Constants } from '../utils/Constants';
 
 export const MarkerMapScreen = () => {
@@ -18,8 +19,8 @@ export const MarkerMapScreen = () => {
   const omhMapRef = useRef<OmhMapViewRef | null>(null);
 
   return (
-    <View style={styles.rootContainer}>
-      <View style={[styles.mapContainer]}>
+    <View style={demoStyles.rootContainer}>
+      <View style={demoStyles.mapContainer}>
         <OmhMapView
           ref={omhMapRef}
           onMapReady={() => {
@@ -42,10 +43,14 @@ export const MarkerMapScreen = () => {
         </OmhMapView>
       </View>
 
-      <View style={styles.demoControlsScrollViewContainer}>
+      <View style={demoStyles.demoControlsScrollViewContainer}>
         <ScrollView
-          contentContainerStyle={styles.demoControlsScrollViewContentContainer}>
-          <Subheading style={styles.centeredHeading}>Demo controls</Subheading>
+          contentContainerStyle={
+            demoStyles.demoControlsScrollViewContentContainer
+          }>
+          <Subheading style={demoStyles.centeredHeading}>
+            Demo controls
+          </Subheading>
 
           <Checkbox.Item
             label="Mount customizable <OmhMarker/>"
@@ -59,36 +64,5 @@ export const MarkerMapScreen = () => {
     </View>
   );
 };
-
-const styles = StyleSheet.create({
-  rootContainer: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  mapContainer: {
-    flex: 0.6,
-    width: '100%',
-    height: '100%',
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  demoControlsScrollViewContainer: {
-    flex: 0.4,
-    overflow: 'hidden',
-    marginTop: 10,
-    width: '100%',
-  },
-  demoControlsScrollViewContentContainer: {
-    paddingVertical: 25,
-    paddingHorizontal: 10,
-    width: '100%',
-  },
-  centeredHeading: {
-    textAlign: 'center',
-    fontSize: 22,
-    marginBottom: 20,
-  },
-});
 
 export default MarkerMapScreen;
