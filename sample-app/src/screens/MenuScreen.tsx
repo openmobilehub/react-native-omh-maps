@@ -10,6 +10,7 @@ import useMapProviderChoiceContext from '../hooks/useMapProviderChoice';
 
 const menuRoutes: Route[] = [
   Route.plainMap,
+  Route.cameraMap,
   Route.markerMap,
   Route.multipleMaps,
 ];

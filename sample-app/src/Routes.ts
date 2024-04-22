@@ -4,6 +4,7 @@ export enum Route {
   plainMap = 'Plain map',
   markerMap = 'Marker map',
   multipleMaps = 'Multiple maps',
+  cameraMap = 'Camera Map',
 }
 
 export const RoutesDescriptions: Record<Route, string> = {
@@ -13,6 +14,7 @@ export const RoutesDescriptions: Record<Route, string> = {
   [Route.markerMap]: 'Interactive map with markers.',
   [Route.multipleMaps]:
     'Multiple maps from different providers displayed simultaneously.',
+  [Route.cameraMap]: 'Map showcasing the camera features',
 };
 
 export default Route;

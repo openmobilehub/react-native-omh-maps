@@ -16,12 +16,11 @@ export const demoStyles = StyleSheet.create({
   demoControlsScrollViewContainer: {
     flex: 0.4,
     overflow: 'hidden',
-    marginTop: 10,
     width: '100%',
   },
   demoControlsScrollViewContentContainer: {
-    paddingVertical: 25,
-    paddingHorizontal: 10,
+    paddingVertical: 8,
+    paddingHorizontal: 8,
     width: '100%',
   },
   centeredHeading: {
