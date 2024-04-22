@@ -3,7 +3,7 @@ name: CD
 on:
   push:
     branches:
-      - main
+      - fix/OMHD-193-workflow-fix # TODO: Change the branch name to main later
 
 # GITHUB_TOKEN needs to be granted the permissions required to make a Pages deployment
 permissions:
@@ -73,7 +73,7 @@ jobs:
         uses: actions/deploy-pages@v4
 
   sample-app-android:
-    needs: setup-monorepo, build-documentation
+    needs: [setup-monorepo, build-documentation]
     name: Build and publish Android app
     runs-on: ubuntu-latest
 
