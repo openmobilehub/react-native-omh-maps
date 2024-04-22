@@ -19,6 +19,7 @@ import com.openmobilehub.android.maps.core.presentation.interfaces.maps.OmhOnMar
 import com.openmobilehub.android.rn.maps.core.BuildConfig
 import com.openmobilehub.android.rn.maps.core.entities.OmhMapEntity
 import com.openmobilehub.android.rn.maps.core.entities.OmhMarkerEntity
+import com.openmobilehub.android.rn.maps.core.entities.OmhPolylineEntity
 import com.openmobilehub.android.rn.maps.core.events.OmhBaseEventCompanion
 import com.openmobilehub.android.rn.maps.core.events.OmhOnCameraIdleEvent
 import com.openmobilehub.android.rn.maps.core.events.OmhOnCameraMoveStartedEvent

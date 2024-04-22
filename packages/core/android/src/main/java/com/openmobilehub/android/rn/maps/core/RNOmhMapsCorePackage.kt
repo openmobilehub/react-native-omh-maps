@@ -10,6 +10,7 @@ import com.facebook.react.turbomodule.core.interfaces.TurboModule
 import com.facebook.react.uimanager.ViewManager
 import com.openmobilehub.android.rn.maps.core.viewmanagers.RNOmhMapsCoreViewManager
 import com.openmobilehub.android.rn.maps.core.viewmanagers.RNOmhMapsMarkerViewManager
+import com.openmobilehub.android.rn.maps.core.viewmanagers.RNOmhMapsPolylineViewManager
 
 class RNOmhMapsCoreTurboPackage : TurboReactPackage() {
     /**
@@ -56,6 +57,6 @@ class RNOmhMapsCoreTurboPackage : TurboReactPackage() {
         /**
          * Here declare the list of exported native components
          */
-        return listOf(RNOmhMapsCoreViewManager(), RNOmhMapsMarkerViewManager())
+        return listOf(RNOmhMapsCoreViewManager(), RNOmhMapsMarkerViewManager(), RNOmhMapsPolylineViewManager())
     }
 }
