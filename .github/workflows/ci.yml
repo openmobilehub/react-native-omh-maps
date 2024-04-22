@@ -6,7 +6,25 @@ on:
     types: [opened, synchronize]
 
 jobs:
+  # this job sets up the dependencies in the monorepo & caches them and runs first
+  # which speeds up the other jobs, as they will use the cached node_modules
+  setup-monorepo:
+    name: Setup monorepo
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup
+        uses: ./.github/actions/setup
+        with:
+          MAPBOX_SECRET_TOKEN: ${{ secrets.MAPBOX_SECRET_TOKEN }}
+          MAPBOX_PUBLIC_TOKEN: ${{ secrets.MAPBOX_PUBLIC_TOKEN }}
+          GOOGLE_MAPS_API_KEY: ${{ secrets.GOOGLE_MAPS_API_KEY }}
+          AZURE_MAPS_SUBSCRIPTION_KEY: ${{ secrets.AZURE_MAPS_SUBSCRIPTION_KEY }}
+
   lint:
+    needs: setup-monorepo
     name: Lint & typecheck files
     runs-on: ubuntu-latest
     steps:
@@ -15,6 +33,11 @@ jobs:
 
       - name: Setup
         uses: ./.github/actions/setup
+        with:
+          MAPBOX_SECRET_TOKEN: ${{ secrets.MAPBOX_SECRET_TOKEN }}
+          MAPBOX_PUBLIC_TOKEN: ${{ secrets.MAPBOX_PUBLIC_TOKEN }}
+          GOOGLE_MAPS_API_KEY: ${{ secrets.GOOGLE_MAPS_API_KEY }}
+          AZURE_MAPS_SUBSCRIPTION_KEY: ${{ secrets.AZURE_MAPS_SUBSCRIPTION_KEY }}
 
       - name: Lint files
         run: yarn lint
@@ -23,6 +46,7 @@ jobs:
         run: yarn typecheck
 
   test:
+    needs: setup-monorepo
     name: Run unit tests
     runs-on: ubuntu-latest
     steps:
@@ -31,11 +55,17 @@ jobs:
 
       - name: Setup
         uses: ./.github/actions/setup
+        with:
+          MAPBOX_SECRET_TOKEN: ${{ secrets.MAPBOX_SECRET_TOKEN }}
+          MAPBOX_PUBLIC_TOKEN: ${{ secrets.MAPBOX_PUBLIC_TOKEN }}
+          GOOGLE_MAPS_API_KEY: ${{ secrets.GOOGLE_MAPS_API_KEY }}
+          AZURE_MAPS_SUBSCRIPTION_KEY: ${{ secrets.AZURE_MAPS_SUBSCRIPTION_KEY }}
 
       - name: Run unit tests
         run: yarn test --maxWorkers=2 --coverage
 
   build-packages:
+    needs: setup-monorepo
     name: Build packages
     runs-on: ubuntu-latest
     steps:
@@ -44,6 +74,11 @@ jobs:
 
       - name: Setup
         uses: ./.github/actions/setup
+        with:
+          MAPBOX_SECRET_TOKEN: ${{ secrets.MAPBOX_SECRET_TOKEN }}
+          MAPBOX_PUBLIC_TOKEN: ${{ secrets.MAPBOX_PUBLIC_TOKEN }}
+          GOOGLE_MAPS_API_KEY: ${{ secrets.GOOGLE_MAPS_API_KEY }}
+          AZURE_MAPS_SUBSCRIPTION_KEY: ${{ secrets.AZURE_MAPS_SUBSCRIPTION_KEY }}
 
       - name: Build packages
         run: yarn build:packages

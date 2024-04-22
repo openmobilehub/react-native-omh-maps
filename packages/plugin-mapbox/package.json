@@ -42,7 +42,7 @@
     "type": "git",
     "url": "git+https://github.com/openmobilehub/react-native-omh-maps.git"
   },
-  "author": "Open Mobile Hub <contact@openmobilehub.com> (https://openmobilehub.com)",
+  "author": "OpenMobileHub <contact@openmobilehub.com> (https://github.com/openmobilehub)",
   "license": "MIT",
   "bugs": {
     "url": "https://github.com/openmobilehub/react-native-omh-maps/issues"
@@ -69,6 +69,11 @@
         }
       ]
     ]
+  },
+  "codegenConfig": {
+    "name": "RNOmhMapsPluginMapbox",
+    "type": "all",
+    "jsSrcsDir": "src"
   },
   "devDependencies": {
     "@types/node": "*",

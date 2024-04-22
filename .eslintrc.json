@@ -12,7 +12,8 @@
         "trailingComma": "es5",
         "useTabs": false
       }
-    ]
+    ],
+    "react/no-unstable-nested-components": "off"
   },
   "env": {
     "node": true

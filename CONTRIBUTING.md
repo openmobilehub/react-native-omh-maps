@@ -61,7 +61,7 @@ yarn test
 
 ## Creating a new package
 
-To create a new package, use the interactive CLI tool: `yarn scripts createPlugin`. The whole package along with scripts, configuration and dependencies will be bootstrapped for you. Yarn dependencies will be installed automatically and the package will be added to aliases in `tsconfig.json` and as a dependency to the sample app.
+To create a new package, use the interactive CLI tool: `yarn scripts createPlugin`. The whole package along with scripts, configuration and dependencies will be bootstrapped for you using [React Native New Architecture](https://github.com/reactwg/react-native-new-architecture) (Fabric + Turbo Modules) with backwards compatibility code - implementation for Old Architecture. Each source set is compiled depending on whether the consumer application uses the new architecture (e.g. on Android - specifies `newArchEnabled=true` in `gradle.properties`). Yarn dependencies will be installed automatically and the package will be added to aliases in `tsconfig.json` and as a dependency to the sample app.
 
 ## Scripts
 
@@ -77,7 +77,8 @@ The `package.json` file contains various scripts for common tasks:
   - `yarn sample-app android`: run the example app on Android.
   - `yarn sample-app ios`: run the example app on iOS.
   - `yarn sample-app build:android:{debug,release}`: build the example app for Android.
-    - `yarn sample-app build:ios:{debug,release}`: build the example app for iOS.
+  - `yarn sample-app build:ios:{debug,release}`: build the example app for iOS.
+- `yarn scripts createPlugin`: interactively bootstraps a new OMH Maps plugin project.
 
 ## Commit message convention
 

@@ -14,7 +14,7 @@ const modules = Object.keys({ ...pak.peerDependencies });
  * @type {import('metro-config').MetroConfig}
  */
 const config = {
-  watchFolders: [root],
+  watchFolders: [root, path.resolve('.')],
 
   // We need to make sure that only one version is loaded for peerDependencies
   // So we block them at the root, and alias them to the versions in example's node_modules

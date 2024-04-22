@@ -29,7 +29,7 @@
     "test": "jest",
     "typecheck": "tsc --noEmit",
     "lint": "eslint \"**/*.{js,ts,tsx}\"",
-    "clean": "del-cli android/build example/android/build example/android/app/build example/ios/build lib",
+    "clean": "del-cli lib",
     "prepare": "bob build",
     "release": "release-it"
   },
@@ -55,16 +55,6 @@
     "react": "*",
     "react-native": "*"
   },
-  "devDependencies": {
-    "@types/node": "*",
-    "del-cli": "*",
-    "eslint": "*",
-    "jest": "*",
-    "react-native-builder-bob": "*",
-    "release-it": "*",
-    "ts-node": "*",
-    "typescript": "*"
-  },
   "packageManager": "yarn@3.6.1",
   "react-native-builder-bob": {
     "source": "src",
@@ -79,5 +69,20 @@
         }
       ]
     ]
+  },
+  "codegenConfig": {
+    "name": "RNOmhMapsPluginGooglemaps",
+    "type": "components",
+    "jsSrcsDir": "src"
+  },
+  "devDependencies": {
+    "@types/node": "*",
+    "del-cli": "*",
+    "eslint": "*",
+    "jest": "*",
+    "react-native-builder-bob": "*",
+    "release-it": "*",
+    "ts-node": "*",
+    "typescript": "*"
   }
 }
