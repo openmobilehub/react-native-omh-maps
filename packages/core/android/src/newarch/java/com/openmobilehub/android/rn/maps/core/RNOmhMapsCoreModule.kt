@@ -26,6 +26,14 @@ class RNOmhMapsCoreModule(
         moduleImpl.setCameraCoordinate(viewRef, coordinate, zoomLevel, promise)
     }
 
+    override fun getProviderName(viewRef: Double): String {
+      return moduleImpl.getProviderName(viewRef)
+    }
+
+    override fun takeSnapshot(viewRef: Double, format: String, promise: Promise) {
+      moduleImpl.takeSnapshot(viewRef, format, promise)
+    }
+
     override fun getAvailableMapProviders(): WritableArray {
         return moduleImpl.getAvailableMapProviders()
     }
@@ -36,7 +44,8 @@ class RNOmhMapsCoreModule(
 
     override fun getName() = NAME
 
-    companion object {
+
+  companion object {
         const val NAME = RNOmhMapsCoreModuleImpl.NAME
     }
 }

@@ -5,45 +5,71 @@ import { MD2Colors, Modal } from 'react-native-paper';
 import { OmhMapView, OmhMapViewRef } from '@omh/react-native-maps-core';
 
 import useChosenMapProvider from '../hooks/useChosenMapProvider';
-import useLogger from '../hooks/useLogger';
 import { demoStyles } from '../styles/demoStyles';
 import { Constants } from '../utils/Constants';
 import { PanelCheckbox } from '../components/PanelCheckbox';
 import { PanelButton } from '../components/PanelButton';
+import { SnackbarMy, SnackbarRef } from '../components/Snackbar';
 
 export const CameraMapScreen = () => {
-  const logger = useLogger('CameraMapScreen');
-
   const mapProvider = useChosenMapProvider();
 
   const [snapshotModalVisible, setSnapshotModalVisible] = useState(false);
   const [snapshotSource, setSnapshotSource] = useState<string | null>(null);
-  const [zoomGesturesEnabled, setZoomGesturesEnabled] = useState(true);
-  const [rotateGesturesEnabled, setRotateGesturesEnabled] = useState(true);
+  const [zoomGesturesEnabled, setZoomGesturesEnabled] = useState(false);
+  const [rotateGesturesEnabled, setRotateGesturesEnabled] = useState(false);
 
   const omhMapRef = useRef<OmhMapViewRef | null>(null);
 
-  const handleShowCameraPositionButtonPress = () => {
-    console.log('show camera position');
+  const ref = useRef<SnackbarRef>(null);
+
+  const handleShowCameraPositionButtonPress = async () => {
+    const cameraPosition = await omhMapRef.current?.getCameraCoordinate();
+    if (cameraPosition !== null) {
+      ref.current?.show(
+        'Camera position coordinate: ' + JSON.stringify(cameraPosition, null, 2)
+      );
+    }
   };
 
-  const handleMoveMapToEventButtonPress = () => {
-    console.log('move map to event');
+  const handleMoveMapToEverestButtonPress = () => {
+    omhMapRef.current?.setCameraCoordinate(
+      Constants.Maps.EVEREST_COORDINATE,
+      Constants.Maps.EVEREST_ZOOM_LEVEL
+    );
   };
 
   const handleMoveMapToSaharaButtonPress = () => {
-    console.log('move map to sahara');
+    omhMapRef.current?.setCameraCoordinate(
+      Constants.Maps.SAHARA_COORDINATE,
+      Constants.Maps.SAHARA_ZOOM_LEVEL
+    );
   };
 
-  const handleMakeSnapshotButtonPress = () => {
+  const handleMakeSnapshotButtonPress = async () => {
+    const result = await omhMapRef.current?.takeSnapshot('base64');
+    if (!result) {
+      return;
+    }
+    console.log('Snapshot result:', result);
+    setSnapshotSource(result);
+
     setSnapshotModalVisible(true);
-    setSnapshotSource('https://reactnative.dev/img/tiny_logo.png');
-    console.log('make snapshot');
   };
 
   const handleSnapshotModalDismiss = () => {
     setSnapshotModalVisible(false);
     setSnapshotSource(null);
+  };
+
+  const handleCameraIdle = () => {
+    ref.current?.show('Camera idle');
+    console.log('camera idle');
+  };
+
+  const handleCameraMoveStarted = (reason: string) => {
+    ref.current?.show('Camera move started: ' + reason);
+    console.log('camera move started', reason);
   };
 
   return (
@@ -52,14 +78,16 @@ export const CameraMapScreen = () => {
         <View style={demoStyles.mapContainer}>
           <OmhMapView
             ref={omhMapRef}
-            onMapReady={() => {
-              logger.log('OmhMapView has become ready');
-
+            zoomEnabled={zoomGesturesEnabled}
+            rotateEnabled={rotateGesturesEnabled}
+            onMapLoaded={() => {
               omhMapRef.current?.setCameraCoordinate(
                 Constants.Maps.GREENWICH_COORDINATE,
                 15.0
               );
             }}
+            onCameraIdle={handleCameraIdle}
+            onCameraMoveStarted={event => handleCameraMoveStarted(event)}
             width={`100%`}
             height={`100%`}
             paths={{
@@ -88,8 +116,8 @@ export const CameraMapScreen = () => {
               label="Show camera position coordinate"
             />
             <PanelButton
-              onPress={handleMoveMapToEventButtonPress}
-              label="Move map to event"
+              onPress={handleMoveMapToEverestButtonPress}
+              label="Move map to Everest"
             />
             <PanelButton
               onPress={handleMoveMapToSaharaButtonPress}
@@ -114,6 +142,7 @@ export const CameraMapScreen = () => {
         )}
         <PanelButton onPress={handleSnapshotModalDismiss} label="Close" />
       </Modal>
+      <SnackbarMy ref={ref} />
     </>
   );
 };

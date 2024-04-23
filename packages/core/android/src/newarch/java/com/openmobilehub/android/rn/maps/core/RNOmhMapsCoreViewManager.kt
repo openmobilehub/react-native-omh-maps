@@ -65,4 +65,9 @@ class RNOmhMapsCoreViewManager :
     override fun getExportedCustomDirectEventTypeConstants(): MutableMap<String, Any> {
         return RNOmhMapsCoreViewManagerImpl.EVENTS
     }
+
+    @ReactProp(name = "rotateEnabled")
+    override fun setRotateEnabled(view: FragmentContainerView, value: Boolean) {
+      omhMapViewManagerImpl.setRotateEnabled(view, value)
+    }
 }

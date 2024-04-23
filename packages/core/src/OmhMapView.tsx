@@ -1,5 +1,6 @@
 import React, { forwardRef, useMemo, useState } from 'react';
 import {
+  NativeSyntheticEvent,
   PixelRatio,
   StyleSheet,
   View,
@@ -23,22 +24,38 @@ export type OmhMapViewRef = {
   setCameraCoordinate: OmhMapsCoreModuleFunctionWithoutViewRef<
     Spec['setCameraCoordinate']
   >;
+  getProviderName: OmhMapsCoreModuleFunctionWithoutViewRef<
+    Spec['getProviderName']
+  >;
+  takeSnapshot: (resultFormat: OmhSnapshotFormat) => Promise<string>;
 };
 
 enum MapErrors {
   MAP_NOT_IN_TREE_YET = 'OmhMap is not mounted in the RN view tree yet.',
 }
 
+type OmhCameraMoveStartedReason =
+  | 'gesture'
+  | 'apiAnimation'
+  | 'developerAnimation'
+  | 'unknown';
+
+type OmhSnapshotFormat = 'png' | 'jpg' | 'base64';
+
 /**
  * The OMH Map View properties.
  */
 export type OmhMapViewProps = Omit<ViewProps, 'style'> & {
-  onMapReady?: () => void;
   /** The style to be applied to the map container */
   style?: Omit<ViewStyle, 'width' | 'height'> | null;
   width: number | Percentage;
   height: number | Percentage;
   paths: NativeOmhMapViewProps['paths'];
+  zoomEnabled?: boolean;
+  rotateEnabled?: boolean;
+  onMapLoaded?: () => void;
+  onCameraIdle?: () => void;
+  onCameraMoveStarted?: (reason: OmhCameraMoveStartedReason) => void;
 };
 
 /**
@@ -47,9 +64,21 @@ export type OmhMapViewProps = Omit<ViewProps, 'style'> & {
  */
 export const OmhMapView = forwardRef<OmhMapViewRef, OmhMapViewProps>(
   (
-    { style, width, height, paths, onMapReady = () => {}, children },
+    {
+      style,
+      width,
+      height,
+      paths,
+      onMapLoaded,
+      children,
+      zoomEnabled,
+      rotateEnabled,
+      onCameraIdle,
+      onCameraMoveStarted,
+    },
     forwardedRef
   ) => {
+    const [isMapReady, setIsMapReady] = useState(false);
     const [componentSize, setComponentSize] = useState({ width: 0, height: 0 });
 
     const nativeComponentRef = React.useRef<
@@ -80,9 +109,15 @@ export const OmhMapView = forwardRef<OmhMapViewRef, OmhMapViewProps>(
           const notReadyPromiseHandler = () =>
             Promise.reject(new Error(MapErrors.MAP_NOT_IN_TREE_YET));
 
+          const notReadyHandler = () => {
+            throw new Error(MapErrors.MAP_NOT_IN_TREE_YET);
+          };
+
           return {
             getCameraCoordinate: notReadyPromiseHandler,
             setCameraCoordinate: notReadyPromiseHandler,
+            getProviderName: notReadyHandler,
+            takeSnapshot: notReadyPromiseHandler,
           };
         }
 
@@ -91,10 +126,48 @@ export const OmhMapView = forwardRef<OmhMapViewRef, OmhMapViewProps>(
             NativeOmhMapsCoreModule.getCameraCoordinate(nodeHandle),
           setCameraCoordinate: (...args) =>
             NativeOmhMapsCoreModule.setCameraCoordinate(nodeHandle, ...args),
+          getProviderName: () =>
+            NativeOmhMapsCoreModule.getProviderName(nodeHandle),
+          takeSnapshot: (format: OmhSnapshotFormat) =>
+            NativeOmhMapsCoreModule.takeSnapshot(nodeHandle, format),
         };
       },
       [getViewRefHandle]
     );
+
+    const handleMapReady = () => {
+      setIsMapReady(true);
+    };
+
+    const onCameraMoveStartedMapped = (
+      event: NativeSyntheticEvent<{ reason: number }>
+    ) => {
+      let reason: OmhCameraMoveStartedReason = 'unknown';
+      switch (event.nativeEvent.reason) {
+        case 1:
+          reason = 'gesture';
+          break;
+        case 2:
+          reason = 'apiAnimation';
+          break;
+        case 3:
+          reason = 'developerAnimation';
+          break;
+      }
+
+      onCameraMoveStarted?.(reason);
+    };
+
+    const props = isMapReady
+      ? {
+          onCameraMoveStarted: onCameraMoveStartedMapped,
+          onMapLoaded,
+          onCameraIdle: onCameraIdle,
+          zoomEnabled,
+          rotateEnabled,
+          children,
+        }
+      : {};
 
     return (
       <View
@@ -117,16 +190,16 @@ export const OmhMapView = forwardRef<OmhMapViewRef, OmhMapViewProps>(
           },
         ]}>
         <RNOmhMapsCoreViewNativeComponent
+          // @ts-ignore next line: missing typing for 'ref' prop on HostComponent
+          ref={nativeComponentRef}
           style={{
             width: PixelRatio.getPixelSizeForLayoutSize(componentSize.width), // convert dpi to px
             height: PixelRatio.getPixelSizeForLayoutSize(componentSize.height), // convert dpi to px
           }}
-          onMapReady={onMapReady}
+          onMapReady={handleMapReady}
           paths={paths}
-          // @ts-ignore next line: missing typing for 'ref' prop on HostComponent
-          ref={nativeComponentRef}>
-          {children}
-        </RNOmhMapsCoreViewNativeComponent>
+          {...props}
+        />
       </View>
     );
   }

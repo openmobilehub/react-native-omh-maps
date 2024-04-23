@@ -12,6 +12,8 @@ export type OmhCoordinate = {
 };
 
 export interface Spec extends TurboModule {
+  getProviderName(viewRef: number): string;
+  takeSnapshot(viewRef: number, format: string): Promise<string>;
   getCameraCoordinate(viewRef: number): Promise<OmhCoordinate | null>;
   setCameraCoordinate(
     viewRef: number,

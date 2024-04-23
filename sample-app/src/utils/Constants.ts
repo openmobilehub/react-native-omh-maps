@@ -6,6 +6,17 @@ export namespace Constants {
       latitude: 51.4779,
       longitude: -0.0015,
     };
+    export const EVEREST_COORDINATE: OmhCoordinate = {
+      latitude: 27.9881,
+      longitude: 86.925,
+    };
+    export const EVEREST_ZOOM_LEVEL = 15;
+
+    export const SAHARA_COORDINATE: OmhCoordinate = {
+      latitude: 23.4162,
+      longitude: 25.6628,
+    };
+    export const SAHARA_ZOOM_LEVEL = 5;
   }
 
   export namespace UI {
