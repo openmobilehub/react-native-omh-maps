@@ -2,7 +2,11 @@ import React, { useState } from 'react';
 import { ScrollView, View } from 'react-native';
 import { Checkbox, Subheading } from 'react-native-paper';
 
-import { OmhCoordinate, OmhMapView } from '@omh/react-native-maps-core';
+import {
+  OmhCoordinate,
+  OmhMapView,
+  OmhPolyline,
+} from '@omh/react-native-maps-core';
 
 import useChosenMapProvider from '../../hooks/useChosenMapProvider';
 import { demoStyles } from '../../styles/demoStyles';

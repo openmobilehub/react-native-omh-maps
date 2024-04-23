@@ -11,3 +11,5 @@ export { default as OmhMapsModule } from './NativeOmhMapsCoreModule';
 
 export * from './components/marker/OmhMarkerConstants';
 export * from './components/marker/OmhMarker';
+
+export { default as OmhPolyline } from './OmhPolyline';
