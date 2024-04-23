@@ -32,7 +32,7 @@ export default function MapProviderPicker({
   );
 
   const [provider, setProvider] = React.useState<MapProvider>(defaultProvider);
-
+  console.log('provider', provider);
   return (
     <View style={style}>
       <ControlParagraph centered={centeredLabel}>{label}</ControlParagraph>

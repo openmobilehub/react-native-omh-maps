@@ -72,7 +72,7 @@
   },
   "codegenConfig": {
     "name": "RNOmhMapsPluginAzuremaps",
-    "type": "all",
+    "type": "modules",
     "jsSrcsDir": "src"
   },
   "devDependencies": {

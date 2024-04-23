@@ -47,7 +47,7 @@ export const CameraMapScreen = () => {
   };
 
   const handleMakeSnapshotButtonPress = async () => {
-    const result = await omhMapRef.current?.takeSnapshot('base64');
+    const result = await omhMapRef.current?.takeSnapshot('jpg');
     if (!result) {
       return;
     }

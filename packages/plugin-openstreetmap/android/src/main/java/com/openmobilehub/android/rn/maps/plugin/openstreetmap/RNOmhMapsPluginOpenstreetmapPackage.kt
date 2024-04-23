@@ -49,6 +49,6 @@ class OmhMapsPluginOpenstreetmapTurboPackage : TurboReactPackage() {
         /**
          * Here declare the list of exported native components
          */
-        return listOf(RNOmhMapsPluginOpenstreetmapViewManager())
+        return listOf()
     }
 }

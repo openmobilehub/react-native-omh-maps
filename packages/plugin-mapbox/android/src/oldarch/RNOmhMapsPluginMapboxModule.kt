@@ -1,12 +1,11 @@
 package com.openmobilehub.android.rn.maps.plugin.mapbox
 
-import com.facebook.react.bridge.Promise
 import com.facebook.react.bridge.ReactApplicationContext
 import com.facebook.react.bridge.ReactContextBaseJavaModule
 import com.facebook.react.bridge.ReactMethod
 import com.facebook.react.module.annotations.ReactModule
 
-@ReactModule(name = OmhMapModule.NAME)
+@ReactModule(name = RNOmhMapsPluginMapboxModule.NAME)
 class RNOmhMapsPluginMapboxModule(
     reactContext: ReactApplicationContext
 ) : ReactContextBaseJavaModule(reactContext) {
@@ -18,6 +17,6 @@ class RNOmhMapsPluginMapboxModule(
     override fun getName() = NAME
 
     companion object {
-        const val NAME = RNOmhMapsPluginMapboxModule.NAME
+        const val NAME = RNOmhMapsPluginMapboxModuleImpl.NAME
     }
 }

@@ -72,7 +72,7 @@
   },
   "codegenConfig": {
     "name": "RNOmhMapsPluginGooglemaps",
-    "type": "components",
+    "type": "modules",
     "jsSrcsDir": "src"
   },
   "devDependencies": {

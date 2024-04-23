@@ -9,40 +9,51 @@ import com.facebook.react.bridge.WritableArray
 import com.facebook.react.bridge.WritableMap
 import com.facebook.react.bridge.ReadableMap
 
-@ReactModule(name = OmhMapModule.NAME)
+@ReactModule(name = RNOmhMapsCoreModule.NAME)
 class RNOmhMapsCoreModule(
-    reactContext: ReactApplicationContext
+  reactContext: ReactApplicationContext
 ) : ReactContextBaseJavaModule(reactContext) {
-    private val moduleImpl = RNOmhMapsCoreModule(reactContext)
+  private val moduleImpl = RNOmhMapsCoreModuleImpl(reactContext)
 
-    override fun getName() = NAME
+  @ReactMethod
+  fun getCameraCoordinate(viewRef: Double, promise: Promise) {
+    moduleImpl.getCameraCoordinate(viewRef, promise)
+  }
 
-    @ReactMethod
-    fun getCameraCoordinate(viewRef: Double, promise: Promise) {
-        moduleImpl.getCameraCoordinate(viewRef, promise)
-    }
+  @ReactMethod
+  fun setCameraCoordinate(
+    viewRef: Double,
+    coordinate: ReadableMap,
+    zoomLevel: Double,
+    promise: Promise
+  ) {
+    moduleImpl.setCameraCoordinate(viewRef, coordinate, zoomLevel, promise)
+  }
 
-    @ReactMethod
-    fun setCameraCoordinate(
-        viewRef: Double,
-        coordinate: ReadableMap,
-        zoomLevel: Double,
-        promise: Promise
-    ) {
-        moduleImpl.setCameraCoordinate(viewRef, coordinate, zoomLevel, promise)
-    }
+  @ReactMethod
+  fun getProviderName(viewRef: Double): String {
+    return moduleImpl.getProviderName(viewRef)
+  }
 
-    @ReactMethod
-    fun getAvailableMapProviders(): WritableArray {
-        return moduleImpl.getAvailableMapProviders()
-    }
+  @ReactMethod
+  fun takeSnapshot(viewRef: Double, format: String, promise: Promise) {
+    moduleImpl.takeSnapshot(viewRef, format, promise)
+  }
 
-    @ReactMethod
-    fun getDefaultMapProvider(): WritableMap {
-        return moduleImpl.getDefaultMapProvider()
-    }
+  @ReactMethod(isBlockingSynchronousMethod = true)
+  fun getAvailableMapProviders(): WritableArray {
+    return moduleImpl.getAvailableMapProviders()
+  }
 
-    companion object {
-        const val NAME = RNOmhMapsCoreModule.NAME
-    }
+  @ReactMethod(isBlockingSynchronousMethod = true)
+  fun getDefaultMapProvider(): WritableMap {
+    val provider =  moduleImpl.getDefaultMapProvider()
+    return provider
+  }
+
+  override fun getName() = NAME
+
+  companion object {
+    const val NAME = RNOmhMapsCoreModuleImpl.NAME
+  }
 }
