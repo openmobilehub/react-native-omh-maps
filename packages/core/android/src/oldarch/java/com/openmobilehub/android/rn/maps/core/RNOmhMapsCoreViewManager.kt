@@ -32,7 +32,7 @@ class RNOmhMapsCoreViewManager :
     omhMapViewManagerImpl.addView(parent, child, index)
   }
 
-  override fun getChildAt(parent: FragmentContainerView?, index: Int): View {
+  override fun getChildAt(parent: FragmentContainerView?, index: Int): View? {
     return omhMapViewManagerImpl.getChildAt(index)
   }
 
@@ -50,15 +50,9 @@ class RNOmhMapsCoreViewManager :
     return RNOmhMapsCoreViewManagerImpl.EVENTS
   }
 
-
   @ReactPropGroup(names = ["width", "height"], customType = "Style")
   fun setStyle(view: FragmentContainerView, index: Int, value: Dynamic?) {
     omhMapViewManagerImpl.setStyle(view, index, value)
-  }
-
-  @ReactProp(name = "paths")
-  fun setPaths(view: FragmentContainerView, value: ReadableMap?) {
-    omhMapViewManagerImpl.setPaths(view, value)
   }
 
   @ReactProp(name = "zoomEnabled")

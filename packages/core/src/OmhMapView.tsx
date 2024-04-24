@@ -10,9 +10,7 @@ import {
 } from 'react-native';
 
 import NativeOmhMapsCoreModule, { Spec } from './NativeOmhMapsCoreModule';
-import RNOmhMapsCoreViewNativeComponent, {
-  NativeOmhMapViewProps,
-} from './RNOmhMapsCoreViewNativeComponent';
+import RNOmhMapsCoreViewNativeComponent from './RNOmhMapsCoreViewNativeComponent';
 import { OmhMapsCoreModuleFunctionWithoutViewRef } from './typeHelpers';
 
 type Percentage = `${number}%`;
@@ -50,7 +48,6 @@ export type OmhMapViewProps = Omit<ViewProps, 'style'> & {
   style?: Omit<ViewStyle, 'width' | 'height'> | null;
   width: number | Percentage;
   height: number | Percentage;
-  paths: NativeOmhMapViewProps['paths'];
   zoomEnabled?: boolean;
   rotateEnabled?: boolean;
   onMapLoaded?: () => void;
@@ -68,7 +65,6 @@ export const OmhMapView = forwardRef<OmhMapViewRef, OmhMapViewProps>(
       style,
       width,
       height,
-      paths,
       onMapLoaded,
       children,
       zoomEnabled,
@@ -137,6 +133,7 @@ export const OmhMapView = forwardRef<OmhMapViewRef, OmhMapViewProps>(
 
     const handleMapReady = () => {
       setIsMapReady(true);
+      console.log('Map is ready');
     };
 
     const onCameraMoveStartedMapped = (
@@ -160,9 +157,6 @@ export const OmhMapView = forwardRef<OmhMapViewRef, OmhMapViewProps>(
 
     const props = isMapReady
       ? {
-          onCameraMoveStarted: onCameraMoveStartedMapped,
-          onMapLoaded,
-          onCameraIdle: onCameraIdle,
           zoomEnabled,
           rotateEnabled,
           children,
@@ -196,8 +190,14 @@ export const OmhMapView = forwardRef<OmhMapViewRef, OmhMapViewProps>(
             width: PixelRatio.getPixelSizeForLayoutSize(componentSize.width), // convert dpi to px
             height: PixelRatio.getPixelSizeForLayoutSize(componentSize.height), // convert dpi to px
           }}
-          onMapReady={handleMapReady}
-          paths={paths}
+          onMapReady={() => {
+            console.log('Map is ready');
+          }}
+          onMapLoaded={() => {
+            console.log('Map is loaded');
+          }}
+          onCameraIdle={onCameraIdle}
+          onCameraMoveStarted={onCameraMoveStartedMapped}
           {...props}
         />
       </View>

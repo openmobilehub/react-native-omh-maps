@@ -5,13 +5,7 @@ import {
 } from 'react-native/Libraries/Types/CodegenTypes';
 import codegenNativeComponent from 'react-native/Libraries/Utilities/codegenNativeComponent';
 
-type Paths = {
-  gmsPath: string;
-  nonGmsPath: string;
-};
-
 export interface NativeOmhMapViewProps extends ViewProps {
-  paths: Paths;
   zoomEnabled?: boolean;
   rotateEnabled?: boolean;
   onMapReady?: DirectEventHandler<null>;

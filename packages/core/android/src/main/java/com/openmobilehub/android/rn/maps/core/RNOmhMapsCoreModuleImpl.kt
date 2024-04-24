@@ -1,30 +1,19 @@
 package com.openmobilehub.android.rn.maps.core
 
-import android.graphics.Bitmap
-import android.graphics.Bitmap.CompressFormat
-import android.net.Uri
 import com.facebook.react.bridge.Arguments
 import com.facebook.react.bridge.Promise
 import com.facebook.react.bridge.ReactApplicationContext
-import com.facebook.react.bridge.ReactMethod
 import com.facebook.react.bridge.ReadableMap
 import com.facebook.react.bridge.UiThreadUtil
 import com.facebook.react.bridge.WritableArray
 import com.facebook.react.bridge.WritableMap
-import com.facebook.react.uimanager.UIBlock
-import com.facebook.react.uimanager.UIManagerModule
+import com.openmobilehub.android.maps.core.factories.OmhMapProvider
 import com.openmobilehub.android.maps.core.model.MapProvider
 import com.openmobilehub.android.maps.core.utils.MapProvidersUtils
 import com.openmobilehub.android.rn.maps.core.extensions.toOmhCoordinate
 import com.openmobilehub.android.rn.maps.core.extensions.toWritableMap
 import com.openmobilehub.android.rn.maps.core.fragments.FragmentUtils
 import com.openmobilehub.android.rn.maps.core.utils.BitmapUtils
-import java.io.ByteArrayOutputStream
-import java.io.Closeable
-import java.io.File
-import java.io.FileOutputStream
-import java.io.IOException
-
 
 class RNOmhMapsCoreModuleImpl(private val reactContext: ReactApplicationContext) {
   fun getCameraCoordinate(viewRef: Double, promise: Promise) {
@@ -58,20 +47,7 @@ class RNOmhMapsCoreModuleImpl(private val reactContext: ReactApplicationContext)
   }
 
   fun getProviderName(viewRef: Double): String {
-    val omhMap = FragmentUtils.findFragment(reactContext, viewRef.toInt())?.omhMap
-    if (omhMap != null) {
-      return omhMap.providerName
-    }
-    // TODO: Provider error handling
-    return ""
-  }
-
-  private fun closeQuietly(closeable: Closeable?) {
-    if (closeable == null) return
-    try {
-      closeable.close()
-    } catch (ignored: IOException) {
-    }
+    return FragmentUtils.requireFragment(reactContext, viewRef.toInt()).requireOmhMap().providerName
   }
 
   fun takeSnapshot(viewRef: Double, resultFormat: String, promise: Promise) {
@@ -96,8 +72,18 @@ class RNOmhMapsCoreModuleImpl(private val reactContext: ReactApplicationContext)
     }
   }
 
+  fun initialize(paths: ReadableMap) {
+    val gmsPath = paths.getString("gmsPath")
+    val nonGmsPath = paths.getString("nonGmsPath")
+
+    OmhMapProvider.Initiator()
+      .addGmsPath(gmsPath)
+      .addNonGmsPath(nonGmsPath)
+      .initialize()
+  }
 
   companion object {
     const val NAME = "RNOmhMapsCoreModule"
   }
 }
+

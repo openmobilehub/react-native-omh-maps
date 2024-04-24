@@ -16,8 +16,8 @@ export const CameraMapScreen = () => {
 
   const [snapshotModalVisible, setSnapshotModalVisible] = useState(false);
   const [snapshotSource, setSnapshotSource] = useState<string | null>(null);
-  const [zoomGesturesEnabled, setZoomGesturesEnabled] = useState(false);
-  const [rotateGesturesEnabled, setRotateGesturesEnabled] = useState(false);
+  const [zoomGesturesEnabled, setZoomGesturesEnabled] = useState(true);
+  const [rotateGesturesEnabled, setRotateGesturesEnabled] = useState(true);
 
   const omhMapRef = useRef<OmhMapViewRef | null>(null);
 
@@ -81,6 +81,7 @@ export const CameraMapScreen = () => {
             zoomEnabled={zoomGesturesEnabled}
             rotateEnabled={rotateGesturesEnabled}
             onMapLoaded={() => {
+              console.log('Map loaded');
               omhMapRef.current?.setCameraCoordinate(
                 Constants.Maps.GREENWICH_COORDINATE,
                 15.0
@@ -90,10 +91,6 @@ export const CameraMapScreen = () => {
             onCameraMoveStarted={event => handleCameraMoveStarted(event)}
             width={`100%`}
             height={`100%`}
-            paths={{
-              gmsPath: mapProvider.path,
-              nonGmsPath: mapProvider.path,
-            }}
           />
         </View>
         <View style={demoStyles.demoControlsScrollViewContainer}>

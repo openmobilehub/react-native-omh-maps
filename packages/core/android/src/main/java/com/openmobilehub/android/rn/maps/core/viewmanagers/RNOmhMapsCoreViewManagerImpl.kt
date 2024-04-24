@@ -9,27 +9,23 @@ import android.view.WindowManager
 import androidx.fragment.app.FragmentContainerView
 import com.facebook.react.bridge.Dynamic
 import com.facebook.react.bridge.ReactContext
-import com.facebook.react.bridge.ReadableMap
 import com.facebook.react.bridge.UiThreadUtil
 import com.facebook.react.common.MapBuilder
 import com.facebook.react.uimanager.ThemedReactContext
 import com.facebook.react.uimanager.UIManagerHelper
-import com.openmobilehub.android.maps.core.factories.OmhMapProvider
+import com.facebook.react.uimanager.events.Event
 import com.openmobilehub.android.maps.core.presentation.interfaces.maps.OmhMap
-import com.openmobilehub.android.maps.core.utils.MapProvidersUtils
 import com.openmobilehub.android.rn.maps.core.entities.OmhMapEntity
 import com.openmobilehub.android.rn.maps.core.events.OmhOnCameraIdleEvent
 import com.openmobilehub.android.rn.maps.core.events.OmhOnCameraMoveStartedEvent
 import com.openmobilehub.android.rn.maps.core.events.OmhOnMapLoadedEvent
-import com.openmobilehub.android.rn.maps.core.events.OnOmhMapReadyEvent
+import com.openmobilehub.android.rn.maps.core.events.OmhOnMapReadyEvent
 import com.openmobilehub.android.rn.maps.core.fragments.FragmentUtils
 import com.openmobilehub.android.rn.maps.core.fragments.OmhMapViewFragment
 
 class RNOmhMapsCoreViewManagerImpl(private val reactContext: ReactContext) {
   var height: Int? = null
   var width: Int? = null
-  private var lastGmsPath: String? = null
-  private var lastNonGmsPath: String? = null
   private var mountedChildren = HashMap<Int, OmhMapEntity<*>>()
   private var addEntitiesQueue = mutableListOf<Pair<View, Int>>()
 
@@ -37,21 +33,8 @@ class RNOmhMapsCoreViewManagerImpl(private val reactContext: ReactContext) {
     return FragmentContainerView(reactContext)
   }
 
-  private fun getFragmentOrThrow(parent: FragmentContainerView): OmhMapViewFragment {
-    return FragmentUtils.findFragment(reactContext, parent.id)
-      ?: error(ERRORS.MAP_FRAGMENT_NOT_FOUND)
-  }
-
-  private fun getMapOrThrow(parent: FragmentContainerView): OmhMap {
-    return getFragmentOrThrow(parent).omhMap ?: error(ERRORS.MAP_INSTANCE_NOT_AVAILABLE)
-  }
-
-  private fun getMapOrThrow(fragment: OmhMapViewFragment): OmhMap {
-    return fragment.omhMap ?: error(ERRORS.MAP_INSTANCE_NOT_AVAILABLE)
-  }
-
-  fun getChildAt(index: Int): OmhMapEntity<*> {
-    return mountedChildren[index]!!
+  fun getChildAt(index: Int): OmhMapEntity<*>? {
+    return mountedChildren[index]
   }
 
   fun addView(
@@ -61,8 +44,8 @@ class RNOmhMapsCoreViewManagerImpl(private val reactContext: ReactContext) {
     entityComesFromQueue: Boolean = false
   ) {
     try {
-      val fragment = getFragmentOrThrow(parent)
-      val omhMap = getMapOrThrow(fragment)
+      val fragment = FragmentUtils.requireFragment(reactContext, parent)
+      val omhMap = fragment.requireOmhMap()
 
       var addToRegistry = true
 
@@ -95,8 +78,6 @@ class RNOmhMapsCoreViewManagerImpl(private val reactContext: ReactContext) {
   }
 
   fun removeViewAt(parent: FragmentContainerView, index: Int) {
-    getMapOrThrow(parent) // ensure the map is mounted
-
     val child = mountedChildren[index] ?: error(ERRORS.REMOVE_VIEW_AT_CHILD_NOT_FOUND)
 
     child.unmountEntity()
@@ -119,7 +100,7 @@ class RNOmhMapsCoreViewManagerImpl(private val reactContext: ReactContext) {
     }
   }
 
-  fun mountFragment(view: FragmentContainerView) {
+  private fun mountFragment(view: FragmentContainerView) {
     UiThreadUtil.assertOnUiThread()
     val fragmentManager = FragmentUtils.getFragmentManager(view)
 
@@ -133,14 +114,12 @@ class RNOmhMapsCoreViewManagerImpl(private val reactContext: ReactContext) {
         return
       }
 
-      val defaultProvider = MapProvidersUtils().getDefaultMapProvider(reactContext)
-      lastGmsPath = defaultProvider.path
-      lastNonGmsPath = defaultProvider.path
-
-      val newFragment = OmhMapViewFragment(defaultProvider.path)
+      val newFragment = OmhMapViewFragment()
       view.removeAllViews()
       val transaction = fragmentManager.beginTransaction()
+
       transaction.add(newFragment, FragmentUtils.getFragmentTag(view.id))
+
       transaction.runOnCommit {
         view.addView(newFragment.requireView())
         layoutChildren(view)
@@ -199,60 +178,87 @@ class RNOmhMapsCoreViewManagerImpl(private val reactContext: ReactContext) {
     }
   }
 
-  fun addEventEmitters(reactContext: ThemedReactContext, view: FragmentContainerView) {
-    val viewID = view.id
+  fun onReactViewReady(reactContext: ThemedReactContext, view: FragmentContainerView) {
+    mountFragment(view)
 
-    FragmentUtils.findFragment(reactContext, viewID)?.setOnMapReadyListener {
-      addEntitiesQueue.forEach { (child, index) ->
-        addView(view, child, index, entityComesFromQueue = true)
-      }
-      addEntitiesQueue.clear()
+    val fragment = FragmentUtils.findFragment(reactContext, view.id)
+    val omhMapView = fragment?.omhMapView
 
-      UIManagerHelper.getEventDispatcherForReactTag(reactContext, viewID)
-        ?.dispatchEvent(
-          OnOmhMapReadyEvent(
-            UIManagerHelper.getSurfaceId(reactContext),
-            viewID
-          )
-        )
+    omhMapView?.getMapAsync {
+      fragment.omhMap = it
 
-      setupListeners(reactContext, view)
+//      setupListeners(it, reactContext, view)
+
+      dispatchEvent(
+        reactContext,
+        view.id,
+        OmhOnMapReadyEvent(
+          UIManagerHelper.getSurfaceId(reactContext),
+          view.id
+        ), 250L
+      )
     }
   }
 
-  private fun setupListeners(reactContext: ThemedReactContext, view: FragmentContainerView) {
-    FragmentUtils.findFragment(reactContext, view.id)?.omhMap?.setOnMapLoadedCallback {
-      UIManagerHelper.getEventDispatcherForReactTag(reactContext, view.id)
-        ?.dispatchEvent(
-          OmhOnMapLoadedEvent(
-            UIManagerHelper.getSurfaceId(reactContext),
-            view.id
-          )
-        )
+  private fun <T : Event<*>?> dispatchEvent(
+    reactContext: ThemedReactContext,
+    viewId: Int,
+    event: Event<T>,
+    delay: Long = 0L
+  ) {
+
+    val runnable = Runnable {
+      Log.v("MBX", "dispatchEvent: ${event}")
+      val dispatcher = UIManagerHelper.getEventDispatcherForReactTag(reactContext, viewId)
+      dispatcher?.dispatchEvent(
+        event
+      )
     }
-    FragmentUtils.findFragment(reactContext, view.id)?.omhMap?.setOnCameraIdleListener {
-      UIManagerHelper.getEventDispatcherForReactTag(reactContext, view.id)
-        ?.dispatchEvent(
-          OmhOnCameraIdleEvent(
-            UIManagerHelper.getSurfaceId(reactContext),
-            view.id
-          )
-        )
+
+    UiThreadUtil.runOnUiThread(runnable, 0)
+  }
+
+  private fun setupListeners(
+    omhMap: OmhMap,
+    reactContext: ThemedReactContext,
+    view: FragmentContainerView
+  ) {
+    omhMap.setOnMapLoadedCallback {
+      dispatchEvent(
+        reactContext,
+        view.id,
+        OmhOnMapLoadedEvent(
+          UIManagerHelper.getSurfaceId(reactContext),
+          view.id
+        ),
+        250L
+      )
     }
-    FragmentUtils.findFragment(reactContext, view.id)?.omhMap?.setOnCameraMoveStartedListener() {
-      UIManagerHelper.getEventDispatcherForReactTag(reactContext, view.id)
-        ?.dispatchEvent(
-          OmhOnCameraMoveStartedEvent(
-            UIManagerHelper.getSurfaceId(reactContext),
-            view.id,
-            it?: -1
-          )
+    omhMap.setOnCameraIdleListener {
+      dispatchEvent(
+        reactContext,
+        view.id,
+        OmhOnCameraIdleEvent(
+          UIManagerHelper.getSurfaceId(reactContext),
+          view.id
         )
+      )
+    }
+    omhMap.setOnCameraMoveStartedListener {
+      dispatchEvent(
+        reactContext,
+        view.id,
+        OmhOnCameraMoveStartedEvent(
+          UIManagerHelper.getSurfaceId(reactContext),
+          view.id,
+          it ?: -1
+        )
+      )
     }
   }
 
   fun setZoomEnabled(view: FragmentContainerView, value: Boolean) {
-    FragmentUtils.findFragment(view)?.setZoomEnabled(value)
+    FragmentUtils.findFragment(view)?.omhMap?.setZoomGesturesEnabled(value)
   }
 
   fun setRotateEnabled(view: FragmentContainerView, value: Boolean) {
@@ -260,37 +266,13 @@ class RNOmhMapsCoreViewManagerImpl(private val reactContext: ReactContext) {
     omhMap?.setRotateGesturesEnabled(value)
   }
 
-  fun setPaths(view: FragmentContainerView, paths: ReadableMap?) {
-    val gmsPath = paths?.getString("gmsPath")
-    val nonGmsPath = paths?.getString("nonGmsPath")
-
-    if (lastGmsPath != gmsPath || lastNonGmsPath != nonGmsPath) {
-      OmhMapProvider.Initiator()
-        .addGmsPath(gmsPath)
-        .addNonGmsPath(nonGmsPath)
-        .initialize()
-
-      FragmentUtils.findFragment(view)?.reinitializeFragmentContents()
-      // after the map is reinitialized, no entities will be present and they won't be added
-      // since the RN component tree has not changed; thus, here the current entites are stored for re-addition
-      mountedChildren.forEach { (index, entity) ->
-        addView(view, entity, index)
-      }
-
-      layoutChildren(view)
-
-      lastGmsPath = gmsPath
-      lastNonGmsPath = nonGmsPath
-    }
-  }
-
   companion object {
     const val NAME = OmhMapViewFragment.NAME
 
     val EVENTS: MutableMap<String, Any> =
       MapBuilder.of(
-        OnOmhMapReadyEvent.NAME,
-        MapBuilder.of("registrationName", OnOmhMapReadyEvent.EVENT_PROP_NAME),
+        OmhOnMapReadyEvent.NAME,
+        MapBuilder.of("registrationName", OmhOnMapReadyEvent.EVENT_PROP_NAME),
         OmhOnMapLoadedEvent.NAME,
         MapBuilder.of("registrationName", OmhOnMapLoadedEvent.EVENT_PROP_NAME),
         OmhOnCameraIdleEvent.NAME,
@@ -311,6 +293,8 @@ class RNOmhMapsCoreViewManagerImpl(private val reactContext: ReactContext) {
 
       const val REMOVE_VIEW_AT_CHILD_NOT_FOUND =
         "Child to be removed via removeViewAt() not found in mounted children registry"
+
+      const val CHILD_NOT_FOUND = "Child not found"
     }
   }
 }

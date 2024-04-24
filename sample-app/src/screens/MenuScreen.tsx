@@ -1,12 +1,11 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { ScrollView, StyleSheet } from 'react-native';
 import { useTheme } from 'react-native-paper';
 
 import Route, { RoutesDescriptions } from '../Routes';
 import MapProviderPicker from '../components/MapProviderPicker';
 import MenuListItem from '../components/MenuListItem';
-import useLogger from '../hooks/useLogger';
-import useMapProviderChoiceContext from '../hooks/useMapProviderChoice';
+import { MapProvider, OmhMapsModule } from '@omh/react-native-maps-core';
 
 const menuRoutes: Route[] = [
   Route.plainMap,
@@ -15,11 +14,29 @@ const menuRoutes: Route[] = [
   Route.multipleMaps,
 ];
 
+const defaultMapProvider = {
+  name: 'OpenStreetMap',
+  path: 'com.openmobilehub.android.maps.plugin.openstreetmap.presentation.OmhMapFactoryImpl',
+};
+
+OmhMapsModule.initialize({
+  gmsPath: defaultMapProvider.path,
+  nonGmsPath: defaultMapProvider.path,
+});
+
 export const MenuScreen = () => {
   const theme = useTheme();
-  const logger = useLogger('MenuScreen');
-  const { changeMapProvider, mapProvider: defaultMapProvider } =
-    useMapProviderChoiceContext();
+
+  const [_, setMapProvider] = React.useState(defaultMapProvider);
+
+  const handleMapProviderChange = (newProvider: MapProvider) => {
+    console.log(newProvider);
+    setMapProvider(newProvider);
+    OmhMapsModule.initialize({
+      gmsPath: newProvider.path,
+      nonGmsPath: newProvider.path,
+    });
+  };
 
   return (
     <ScrollView
@@ -29,13 +46,7 @@ export const MenuScreen = () => {
       <MapProviderPicker
         style={styles.mapProviderPicker}
         defaultProvider={defaultMapProvider}
-        onChange={newProvider => {
-          logger.log(
-            `Map provider has been changed to ${newProvider.name} (${newProvider.path})`
-          );
-
-          changeMapProvider(newProvider);
-        }}
+        onChange={handleMapProviderChange}
         centeredLabel={false}
       />
 

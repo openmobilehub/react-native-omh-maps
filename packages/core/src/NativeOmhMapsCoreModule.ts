@@ -11,7 +11,13 @@ export type OmhCoordinate = {
   longitude: number;
 };
 
+export type Paths = {
+  gmsPath: string;
+  nonGmsPath: string;
+};
+
 export interface Spec extends TurboModule {
+  initialize(paths: Paths): void;
   getProviderName(viewRef: number): string;
   takeSnapshot(viewRef: number, format: string): Promise<string>;
   getCameraCoordinate(viewRef: number): Promise<OmhCoordinate | null>;

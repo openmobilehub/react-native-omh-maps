@@ -15,7 +15,7 @@ class OmhOnMapLoadedEvent(
     }
 
     companion object {
-        const val NAME = "omhOnMapLoadedEvent"
+        const val NAME = "topMapLoaded"
         const val EVENT_PROP_NAME = "onMapLoaded"
     }
 }

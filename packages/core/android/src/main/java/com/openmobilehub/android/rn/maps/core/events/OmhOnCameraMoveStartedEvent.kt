@@ -19,7 +19,7 @@ class OmhOnCameraMoveStartedEvent(
     }
 
     companion object {
-        const val NAME = "omhOnCameraMoveStartedEvent"
+        const val NAME = "topCameraMoveStarted"
         const val EVENT_PROP_NAME = "onCameraMoveStarted"
     }
 }

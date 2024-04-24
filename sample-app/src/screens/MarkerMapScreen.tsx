@@ -23,6 +23,9 @@ export const MarkerMapScreen = () => {
       <View style={demoStyles.mapContainer}>
         <OmhMapView
           ref={omhMapRef}
+          onMapLoaded={() => {
+            logger.log('OmhMapView has been loaded');
+          }}
           onMapReady={() => {
             logger.log('OmhMapView has become ready');
 
@@ -38,7 +41,10 @@ export const MarkerMapScreen = () => {
             nonGmsPath: defaultMapProvider.path,
           }}>
           {mountCustomizableMarker && (
-            <OmhMarker position={Constants.Maps.GREENWICH_COORDINATE} />
+            <>
+              <OmhMarker position={Constants.Maps.GREENWICH_COORDINATE} />
+              <OmhMarker position={Constants.Maps.EVEREST_COORDINATE} />
+            </>
           )}
         </OmhMapView>
       </View>

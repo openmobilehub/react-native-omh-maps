@@ -15,7 +15,7 @@ class OmhOnCameraIdleEvent(
     }
 
     companion object {
-        const val NAME = "omhOnCameraIdleEvent"
+        const val NAME = "topCameraIdle"
         const val EVENT_PROP_NAME = "onCameraIdle"
     }
 }

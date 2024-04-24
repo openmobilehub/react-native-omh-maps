@@ -47,8 +47,12 @@ class RNOmhMapsCoreModule(
 
   @ReactMethod(isBlockingSynchronousMethod = true)
   fun getDefaultMapProvider(): WritableMap {
-    val provider =  moduleImpl.getDefaultMapProvider()
-    return provider
+    return moduleImpl.getDefaultMapProvider()
+  }
+
+  @ReactMethod(isBlockingSynchronousMethod = true)
+  fun initialize(paths: ReadableMap) {
+    moduleImpl.initialize(paths)
   }
 
   override fun getName() = NAME
