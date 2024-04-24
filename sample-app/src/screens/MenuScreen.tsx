@@ -8,11 +8,7 @@ import MenuListItem from '../components/MenuListItem';
 import useLogger from '../hooks/useLogger';
 import useMapProviderChoiceContext from '../hooks/useMapProviderChoice';
 
-const menuRoutes: Route[] = [
-  Route.plainMap,
-  Route.markerMap,
-  Route.multipleMaps,
-];
+const menuRoutes: Route[] = [Route.plainMap, Route.markerMap];
 
 export const MenuScreen = () => {
   const theme = useTheme();
