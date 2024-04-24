@@ -4115,7 +4115,7 @@ __metadata:
     "@omh/react-native-maps-plugin-mapbox": "workspace:^"
     "@omh/react-native-maps-plugin-openstreetmap": "workspace:^"
     "@react-native-community/hooks": "npm:^3.0.0"
-    "@react-native-community/slider": "npm:4.5.0"
+    "@react-native-community/slider": "npm:^4.5.2"
     "@react-native-picker/picker": "npm:^2.7.5"
     "@react-navigation/native": "npm:^6.1.17"
     "@react-navigation/native-stack": "npm:^6.9.26"
@@ -4439,10 +4439,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@react-native-community/slider@npm:4.5.0":
-  version: 4.5.0
-  resolution: "@react-native-community/slider@npm:4.5.0"
-  checksum: 10/acf8abf9018735e8a0f52b07af0fe0577a9f693733bec42eebe410ebcac527db2be7d8b657bd2a4f4034a8e16d914306ed843e0e13884abe24ae87dbefa2ad6e
+"@react-native-community/slider@npm:^4.5.2":
+  version: 4.5.2
+  resolution: "@react-native-community/slider@npm:4.5.2"
+  checksum: 10/414a0074ecc20f314d53ce4cdcdc7d962395ffab183b618988bb2c2b7c49bb22c7f190dcff3588f5e9ad72b3d4f59d181003054087c5d6aef6331ec8fadb1963
   languageName: node
   linkType: hard
 
