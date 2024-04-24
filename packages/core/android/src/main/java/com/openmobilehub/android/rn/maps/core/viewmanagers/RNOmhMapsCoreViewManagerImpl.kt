@@ -15,6 +15,7 @@ import com.facebook.react.uimanager.ThemedReactContext
 import com.facebook.react.uimanager.UIManagerHelper
 import com.facebook.react.uimanager.events.Event
 import com.openmobilehub.android.maps.core.presentation.interfaces.maps.OmhMap
+import com.openmobilehub.android.rn.maps.core.BuildConfig
 import com.openmobilehub.android.rn.maps.core.entities.OmhMapEntity
 import com.openmobilehub.android.rn.maps.core.events.OmhOnCameraIdleEvent
 import com.openmobilehub.android.rn.maps.core.events.OmhOnCameraMoveStartedEvent
@@ -78,9 +79,10 @@ class RNOmhMapsCoreViewManagerImpl(private val reactContext: ReactContext) {
   }
 
   fun removeViewAt(parent: FragmentContainerView, index: Int) {
-    val child = mountedChildren[index] ?: error(ERRORS.REMOVE_VIEW_AT_CHILD_NOT_FOUND)
+    val child = mountedChildren[index]
+      ?: (if (BuildConfig.IS_NEW_ARCHITECTURE_ENABLED) null else error(ERRORS.REMOVE_VIEW_AT_CHILD_NOT_FOUND))
 
-    child.unmountEntity()
+    child?.unmountEntity()
 
     mountedChildren.remove(index)
   }

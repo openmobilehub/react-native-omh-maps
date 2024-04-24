@@ -41,8 +41,7 @@ class RNOmhMapsCoreViewManager :
   }
 
   override fun addEventEmitters(reactContext: ThemedReactContext, view: FragmentContainerView) {
-    omhMapViewManagerImpl.mountFragment(view)
-    omhMapViewManagerImpl.addEventEmitters(reactContext, view)
+    omhMapViewManagerImpl.onReactViewReady(reactContext, view)
     super.addEventEmitters(reactContext, view)
   }
 
