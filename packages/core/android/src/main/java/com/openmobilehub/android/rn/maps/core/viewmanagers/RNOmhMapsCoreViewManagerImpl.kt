@@ -80,7 +80,7 @@ class RNOmhMapsCoreViewManagerImpl(private val reactContext: ReactContext) {
 
   fun removeViewAt(parent: FragmentContainerView, index: Int) {
     val child = mountedChildren[index]
-      ?: (if (BuildConfig.IS_NEW_ARCHITECTURE_ENABLED) null else error(ERRORS.REMOVE_VIEW_AT_CHILD_NOT_FOUND))
+      ?: (if (BuildConfig.IS_NEW_ARCHITECTURE_ENABLED) error(ERRORS.REMOVE_VIEW_AT_CHILD_NOT_FOUND) else null)
 
     child?.unmountEntity()
 
