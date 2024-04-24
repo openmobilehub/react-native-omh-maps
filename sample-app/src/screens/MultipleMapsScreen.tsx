@@ -55,10 +55,10 @@ export const MultipleMapsScreen = () => {
             }}
             width="100%"
             height="100%"
-            paths={{
-              gmsPath: provider.path,
-              nonGmsPath: provider.path,
-            }}
+            // paths={{
+            //   gmsPath: provider.path,
+            //   nonGmsPath: provider.path,
+            // }}
           />
         </View>
       ))}

@@ -1,17 +1,18 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { ScrollView, StyleSheet } from 'react-native';
 import { useTheme } from 'react-native-paper';
+
+import { MapProvider, OmhMapsModule } from '@omh/react-native-maps-core';
 
 import Route, { RoutesDescriptions } from '../Routes';
 import MapProviderPicker from '../components/MapProviderPicker';
 import MenuListItem from '../components/MenuListItem';
-import { MapProvider, OmhMapsModule } from '@omh/react-native-maps-core';
 
 const menuRoutes: Route[] = [
   Route.plainMap,
   Route.cameraMap,
   Route.markerMap,
-  Route.multipleMaps,
+  // Route.multipleMaps,
 ];
 
 const defaultMapProvider = {

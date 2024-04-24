@@ -1,4 +1,4 @@
-import React, { forwardRef, useMemo, useState } from 'react';
+import React, { forwardRef, useCallback, useMemo, useState } from 'react';
 import {
   NativeSyntheticEvent,
   PixelRatio,
@@ -50,6 +50,9 @@ export type OmhMapViewProps = Omit<ViewProps, 'style'> & {
   height: number | Percentage;
   zoomEnabled?: boolean;
   rotateEnabled?: boolean;
+  /** Internal map ready callback, invoked when the map view is ready, but the map is not loaded yet */
+  onMapReady?: () => void;
+  /** Callback invoked when the map is loaded */
   onMapLoaded?: () => void;
   onCameraIdle?: () => void;
   onCameraMoveStarted?: (reason: OmhCameraMoveStartedReason) => void;
@@ -65,6 +68,7 @@ export const OmhMapView = forwardRef<OmhMapViewRef, OmhMapViewProps>(
       style,
       width,
       height,
+      onMapReady,
       onMapLoaded,
       children,
       zoomEnabled,
@@ -131,10 +135,12 @@ export const OmhMapView = forwardRef<OmhMapViewRef, OmhMapViewProps>(
       [getViewRefHandle]
     );
 
-    const handleMapReady = () => {
+    const handleMapReady = useCallback(() => {
       setIsMapReady(true);
       console.log('Map is ready');
-    };
+
+      onMapReady?.();
+    }, [onMapReady]);
 
     const onCameraMoveStartedMapped = (
       event: NativeSyntheticEvent<{ reason: number }>
@@ -190,12 +196,8 @@ export const OmhMapView = forwardRef<OmhMapViewRef, OmhMapViewProps>(
             width: PixelRatio.getPixelSizeForLayoutSize(componentSize.width), // convert dpi to px
             height: PixelRatio.getPixelSizeForLayoutSize(componentSize.height), // convert dpi to px
           }}
-          onMapReady={() => {
-            console.log('Map is ready');
-          }}
-          onMapLoaded={() => {
-            console.log('Map is loaded');
-          }}
+          onMapReady={handleMapReady}
+          onMapLoaded={onMapLoaded}
           onCameraIdle={onCameraIdle}
           onCameraMoveStarted={onCameraMoveStartedMapped}
           {...props}

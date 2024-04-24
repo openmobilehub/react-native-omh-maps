@@ -4,15 +4,14 @@ import { MD2Colors, Modal } from 'react-native-paper';
 
 import { OmhMapView, OmhMapViewRef } from '@omh/react-native-maps-core';
 
-import useChosenMapProvider from '../hooks/useChosenMapProvider';
+import { PanelButton } from '../components/PanelButton';
+import { PanelCheckbox } from '../components/PanelCheckbox';
+import { SnackbarMy, SnackbarRef } from '../components/Snackbar';
 import { demoStyles } from '../styles/demoStyles';
 import { Constants } from '../utils/Constants';
-import { PanelCheckbox } from '../components/PanelCheckbox';
-import { PanelButton } from '../components/PanelButton';
-import { SnackbarMy, SnackbarRef } from '../components/Snackbar';
 
 export const CameraMapScreen = () => {
-  const mapProvider = useChosenMapProvider();
+  // const mapProvider = useChosenMapProvider();
 
   const [snapshotModalVisible, setSnapshotModalVisible] = useState(false);
   const [snapshotSource, setSnapshotSource] = useState<string | null>(null);

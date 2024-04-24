@@ -5,14 +5,13 @@ import { Checkbox, Subheading } from 'react-native-paper';
 import { OmhMapView, OmhMapViewRef } from '@omh/react-native-maps-core';
 
 import OmhMarker from '../../../packages/core/src/OmhMarker';
-import useChosenMapProvider from '../hooks/useChosenMapProvider';
 import useLogger from '../hooks/useLogger';
 import { demoStyles } from '../styles/demoStyles';
 import { Constants } from '../utils/Constants';
 
 export const MarkerMapScreen = () => {
   const logger = useLogger('MarkerMapScreen');
-  const defaultMapProvider = useChosenMapProvider();
+  // const defaultMapProvider = useChosenMapProvider();
 
   const [mountCustomizableMarker, setMountCustomizableMarker] = useState(true);
 
@@ -36,10 +35,11 @@ export const MarkerMapScreen = () => {
           }}
           width="100%"
           height="100%"
-          paths={{
-            gmsPath: defaultMapProvider.path,
-            nonGmsPath: defaultMapProvider.path,
-          }}>
+          // paths={{
+          //   gmsPath: defaultMapProvider.path,
+          //   nonGmsPath: defaultMapProvider.path,
+          // }}
+        >
           {mountCustomizableMarker && (
             <>
               <OmhMarker position={Constants.Maps.GREENWICH_COORDINATE} />

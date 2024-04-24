@@ -26,7 +26,7 @@ export const PlainMapScreen = () => {
 
   const [width, setWidth] = useState(100);
   const [height, setHeight] = useState(100);
-  const [provider, setProvider] = useState<MapProvider>(defaultMapProvider);
+  const [_provider, setProvider] = useState<MapProvider>(defaultMapProvider);
 
   const omhMapRef = useRef<OmhMapViewRef | null>(null);
 
@@ -79,10 +79,10 @@ export const PlainMapScreen = () => {
           style={demoSizeModified ? styles.borderedView : null}
           width={`${width}%`}
           height={`${height}%`}
-          paths={{
-            gmsPath: provider.path,
-            nonGmsPath: provider.path,
-          }}
+          // paths={{
+          //   gmsPath: provider.path,
+          //   nonGmsPath: provider.path,
+          // }}
         />
       </View>
 
