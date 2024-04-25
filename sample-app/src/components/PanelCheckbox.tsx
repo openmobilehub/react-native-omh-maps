@@ -6,9 +6,15 @@ type Props = {
   value: boolean;
   onValueChange: (value: boolean) => void;
   label: string;
+  enabled?: boolean;
 };
 
-export const PanelCheckbox = ({ value, onValueChange, label }: Props) => {
+export const PanelCheckbox = ({
+  value,
+  onValueChange,
+  label,
+  enabled = true,
+}: Props) => {
   const handlePress = () => {
     onValueChange(!value);
   };
@@ -21,6 +27,7 @@ export const PanelCheckbox = ({ value, onValueChange, label }: Props) => {
       label={label}
       position="leading"
       labelStyle={styles.label}
+      disabled={!enabled}
     />
   );
 };

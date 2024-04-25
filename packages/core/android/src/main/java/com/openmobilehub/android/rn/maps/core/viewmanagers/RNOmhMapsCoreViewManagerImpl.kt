@@ -197,7 +197,7 @@ class RNOmhMapsCoreViewManagerImpl(private val reactContext: ReactContext) {
         OmhOnMapReadyEvent(
           UIManagerHelper.getSurfaceId(reactContext),
           view.id
-        ), 250L
+        )
       )
     }
   }
@@ -206,9 +206,9 @@ class RNOmhMapsCoreViewManagerImpl(private val reactContext: ReactContext) {
     reactContext: ThemedReactContext,
     viewId: Int,
     event: Event<T>,
-    delay: Long = 0L
   ) {
 
+    // TODO: Support older RN versions in: https://callstackio.atlassian.net/browse/OMHD-280
     UiThreadUtil.runOnUiThread {
       val dispatcher = UIManagerHelper.getEventDispatcherForReactTag(reactContext, viewId)
       dispatcher?.dispatchEvent(
@@ -229,8 +229,7 @@ class RNOmhMapsCoreViewManagerImpl(private val reactContext: ReactContext) {
         OmhOnMapLoadedEvent(
           UIManagerHelper.getSurfaceId(reactContext),
           view.id
-        ),
-        250L
+        )
       )
     }
     omhMap.setOnCameraIdleListener {

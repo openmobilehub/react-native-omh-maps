@@ -4,20 +4,38 @@ import { MD2Colors, Modal } from 'react-native-paper';
 
 import { OmhMapView, OmhMapViewRef } from '@omh/react-native-maps-core';
 
-import useChosenMapProvider from '../hooks/useChosenMapProvider';
 import { demoStyles } from '../styles/demoStyles';
 import { Constants } from '../utils/Constants';
 import { PanelCheckbox } from '../components/PanelCheckbox';
 import { PanelButton } from '../components/PanelButton';
 import { SnackbarMy, SnackbarRef } from '../components/Snackbar';
+import { allProviders, isFeatureSupported } from '../utils/SupportUtils';
+
+const getSupportedFeatures = (omhMapRef: OmhMapViewRef | null) => {
+  const mapProvider = omhMapRef?.getProviderName();
+
+  return {
+    zoom: isFeatureSupported(mapProvider, allProviders),
+    rotate: isFeatureSupported(mapProvider, [
+      'GoogleMaps',
+      'OpenStreetMap',
+      'Mapbox',
+    ]),
+    showCameraPosition: isFeatureSupported(mapProvider, allProviders),
+    moveCamera: isFeatureSupported(mapProvider, allProviders),
+    makeSnapshot: isFeatureSupported(mapProvider, ['GoogleMaps', 'Mapbox']),
+  };
+};
 
 export const CameraMapScreen = () => {
-  const mapProvider = useChosenMapProvider();
-
   const [snapshotModalVisible, setSnapshotModalVisible] = useState(false);
   const [snapshotSource, setSnapshotSource] = useState<string | null>(null);
   const [zoomGesturesEnabled, setZoomGesturesEnabled] = useState(true);
   const [rotateGesturesEnabled, setRotateGesturesEnabled] = useState(true);
+
+  const [supportedFeatures, setSupportedFeatures] = useState<
+    ReturnType<typeof getSupportedFeatures>
+  >(getSupportedFeatures(null));
 
   const omhMapRef = useRef<OmhMapViewRef | null>(null);
 
@@ -81,7 +99,8 @@ export const CameraMapScreen = () => {
             zoomEnabled={zoomGesturesEnabled}
             rotateEnabled={rotateGesturesEnabled}
             onMapLoaded={() => {
-              console.log('Map loaded');
+              setSupportedFeatures(getSupportedFeatures(omhMapRef.current));
+
               omhMapRef.current?.setCameraCoordinate(
                 Constants.Maps.GREENWICH_COORDINATE,
                 15.0
@@ -102,27 +121,33 @@ export const CameraMapScreen = () => {
               value={zoomGesturesEnabled}
               onValueChange={setZoomGesturesEnabled}
               label="Zoom Gestures"
+              enabled={supportedFeatures.zoom}
             />
             <PanelCheckbox
               value={rotateGesturesEnabled}
               onValueChange={setRotateGesturesEnabled}
               label="Rotate Gestures"
+              enabled={supportedFeatures.rotate}
             />
             <PanelButton
               onPress={handleShowCameraPositionButtonPress}
               label="Show camera position coordinate"
+              enabled={supportedFeatures.showCameraPosition}
             />
             <PanelButton
               onPress={handleMoveMapToEverestButtonPress}
               label="Move map to Everest"
+              enabled={supportedFeatures.moveCamera}
             />
             <PanelButton
               onPress={handleMoveMapToSaharaButtonPress}
               label="Move map to Sahara"
+              enabled={supportedFeatures.moveCamera}
             />
             <PanelButton
               onPress={handleMakeSnapshotButtonPress}
               label="Make snapshot"
+              enabled={supportedFeatures.makeSnapshot}
             />
           </ScrollView>
         </View>

@@ -8,3 +8,5 @@ export { default as OmhMapView } from './OmhMapView';
 
 export * from './NativeOmhMapsCoreModule';
 export { default as OmhMapsModule } from './NativeOmhMapsCoreModule';
+
+export { OmhMapProviderVariant } from './types/common';

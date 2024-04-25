@@ -12,6 +12,7 @@ import {
 import NativeOmhMapsCoreModule, { Spec } from './NativeOmhMapsCoreModule';
 import RNOmhMapsCoreViewNativeComponent from './RNOmhMapsCoreViewNativeComponent';
 import { OmhMapsCoreModuleFunctionWithoutViewRef } from './typeHelpers';
+import { OmhMapProviderVariant } from './types/common';
 
 type Percentage = `${number}%`;
 
@@ -23,7 +24,7 @@ export type OmhMapViewRef = {
     Spec['setCameraCoordinate']
   >;
   getProviderName: OmhMapsCoreModuleFunctionWithoutViewRef<
-    Spec['getProviderName']
+    () => OmhMapProviderVariant
   >;
   takeSnapshot: (resultFormat: OmhSnapshotFormat) => Promise<string>;
 };
@@ -123,7 +124,9 @@ export const OmhMapView = forwardRef<OmhMapViewRef, OmhMapViewProps>(
           setCameraCoordinate: (...args) =>
             NativeOmhMapsCoreModule.setCameraCoordinate(nodeHandle, ...args),
           getProviderName: () =>
-            NativeOmhMapsCoreModule.getProviderName(nodeHandle),
+            NativeOmhMapsCoreModule.getProviderName(
+              nodeHandle
+            ) as OmhMapProviderVariant,
           takeSnapshot: (format: OmhSnapshotFormat) =>
             NativeOmhMapsCoreModule.takeSnapshot(nodeHandle, format),
         };
