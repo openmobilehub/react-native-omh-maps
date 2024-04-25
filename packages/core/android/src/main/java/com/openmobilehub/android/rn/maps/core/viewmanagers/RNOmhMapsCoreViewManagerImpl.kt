@@ -41,6 +41,28 @@ class RNOmhMapsCoreViewManagerImpl(private val reactContext: ReactContext) {
         return FragmentContainerView(reactContext)
     }
 
+    fun onReactViewReady(reactContext: ThemedReactContext, view: FragmentContainerView) {
+        mountFragment(view)
+
+        val fragment = FragmentUtils.findFragment(reactContext, view.id)
+        val omhMapView = fragment?.omhMapView
+
+        omhMapView?.getMapAsync {
+            fragment.omhMap = it
+
+            setupListeners(it, reactContext, view)
+
+            dispatchEvent(
+                reactContext,
+                view.id,
+                OmhOnMapReadyEvent(
+                    UIManagerHelper.getSurfaceId(reactContext),
+                    view.id
+                )
+            )
+        }
+    }
+
     fun getChildAt(index: Int): OmhMapEntity<*>? {
         return mountedChildren[index]
     }
@@ -186,28 +208,6 @@ class RNOmhMapsCoreViewManagerImpl(private val reactContext: ReactContext) {
         }
     }
 
-    fun onReactViewReady(reactContext: ThemedReactContext, view: FragmentContainerView) {
-        mountFragment(view)
-
-        val fragment = FragmentUtils.findFragment(reactContext, view.id)
-        val omhMapView = fragment?.omhMapView
-
-        omhMapView?.getMapAsync {
-            fragment.omhMap = it
-
-            setupListeners(it, reactContext, view)
-
-            dispatchEvent(
-                reactContext,
-                view.id,
-                OmhOnMapReadyEvent(
-                    UIManagerHelper.getSurfaceId(reactContext),
-                    view.id
-                )
-            )
-        }
-    }
-
     private inline fun <reified E : OmhMapEntity<T>, T> findChildOfType(instance: T): E? {
         return mountedChildren.values.find { it is E && it.getEntity() == instance }
             ?.let { it as E }
@@ -219,12 +219,6 @@ class RNOmhMapsCoreViewManagerImpl(private val reactContext: ReactContext) {
         view: FragmentContainerView
     ) {
         omhMap.setOnMarkerClickListener { clickedOmhMarker ->
-//            mountedChildren.values.find { it is OmhMarkerEntity && it.getEntity() == clickedOmhMarker }
-//                ?.let {
-//                    (it as OmhMarkerEntity).onClickListener.onMarkerClick(
-//                        clickedOmhMarker
-//                    )
-//                } ?: false
             findChildOfType<OmhMarkerEntity, OmhMarker>(clickedOmhMarker)?.onClickListener?.onMarkerClick(
                 clickedOmhMarker
             )

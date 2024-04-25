@@ -1,8 +1,6 @@
 package com.openmobilehub.android.rn.maps.core.fragments
 
-import android.content.Context
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -18,97 +16,93 @@ import com.openmobilehub.android.rn.maps.core.extensions.toWritableMap
 
 @Suppress("TooManyFunctions")
 class OmhMapViewFragment : Fragment() {
-  private var _binding: FragmentOmhMapBinding? = null
-  internal val binding get() = _binding!!
+    private var _binding: FragmentOmhMapBinding? = null
+    internal val binding get() = _binding!!
 
-  private var _savedInstanceState: Bundle? = null
+    private var _savedInstanceState: Bundle? = null
 
-  internal var omhMapView: OmhMapView? = null
-  internal var omhMap: OmhMap? = null
+    internal var omhMapView: OmhMapView? = null
+    internal var omhMap: OmhMap? = null
 
-  fun requireOmhMap(): OmhMap {
-    return omhMap ?: error("OmhMap in OmhMapViewFragment is not available")
-  }
-
-  override fun onCreateView(
-    inflater: LayoutInflater,
-    container: ViewGroup?,
-    savedInstanceState: Bundle?
-  ): View {
-    _savedInstanceState = savedInstanceState
-    _binding = FragmentOmhMapBinding.inflate(inflater, container, false)
-
-    omhMap = null
-    omhMapView = context?.let { OmhMapProvider.getInstance().provideOmhMapView(it) }
-    omhMapView?.onCreate(_savedInstanceState)
-
-    val mapView = omhMapView?.getView()
-    if (mapView != null) {
-      binding.frameLayoutMapContainer.addView(mapView)
+    fun requireOmhMap(): OmhMap {
+        return omhMap ?: error("OmhMap in OmhMapViewFragment is not available")
     }
 
-    return binding.root
-  }
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View {
+        _savedInstanceState = savedInstanceState
+        _binding = FragmentOmhMapBinding.inflate(inflater, container, false)
 
-  override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-    super.onViewCreated(view, savedInstanceState)
-  }
+        omhMap = null
+        omhMapView = context?.let { OmhMapProvider.getInstance().provideOmhMapView(it) }
+        omhMapView?.onCreate(_savedInstanceState)
 
-  override fun onDestroyView() {
-    super.onDestroyView()
-    _binding = null
-  }
+        val mapView = omhMapView?.getView()
+        if (mapView != null) {
+            binding.frameLayoutMapContainer.addView(mapView)
+        }
 
-  override fun onDestroy() {
-    omhMapView?.onDestroy()
-    super.onDestroy()
-  }
-
-  override fun onLowMemory() {
-    omhMapView?.onLowMemory()
-    super.onLowMemory()
-  }
-
-  override fun onPause() {
-    omhMapView?.onPause()
-    super.onPause()
-  }
-
-  override fun onResume() {
-    super.onResume()
-    omhMapView?.onResume()
-  }
-
-  override fun onSaveInstanceState(outState: Bundle) {
-    super.onSaveInstanceState(outState)
-    omhMapView?.onSaveInstanceState(outState)
-  }
-
-  override fun onStart() {
-    super.onStart()
-    omhMapView?.onStart()
-  }
-
-  override fun onStop() {
-    omhMapView?.onStop()
-    super.onStop()
-  }
-
-  fun getCameraPositionCoordinate(promise: Promise) {
-    UiThreadUtil.runOnUiThread {
-      val coords = omhMap?.getCameraPositionCoordinate()
-      promise.resolve(coords?.toWritableMap())
+        return binding.root
     }
-  }
 
-  fun setCameraPositionCoordinate(coordinate: OmhCoordinate, zoomLevel: Float, promise: Promise) {
-    UiThreadUtil.runOnUiThread {
-      omhMap?.moveCamera(coordinate, zoomLevel)
-      promise.resolve(null)
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
     }
-  }
 
-  companion object {
-    const val NAME = "RNOmhMapsCoreView"
-  }
+    override fun onDestroy() {
+        omhMapView?.onDestroy()
+        super.onDestroy()
+    }
+
+    override fun onLowMemory() {
+        omhMapView?.onLowMemory()
+        super.onLowMemory()
+    }
+
+    override fun onPause() {
+        omhMapView?.onPause()
+        super.onPause()
+    }
+
+    override fun onResume() {
+        super.onResume()
+        omhMapView?.onResume()
+    }
+
+    override fun onSaveInstanceState(outState: Bundle) {
+        super.onSaveInstanceState(outState)
+        omhMapView?.onSaveInstanceState(outState)
+    }
+
+    override fun onStart() {
+        super.onStart()
+        omhMapView?.onStart()
+    }
+
+    override fun onStop() {
+        omhMapView?.onStop()
+        super.onStop()
+    }
+
+    fun getCameraPositionCoordinate(promise: Promise) {
+        UiThreadUtil.runOnUiThread {
+            val coords = omhMap?.getCameraPositionCoordinate()
+            promise.resolve(coords?.toWritableMap())
+        }
+    }
+
+    fun setCameraPositionCoordinate(coordinate: OmhCoordinate, zoomLevel: Float, promise: Promise) {
+        UiThreadUtil.runOnUiThread {
+            omhMap?.moveCamera(coordinate, zoomLevel)
+            promise.resolve(null)
+        }
+    }
+
+    companion object {
+        const val NAME = "RNOmhMapsCoreView"
+    }
 }

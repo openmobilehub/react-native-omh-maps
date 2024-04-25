@@ -11,3 +11,6 @@ export { default as OmhMapsModule } from './NativeOmhMapsCoreModule';
 
 export * from './components/marker/OmhMarkerConstants';
 export * from './components/marker/OmhMarker';
+export { OmhMapProviderVariant } from './types/common';
+
+import './types.d.ts'; // provides react-native resolveAssetSource typings to consumers of the library

@@ -3,7 +3,6 @@ package com.openmobilehub.android.rn.maps.core
 import android.view.View
 import androidx.fragment.app.FragmentContainerView
 import com.facebook.react.bridge.Dynamic
-import com.facebook.react.bridge.ReadableMap
 import com.facebook.react.module.annotations.ReactModule
 import com.facebook.react.uimanager.ThemedReactContext
 import com.facebook.react.uimanager.ViewGroupManager
@@ -13,54 +12,50 @@ import com.openmobilehub.android.rn.maps.core.viewmanagers.RNOmhMapsCoreViewMana
 
 @ReactModule(name = RNOmhMapsCoreViewManagerImpl.NAME)
 class RNOmhMapsCoreViewManager :
-  ViewGroupManager<FragmentContainerView>() {
-  private lateinit var omhMapViewManagerImpl: RNOmhMapsCoreViewManagerImpl
+    ViewGroupManager<FragmentContainerView>() {
+    private lateinit var omhMapViewManagerImpl: RNOmhMapsCoreViewManagerImpl
 
-  override fun getName() = RNOmhMapsCoreViewManagerImpl.NAME
+    override fun getName() = RNOmhMapsCoreViewManagerImpl.NAME
 
-  override fun createViewInstance(reactContext: ThemedReactContext): FragmentContainerView {
-    omhMapViewManagerImpl = RNOmhMapsCoreViewManagerImpl(reactContext)
-    return omhMapViewManagerImpl.createViewInstance(reactContext)
-  }
+    override fun createViewInstance(reactContext: ThemedReactContext): FragmentContainerView {
+        omhMapViewManagerImpl = RNOmhMapsCoreViewManagerImpl(reactContext)
+        return omhMapViewManagerImpl.createViewInstance(reactContext)
+    }
 
-  override fun onDropViewInstance(view: FragmentContainerView) {
-    super.onDropViewInstance(view)
-    omhMapViewManagerImpl.unmountFragment(view)
-  }
+    override fun onDropViewInstance(view: FragmentContainerView) {
+        super.onDropViewInstance(view)
+        omhMapViewManagerImpl.unmountFragment(view)
+    }
 
-  override fun addView(parent: FragmentContainerView, child: View, index: Int) {
-    omhMapViewManagerImpl.addView(parent, child, index)
-  }
+    override fun addView(parent: FragmentContainerView, child: View, index: Int) {
+        omhMapViewManagerImpl.addView(parent, child, index)
+    }
 
-  override fun getChildAt(parent: FragmentContainerView?, index: Int): View? {
-    return omhMapViewManagerImpl.getChildAt(index)
-  }
+    override fun getChildAt(parent: FragmentContainerView?, index: Int): View? {
+        return omhMapViewManagerImpl.getChildAt(index)
+    }
 
-  override fun removeViewAt(parent: FragmentContainerView, index: Int) {
-//    omhMapViewManagerImpl.removeViewAt(parent, index)
-  }
+    override fun removeViewAt(parent: FragmentContainerView, index: Int) {
+        // TODO: RN on old architecture try to unmount the child view at index 0 even when the child is not available.
+        // omhMapViewManagerImpl.removeViewAt(parent, index)
+    }
 
-  override fun addEventEmitters(reactContext: ThemedReactContext, view: FragmentContainerView) {
-    omhMapViewManagerImpl.onReactViewReady(reactContext, view)
-    super.addEventEmitters(reactContext, view)
-  }
+    @ReactPropGroup(names = ["width", "height"], customType = "Style")
+    fun setStyle(view: FragmentContainerView, index: Int, value: Dynamic?) {
+        omhMapViewManagerImpl.setStyle(view, index, value)
+    }
 
-  override fun getExportedCustomDirectEventTypeConstants(): MutableMap<String, Any> {
-    return RNOmhMapsCoreViewManagerImpl.EVENTS
-  }
+    @ReactProp(name = "zoomEnabled")
+    fun setZoomEnabled(view: FragmentContainerView, value: Boolean) {
+        omhMapViewManagerImpl.setZoomEnabled(view, value)
+    }
 
-  @ReactPropGroup(names = ["width", "height"], customType = "Style")
-  fun setStyle(view: FragmentContainerView, index: Int, value: Dynamic?) {
-    omhMapViewManagerImpl.setStyle(view, index, value)
-  }
+    @ReactProp(name = "rotateEnabled")
+    fun setRotateEnabled(view: FragmentContainerView, value: Boolean) {
+        omhMapViewManagerImpl.setRotateEnabled(view, value)
+    }
 
-  @ReactProp(name = "zoomEnabled")
-  fun setZoomEnabled(view: FragmentContainerView, value: Boolean) {
-    omhMapViewManagerImpl.setZoomEnabled(view, value)
-  }
-
-  @ReactProp(name = "rotateEnabled")
-  fun setRotateEnabled(view: FragmentContainerView, value: Boolean) {
-    omhMapViewManagerImpl.setRotateEnabled(view, value)
-  }
+    override fun getExportedCustomDirectEventTypeConstants(): Map<String, Any> {
+        return RNOmhMapsCoreViewManagerImpl.EVENTS
+    }
 }

@@ -29,6 +29,7 @@ DerivedData
 *.xcuserstate
 project.xcworkspace
 .bundle
+**/.xcode.env.local
 
 # Android/IJ
 #
@@ -43,7 +44,7 @@ android.iml
 
 # Cocoapods
 #
-sample-app/ios/Pods
+**/Pods
 
 # Ruby
 sample-app/vendor/

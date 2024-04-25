@@ -9,6 +9,7 @@ import {
 
 import NativeOmhMapsCoreModule, { Spec } from '../../NativeOmhMapsCoreModule';
 import { OmhMapViewProps } from '../../types/OmhMapView';
+import { OmhMapProviderVariant } from '../../types/common';
 import { OmhMapsCoreModuleFunctionWithoutViewRef } from '../../utils/typeHelpers';
 import RNOmhMapsCoreViewNativeComponent from './RNOmhMapsCoreViewNativeComponent';
 
@@ -20,7 +21,7 @@ export type OmhMapViewRef = {
     Spec['setCameraCoordinate']
   >;
   getProviderName: OmhMapsCoreModuleFunctionWithoutViewRef<
-    Spec['getProviderName']
+    () => OmhMapProviderVariant
   >;
   takeSnapshot: (resultFormat: OmhSnapshotFormat) => Promise<string>;
 };
@@ -106,7 +107,9 @@ export const OmhMapView = forwardRef<OmhMapViewRef, OmhMapViewProps>(
           setCameraCoordinate: (...args) =>
             NativeOmhMapsCoreModule.setCameraCoordinate(nodeHandle, ...args),
           getProviderName: () =>
-            NativeOmhMapsCoreModule.getProviderName(nodeHandle),
+            NativeOmhMapsCoreModule.getProviderName(
+              nodeHandle
+            ) as OmhMapProviderVariant,
           takeSnapshot: (format: OmhSnapshotFormat) =>
             NativeOmhMapsCoreModule.takeSnapshot(nodeHandle, format),
         };
