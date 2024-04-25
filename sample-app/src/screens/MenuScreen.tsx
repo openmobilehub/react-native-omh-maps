@@ -9,10 +9,7 @@ import { MapProvider, OmhMapsModule } from '@omh/react-native-maps-core';
 
 const menuRoutes: Route[] = [Route.plainMap, Route.cameraMap, Route.markerMap];
 
-const defaultMapProvider = {
-  name: 'OpenStreetMap',
-  path: 'com.openmobilehub.android.maps.plugin.openstreetmap.presentation.OmhMapFactoryImpl',
-};
+const defaultMapProvider = OmhMapsModule.getDefaultMapProvider();
 
 OmhMapsModule.initialize({
   gmsPath: defaultMapProvider.path,
@@ -25,8 +22,8 @@ export const MenuScreen = () => {
   const [_, setMapProvider] = React.useState(defaultMapProvider);
 
   const handleMapProviderChange = (newProvider: MapProvider) => {
-    console.log(newProvider);
     setMapProvider(newProvider);
+
     OmhMapsModule.initialize({
       gmsPath: newProvider.path,
       nonGmsPath: newProvider.path,

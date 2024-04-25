@@ -13,6 +13,22 @@ class RNOmhMapsCoreModule(
 ) : NativeOmhMapsCoreModuleSpec(reactContext) {
   private val moduleImpl = RNOmhMapsCoreModuleImpl(reactContext)
 
+  override fun initialize(paths: ReadableMap) {
+    moduleImpl.initialize(paths)
+  }
+
+  override fun getProviderName(viewRef: Double): String {
+    return moduleImpl.getProviderName(viewRef)
+  }
+
+  override fun getDefaultMapProvider(): WritableMap {
+    return moduleImpl.getDefaultMapProvider()
+  }
+
+  override fun getAvailableMapProviders(): WritableArray {
+    return moduleImpl.getAvailableMapProviders()
+  }
+
   override fun getCameraCoordinate(viewRef: Double, promise: Promise) {
     moduleImpl.getCameraCoordinate(viewRef, promise)
   }
@@ -26,24 +42,8 @@ class RNOmhMapsCoreModule(
     moduleImpl.setCameraCoordinate(viewRef, coordinate, zoomLevel, promise)
   }
 
-  override fun getProviderName(viewRef: Double): String {
-    return moduleImpl.getProviderName(viewRef)
-  }
-
   override fun takeSnapshot(viewRef: Double, format: String, promise: Promise) {
     moduleImpl.takeSnapshot(viewRef, format, promise)
-  }
-
-  override fun getAvailableMapProviders(): WritableArray {
-    return moduleImpl.getAvailableMapProviders()
-  }
-
-  override fun getDefaultMapProvider(): WritableMap {
-    return moduleImpl.getDefaultMapProvider()
-  }
-
-  override fun initialize(paths: ReadableMap) {
-    moduleImpl.initialize(paths)
   }
 
   override fun getName() = NAME

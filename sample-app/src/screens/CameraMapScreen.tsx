@@ -28,6 +28,9 @@ const getSupportedFeatures = (omhMapRef: OmhMapViewRef | null) => {
 };
 
 export const CameraMapScreen = () => {
+  const omhMapRef = useRef<OmhMapViewRef | null>(null);
+  const snackbarRef = useRef<SnackbarRef>(null);
+
   const [snapshotModalVisible, setSnapshotModalVisible] = useState(false);
   const [snapshotSource, setSnapshotSource] = useState<string | null>(null);
   const [zoomGesturesEnabled, setZoomGesturesEnabled] = useState(true);
@@ -37,14 +40,10 @@ export const CameraMapScreen = () => {
     ReturnType<typeof getSupportedFeatures>
   >(getSupportedFeatures(null));
 
-  const omhMapRef = useRef<OmhMapViewRef | null>(null);
-
-  const ref = useRef<SnackbarRef>(null);
-
   const handleShowCameraPositionButtonPress = async () => {
     const cameraPosition = await omhMapRef.current?.getCameraCoordinate();
     if (cameraPosition !== null) {
-      ref.current?.show(
+      snackbarRef.current?.show(
         'Camera position coordinate: ' + JSON.stringify(cameraPosition, null, 2)
       );
     }
@@ -69,7 +68,6 @@ export const CameraMapScreen = () => {
     if (!result) {
       return;
     }
-    console.log('Snapshot result:', result);
     setSnapshotSource(result);
 
     setSnapshotModalVisible(true);
@@ -81,13 +79,20 @@ export const CameraMapScreen = () => {
   };
 
   const handleCameraIdle = () => {
-    ref.current?.show('Camera idle');
-    console.log('camera idle');
+    snackbarRef.current?.show('Camera idle');
   };
 
   const handleCameraMoveStarted = (reason: string) => {
-    ref.current?.show('Camera move started: ' + reason);
-    console.log('camera move started', reason);
+    snackbarRef.current?.show('Camera move started: ' + reason);
+  };
+
+  const handleMapLoaded = () => {
+    setSupportedFeatures(getSupportedFeatures(omhMapRef.current));
+
+    omhMapRef.current?.setCameraCoordinate(
+      Constants.Maps.GREENWICH_COORDINATE,
+      15.0
+    );
   };
 
   return (
@@ -98,16 +103,9 @@ export const CameraMapScreen = () => {
             ref={omhMapRef}
             zoomEnabled={zoomGesturesEnabled}
             rotateEnabled={rotateGesturesEnabled}
-            onMapLoaded={() => {
-              setSupportedFeatures(getSupportedFeatures(omhMapRef.current));
-
-              omhMapRef.current?.setCameraCoordinate(
-                Constants.Maps.GREENWICH_COORDINATE,
-                15.0
-              );
-            }}
+            onMapLoaded={handleMapLoaded}
             onCameraIdle={handleCameraIdle}
-            onCameraMoveStarted={event => handleCameraMoveStarted(event)}
+            onCameraMoveStarted={handleCameraMoveStarted}
             width={`100%`}
             height={`100%`}
           />
@@ -164,7 +162,7 @@ export const CameraMapScreen = () => {
         )}
         <PanelButton onPress={handleSnapshotModalDismiss} label="Close" />
       </Modal>
-      <SnackbarMy ref={ref} />
+      <SnackbarMy ref={snackbarRef} />
     </>
   );
 };

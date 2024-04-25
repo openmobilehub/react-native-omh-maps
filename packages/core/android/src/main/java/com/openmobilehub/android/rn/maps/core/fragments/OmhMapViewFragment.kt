@@ -50,10 +50,6 @@ class OmhMapViewFragment : Fragment() {
     return binding.root
   }
 
-  override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-    super.onViewCreated(view, savedInstanceState)
-  }
-
   override fun onDestroyView() {
     super.onDestroyView()
     _binding = null
@@ -92,20 +88,6 @@ class OmhMapViewFragment : Fragment() {
   override fun onStop() {
     omhMapView?.onStop()
     super.onStop()
-  }
-
-  fun getCameraPositionCoordinate(promise: Promise) {
-    UiThreadUtil.runOnUiThread {
-      val coords = omhMap?.getCameraPositionCoordinate()
-      promise.resolve(coords?.toWritableMap())
-    }
-  }
-
-  fun setCameraPositionCoordinate(coordinate: OmhCoordinate, zoomLevel: Float, promise: Promise) {
-    UiThreadUtil.runOnUiThread {
-      omhMap?.moveCamera(coordinate, zoomLevel)
-      promise.resolve(null)
-    }
   }
 
   companion object {

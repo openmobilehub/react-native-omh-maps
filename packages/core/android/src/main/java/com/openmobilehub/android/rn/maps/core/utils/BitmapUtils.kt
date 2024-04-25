@@ -10,7 +10,6 @@ import java.io.FileNotFoundException
 import java.io.FileOutputStream
 import java.io.IOException
 
-
 object BitmapUtils {
   private const val FORMAT_BASE_64 = "base64"
   private const val FORMAT_JPG = "jpg"
@@ -29,18 +28,24 @@ object BitmapUtils {
     if (resultFormat == FORMAT_BASE_64) {
       val outputStream = ByteArrayOutputStream()
       bitmap.compress(Bitmap.CompressFormat.PNG, 100, outputStream)
+
       closeQuietly(outputStream)
+
       val bytes = outputStream.toByteArray()
+
       return Base64.encodeToString(bytes, Base64.NO_WRAP)
     }
 
     val outputStream: FileOutputStream
-    val tempFile: File = File.createTempFile("AirMapSnapshot", ".$resultFormat", directory)
+    val tempFile = File.createTempFile("OmhMapSnapshot", ".$resultFormat", directory)
     outputStream = FileOutputStream(tempFile)
+
     val compressFormat =
       if (resultFormat == FORMAT_JPG) Bitmap.CompressFormat.JPEG else Bitmap.CompressFormat.PNG
     bitmap.compress(compressFormat, 100, outputStream)
+
     closeQuietly(outputStream)
+
     return Uri.fromFile(tempFile).toString()
   }
 }

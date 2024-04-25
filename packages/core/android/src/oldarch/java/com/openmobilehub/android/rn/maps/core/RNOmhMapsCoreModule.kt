@@ -15,6 +15,26 @@ class RNOmhMapsCoreModule(
 ) : ReactContextBaseJavaModule(reactContext) {
   private val moduleImpl = RNOmhMapsCoreModuleImpl(reactContext)
 
+  @ReactMethod(isBlockingSynchronousMethod = true)
+  fun initialize(paths: ReadableMap) {
+    moduleImpl.initialize(paths)
+  }
+
+  @ReactMethod
+  fun getProviderName(viewRef: Double): String {
+    return moduleImpl.getProviderName(viewRef)
+  }
+
+  @ReactMethod(isBlockingSynchronousMethod = true)
+  fun getDefaultMapProvider(): WritableMap {
+    return moduleImpl.getDefaultMapProvider()
+  }
+
+  @ReactMethod(isBlockingSynchronousMethod = true)
+  fun getAvailableMapProviders(): WritableArray {
+    return moduleImpl.getAvailableMapProviders()
+  }
+
   @ReactMethod
   fun getCameraCoordinate(viewRef: Double, promise: Promise) {
     moduleImpl.getCameraCoordinate(viewRef, promise)
@@ -31,28 +51,8 @@ class RNOmhMapsCoreModule(
   }
 
   @ReactMethod
-  fun getProviderName(viewRef: Double): String {
-    return moduleImpl.getProviderName(viewRef)
-  }
-
-  @ReactMethod
   fun takeSnapshot(viewRef: Double, format: String, promise: Promise) {
     moduleImpl.takeSnapshot(viewRef, format, promise)
-  }
-
-  @ReactMethod(isBlockingSynchronousMethod = true)
-  fun getAvailableMapProviders(): WritableArray {
-    return moduleImpl.getAvailableMapProviders()
-  }
-
-  @ReactMethod(isBlockingSynchronousMethod = true)
-  fun getDefaultMapProvider(): WritableMap {
-    return moduleImpl.getDefaultMapProvider()
-  }
-
-  @ReactMethod(isBlockingSynchronousMethod = true)
-  fun initialize(paths: ReadableMap) {
-    moduleImpl.initialize(paths)
   }
 
   override fun getName() = NAME

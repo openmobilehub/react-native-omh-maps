@@ -10,22 +10,22 @@ import com.openmobilehub.android.rn.maps.core.entities.OmhMarkerEntity
 
 @ReactModule(name = RNOmhMapsMarkerViewManager.NAME)
 class RNOmhMapsMarkerViewManager :
-    SimpleViewManager<OmhMarkerEntity>(),
-    RNOmhMapsMarkerViewManagerInterface<OmhMarkerEntity> {
-    private val omhMapMarkerComponentManagerImpl = RNOmhMapsMarkerViewManagerImpl()
+  SimpleViewManager<OmhMarkerEntity>(),
+  RNOmhMapsMarkerViewManagerInterface<OmhMarkerEntity> {
+  private val omhMapMarkerComponentManagerImpl = RNOmhMapsMarkerViewManagerImpl()
 
-    @ReactProp(name = "position")
-    override fun setPosition(view: OmhMarkerEntity, value: ReadableMap?) {
-        omhMapMarkerComponentManagerImpl.setPosition(view, value!!)
-    }
+  override fun getName(): String = NAME
 
-    override fun getName(): String = NAME
+  override fun createViewInstance(reactContext: ThemedReactContext): OmhMarkerEntity {
+    return omhMapMarkerComponentManagerImpl.createViewInstance(reactContext)
+  }
 
-    override fun createViewInstance(reactContext: ThemedReactContext): OmhMarkerEntity {
-        return omhMapMarkerComponentManagerImpl.createViewInstance(reactContext)
-    }
+  @ReactProp(name = "position")
+  override fun setPosition(view: OmhMarkerEntity, value: ReadableMap?) {
+    omhMapMarkerComponentManagerImpl.setPosition(view, value!!)
+  }
 
-    companion object {
-        const val NAME = RNOmhMapsMarkerViewManagerImpl.NAME
-    }
+  companion object {
+    const val NAME = RNOmhMapsMarkerViewManagerImpl.NAME
+  }
 }

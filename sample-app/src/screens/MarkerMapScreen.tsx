@@ -32,10 +32,7 @@ export const MarkerMapScreen = () => {
           width="100%"
           height="100%">
           {mountCustomizableMarker && (
-            <>
-              <OmhMarker position={Constants.Maps.GREENWICH_COORDINATE} />
-              <OmhMarker position={Constants.Maps.EVEREST_COORDINATE} />
-            </>
+            <OmhMarker position={Constants.Maps.GREENWICH_COORDINATE} />
           )}
         </OmhMapView>
       </View>

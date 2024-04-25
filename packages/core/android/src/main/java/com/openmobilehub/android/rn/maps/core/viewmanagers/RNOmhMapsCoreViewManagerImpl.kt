@@ -34,71 +34,25 @@ class RNOmhMapsCoreViewManagerImpl(private val reactContext: ReactContext) {
     return FragmentContainerView(reactContext)
   }
 
-  fun getChildAt(index: Int): OmhMapEntity<*>? {
-    return mountedChildren[index]
-  }
+  fun onReactViewReady(reactContext: ThemedReactContext, view: FragmentContainerView) {
+    mountFragment(view)
 
-  fun addView(
-    parent: FragmentContainerView,
-    child: View,
-    index: Int,
-    entityComesFromQueue: Boolean = false
-  ) {
-    try {
-      val fragment = FragmentUtils.requireFragment(reactContext, parent)
-      val omhMap = fragment.requireOmhMap()
+    val fragment = FragmentUtils.findFragment(reactContext, view.id)
+    val omhMapView = fragment?.omhMapView
 
-      var addToRegistry = true
+    omhMapView?.getMapAsync {
+      fragment.omhMap = it
 
-      when (child) {
-        is OmhMapEntity<*> -> {
-          // TODO: handle index - set zIndex
-          child.mountEntity(omhMap)
-        }
+      setupListeners(it, reactContext, view)
 
-        else -> {
-          addToRegistry = false
-
-          Log.w(
-            NAME,
-            "${ERRORS.UNSUPPORTED_CHILD_VIEW_TYPE}: ${child.javaClass.simpleName}"
-          )
-        }
-      }
-
-      if (addToRegistry) {
-        mountedChildren[index] = child as OmhMapEntity<*>
-      }
-    } catch (@Suppress("SwallowedException") e: IllegalStateException) {
-      if (entityComesFromQueue) {
-        throw e
-      } else {
-        addEntitiesQueue.add(Pair(child, index))
-      }
-    }
-  }
-
-  fun removeViewAt(parent: FragmentContainerView, index: Int) {
-    val child = mountedChildren[index]
-      ?: (if (BuildConfig.IS_NEW_ARCHITECTURE_ENABLED) error(ERRORS.REMOVE_VIEW_AT_CHILD_NOT_FOUND) else null)
-
-    child?.unmountEntity()
-
-    mountedChildren.remove(index)
-  }
-
-  fun unmountFragment(view: FragmentContainerView) {
-    UiThreadUtil.assertOnUiThread()
-    val fragmentManager = FragmentUtils.getFragmentManager(view)
-
-    if (fragmentManager != null) {
-      val fragment = FragmentUtils.findFragment(view)
-
-      if (fragment != null) {
-        val transaction = fragmentManager.beginTransaction()
-        transaction.remove(fragment)
-        transaction.commitNowAllowingStateLoss()
-      }
+      dispatchEvent(
+        reactContext,
+        view.id,
+        OmhOnMapReadyEvent(
+          UIManagerHelper.getSurfaceId(reactContext),
+          view.id
+        )
+      )
     }
   }
 
@@ -162,52 +116,11 @@ class RNOmhMapsCoreViewManagerImpl(private val reactContext: ReactContext) {
     view.layout(0, 0, view.measuredWidth, view.measuredHeight)
   }
 
-  fun setStyle(view: FragmentContainerView, index: Int, value: Dynamic?) {
-    if (value == null) {
-      return
-    }
-
-    if (index == 0) {
-      width = value.asInt()
-    }
-
-    if (index == 1) {
-      height = value.asInt()
-    }
-
-    view.post {
-      layoutChildren(view)
-    }
-  }
-
-  fun onReactViewReady(reactContext: ThemedReactContext, view: FragmentContainerView) {
-    mountFragment(view)
-
-    val fragment = FragmentUtils.findFragment(reactContext, view.id)
-    val omhMapView = fragment?.omhMapView
-
-    omhMapView?.getMapAsync {
-      fragment.omhMap = it
-
-      setupListeners(it, reactContext, view)
-
-      dispatchEvent(
-        reactContext,
-        view.id,
-        OmhOnMapReadyEvent(
-          UIManagerHelper.getSurfaceId(reactContext),
-          view.id
-        )
-      )
-    }
-  }
-
   private fun <T : Event<*>?> dispatchEvent(
     reactContext: ThemedReactContext,
     viewId: Int,
     event: Event<T>,
   ) {
-
     // TODO: Support older RN versions in: https://callstackio.atlassian.net/browse/OMHD-280
     UiThreadUtil.runOnUiThread {
       val dispatcher = UIManagerHelper.getEventDispatcherForReactTag(reactContext, viewId)
@@ -255,6 +168,92 @@ class RNOmhMapsCoreViewManagerImpl(private val reactContext: ReactContext) {
     }
   }
 
+  fun unmountFragment(view: FragmentContainerView) {
+    UiThreadUtil.assertOnUiThread()
+    val fragmentManager = FragmentUtils.getFragmentManager(view)
+
+    if (fragmentManager != null) {
+      val fragment = FragmentUtils.findFragment(view)
+
+      if (fragment != null) {
+        val transaction = fragmentManager.beginTransaction()
+        transaction.remove(fragment)
+        transaction.commitNowAllowingStateLoss()
+      }
+    }
+  }
+
+  fun addView(
+    parent: FragmentContainerView,
+    child: View,
+    index: Int,
+    entityComesFromQueue: Boolean = false
+  ) {
+    try {
+      val fragment = FragmentUtils.requireFragment(reactContext, parent)
+      val omhMap = fragment.requireOmhMap()
+
+      var addToRegistry = true
+
+      when (child) {
+        is OmhMapEntity<*> -> {
+          // TODO: handle index - set zIndex
+          child.mountEntity(omhMap)
+        }
+
+        else -> {
+          addToRegistry = false
+
+          Log.w(
+            NAME,
+            "${ERRORS.UNSUPPORTED_CHILD_VIEW_TYPE}: ${child.javaClass.simpleName}"
+          )
+        }
+      }
+
+      if (addToRegistry) {
+        mountedChildren[index] = child as OmhMapEntity<*>
+      }
+    } catch (@Suppress("SwallowedException") e: IllegalStateException) {
+      if (entityComesFromQueue) {
+        throw e
+      } else {
+        addEntitiesQueue.add(Pair(child, index))
+      }
+    }
+  }
+
+  fun getChildAt(index: Int): OmhMapEntity<*>? {
+    return mountedChildren[index]
+  }
+
+  fun removeViewAt(parent: FragmentContainerView, index: Int) {
+    val child = mountedChildren[index]
+      ?: (if (BuildConfig.IS_NEW_ARCHITECTURE_ENABLED) error(ERRORS.REMOVE_VIEW_AT_CHILD_NOT_FOUND) else null)
+
+    child?.unmountEntity()
+
+    mountedChildren.remove(index)
+  }
+
+  fun setStyle(view: FragmentContainerView, index: Int, value: Dynamic?) {
+    if (value == null) {
+      return
+    }
+
+    if (index == 0) {
+      width = value.asInt()
+    }
+
+    if (index == 1) {
+      height = value.asInt()
+    }
+
+    view.post {
+      layoutChildren(view)
+    }
+  }
+
   fun setZoomEnabled(view: FragmentContainerView, value: Boolean) {
     FragmentUtils.findFragment(view)?.omhMap?.setZoomGesturesEnabled(value)
   }
@@ -280,19 +279,11 @@ class RNOmhMapsCoreViewManagerImpl(private val reactContext: ReactContext) {
       )
 
     object ERRORS {
-      const val MAP_INSTANCE_NOT_AVAILABLE =
-        "RN-managed OmhMap instance not available. Did you wait for the map to become ready?"
-
-      const val MAP_FRAGMENT_NOT_FOUND =
-        "RN-managed OmhMap fragment not found. Did you wait for the map to mount?"
-
       const val UNSUPPORTED_CHILD_VIEW_TYPE =
         "Unsupported child view type mounted inside RN OmhMap"
 
       const val REMOVE_VIEW_AT_CHILD_NOT_FOUND =
         "Child to be removed via removeViewAt() not found in mounted children registry"
-
-      const val CHILD_NOT_FOUND = "Child not found"
     }
   }
 }

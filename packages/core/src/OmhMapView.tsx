@@ -136,7 +136,6 @@ export const OmhMapView = forwardRef<OmhMapViewRef, OmhMapViewProps>(
 
     const handleMapReady = () => {
       setIsMapReady(true);
-      console.log('Map is ready');
     };
 
     const onCameraMoveStartedMapped = (

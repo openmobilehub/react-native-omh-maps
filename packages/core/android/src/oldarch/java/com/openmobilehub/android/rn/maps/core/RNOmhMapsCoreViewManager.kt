@@ -23,6 +23,11 @@ class RNOmhMapsCoreViewManager :
     return omhMapViewManagerImpl.createViewInstance(reactContext)
   }
 
+  override fun addEventEmitters(reactContext: ThemedReactContext, view: FragmentContainerView) {
+    omhMapViewManagerImpl.onReactViewReady(reactContext, view)
+    super.addEventEmitters(reactContext, view)
+  }
+
   override fun onDropViewInstance(view: FragmentContainerView) {
     super.onDropViewInstance(view)
     omhMapViewManagerImpl.unmountFragment(view)
@@ -37,16 +42,8 @@ class RNOmhMapsCoreViewManager :
   }
 
   override fun removeViewAt(parent: FragmentContainerView, index: Int) {
-//    omhMapViewManagerImpl.removeViewAt(parent, index)
-  }
-
-  override fun addEventEmitters(reactContext: ThemedReactContext, view: FragmentContainerView) {
-    omhMapViewManagerImpl.onReactViewReady(reactContext, view)
-    super.addEventEmitters(reactContext, view)
-  }
-
-  override fun getExportedCustomDirectEventTypeConstants(): MutableMap<String, Any> {
-    return RNOmhMapsCoreViewManagerImpl.EVENTS
+    // TODO: RN on old architecture try to unmount the child view at index 0 even when the child is not available.
+    // omhMapViewManagerImpl.removeViewAt(parent, index)
   }
 
   @ReactPropGroup(names = ["width", "height"], customType = "Style")
@@ -62,5 +59,9 @@ class RNOmhMapsCoreViewManager :
   @ReactProp(name = "rotateEnabled")
   fun setRotateEnabled(view: FragmentContainerView, value: Boolean) {
     omhMapViewManagerImpl.setRotateEnabled(view, value)
+  }
+
+  override fun getExportedCustomDirectEventTypeConstants(): MutableMap<String, Any> {
+    return RNOmhMapsCoreViewManagerImpl.EVENTS
   }
 }

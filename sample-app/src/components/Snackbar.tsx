@@ -6,12 +6,7 @@ export type SnackbarRef = {
   show: (content: string) => void;
 };
 
-/**
- * The OMH Map View properties.
- */
-export type SnackbarProps = {};
-
-export const SnackbarMy = forwardRef<SnackbarRef, SnackbarProps>(
+export const SnackbarMy = forwardRef<SnackbarRef, {}>(
   (_props, forwardedRef) => {
     const [content, setContent] = useState<string | null>(null);
     const [visible, setVisible] = useState<boolean>(false);

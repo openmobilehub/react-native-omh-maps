@@ -15,11 +15,6 @@ class OmhOnMapReadyEvent(
         return Arguments.createMap()
     }
 
-  override fun onDispose() {
-    super.onDispose()
-    Log.v("OmhOnMapReadyEvent", "onDispose")
-  }
-
     companion object {
         const val NAME = "topMapReady"
         const val EVENT_PROP_NAME = "onMapReady"
