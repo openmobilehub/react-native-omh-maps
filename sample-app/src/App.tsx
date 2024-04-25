@@ -11,7 +11,6 @@ import useCreateAdaptiveTheme from './hooks/useCreateAdaptiveTheme';
 import AboutScreen from './screens/AboutScreen';
 import MarkerMapScreen from './screens/MarkerMapScreen';
 import MenuScreen from './screens/MenuScreen';
-import MultipleMapsScreen from './screens/MultipleMapsScreen';
 import PlainMapScreen from './screens/PlainMapScreen';
 import CameraMapScreen from './screens/CameraMapScreen';
 
@@ -68,11 +67,11 @@ export default function App() {
               options={screenOptions}
             />
 
-            <Stack.Screen
+            {/* <Stack.Screen
               name={Route.multipleMaps}
               component={MultipleMapsScreen}
               options={screenOptions}
-            />
+            /> */}
           </Stack.Navigator>
         </NavigationContainer>
       </MapProviderChoiceContextProvider>

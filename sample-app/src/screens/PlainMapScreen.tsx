@@ -3,10 +3,13 @@ import React, { useCallback, useMemo, useRef, useState } from 'react';
 import { ScrollView, StyleSheet, View } from 'react-native';
 import { MD2Colors, Subheading, useTheme } from 'react-native-paper';
 
-import { OmhMapView, OmhMapViewRef } from '@omh/react-native-maps-core';
+import {
+  OmhMapView,
+  OmhMapViewRef,
+  OmhMapsModule,
+} from '@omh/react-native-maps-core';
 import Slider from '@react-native-community/slider';
 
-import { MapProvider } from '../../../packages/core/src/NativeOmhMapsCoreModule';
 import ControlParagraph from '../components/ControlParagraph';
 import MapProviderPicker from '../components/MapProviderPicker';
 import useChosenMapProvider from '../hooks/useChosenMapProvider';
@@ -26,7 +29,6 @@ export const PlainMapScreen = () => {
 
   const [width, setWidth] = useState(100);
   const [height, setHeight] = useState(100);
-  const [provider, setProvider] = useState<MapProvider>(defaultMapProvider);
 
   const omhMapRef = useRef<OmhMapViewRef | null>(null);
 
@@ -68,8 +70,8 @@ export const PlainMapScreen = () => {
       <View style={demoStyles.mapContainer}>
         <OmhMapView
           ref={omhMapRef}
-          onMapReady={() => {
-            logger.log('OmhMapView has become ready');
+          onMapLoaded={() => {
+            logger.log('OmhMapView has become loaded');
 
             omhMapRef.current?.setCameraCoordinate(
               Constants.Maps.GREENWICH_COORDINATE,
@@ -79,10 +81,6 @@ export const PlainMapScreen = () => {
           style={demoSizeModified ? styles.borderedView : null}
           width={`${width}%`}
           height={`${height}%`}
-          paths={{
-            gmsPath: provider.path,
-            nonGmsPath: provider.path,
-          }}
         />
       </View>
 
@@ -103,7 +101,10 @@ export const PlainMapScreen = () => {
                 `Map provider has been changed to ${newProvider.name} (${newProvider.path})`
               );
 
-              setProvider(newProvider);
+              OmhMapsModule.initialize({
+                gmsPath: newProvider.path,
+                nonGmsPath: newProvider.path,
+              });
             }}
           />
 
