@@ -190,12 +190,8 @@ export const OmhMapView = forwardRef<OmhMapViewRef, OmhMapViewProps>(
             width: PixelRatio.getPixelSizeForLayoutSize(componentSize.width), // convert dpi to px
             height: PixelRatio.getPixelSizeForLayoutSize(componentSize.height), // convert dpi to px
           }}
-          onMapReady={() => {
-            console.log('Map is ready');
-          }}
-          onMapLoaded={() => {
-            console.log('Map is loaded');
-          }}
+          onMapReady={handleMapReady}
+          onMapLoaded={onMapLoaded}
           onCameraIdle={onCameraIdle}
           onCameraMoveStarted={onCameraMoveStartedMapped}
           {...props}

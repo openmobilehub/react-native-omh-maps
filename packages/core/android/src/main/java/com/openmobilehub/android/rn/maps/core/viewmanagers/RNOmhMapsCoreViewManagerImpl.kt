@@ -189,7 +189,7 @@ class RNOmhMapsCoreViewManagerImpl(private val reactContext: ReactContext) {
     omhMapView?.getMapAsync {
       fragment.omhMap = it
 
-//      setupListeners(it, reactContext, view)
+      setupListeners(it, reactContext, view)
 
       dispatchEvent(
         reactContext,
@@ -209,15 +209,12 @@ class RNOmhMapsCoreViewManagerImpl(private val reactContext: ReactContext) {
     delay: Long = 0L
   ) {
 
-    val runnable = Runnable {
-      Log.v("MBX", "dispatchEvent: ${event}")
+    UiThreadUtil.runOnUiThread {
       val dispatcher = UIManagerHelper.getEventDispatcherForReactTag(reactContext, viewId)
       dispatcher?.dispatchEvent(
         event
       )
     }
-
-    UiThreadUtil.runOnUiThread(runnable, 0)
   }
 
   private fun setupListeners(
