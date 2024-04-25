@@ -1,4 +1,4 @@
-package com.openmobilehub.android.rn.maps.core.viewmanagers
+package com.openmobilehub.android.rn.maps.core
 
 import android.view.View
 import androidx.fragment.app.FragmentContainerView

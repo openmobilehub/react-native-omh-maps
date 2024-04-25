@@ -1,4 +1,4 @@
-package com.openmobilehub.android.rn.maps.core.viewmanagers
+package com.openmobilehub.android.rn.maps.core
 
 import com.facebook.react.bridge.ReadableMap
 import com.facebook.react.module.annotations.ReactModule

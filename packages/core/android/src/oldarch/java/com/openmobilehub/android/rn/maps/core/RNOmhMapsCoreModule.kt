@@ -20,7 +20,7 @@ class RNOmhMapsCoreModule(
     moduleImpl.initialize(paths)
   }
 
-  @ReactMethod
+  @ReactMethod(isBlockingSynchronousMethod = true)
   fun getProviderName(viewRef: Double): String {
     return moduleImpl.getProviderName(viewRef)
   }

@@ -28,7 +28,11 @@ class RNOmhMapsCoreModuleImpl(private val reactContext: ReactApplicationContext)
   }
 
   fun getProviderName(viewRef: Double): String {
-    return FragmentUtils.requireFragment(reactContext, viewRef.toInt()).requireOmhMap().providerName
+    val fragment = FragmentUtils.requireFragment(reactContext, viewRef.toInt())
+    val omhMap = fragment.requireOmhMap()
+    val providerName = omhMap.providerName
+
+    return providerName
   }
 
   fun getDefaultMapProvider(): WritableMap {

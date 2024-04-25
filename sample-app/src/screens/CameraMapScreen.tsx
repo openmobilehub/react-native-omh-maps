@@ -13,6 +13,7 @@ import { allProviders, isFeatureSupported } from '../utils/SupportUtils';
 
 const getSupportedFeatures = (omhMapRef: OmhMapViewRef | null) => {
   const mapProvider = omhMapRef?.getProviderName();
+  console.log('mapProvider', mapProvider);
 
   return {
     zoom: isFeatureSupported(mapProvider, allProviders),
