@@ -8,9 +8,9 @@ import {
 } from '@omh/react-native-maps-core';
 import { useDeviceOrientation } from '@react-native-community/hooks';
 
-import useLogger from '../hooks/useLogger';
-import { demoStyles } from '../styles/demoStyles';
-import { Constants } from '../utils/Constants';
+import useLogger from '../../hooks/useLogger';
+import { demoStyles } from '../../styles/demoStyles';
+import { Constants } from '../../utils/Constants';
 
 export const MultipleMapsScreen = () => {
   const logger = useLogger('MultipleMapsScreen');
@@ -46,7 +46,7 @@ export const MultipleMapsScreen = () => {
               omhMapRefs.current[provider.path] = ref;
             }}
             onMapReady={() => {
-              logger.log('OmhMapView has become ready');
+              logger.log("OmhMapView's OmhMap has become ready");
 
               omhMapRefs.current[provider.path]?.setCameraCoordinate(
                 Constants.Maps.GREENWICH_COORDINATE,

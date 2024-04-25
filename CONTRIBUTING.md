@@ -14,6 +14,12 @@ yarn
 
 > Since the project relies on Yarn workspaces, you cannot use [`npm`](https://github.com/npm/cli) for development.
 
+To develop, it is required that the [React Native Codegen](https://github.com/reactwg/react-native-new-architecture/blob/main/docs/codegen.md) is run at least once, and after any changes to the native specs, it must be re-run. This is done by running the following command:
+
+```sh
+yarn codegen
+```
+
 The [example app](https://github.com/openmobilehub/react-native-omh-maps/tree/main/sample-app/) demonstrates usage of the library. You need to run it to test any changes you make.
 
 It is configured to use the local version of the library, so any changes you make to the library's source code will be reflected in the example app. Changes to the library's JavaScript code will be reflected in the example app without a rebuild, but native code changes will require a rebuild of the example app.

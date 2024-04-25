@@ -7,15 +7,11 @@ import com.facebook.react.uimanager.events.Event
 class OmhOnMapLoadedEvent(
     surfaceId: Int,
     viewId: Int,
-) : Event<OmhOnMapLoadedEvent>(surfaceId, viewId) {
+) : OmhBaseEvent(surfaceId, viewId) {
     override fun getEventName() = NAME
 
-    override fun getEventData(): WritableMap? {
-        return Arguments.createMap()
-    }
-
-    companion object {
-        const val NAME = "topMapLoaded"
-        const val EVENT_PROP_NAME = "onMapLoaded"
+    companion object : OmhBaseEventCompanion {
+        override val NAME = "topMapLoaded"
+        override val EVENT_PROP_NAME = "onMapLoaded"
     }
 }

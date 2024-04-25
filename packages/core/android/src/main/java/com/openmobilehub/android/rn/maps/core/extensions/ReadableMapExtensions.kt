@@ -9,3 +9,7 @@ fun ReadableMap.toOmhCoordinate(): OmhCoordinate {
         getDouble("longitude")
     )
 }
+
+fun ReadableMap.toAnchor(): Pair<Float, Float> {
+    return getDouble("u").toFloat() to getDouble("v").toFloat()
+}

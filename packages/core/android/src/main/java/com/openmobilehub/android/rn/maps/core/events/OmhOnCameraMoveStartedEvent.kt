@@ -9,7 +9,7 @@ class OmhOnCameraMoveStartedEvent(
     surfaceId: Int,
     viewId: Int,
     val reason: Int,
-) : Event<OmhOnCameraMoveStartedEvent>(surfaceId, viewId) {
+) : OmhBaseEvent(surfaceId, viewId) {
     override fun getEventName() = NAME
 
     override fun getEventData(): WritableMap? {
@@ -18,8 +18,8 @@ class OmhOnCameraMoveStartedEvent(
         }
     }
 
-    companion object {
-        const val NAME = "topCameraMoveStarted"
-        const val EVENT_PROP_NAME = "onCameraMoveStarted"
+    companion object : OmhBaseEventCompanion {
+        override val NAME = "topCameraMoveStarted"
+        override val EVENT_PROP_NAME = "onCameraMoveStarted"
     }
 }

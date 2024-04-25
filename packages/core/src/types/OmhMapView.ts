@@ -1,10 +1,12 @@
-import { ViewProps } from 'react-native';
+import { ViewProps, ViewStyle } from 'react-native';
+
 import { OmhCoordinate, OmhEvent } from './common';
 
 /**
  * Reason for the camera movement on the map.
  */
 export type OmhCameraMoveStartedReason =
+  | 'unknown'
   | 'gesture'
   | 'apiAnimation'
   | 'developerAnimation';
@@ -22,20 +24,38 @@ export type OmhSnapshotOptions = {
  */
 export type OmhMapStyle = any;
 
+export type Percentage = `${number}%`;
+
 /**
  * Properties for the OmhMapView component.
  */
-export type OmhMapViewProperties = {
+export type OmhMapViewProps = {
   /** The scale factor of the map. */
-  scaleFactor: number;
-  /** The style of the map. */
-  mapStyle: OmhMapStyle;
+  scaleFactor?: number;
+  /** The style to be applied to the map container */
+  style?: Omit<ViewStyle, 'width' | 'height'> | null;
+  width: number | Percentage;
+  height: number | Percentage;
   /** If true, rotation is enabled on the map. */
-  rotateEnabled: boolean;
+  rotateEnabled?: boolean;
   /** If true, zoom is enabled on the map. */
-  zoomEnabled: boolean;
+  zoomEnabled?: boolean;
   /** If true, the user's location and the re-centering button is displayed on the map. */
-  myLocationEnabled: boolean;
+  myLocationEnabled?: boolean;
+  /** Internal map ready callback, invoked when the map view is ready, but the map is not loaded yet */
+  onMapReady?: () => void;
+  /** Callback invoked when the map is loaded */
+  onMapLoaded?: () => void;
+  /** Callback invoked when the map camera is idle */
+  onCameraIdle?: () => void;
+  /** Callback invoked when the map camera starts to move */
+  onCameraMoveStarted?: (reason: OmhCameraMoveStartedReason) => void;
+  /**
+   * Map entities to be shown inside the map.
+   *
+   * **Note:** only OMH Map entities are allowed. Non-map children will be ignored.
+   */
+  children?: React.ReactNode;
 };
 
 /** Event triggered when the My Location button is pressed. */
@@ -68,7 +88,7 @@ export type OmhMapEvents = {
  * Properties for the OmhMapView component.
  */
 export type OmhMapViewComponentProps = ViewProps &
-  OmhMapViewProperties &
+  OmhMapViewProps &
   OmhMapEvents;
 
 /**

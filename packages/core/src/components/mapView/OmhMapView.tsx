@@ -4,16 +4,13 @@ import {
   PixelRatio,
   StyleSheet,
   View,
-  ViewProps,
-  ViewStyle,
   findNodeHandle,
 } from 'react-native';
 
-import NativeOmhMapsCoreModule, { Spec } from './NativeOmhMapsCoreModule';
+import NativeOmhMapsCoreModule, { Spec } from '../../NativeOmhMapsCoreModule';
+import { OmhMapViewProps } from '../../types/OmhMapView';
+import { OmhMapsCoreModuleFunctionWithoutViewRef } from '../../utils/typeHelpers';
 import RNOmhMapsCoreViewNativeComponent from './RNOmhMapsCoreViewNativeComponent';
-import { OmhMapsCoreModuleFunctionWithoutViewRef } from './typeHelpers';
-
-type Percentage = `${number}%`;
 
 export type OmhMapViewRef = {
   getCameraCoordinate: OmhMapsCoreModuleFunctionWithoutViewRef<
@@ -39,24 +36,6 @@ type OmhCameraMoveStartedReason =
   | 'unknown';
 
 type OmhSnapshotFormat = 'png' | 'jpg' | 'base64';
-
-/**
- * The OMH Map View properties.
- */
-export type OmhMapViewProps = Omit<ViewProps, 'style'> & {
-  /** The style to be applied to the map container */
-  style?: Omit<ViewStyle, 'width' | 'height'> | null;
-  width: number | Percentage;
-  height: number | Percentage;
-  zoomEnabled?: boolean;
-  rotateEnabled?: boolean;
-  /** Internal map ready callback, invoked when the map view is ready, but the map is not loaded yet */
-  onMapReady?: () => void;
-  /** Callback invoked when the map is loaded */
-  onMapLoaded?: () => void;
-  onCameraIdle?: () => void;
-  onCameraMoveStarted?: (reason: OmhCameraMoveStartedReason) => void;
-};
 
 /**
  * The OMH Map View component. Actual implementation is picked based on the platform capabilities (GMS or non-GMS)
@@ -137,7 +116,6 @@ export const OmhMapView = forwardRef<OmhMapViewRef, OmhMapViewProps>(
 
     const handleMapReady = useCallback(() => {
       setIsMapReady(true);
-      console.log('Map is ready');
 
       onMapReady?.();
     }, [onMapReady]);

@@ -4,14 +4,15 @@ import { MD2Colors, Modal } from 'react-native-paper';
 
 import { OmhMapView, OmhMapViewRef } from '@omh/react-native-maps-core';
 
-import { PanelButton } from '../components/PanelButton';
-import { PanelCheckbox } from '../components/PanelCheckbox';
-import { SnackbarMy, SnackbarRef } from '../components/Snackbar';
-import { demoStyles } from '../styles/demoStyles';
-import { Constants } from '../utils/Constants';
+import { PanelCheckbox } from '../../components/controls/PanelCheckbox';
+import { PanelButton } from '../../components/ui/PanelButton';
+import useSnackbar from '../../hooks/useSnackbar';
+import { demoStyles } from '../../styles/demoStyles';
+import { Constants } from '../../utils/Constants';
 
 export const CameraMapScreen = () => {
   // const mapProvider = useChosenMapProvider();
+  const { showSnackbar } = useSnackbar();
 
   const [snapshotModalVisible, setSnapshotModalVisible] = useState(false);
   const [snapshotSource, setSnapshotSource] = useState<string | null>(null);
@@ -20,12 +21,10 @@ export const CameraMapScreen = () => {
 
   const omhMapRef = useRef<OmhMapViewRef | null>(null);
 
-  const ref = useRef<SnackbarRef>(null);
-
   const handleShowCameraPositionButtonPress = async () => {
     const cameraPosition = await omhMapRef.current?.getCameraCoordinate();
     if (cameraPosition !== null) {
-      ref.current?.show(
+      showSnackbar(
         'Camera position coordinate: ' + JSON.stringify(cameraPosition, null, 2)
       );
     }
@@ -62,12 +61,12 @@ export const CameraMapScreen = () => {
   };
 
   const handleCameraIdle = () => {
-    ref.current?.show('Camera idle');
+    showSnackbar('Camera idle');
     console.log('camera idle');
   };
 
   const handleCameraMoveStarted = (reason: string) => {
-    ref.current?.show('Camera move started: ' + reason);
+    showSnackbar('Camera move started: ' + reason);
     console.log('camera move started', reason);
   };
 
@@ -80,7 +79,7 @@ export const CameraMapScreen = () => {
             zoomEnabled={zoomGesturesEnabled}
             rotateEnabled={rotateGesturesEnabled}
             onMapLoaded={() => {
-              console.log('Map loaded');
+              console.log("OmhMapView's OmhMap has been loaded");
               omhMapRef.current?.setCameraCoordinate(
                 Constants.Maps.GREENWICH_COORDINATE,
                 15.0
@@ -138,7 +137,6 @@ export const CameraMapScreen = () => {
         )}
         <PanelButton onPress={handleSnapshotModalDismiss} label="Close" />
       </Modal>
-      <SnackbarMy ref={ref} />
     </>
   );
 };

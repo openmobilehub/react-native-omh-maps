@@ -4,7 +4,7 @@ import { Appbar, useTheme } from 'react-native-paper';
 import { getHeaderTitle } from '@react-navigation/elements';
 import { NativeStackHeaderProps } from '@react-navigation/native-stack';
 
-import Route from '../Routes';
+import Route from '../../Routes';
 
 export function AppBarHeader({
   navigation,

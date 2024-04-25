@@ -7,15 +7,11 @@ import com.facebook.react.uimanager.events.Event
 class OmhOnCameraIdleEvent(
     surfaceId: Int,
     viewId: Int,
-) : Event<OmhOnCameraIdleEvent>(surfaceId, viewId) {
+) : OmhBaseEvent(surfaceId, viewId) {
     override fun getEventName() = NAME
 
-    override fun getEventData(): WritableMap? {
-        return Arguments.createMap()
-    }
-
-    companion object {
-        const val NAME = "topCameraIdle"
-        const val EVENT_PROP_NAME = "onCameraIdle"
+    companion object : OmhBaseEventCompanion {
+        override val NAME = "topCameraIdle"
+        override val EVENT_PROP_NAME = "onCameraIdle"
     }
 }

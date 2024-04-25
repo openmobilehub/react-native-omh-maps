@@ -6,7 +6,8 @@ import { MapProvider, OmhMapsModule } from '@omh/react-native-maps-core';
 
 import Route, { RoutesDescriptions } from '../Routes';
 import MapProviderPicker from '../components/MapProviderPicker';
-import MenuListItem from '../components/MenuListItem';
+import MenuListItem from '../components/ui/MenuListItem';
+import useMapProviderChoiceContext from '../hooks/useMapProviderChoice';
 
 const menuRoutes: Route[] = [
   Route.plainMap,
@@ -15,10 +16,7 @@ const menuRoutes: Route[] = [
   // Route.multipleMaps,
 ];
 
-const defaultMapProvider = {
-  name: 'OpenStreetMap',
-  path: 'com.openmobilehub.android.maps.plugin.openstreetmap.presentation.OmhMapFactoryImpl',
-};
+const defaultMapProvider = OmhMapsModule.getDefaultMapProvider();
 
 OmhMapsModule.initialize({
   gmsPath: defaultMapProvider.path,
@@ -27,12 +25,11 @@ OmhMapsModule.initialize({
 
 export const MenuScreen = () => {
   const theme = useTheme();
-
-  const [_, setMapProvider] = React.useState(defaultMapProvider);
+  const { changeMapProvider, mapProvider } = useMapProviderChoiceContext();
 
   const handleMapProviderChange = (newProvider: MapProvider) => {
-    console.log(newProvider);
-    setMapProvider(newProvider);
+    changeMapProvider(newProvider);
+
     OmhMapsModule.initialize({
       gmsPath: newProvider.path,
       nonGmsPath: newProvider.path,
@@ -46,7 +43,7 @@ export const MenuScreen = () => {
       }}>
       <MapProviderPicker
         style={styles.mapProviderPicker}
-        defaultProvider={defaultMapProvider}
+        defaultProvider={mapProvider}
         onChange={handleMapProviderChange}
         centeredLabel={false}
       />
