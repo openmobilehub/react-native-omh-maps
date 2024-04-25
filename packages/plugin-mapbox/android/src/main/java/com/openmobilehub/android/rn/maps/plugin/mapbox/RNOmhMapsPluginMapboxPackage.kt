@@ -54,6 +54,6 @@ class OmhMapsPluginMapboxTurboPackage : TurboReactPackage() {
         /**
          * Here declare the list of exported native components
          */
-        return listOf(RNOmhMapsPluginMapboxViewManager())
+        return listOf()
     }
 }

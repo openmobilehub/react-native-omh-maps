@@ -49,6 +49,6 @@ class RNOmhMapsPluginGooglemapsTurboPackage : TurboReactPackage() {
         /**
          * Here declare the list of exported native components
          */
-        return listOf(RNOmhMapsPluginGooglemapsViewManager())
+        return listOf()
     }
 }

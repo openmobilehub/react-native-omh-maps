@@ -1,5 +1,6 @@
 import React, { forwardRef, useMemo, useState } from 'react';
 import {
+  NativeSyntheticEvent,
   PixelRatio,
   StyleSheet,
   View,
@@ -9,10 +10,9 @@ import {
 } from 'react-native';
 
 import NativeOmhMapsCoreModule, { Spec } from './NativeOmhMapsCoreModule';
-import RNOmhMapsCoreViewNativeComponent, {
-  NativeOmhMapViewProps,
-} from './RNOmhMapsCoreViewNativeComponent';
+import RNOmhMapsCoreViewNativeComponent from './RNOmhMapsCoreViewNativeComponent';
 import { OmhMapsCoreModuleFunctionWithoutViewRef } from './typeHelpers';
+import { OmhMapProviderVariant } from './types/common';
 
 type Percentage = `${number}%`;
 
@@ -23,22 +23,37 @@ export type OmhMapViewRef = {
   setCameraCoordinate: OmhMapsCoreModuleFunctionWithoutViewRef<
     Spec['setCameraCoordinate']
   >;
+  getProviderName: OmhMapsCoreModuleFunctionWithoutViewRef<
+    () => OmhMapProviderVariant
+  >;
+  takeSnapshot: (resultFormat: OmhSnapshotFormat) => Promise<string>;
 };
 
 enum MapErrors {
   MAP_NOT_IN_TREE_YET = 'OmhMap is not mounted in the RN view tree yet.',
 }
 
+type OmhCameraMoveStartedReason =
+  | 'gesture'
+  | 'apiAnimation'
+  | 'developerAnimation'
+  | 'unknown';
+
+type OmhSnapshotFormat = 'png' | 'jpg' | 'base64';
+
 /**
  * The OMH Map View properties.
  */
 export type OmhMapViewProps = Omit<ViewProps, 'style'> & {
-  onMapReady?: () => void;
   /** The style to be applied to the map container */
   style?: Omit<ViewStyle, 'width' | 'height'> | null;
   width: number | Percentage;
   height: number | Percentage;
-  paths: NativeOmhMapViewProps['paths'];
+  zoomEnabled?: boolean;
+  rotateEnabled?: boolean;
+  onMapLoaded?: () => void;
+  onCameraIdle?: () => void;
+  onCameraMoveStarted?: (reason: OmhCameraMoveStartedReason) => void;
 };
 
 /**
@@ -47,9 +62,20 @@ export type OmhMapViewProps = Omit<ViewProps, 'style'> & {
  */
 export const OmhMapView = forwardRef<OmhMapViewRef, OmhMapViewProps>(
   (
-    { style, width, height, paths, onMapReady = () => {}, children },
+    {
+      style,
+      width,
+      height,
+      onMapLoaded,
+      children,
+      zoomEnabled,
+      rotateEnabled,
+      onCameraIdle,
+      onCameraMoveStarted,
+    },
     forwardedRef
   ) => {
+    const [isMapReady, setIsMapReady] = useState(false);
     const [componentSize, setComponentSize] = useState({ width: 0, height: 0 });
 
     const nativeComponentRef = React.useRef<
@@ -80,9 +106,15 @@ export const OmhMapView = forwardRef<OmhMapViewRef, OmhMapViewProps>(
           const notReadyPromiseHandler = () =>
             Promise.reject(new Error(MapErrors.MAP_NOT_IN_TREE_YET));
 
+          const notReadyHandler = () => {
+            throw new Error(MapErrors.MAP_NOT_IN_TREE_YET);
+          };
+
           return {
             getCameraCoordinate: notReadyPromiseHandler,
             setCameraCoordinate: notReadyPromiseHandler,
+            getProviderName: notReadyHandler,
+            takeSnapshot: notReadyPromiseHandler,
           };
         }
 
@@ -91,10 +123,47 @@ export const OmhMapView = forwardRef<OmhMapViewRef, OmhMapViewProps>(
             NativeOmhMapsCoreModule.getCameraCoordinate(nodeHandle),
           setCameraCoordinate: (...args) =>
             NativeOmhMapsCoreModule.setCameraCoordinate(nodeHandle, ...args),
+          getProviderName: () =>
+            NativeOmhMapsCoreModule.getProviderName(
+              nodeHandle
+            ) as OmhMapProviderVariant,
+          takeSnapshot: (format: OmhSnapshotFormat) =>
+            NativeOmhMapsCoreModule.takeSnapshot(nodeHandle, format),
         };
       },
       [getViewRefHandle]
     );
+
+    const handleMapReady = () => {
+      setIsMapReady(true);
+    };
+
+    const onCameraMoveStartedMapped = (
+      event: NativeSyntheticEvent<{ reason: number }>
+    ) => {
+      let reason: OmhCameraMoveStartedReason = 'unknown';
+      switch (event.nativeEvent.reason) {
+        case 1:
+          reason = 'gesture';
+          break;
+        case 2:
+          reason = 'apiAnimation';
+          break;
+        case 3:
+          reason = 'developerAnimation';
+          break;
+      }
+
+      onCameraMoveStarted?.(reason);
+    };
+
+    const props = isMapReady
+      ? {
+          zoomEnabled,
+          rotateEnabled,
+          children,
+        }
+      : {};
 
     return (
       <View
@@ -117,16 +186,18 @@ export const OmhMapView = forwardRef<OmhMapViewRef, OmhMapViewProps>(
           },
         ]}>
         <RNOmhMapsCoreViewNativeComponent
+          // @ts-ignore next line: missing typing for 'ref' prop on HostComponent
+          ref={nativeComponentRef}
           style={{
             width: PixelRatio.getPixelSizeForLayoutSize(componentSize.width), // convert dpi to px
             height: PixelRatio.getPixelSizeForLayoutSize(componentSize.height), // convert dpi to px
           }}
-          onMapReady={onMapReady}
-          paths={paths}
-          // @ts-ignore next line: missing typing for 'ref' prop on HostComponent
-          ref={nativeComponentRef}>
-          {children}
-        </RNOmhMapsCoreViewNativeComponent>
+          onMapReady={handleMapReady}
+          onMapLoaded={onMapLoaded}
+          onCameraIdle={onCameraIdle}
+          onCameraMoveStarted={onCameraMoveStartedMapped}
+          {...props}
+        />
       </View>
     );
   }
