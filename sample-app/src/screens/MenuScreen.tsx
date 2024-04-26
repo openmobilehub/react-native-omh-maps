@@ -7,7 +7,7 @@ import MapProviderPicker from '../components/MapProviderPicker';
 import MenuListItem from '../components/MenuListItem';
 import { MapProvider, OmhMapsModule } from '@omh/react-native-maps-core';
 
-const menuRoutes: Route[] = [Route.plainMap, Route.cameraMap, Route.markerMap];
+const menuRoutes: Route[] = [Route.plainMap, Route.cameraMap, Route.markerMap, Route.stylesMap];
 
 const defaultMapProvider = OmhMapsModule.getDefaultMapProvider();
 

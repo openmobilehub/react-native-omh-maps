@@ -1,4 +1,4 @@
-package com.openmobilehub.android.rn.maps.core.viewmanagers
+package com.openmobilehub.android.rn.maps.core
 
 import android.content.Context
 import android.graphics.Point
@@ -261,6 +261,10 @@ class RNOmhMapsCoreViewManagerImpl(private val reactContext: ReactContext) {
   fun setRotateEnabled(view: FragmentContainerView, value: Boolean) {
     val omhMap = FragmentUtils.findFragment(view)?.omhMap
     omhMap?.setRotateGesturesEnabled(value)
+  }
+
+  fun setMapStyle(view: FragmentContainerView, value: String?) {
+    FragmentUtils.findFragment(view)?.omhMap?.setMapStyle(value)
   }
 
   companion object {

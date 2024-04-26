@@ -71,8 +71,4 @@ export type OmhPatternItem = {
  */
 export type OmhTag = any;
 
-export type OmhMapProviderVariant =
-  | 'GoogleMaps'
-  | 'OpenStreetMap'
-  | 'Mapbox'
-  | 'AzureMaps';
+export type OmhMapProviderVariant = string;

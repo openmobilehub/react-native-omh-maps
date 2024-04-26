@@ -7,6 +7,7 @@ import com.facebook.react.uimanager.ThemedReactContext
 import com.facebook.react.uimanager.annotations.ReactProp
 import com.facebook.react.viewmanagers.RNOmhMapsMarkerViewManagerInterface
 import com.openmobilehub.android.rn.maps.core.entities.OmhMarkerEntity
+import com.openmobilehub.android.rn.maps.core.viewmanagers.RNOmhMapsMarkerViewManagerImpl
 
 @ReactModule(name = RNOmhMapsMarkerViewManager.NAME)
 class RNOmhMapsMarkerViewManager :

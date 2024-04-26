@@ -13,6 +13,7 @@ import MarkerMapScreen from './screens/MarkerMapScreen';
 import MenuScreen from './screens/MenuScreen';
 import PlainMapScreen from './screens/PlainMapScreen';
 import CameraMapScreen from './screens/CameraMapScreen';
+import StylesMapScreen from './screens/StylesMapScreen';
 
 const Stack = createNativeStackNavigator();
 
@@ -58,6 +59,12 @@ export default function App() {
             <Stack.Screen
               name={Route.cameraMap}
               component={CameraMapScreen}
+              options={screenOptions}
+            />
+
+            <Stack.Screen
+              name={Route.stylesMap}
+              component={StylesMapScreen}
               options={screenOptions}
             />
 
