@@ -1,24 +1,13 @@
 package com.openmobilehub.android.rn.maps.core.utils
 
-import android.annotation.SuppressLint
-import android.content.Context
 import android.graphics.drawable.Drawable
 import android.util.Log
 import com.bumptech.glide.Glide
-import com.bumptech.glide.RequestManager
 import com.bumptech.glide.request.target.CustomTarget
 import com.bumptech.glide.request.transition.Transition
 import com.openmobilehub.android.rn.maps.core.entities.OmhMapEntity
 
 internal object DrawableLoader {
-    @SuppressLint("StaticFieldLeak")
-    private lateinit var loader: RequestManager
-
-    private fun ensureInitialized(context: Context) {
-        if (!this::loader.isInitialized) {
-            loader = Glide.with(context)
-        }
-    }
 
     private val jobsMap: MutableMap<OmhMapEntity<*>, CustomTarget<Drawable?>> = mutableMapOf()
 
@@ -29,16 +18,15 @@ internal object DrawableLoader {
         overrideResolution: Pair<Int, Int>?
     ) {
         val context = lockEntity.context
-        ensureInitialized(context)
 
         synchronized(lockEntity) {
             if (jobsMap.containsKey(lockEntity)) {
-                loader.clear(jobsMap[lockEntity])
+                jobsMap[lockEntity]?.request?.clear()
                 jobsMap.remove(lockEntity)
             }
         }
 
-        val target = loader.asDrawable()
+        val target = Glide.with(context).asDrawable()
             .timeout(4000)
             .load(rawResourceURI.trim()).let {
                 if (overrideResolution != null)

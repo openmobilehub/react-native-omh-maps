@@ -12,6 +12,7 @@ import com.facebook.react.viewmanagers.RNOmhMapsCoreViewManagerInterface
 import com.openmobilehub.android.rn.maps.core.viewmanagers.RNOmhMapsCoreViewManagerImpl
 
 @ReactModule(name = RNOmhMapsCoreViewManagerImpl.NAME)
+@Suppress("TooManyFunctions")
 class RNOmhMapsCoreViewManager :
     ViewGroupManager<FragmentContainerView>(),
     RNOmhMapsCoreViewManagerInterface<FragmentContainerView> {

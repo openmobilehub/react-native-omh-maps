@@ -21,7 +21,7 @@ export type Anchor = {
  * Properties for the OmhMarker component.
  */
 export interface NativeOmhMarkerProps extends ViewProps {
-  position: NativeOmhCoordinate;
+  markerPosition: NativeOmhCoordinate;
   title?: string;
   clickable?: boolean;
   draggable?: boolean;

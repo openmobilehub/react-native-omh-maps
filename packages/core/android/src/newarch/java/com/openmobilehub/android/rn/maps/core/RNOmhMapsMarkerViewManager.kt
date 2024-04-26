@@ -20,8 +20,8 @@ class RNOmhMapsMarkerViewManager :
         return omhMapMarkerComponentManagerImpl.createViewInstance(reactContext)
     }
 
-    @ReactProp(name = "position")
-    override fun setPosition(entity: OmhMarkerEntity, value: ReadableMap?) {
+    @ReactProp(name = "markerPosition")
+    override fun setMarkerPosition(entity: OmhMarkerEntity, value: ReadableMap?) {
         omhMapMarkerComponentManagerImpl.setPosition(entity, value)
     }
 

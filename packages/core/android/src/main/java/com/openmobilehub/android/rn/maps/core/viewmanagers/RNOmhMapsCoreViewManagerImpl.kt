@@ -105,6 +105,8 @@ class RNOmhMapsCoreViewManagerImpl(private val reactContext: ReactContext) {
     }
 
     fun removeViewAt(index: Int) {
+        // note: on old RN architecture, RN tries to unmount the child view
+        // at index 0 even when it had never been added, thus the check is omitted in such case
         val child = mountedChildren[index]
             ?: (if (BuildConfig.IS_NEW_ARCHITECTURE_ENABLED) error(ERRORS.REMOVE_VIEW_AT_CHILD_NOT_FOUND) else null)
 
