@@ -74,7 +74,7 @@
     "build:ios:release": "npx turbo build:ios:release",
     "test": "cross-env FORCE_COLOR=1 yarn workspaces foreach -Ap run test",
     "typecheck": "cross-env FORCE_COLOR=1 yarn workspaces foreach -p --exclude @omh/react-native-maps-sample-app run typecheck",
-    "lint": "cross-env FORCE_COLOR=1 yarn workspaces foreach -p --exclude @omh/react-native-maps-sample-app run lint",
+    "lint": "eslint \"**/*.{js,ts,tsx}\"",
     "clean": "cross-env FORCE_COLOR=1 yarn workspaces foreach -p --exclude @omh/react-native-maps-sample-app run clean",
     "prepare": "cross-env FORCE_COLOR=1 yarn workspaces foreach -p --exclude @omh/react-native-maps-sample-app run prepare",
     "release": "cross-env FORCE_COLOR=1 yarn workspaces foreach -p --exclude @omh/react-native-maps-sample-app run release",
