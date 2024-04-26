@@ -70,3 +70,5 @@ export type OmhPatternItem = {
  * A tag, which can be of any type.
  */
 export type OmhTag = any;
+
+export type OmhMapProviderVariant = string;

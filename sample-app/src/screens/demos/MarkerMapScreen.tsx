@@ -197,7 +197,6 @@ export const MarkerMapScreen = () => {
               onMarkerDragStart={onCustomizableMarkerDragStart}
               onMarkerDrag={onCustomizableMarkerDrag}
               onMarkerDragEnd={onCustomizableMarkerDragEnd}
-              consumeMarkerClicks={true}
               markerZIndex={customizableMarkerZIndex}
               rotation={customizableMarkerRotation}
               anchor={customizableMarkerAnchor}

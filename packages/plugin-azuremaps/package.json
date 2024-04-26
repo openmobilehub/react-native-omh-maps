@@ -28,7 +28,6 @@
   "scripts": {
     "test": "jest",
     "typecheck": "tsc --noEmit",
-    "lint": "eslint \"**/*.{js,ts,tsx}\"",
     "clean": "del-cli lib",
     "prepare": "bob build",
     "release": "release-it"
@@ -52,9 +51,9 @@
     "registry": "https://registry.npmjs.org/"
   },
   "peerDependencies": {
+    "@omh/react-native-maps-core": "1.0.0-beta",
     "react": "*",
-    "react-native": "*",
-    "@omh/react-native-maps-core": "1.0.0-beta"
+    "react-native": "*"
   },
   "packageManager": "yarn@3.6.1",
   "react-native-builder-bob": {
@@ -79,7 +78,6 @@
   "devDependencies": {
     "@types/node": "*",
     "del-cli": "*",
-    "eslint": "*",
     "jest": "*",
     "react-native-builder-bob": "*",
     "release-it": "*",

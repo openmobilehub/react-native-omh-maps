@@ -5,21 +5,17 @@ import { MD2Colors, Subheading } from 'react-native-paper';
 
 import { OmhMapView, OmhMapViewRef } from '@omh/react-native-maps-core';
 
-import { MapProvider } from '../../../../packages/core/src/NativeOmhMapsCoreModule';
-import MapProviderPicker from '../../components/MapProviderPicker';
 import { Slider } from '../../components/controls/Slider';
-import useChosenMapProvider from '../../hooks/useChosenMapProvider';
 import useLogger from '../../hooks/useLogger';
 import { demoStyles } from '../../styles/demoStyles';
 import { Constants } from '../../utils/Constants';
 
 export const PlainMapScreen = () => {
   const logger = useLogger('PlainMapScreen');
-  const defaultMapProvider = useChosenMapProvider();
+  // const defaultMapProvider = useChosenMapProvider();
 
   const [width, setWidth] = useState(100);
   const [height, setHeight] = useState(100);
-  const [_provider, setProvider] = useState<MapProvider>(defaultMapProvider);
 
   const omhMapRef = useRef<OmhMapViewRef | null>(null);
 
@@ -91,7 +87,7 @@ export const PlainMapScreen = () => {
             Demo controls
           </Subheading>
 
-          <MapProviderPicker
+          {/* <MapProviderPicker
             defaultProvider={defaultMapProvider}
             label="Live map provider override"
             onChange={newProvider => {
@@ -99,9 +95,12 @@ export const PlainMapScreen = () => {
                 `Map provider has been changed to ${newProvider.name} (${newProvider.path})`
               );
 
-              setProvider(newProvider);
+              OmhMapsModule.initialize({
+                gmsPath: newProvider.path,
+                nonGmsPath: newProvider.path,
+              });
             }}
-          />
+          /> */}
 
           <Slider
             label={`Map width: ${width}%`}

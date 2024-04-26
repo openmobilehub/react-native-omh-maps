@@ -4,14 +4,31 @@ import { MD2Colors, Modal } from 'react-native-paper';
 
 import { OmhMapView, OmhMapViewRef } from '@omh/react-native-maps-core';
 
-import { PanelCheckbox } from '../../components/controls/PanelCheckbox';
-import { PanelButton } from '../../components/ui/PanelButton';
+import { PanelButton } from '../../components/PanelButton';
+import { PanelCheckbox } from '../../components/PanelCheckbox';
 import useSnackbar from '../../hooks/useSnackbar';
 import { demoStyles } from '../../styles/demoStyles';
 import { Constants } from '../../utils/Constants';
+import { isFeatureSupported } from '../../utils/SupportUtils';
+
+const getSupportedFeatures = (omhMapRef: OmhMapViewRef | null) => {
+  const mapProvider = omhMapRef?.getProviderName();
+
+  return {
+    zoom: isFeatureSupported(mapProvider, '*'),
+    rotate: isFeatureSupported(mapProvider, [
+      'GoogleMaps',
+      'OpenStreetMap',
+      'Mapbox',
+    ]),
+    showCameraPosition: isFeatureSupported(mapProvider, '*'),
+    moveCamera: isFeatureSupported(mapProvider, '*'),
+    makeSnapshot: isFeatureSupported(mapProvider, ['GoogleMaps', 'Mapbox']),
+  };
+};
 
 export const CameraMapScreen = () => {
-  // const mapProvider = useChosenMapProvider();
+  const omhMapRef = useRef<OmhMapViewRef | null>(null);
   const { showSnackbar } = useSnackbar();
 
   const [snapshotModalVisible, setSnapshotModalVisible] = useState(false);
@@ -19,7 +36,9 @@ export const CameraMapScreen = () => {
   const [zoomGesturesEnabled, setZoomGesturesEnabled] = useState(true);
   const [rotateGesturesEnabled, setRotateGesturesEnabled] = useState(true);
 
-  const omhMapRef = useRef<OmhMapViewRef | null>(null);
+  const [supportedFeatures, setSupportedFeatures] = useState<
+    ReturnType<typeof getSupportedFeatures>
+  >(getSupportedFeatures(null));
 
   const handleShowCameraPositionButtonPress = async () => {
     const cameraPosition = await omhMapRef.current?.getCameraCoordinate();
@@ -49,7 +68,6 @@ export const CameraMapScreen = () => {
     if (!result) {
       return;
     }
-    console.log('Snapshot result:', result);
     setSnapshotSource(result);
 
     setSnapshotModalVisible(true);
@@ -62,12 +80,19 @@ export const CameraMapScreen = () => {
 
   const handleCameraIdle = () => {
     showSnackbar('Camera idle');
-    console.log('camera idle');
   };
 
   const handleCameraMoveStarted = (reason: string) => {
     showSnackbar('Camera move started: ' + reason);
-    console.log('camera move started', reason);
+  };
+
+  const handleMapLoaded = () => {
+    setSupportedFeatures(getSupportedFeatures(omhMapRef.current));
+
+    omhMapRef.current?.setCameraCoordinate(
+      Constants.Maps.GREENWICH_COORDINATE,
+      15.0
+    );
   };
 
   return (
@@ -78,15 +103,9 @@ export const CameraMapScreen = () => {
             ref={omhMapRef}
             zoomEnabled={zoomGesturesEnabled}
             rotateEnabled={rotateGesturesEnabled}
-            onMapLoaded={() => {
-              console.log("OmhMapView's OmhMap has been loaded");
-              omhMapRef.current?.setCameraCoordinate(
-                Constants.Maps.GREENWICH_COORDINATE,
-                15.0
-              );
-            }}
+            onMapLoaded={handleMapLoaded}
             onCameraIdle={handleCameraIdle}
-            onCameraMoveStarted={event => handleCameraMoveStarted(event)}
+            onCameraMoveStarted={handleCameraMoveStarted}
             width={`100%`}
             height={`100%`}
           />
@@ -100,27 +119,33 @@ export const CameraMapScreen = () => {
               value={zoomGesturesEnabled}
               onValueChange={setZoomGesturesEnabled}
               label="Zoom Gestures"
+              enabled={supportedFeatures.zoom}
             />
             <PanelCheckbox
               value={rotateGesturesEnabled}
               onValueChange={setRotateGesturesEnabled}
               label="Rotate Gestures"
+              enabled={supportedFeatures.rotate}
             />
             <PanelButton
               onPress={handleShowCameraPositionButtonPress}
               label="Show camera position coordinate"
+              enabled={supportedFeatures.showCameraPosition}
             />
             <PanelButton
               onPress={handleMoveMapToEverestButtonPress}
               label="Move map to Everest"
+              enabled={supportedFeatures.moveCamera}
             />
             <PanelButton
               onPress={handleMoveMapToSaharaButtonPress}
               label="Move map to Sahara"
+              enabled={supportedFeatures.moveCamera}
             />
             <PanelButton
               onPress={handleMakeSnapshotButtonPress}
               label="Make snapshot"
+              enabled={supportedFeatures.makeSnapshot}
             />
           </ScrollView>
         </View>

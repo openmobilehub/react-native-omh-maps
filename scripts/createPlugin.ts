@@ -214,7 +214,6 @@ const questions: PromptObject[] = [
   packageJson.devDependencies = {
     '@types/node': '*',
     'del-cli': '*',
-    'eslint': '*',
     'jest': '*',
     'react-native-builder-bob': '*',
     'release-it': '*',
