@@ -2,6 +2,7 @@ import type { HostComponent, ViewProps } from 'react-native';
 
 import codegenNativeComponent from 'react-native/Libraries/Utilities/codegenNativeComponent';
 import {
+  DirectEventHandler,
   Double,
   Float,
   Int32,
@@ -13,8 +14,17 @@ export type Cap = {
   /**
    * The image URI to be used as the cap icon.
    */
-  bitmap?: string;
+  icon?: string;
   refWidth?: Float;
+};
+
+export type Pattern = {
+  type: string;
+
+  /**
+   * The length of the dash or gap.
+   */
+  length?: Float;
 };
 
 export type NativeOmhCoordinate = {
@@ -61,7 +71,7 @@ export interface NativeOmhPolylineProps extends ViewProps {
   /**
    * The pattern of the polyline.
    */
-  pattern?: string;
+  pattern?: Pattern[];
 
   /**
    * The cap style of the polyline.
@@ -77,6 +87,24 @@ export interface NativeOmhPolylineProps extends ViewProps {
    * The end cap style of the polyline.
    */
   endCap?: Cap;
+
+  /**
+   * Callback invoked when the polyline is clicked.
+   * @returns `true` to consume the event and prevent propagation; `false` to allow the event to continue.
+   */
+  onPolylineClick?: DirectEventHandler<{
+    consumed: boolean;
+  }>;
+
+  /**
+   * Controls whether the default behaviour of a clicked polyline (such as opening an info window on click) for a polyline click
+   * event; identical to returning `true` from native android code in `OmhOnPolylineClickListener.onPolylineClick`.
+   *
+   * The reasoning behind this is that RN does not support synchronous bi-directional callbacks for passing data in new architecture.
+   *
+   * @see https://www.openmobilehub.com/android-omh-maps/api-docs/packages/core/com.openmobilehub.android.maps.core.presentation.interfaces.maps/-omh-on-polyline-click-listener/on-polyline-click.html
+   */
+  consumePolylineClicks?: boolean;
 
   /**
    * The spans of the polyline.

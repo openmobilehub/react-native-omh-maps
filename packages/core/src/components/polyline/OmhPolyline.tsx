@@ -23,6 +23,8 @@ export const OmhPolyline = ({
   cap,
   startCap,
   endCap,
+  pattern,
+  onPolylineClick,
 }: OmhPolylineProps) => {
   const nativeComponentRef = React.useRef<
     typeof RNOmhMapsPolylineNativeComponent | null
@@ -42,6 +44,8 @@ export const OmhPolyline = ({
       cap={cap}
       startCap={startCap}
       endCap={endCap}
+      pattern={pattern}
+      onPolylineClick={onPolylineClick}
     />
   );
 };

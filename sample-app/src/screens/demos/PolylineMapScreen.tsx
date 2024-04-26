@@ -1,4 +1,4 @@
-import React, { useMemo, useState } from 'react';
+import React, { useCallback, useMemo, useState } from 'react';
 import { ScrollView, View } from 'react-native';
 import { Checkbox, Subheading } from 'react-native-paper';
 
@@ -11,10 +11,12 @@ import {
 
 import Picker from '../../components/controls/Picker';
 import Slider from '../../components/controls/Slider';
-import { Cap } from '../../../../packages/core/src/components/polyline/RNOmhMapsPolylineNativeComponent';
+import {
+  Cap,
+  Pattern,
+} from '../../../../packages/core/src/components/polyline/RNOmhMapsPolylineNativeComponent';
 import { getRandomArbitrary } from '../../utils/mathHelpers';
 import { demoStyles } from '../../styles/demoStyles';
-import ControlParagraph from '../../components/controls/ControlParagraph';
 import { rgbToInt } from '../../utils/converters';
 import convert from 'color-convert';
 import { OmhMapsGooglemapsProvider } from '@omh/react-native-maps-plugin-googlemaps';
@@ -22,6 +24,9 @@ import useChosenMapProvider from '../../hooks/useChosenMapProvider';
 import { PanelButton } from '../../components/PanelButton';
 import CAP_TYPE_CUSTOM = OmhPolylineConstants.CAP_TYPE_CUSTOM;
 import { OmhMapsOpenStreetMapProvider } from '@omh/react-native-maps-plugin-openstreetmap';
+import { OmhMapsAzureMapsProvider } from '@omh/react-native-maps-plugin-azuremaps';
+import useSnackbar from '../../hooks/useSnackbar';
+import useLogger from '../../hooks/useLogger';
 
 const defaultPoints: OmhCoordinate[] = [
   { latitude: 0.0, longitude: 0.0 },
@@ -33,6 +38,11 @@ const defaultPoints: OmhCoordinate[] = [
   { latitude: -10.0, longitude: 40.0 },
   { latitude: 15.0, longitude: 60.0 },
 ];
+
+const PolylineMessages = {
+  CUSTOMIZABLE_POLYLINE: 'Customizable Polyline Pressed',
+  REFERENCE_POLYLINE: 'Reference Polyline pressed',
+};
 
 const defaultWidth = 10;
 
@@ -65,7 +75,15 @@ const capItems: CapItem[] = [
       type: OmhPolylineConstants.CAP_TYPE_SQUARE,
     },
   },
-  // TODO dn: custom
+  // TODO fixme - why passing icon causes crash?
+  // {
+  //   label: 'Custom',
+  //   value: {
+  //     type: OmhPolylineConstants.CAP_TYPE_CUSTOM,
+  //     icon: soccerBallIcon,
+  //     refWidth: 75.0,
+  //   },
+  // },
 ];
 
 const jointTypeItems: JointTypeItem[] = [
@@ -83,8 +101,67 @@ const jointTypeItems: JointTypeItem[] = [
   },
 ];
 
+enum PatternOption {
+  NONE = 'None',
+  DOTTED = 'Dotted',
+  DASHED = 'Dashed',
+  CUSTOM = 'Custom',
+}
+
+const dottedPattern: Pattern[] = [
+  {
+    type: OmhPolylineConstants.PATTERN_TYPE_DOT,
+  },
+  {
+    type: OmhPolylineConstants.PATTERN_TYPE_GAP,
+    length: 10.0,
+  },
+];
+
+const dashedPattern: Pattern[] = [
+  {
+    type: OmhPolylineConstants.PATTERN_TYPE_DASH,
+    length: 10.0,
+  },
+  {
+    type: OmhPolylineConstants.PATTERN_TYPE_GAP,
+    length: 10.0,
+  },
+];
+
+const customPattern: Pattern[] = [
+  {
+    type: OmhPolylineConstants.PATTERN_TYPE_DASH,
+    length: 10.0,
+  },
+  {
+    type: OmhPolylineConstants.PATTERN_TYPE_GAP,
+    length: 2.0,
+  },
+  {
+    type: OmhPolylineConstants.PATTERN_TYPE_DASH,
+    length: 10.0,
+  },
+  {
+    type: OmhPolylineConstants.PATTERN_TYPE_GAP,
+    length: 5.0,
+  },
+  {
+    type: OmhPolylineConstants.PATTERN_TYPE_DOT,
+  },
+  {
+    type: OmhPolylineConstants.PATTERN_TYPE_GAP,
+    length: 5.0,
+  },
+  {
+    type: OmhPolylineConstants.PATTERN_TYPE_DOT,
+  },
+];
+
 export const PolylineMapScreen = () => {
+  const logger = useLogger('PolylineMapScreen');
   const mapProvider = useChosenMapProvider();
+  const { showSnackbar } = useSnackbar();
 
   const [mountCustomizablePolyline, setMountCustomizablePolyline] =
     useState(true);
@@ -98,6 +175,20 @@ export const PolylineMapScreen = () => {
   const [startCap, setStartCap] = useState(capItems[0]!!.value);
   const [endCap, setEndCap] = useState(capItems[0]!!.value);
   const [jointType, setJointType] = useState(jointTypeItems[0]!!.value);
+  const [patternOption, setPatternOption] = useState(PatternOption.NONE);
+
+  const pattern = useMemo(() => {
+    switch (patternOption) {
+      case PatternOption.NONE:
+        return undefined;
+      case PatternOption.DOTTED:
+        return dottedPattern;
+      case PatternOption.DASHED:
+        return dashedPattern;
+      case PatternOption.CUSTOM:
+        return customPattern;
+    }
+  }, [patternOption]);
 
   const colorRGB = useMemo(
     () => rgbToInt(convert.hsv.rgb([colorHue, 100, 100])),
@@ -128,6 +219,24 @@ export const PolylineMapScreen = () => {
     [mapProvider.path]
   );
 
+  const patternSupported = useMemo(
+    () =>
+      mapProvider.path === OmhMapsGooglemapsProvider.path ||
+      mapProvider.path === OmhMapsAzureMapsProvider.path,
+    [mapProvider.path]
+  );
+
+  const disabledPatterns = useMemo(() => {
+    let blacklist = new Set<PatternOption>();
+
+    if (mapProvider.path === OmhMapsAzureMapsProvider.path) {
+      blacklist.add(PatternOption.DOTTED);
+      blacklist.add(PatternOption.CUSTOM);
+    }
+
+    return blacklist;
+  }, [mapProvider.path]);
+
   const startEndCapSupported = useMemo(
     () => mapProvider.path === OmhMapsGooglemapsProvider.path,
     [mapProvider.path]
@@ -155,6 +264,14 @@ export const PolylineMapScreen = () => {
     .filter(item => !disabledCapTypes.has(item.value.type))
     .map(item => capItemToChoice(item));
 
+  const genOnPolylineClickHandler = useCallback(
+    (message: string) => () => {
+      logger.log(message);
+      showSnackbar(message);
+    },
+    [showSnackbar, logger]
+  );
+
   return (
     <View style={demoStyles.rootContainer}>
       <View style={demoStyles.mapContainer}>
@@ -171,6 +288,10 @@ export const PolylineMapScreen = () => {
               startCap={startCap}
               endCap={endCap}
               jointType={jointType}
+              pattern={pattern}
+              onPolylineClick={genOnPolylineClickHandler(
+                PolylineMessages.CUSTOMIZABLE_POLYLINE
+              )}
             />
           )}
         </OmhMapView>
@@ -237,7 +358,7 @@ export const PolylineMapScreen = () => {
             onChange={choice => {
               setStartCap(choice);
             }}
-            value={cap}
+            value={startCap}
           />
 
           <Picker<Cap>
@@ -247,10 +368,9 @@ export const PolylineMapScreen = () => {
             onChange={choice => {
               setEndCap(choice);
             }}
-            value={cap}
+            value={endCap}
           />
 
-          <ControlParagraph>Z Index</ControlParagraph>
           <Slider
             disabled={!zIndexSupported}
             label={`Z Index: ${zIndex.toFixed(0)}`}
@@ -273,6 +393,22 @@ export const PolylineMapScreen = () => {
               setJointType(choice);
             }}
             value={jointType}
+          />
+
+          <Picker<PatternOption>
+            disabled={!patternSupported}
+            label="Pattern"
+            choices={Object.entries(PatternOption)
+              .filter(([_key, label]) => !disabledPatterns.has(label))
+              .map(([key, label]) => ({
+                key,
+                label,
+                value: label,
+              }))}
+            onChange={choice => {
+              setPatternOption(choice);
+            }}
+            value={patternOption}
           />
 
           <Subheading style={demoStyles.centeredHeading}>

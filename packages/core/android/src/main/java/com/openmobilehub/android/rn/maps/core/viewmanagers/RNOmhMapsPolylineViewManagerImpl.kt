@@ -5,6 +5,7 @@ import com.facebook.react.bridge.ReadableArray
 import com.facebook.react.bridge.ReadableMap
 import com.openmobilehub.android.rn.maps.core.entities.OmhPolylineEntity
 import com.openmobilehub.android.rn.maps.core.extensions.toOmhCap
+import com.openmobilehub.android.rn.maps.core.extensions.toPattern
 import com.openmobilehub.android.rn.maps.core.extensions.toPoints
 import com.openmobilehub.android.rn.maps.core.utils.ColorUtils
 
@@ -29,6 +30,10 @@ class RNOmhMapsPolylineViewManagerImpl {
     } else {
       entity.initialOptions.clickable = value
     }
+  }
+
+  fun setConsumePolylineClicks(entity: OmhPolylineEntity, value: Boolean) {
+    entity.consumePolylineClicks = value
   }
 
   fun setColor(entity: OmhPolylineEntity, value: Double) {
@@ -72,40 +77,61 @@ class RNOmhMapsPolylineViewManagerImpl {
     }
   }
 
-  fun setPattern(entity: OmhPolylineEntity, value: String?) {
-
-  }
-
-  fun setCap(entity: OmhPolylineEntity, value: ReadableMap) {
-    val cap = value.toOmhCap(entity.context) ?: error(INCORRECT_CAP_VALUE_ERROR)
+  fun setPattern(entity: OmhPolylineEntity, value: ReadableArray?) {
+    val pattern = value?.toPattern() ?: emptyList()
     if (entity.isMounted()) {
-      entity.getEntity()?.setCap(cap) ?: error(NOT_MOUNTED_ERROR)
+      entity.getEntity()?.setPattern(pattern) ?: error(NOT_MOUNTED_ERROR)
     } else {
-      entity.initialOptions.cap = cap
+      entity.initialOptions.pattern = pattern
     }
   }
 
-  fun setStartCap(entity: OmhPolylineEntity, value: ReadableMap) {
-    val cap = value.toOmhCap(entity.context) ?: error(INCORRECT_CAP_VALUE_ERROR)
-    if (entity.isMounted()) {
-      entity.getEntity()?.setStartCap(cap) ?: error(NOT_MOUNTED_ERROR)
-    } else {
-      entity.initialOptions.startCap = cap
+  fun setCap(entity: OmhPolylineEntity, value: ReadableMap?) {
+    value?.toOmhCap(entity) { cap ->
+      if (cap == null) {
+        error(INCORRECT_CAP_VALUE_ERROR)
+      }
+
+      if (entity.isMounted()) {
+        entity.getEntity()?.setCap(cap) ?: error(NOT_MOUNTED_ERROR)
+      } else {
+        entity.initialOptions.cap = cap
+      }
     }
   }
 
-  fun setEndCap(entity: OmhPolylineEntity, value: ReadableMap) {
-    val cap = value.toOmhCap(entity.context) ?: error(INCORRECT_CAP_VALUE_ERROR)
-    if (entity.isMounted()) {
-      entity.getEntity()?.setEndCap(cap) ?: error(NOT_MOUNTED_ERROR)
-    } else {
-      entity.initialOptions.endCap = cap
+  fun setStartCap(entity: OmhPolylineEntity, value: ReadableMap?) {
+    value?.toOmhCap(entity) { cap ->
+      if (cap == null) {
+        error(INCORRECT_CAP_VALUE_ERROR)
+      }
+
+      if (entity.isMounted()) {
+        entity.getEntity()?.setStartCap(cap) ?: error(NOT_MOUNTED_ERROR)
+      } else {
+        entity.initialOptions.startCap = cap
+      }
+    }
+  }
+
+  fun setEndCap(entity: OmhPolylineEntity, value: ReadableMap?) {
+    value?.toOmhCap(entity) { cap ->
+      if (cap == null) {
+        error(INCORRECT_CAP_VALUE_ERROR)
+      }
+
+      if (entity.isMounted()) {
+        entity.getEntity()?.setEndCap(cap) ?: error(NOT_MOUNTED_ERROR)
+      } else {
+        entity.initialOptions.endCap = cap
+      }
     }
   }
 
   companion object {
     const val NAME = "RNOmhMapsPolylineView"
-    private const val NOT_MOUNTED_ERROR = "RN OmhPolyline entity has not yet been added to the OmhMap"
+    private const val NOT_MOUNTED_ERROR =
+      "RN OmhPolyline entity has not yet been added to the OmhMap"
     private const val INCORRECT_CAP_VALUE_ERROR = "Incorrect cap value"
   }
 }

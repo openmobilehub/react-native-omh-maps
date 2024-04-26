@@ -7,4 +7,8 @@ export namespace OmhPolylineConstants {
   export const CAP_TYPE_ROUND = 'round';
   export const CAP_TYPE_SQUARE = 'square';
   export const CAP_TYPE_CUSTOM = 'custom';
+
+  export const PATTERN_TYPE_DASH = 'dash';
+  export const PATTERN_TYPE_GAP = 'gap';
+  export const PATTERN_TYPE_DOT = 'dot';
 }

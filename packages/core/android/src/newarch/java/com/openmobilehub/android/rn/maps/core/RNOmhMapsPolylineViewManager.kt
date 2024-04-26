@@ -26,6 +26,11 @@ class RNOmhMapsPolylineViewManager :
     omhMapPolylineComponentManagerImpl.setClickable(view, value)
   }
 
+  @ReactProp(name = "consumePolylineClicks")
+  override fun setConsumePolylineClicks(view: OmhPolylineEntity, value: Boolean) {
+    omhMapPolylineComponentManagerImpl.setConsumePolylineClicks(view, value)
+  }
+
   @ReactProp(name = "color")
   override fun setColor(view: OmhPolylineEntity, value: Double) {
     omhMapPolylineComponentManagerImpl.setColor(view, value)
@@ -52,29 +57,23 @@ class RNOmhMapsPolylineViewManager :
   }
 
   @ReactProp(name = "pattern")
-  override fun setPattern(view: OmhPolylineEntity, value: String?) {
+  override fun setPattern(view: OmhPolylineEntity, value: ReadableArray?) {
     omhMapPolylineComponentManagerImpl.setPattern(view, value)
   }
 
   @ReactProp(name = "cap")
   override fun setCap(view: OmhPolylineEntity, value: ReadableMap?) {
-    value?.let {
-      omhMapPolylineComponentManagerImpl.setCap(view, it)
-    }
+    omhMapPolylineComponentManagerImpl.setCap(view, value)
   }
 
   @ReactProp(name = "startCap")
   override fun setStartCap(view: OmhPolylineEntity, value: ReadableMap?) {
-    value?.let {
-      omhMapPolylineComponentManagerImpl.setStartCap(view, it)
-    }
+    omhMapPolylineComponentManagerImpl.setStartCap(view, value)
   }
 
   @ReactProp(name = "endCap")
   override fun setEndCap(view: OmhPolylineEntity, value: ReadableMap?) {
-    value?.let {
-      omhMapPolylineComponentManagerImpl.setEndCap(view, it)
-    }
+    omhMapPolylineComponentManagerImpl.setEndCap(view, value)
   }
 
   override fun getName(): String = NAME

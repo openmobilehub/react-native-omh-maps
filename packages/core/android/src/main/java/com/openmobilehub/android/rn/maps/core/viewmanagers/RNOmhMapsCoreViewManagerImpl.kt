@@ -16,6 +16,7 @@ import com.facebook.react.uimanager.UIManagerHelper
 import com.openmobilehub.android.maps.core.presentation.interfaces.maps.OmhMap
 import com.openmobilehub.android.maps.core.presentation.interfaces.maps.OmhMarker
 import com.openmobilehub.android.maps.core.presentation.interfaces.maps.OmhOnMarkerDragListener
+import com.openmobilehub.android.maps.core.presentation.interfaces.maps.OmhPolyline
 import com.openmobilehub.android.rn.maps.core.BuildConfig
 import com.openmobilehub.android.rn.maps.core.entities.OmhMapEntity
 import com.openmobilehub.android.rn.maps.core.entities.OmhMarkerEntity
@@ -27,6 +28,7 @@ import com.openmobilehub.android.rn.maps.core.events.OmhOnMapLoadedEvent
 import com.openmobilehub.android.rn.maps.core.events.OmhOnMapReadyEvent
 import com.openmobilehub.android.rn.maps.core.events.OmhOnMarkerClickEvent
 import com.openmobilehub.android.rn.maps.core.events.OmhOnMarkerDragStartEvent
+import com.openmobilehub.android.rn.maps.core.events.OmhOnPolylineClickEvent
 import com.openmobilehub.android.rn.maps.core.fragments.FragmentUtils
 import com.openmobilehub.android.rn.maps.core.fragments.OmhMapViewFragment
 import com.openmobilehub.android.rn.maps.core.utils.RNComponentUtils.dispatchEvent
@@ -246,6 +248,13 @@ class RNOmhMapsCoreViewManagerImpl(private val reactContext: ReactContext) {
             }
         })
 
+      omhMap.setOnPolylineClickListener { clickedOmhPolyline ->
+        findChildOfType<OmhPolylineEntity, OmhPolyline>(clickedOmhPolyline)?.onClickListener?.onPolylineClick(
+          clickedOmhPolyline
+        )
+          ?: false
+      }
+
         omhMap.setOnMapLoadedCallback {
             dispatchEvent(
                 reactContext,
@@ -298,7 +307,8 @@ class RNOmhMapsCoreViewManagerImpl(private val reactContext: ReactContext) {
                 OmhOnCameraIdleEvent,
                 OmhOnCameraMoveStartedEvent,
                 OmhOnMarkerClickEvent,
-                OmhOnMarkerDragStartEvent
+                OmhOnMarkerDragStartEvent,
+                OmhOnPolylineClickEvent
             ).associateBy(
                 { it.NAME },
                 { MapBuilder.of("registrationName", it.EVENT_PROP_NAME) }
