@@ -6,6 +6,7 @@ import com.facebook.react.bridge.ReadableMap
 import com.openmobilehub.android.rn.maps.core.entities.OmhMarkerEntity
 import com.openmobilehub.android.rn.maps.core.extensions.toAnchor
 import com.openmobilehub.android.rn.maps.core.extensions.toOmhCoordinate
+import com.openmobilehub.android.rn.maps.core.utils.ColorUtils
 import com.openmobilehub.android.rn.maps.core.utils.DrawableLoader
 import com.openmobilehub.android.rn.maps.core.utils.RNComponentUtils.requirePropertyNotNull
 import com.openmobilehub.android.maps.core.presentation.models.Constants as OmhConstants
@@ -117,8 +118,7 @@ class RNOmhMapsMarkerViewManagerImpl {
     }
 
     fun setBackgroundColor(entity: OmhMarkerEntity, value: Double) {
-        val color =
-            (0xFF000000L or value.toLong()).toInt() // impute possibly missing bits (RGB instead of ARGB)
+        val color = ColorUtils.toColorInt(value)
 
         if (entity.isMounted()) {
             entity.getEntity()!!.setBackgroundColor(color)

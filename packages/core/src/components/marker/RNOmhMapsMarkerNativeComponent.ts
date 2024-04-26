@@ -14,7 +14,7 @@ export type NativeOmhCoordinate = {
 export type Anchor = {
   /** the normalized (`0` - `1`) icon X coordinate specifier; default: `0.5` */
   u: Float;
-  /* the normalized (`0` - `1`) icon Y coordinate specifier; default: `0.5` */
+  /** the normalized (`0` - `1`) icon Y coordinate specifier; default: `0.5` */
   v: Float;
 };
 

@@ -14,6 +14,7 @@ export type PickerProps<T> = {
   onChange: (value: T) => void;
   style?: ViewProps['style'];
   centeredLabel?: boolean;
+  disabled?: boolean;
 };
 
 export default function Picker<T>({
@@ -23,6 +24,7 @@ export default function Picker<T>({
   onChange,
   style,
   centeredLabel = true,
+  disabled = false,
 }: PickerProps<T>) {
   const theme = useTheme();
 
@@ -54,6 +56,7 @@ export default function Picker<T>({
           key: choice.key,
           color: theme.colors.onSurface,
         }))}
+        disabled={disabled}
       />
     </View>
   );
