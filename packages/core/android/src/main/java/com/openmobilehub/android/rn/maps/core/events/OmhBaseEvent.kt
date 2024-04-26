@@ -6,7 +6,7 @@ import com.facebook.react.uimanager.events.Event
 
 interface OmhBaseEventCompanion {
     val NAME: String
-    val EVENT_PROP_NAME: String
+    val REGISTRATION_NAME: String
 }
 
 abstract class OmhBaseEvent(

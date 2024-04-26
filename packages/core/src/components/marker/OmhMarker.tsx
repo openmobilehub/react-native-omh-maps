@@ -1,23 +1,16 @@
 import React, { memo, useMemo } from 'react';
 
+import { OmhMarkerComponentProps } from '../../types/OmhMarker';
 import { rnResourceIdToAndroidURI } from '../../utils/RNResourceTranscoder';
-import RNOmhMapsMarkerNativeComponent, {
-  NativeOmhMarkerProps,
-} from './RNOmhMapsMarkerNativeComponent';
+import RNOmhMapsMarkerNativeComponent from './RNOmhMapsMarkerNativeComponent';
 
 /**
  * The OMH Marker properties.
  */
-export type OmhMarkerProps = NativeOmhMarkerProps & {
-  /**
-   * The image resource ID to be used as the marker icon, received from an `import` or `require()` call to a bitmap ąsset.
-   */
-  icon?: number;
-};
+export type OmhMarkerProps = OmhMarkerComponentProps;
 
 /**
- * The OMH Marker component. Actual implementation is picked based on the platform capabilities (GMS or non-GMS)
- * and availability of installed providers (`@omh/react-native-maps-plugin-*`).
+ * The OMH Marker component.
  */
 export const OmhMarker = memo(({ icon, ...props }: OmhMarkerProps) => {
   const nativeComponentRef = React.useRef<
@@ -28,7 +21,9 @@ export const OmhMarker = memo(({ icon, ...props }: OmhMarkerProps) => {
     () =>
       icon === null || icon === undefined
         ? undefined
-        : rnResourceIdToAndroidURI(icon),
+        : typeof icon === 'number'
+          ? rnResourceIdToAndroidURI(icon)
+          : icon,
     [icon]
   );
 

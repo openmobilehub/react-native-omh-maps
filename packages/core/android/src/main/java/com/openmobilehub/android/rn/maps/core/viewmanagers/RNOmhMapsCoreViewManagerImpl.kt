@@ -24,8 +24,6 @@ import com.openmobilehub.android.rn.maps.core.events.OmhOnCameraIdleEvent
 import com.openmobilehub.android.rn.maps.core.events.OmhOnCameraMoveStartedEvent
 import com.openmobilehub.android.rn.maps.core.events.OmhOnMapLoadedEvent
 import com.openmobilehub.android.rn.maps.core.events.OmhOnMapReadyEvent
-import com.openmobilehub.android.rn.maps.core.events.OmhOnMarkerClickEvent
-import com.openmobilehub.android.rn.maps.core.events.OmhOnMarkerDragStartEvent
 import com.openmobilehub.android.rn.maps.core.fragments.FragmentUtils
 import com.openmobilehub.android.rn.maps.core.fragments.OmhMapViewFragment
 import com.openmobilehub.android.rn.maps.core.utils.RNComponentUtils.dispatchEvent
@@ -296,11 +294,9 @@ class RNOmhMapsCoreViewManagerImpl(private val reactContext: ReactContext) {
                 OmhOnMapLoadedEvent,
                 OmhOnCameraIdleEvent,
                 OmhOnCameraMoveStartedEvent,
-                OmhOnMarkerClickEvent,
-                OmhOnMarkerDragStartEvent
             ).associateBy(
                 { it.NAME },
-                { MapBuilder.of("registrationName", it.EVENT_PROP_NAME) }
+                { MapBuilder.of("registrationName", it.REGISTRATION_NAME) }
             ).toMap()
 
         object ERRORS {

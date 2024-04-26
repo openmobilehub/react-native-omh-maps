@@ -15,6 +15,6 @@ class OmhOnMapReadyEvent(
 
     companion object : OmhBaseEventCompanion {
         override val NAME = "topMapReady"
-        override val EVENT_PROP_NAME = "onMapReady"
+        override val REGISTRATION_NAME = "onMapReady"
     }
 }

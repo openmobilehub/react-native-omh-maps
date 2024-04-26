@@ -7,7 +7,7 @@ import React, {
   useRef,
   useState,
 } from 'react';
-import { NativeSyntheticEvent, ScrollView, View } from 'react-native';
+import { PixelRatio, ScrollView, View } from 'react-native';
 import { Checkbox, Subheading } from 'react-native-paper';
 
 import {
@@ -20,10 +20,12 @@ import { OmhMapsGooglemapsProvider } from '@omh/react-native-maps-plugin-googlem
 import { OmhMapsOpenStreetMapProvider } from '@omh/react-native-maps-plugin-openstreetmap';
 
 import OmhMarker from '../../../../packages/core/src/components/marker/OmhMarker';
+import { Anchor } from '../../../../packages/core/src/components/marker/RNOmhMapsMarkerNativeComponent';
 import {
-  Anchor,
-  NativeOmhCoordinate,
-} from '../../../../packages/core/src/components/marker/RNOmhMapsMarkerNativeComponent';
+  MarkerDragEndEvent,
+  MarkerDragEvent,
+  MarkerDragStartEvent,
+} from '../../../../packages/core/src/types/OmhMarker';
 import soccerBallIcon from '../../assets/img/soccer_ball.bmp';
 import Picker from '../../components/controls/Picker';
 import Slider from '../../components/controls/Slider';
@@ -42,7 +44,8 @@ const MarkerIWTitles = {
 
 enum DemoMarkerAppearance {
   DEFAULT = 'Default',
-  CUSTOM_ICON = 'Custom icon',
+  LOCAL_ASSET_ICON = 'Local asset icon',
+  NETWORK_ASSET = 'Network asset icon',
   CUSTOM_COLOR = 'Custom color',
 }
 
@@ -80,7 +83,7 @@ export const MarkerMapScreen = () => {
   const [customizableMarkerAppearance, setCustomizableMarkerAppearance] =
     useState(DemoMarkerAppearance.DEFAULT);
 
-  const genOnMarkerClickHandler = useCallback(
+  const genMarkerOnPressHandler = useCallback(
     (title: string) => () => {
       const message = `${_.capitalize(title)} clicked`;
       logger.log(message);
@@ -91,8 +94,10 @@ export const MarkerMapScreen = () => {
   );
 
   const onCustomizableMarkerDragStart = useCallback(
-    (event: NativeSyntheticEvent<NativeOmhCoordinate>) => {
-      const { latitude, longitude } = event.nativeEvent;
+    (event: MarkerDragStartEvent) => {
+      const {
+        position: { latitude, longitude },
+      } = event.nativeEvent;
 
       logger.log(
         `Customizable marker has started being dragged from: ${formatPosition({ latitude, longitude })}`
@@ -102,8 +107,10 @@ export const MarkerMapScreen = () => {
   );
 
   const onCustomizableMarkerDrag = useCallback(
-    (event: NativeSyntheticEvent<NativeOmhCoordinate>) => {
-      const { latitude, longitude } = event.nativeEvent;
+    (event: MarkerDragEvent) => {
+      const {
+        position: { latitude, longitude },
+      } = event.nativeEvent;
 
       logger.log(
         `Customizable marker has been dragged to: ${formatPosition({ latitude, longitude })}`
@@ -113,8 +120,10 @@ export const MarkerMapScreen = () => {
   );
 
   const onCustomizableMarkerDragEnd = useCallback(
-    (event: NativeSyntheticEvent<NativeOmhCoordinate>) => {
-      const { latitude, longitude } = event.nativeEvent;
+    (event: MarkerDragEndEvent) => {
+      const {
+        position: { latitude, longitude },
+      } = event.nativeEvent;
 
       logger.log(
         `Customizable has finished being dragged at: ${formatPosition({ latitude, longitude })}`
@@ -191,12 +200,12 @@ export const MarkerMapScreen = () => {
                   ? 'A sample snippet with long description'
                   : undefined
               }
-              onMarkerClick={genOnMarkerClickHandler(
+              onPress={genMarkerOnPressHandler(
                 MarkerIWTitles.CONFIGURABLE_TEST_MARKER
               )}
-              onMarkerDragStart={onCustomizableMarkerDragStart}
-              onMarkerDrag={onCustomizableMarkerDrag}
-              onMarkerDragEnd={onCustomizableMarkerDragEnd}
+              onDragStart={onCustomizableMarkerDragStart}
+              onDrag={onCustomizableMarkerDrag}
+              onDragEnd={onCustomizableMarkerDragEnd}
               markerZIndex={customizableMarkerZIndex}
               rotation={customizableMarkerRotation}
               anchor={customizableMarkerAnchor}
@@ -209,9 +218,16 @@ export const MarkerMapScreen = () => {
               }
               icon={
                 customizableMarkerAppearance ===
-                DemoMarkerAppearance.CUSTOM_ICON
+                DemoMarkerAppearance.LOCAL_ASSET_ICON
                   ? soccerBallIcon
-                  : undefined
+                  : customizableMarkerAppearance ===
+                      DemoMarkerAppearance.NETWORK_ASSET
+                    ? {
+                        uri: 'https://www.openmobilehub.com/images/logo/omh_logo.png',
+                        width: PixelRatio.getPixelSizeForLayoutSize(38),
+                        height: PixelRatio.getPixelSizeForLayoutSize(38),
+                      }
+                    : undefined
               }
             />
           )}
@@ -222,7 +238,7 @@ export const MarkerMapScreen = () => {
               latitude: Constants.Maps.GREENWICH_COORDINATE.latitude + 0.0016,
               longitude: Constants.Maps.GREENWICH_COORDINATE.longitude + 0.002,
             }}
-            onMarkerClick={genOnMarkerClickHandler(
+            onPress={genMarkerOnPressHandler(
               MarkerIWTitles.STATIC_ICON_MARKER_NON_DRAGGABLE
             )}
             markerZIndex={1.9}
@@ -237,7 +253,7 @@ export const MarkerMapScreen = () => {
             }}
             backgroundColor={0x005918}
             draggable={true}
-            onMarkerClick={genOnMarkerClickHandler(
+            onPress={genMarkerOnPressHandler(
               MarkerIWTitles.STATIC_COLORED_MARKER_DRAGGABLE
             )}
             markerZIndex={2.9}

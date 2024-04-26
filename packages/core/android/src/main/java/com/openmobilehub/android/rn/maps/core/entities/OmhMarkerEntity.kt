@@ -8,10 +8,10 @@ import com.openmobilehub.android.maps.core.presentation.interfaces.maps.OmhMarke
 import com.openmobilehub.android.maps.core.presentation.interfaces.maps.OmhOnMarkerClickListener
 import com.openmobilehub.android.maps.core.presentation.interfaces.maps.OmhOnMarkerDragListener
 import com.openmobilehub.android.maps.core.presentation.models.OmhMarkerOptions
-import com.openmobilehub.android.rn.maps.core.events.OmhOnMarkerClickEvent
 import com.openmobilehub.android.rn.maps.core.events.OmhOnMarkerDragEndEvent
 import com.openmobilehub.android.rn.maps.core.events.OmhOnMarkerDragEvent
 import com.openmobilehub.android.rn.maps.core.events.OmhOnMarkerDragStartEvent
+import com.openmobilehub.android.rn.maps.core.events.OmhOnMarkerPressEvent
 import com.openmobilehub.android.rn.maps.core.utils.RNComponentUtils
 
 @SuppressLint("ViewConstructor")
@@ -25,7 +25,7 @@ class OmhMarkerEntity(private val context: ReactContext) :
         RNComponentUtils.dispatchEvent(
             context,
             viewId,
-            OmhOnMarkerClickEvent(UIManagerHelper.getSurfaceId(context), viewId)
+            OmhOnMarkerPressEvent(UIManagerHelper.getSurfaceId(context), viewId, it.getPosition())
         )
         consumeMarkerClicks
     }

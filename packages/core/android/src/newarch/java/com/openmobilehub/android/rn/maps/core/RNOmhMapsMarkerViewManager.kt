@@ -9,12 +9,16 @@ import com.facebook.react.viewmanagers.RNOmhMapsMarkerViewManagerInterface
 import com.openmobilehub.android.rn.maps.core.entities.OmhMarkerEntity
 import com.openmobilehub.android.rn.maps.core.viewmanagers.RNOmhMapsMarkerViewManagerImpl
 
-@ReactModule(name = RNOmhMapsMarkerViewManager.NAME)
+@ReactModule(name = RNOmhMapsMarkerViewManagerImpl.NAME)
 @Suppress("TooManyFunctions")
 class RNOmhMapsMarkerViewManager :
     SimpleViewManager<OmhMarkerEntity>(),
     RNOmhMapsMarkerViewManagerInterface<OmhMarkerEntity> {
     private val omhMapMarkerComponentManagerImpl = RNOmhMapsMarkerViewManagerImpl()
+
+    override fun createViewInstance(reactContext: ThemedReactContext): OmhMarkerEntity {
+        return omhMapMarkerComponentManagerImpl.createViewInstance(reactContext)
+    }
 
     @ReactProp(name = "position")
     override fun setPosition(entity: OmhMarkerEntity, value: ReadableMap?) {
@@ -92,17 +96,13 @@ class RNOmhMapsMarkerViewManager :
     }
 
     @ReactProp(name = "icon")
-    override fun setIcon(view: OmhMarkerEntity, value: String?) {
+    override fun setIcon(view: OmhMarkerEntity, value: ReadableMap?) {
         omhMapMarkerComponentManagerImpl.setIcon(view, value)
     }
 
-    override fun getName(): String = NAME
+    override fun getName(): String = RNOmhMapsMarkerViewManagerImpl.NAME
 
-    override fun createViewInstance(reactContext: ThemedReactContext): OmhMarkerEntity {
-        return omhMapMarkerComponentManagerImpl.createViewInstance(reactContext)
-    }
-
-    companion object {
-        const val NAME = RNOmhMapsMarkerViewManagerImpl.NAME
+    override fun getExportedCustomDirectEventTypeConstants(): Map<String, Any> {
+        return RNOmhMapsMarkerViewManagerImpl.EVENTS
     }
 }
