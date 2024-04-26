@@ -1,4 +1,4 @@
-package com.openmobilehub.android.rn.maps.core.viewmanagers
+package com.openmobilehub.android.rn.maps.core
 
 import com.facebook.react.bridge.ReadableArray
 import com.facebook.react.module.annotations.ReactModule
@@ -7,6 +7,7 @@ import com.facebook.react.uimanager.ThemedReactContext
 import com.facebook.react.uimanager.annotations.ReactProp
 import com.facebook.react.viewmanagers.RNOmhMapsPolylineViewManagerInterface
 import com.openmobilehub.android.rn.maps.core.entities.OmhPolylineEntity
+import com.openmobilehub.android.rn.maps.core.viewmanagers.RNOmhMapsPolylineViewManagerImpl
 
 @ReactModule(name = RNOmhMapsPolylineViewManager.NAME)
 class RNOmhMapsPolylineViewManager :

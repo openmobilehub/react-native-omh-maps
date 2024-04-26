@@ -8,9 +8,7 @@ import {
   OmhPolyline,
 } from '@omh/react-native-maps-core';
 
-import useChosenMapProvider from '../../hooks/useChosenMapProvider';
 import { demoStyles } from '../../styles/demoStyles';
-import OmhPolyline from '@omh/react-native-maps-core/src/OmhPolyline';
 
 const points: OmhCoordinate[] = [
   { latitude: 0.0, longitude: 0.0 },
@@ -24,21 +22,13 @@ const points: OmhCoordinate[] = [
 ];
 
 export const PolylineMapScreen = () => {
-  const defaultMapProvider = useChosenMapProvider();
-
   const [mountCustomizablePolyline, setMountCustomizablePolyline] =
     useState(true);
 
   return (
     <View style={demoStyles.rootContainer}>
       <View style={demoStyles.mapContainer}>
-        <OmhMapView
-          width="100%"
-          height="100%"
-          paths={{
-            gmsPath: defaultMapProvider.path,
-            nonGmsPath: defaultMapProvider.path,
-          }}>
+        <OmhMapView width="100%" height="100%">
           {mountCustomizablePolyline && <OmhPolyline points={points} />}
         </OmhMapView>
       </View>
