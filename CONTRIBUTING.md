@@ -17,7 +17,7 @@ yarn
 To develop, it is required that the [React Native Codegen](https://github.com/reactwg/react-native-new-architecture/blob/main/docs/codegen.md) is run at least once, and after any changes to the native specs, it must be re-run. This is done by running the following command:
 
 ```sh
-yarn codegen
+yarn codegen:android
 ```
 
 The [example app](https://github.com/openmobilehub/react-native-omh-maps/tree/main/sample-app/) demonstrates usage of the library. You need to run it to test any changes you make.

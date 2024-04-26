@@ -48,7 +48,7 @@
     "typedoc": "^0.25.12",
     "typedoc-plugin-markdown": "^3.17.1",
     "typedoc-plugin-replace-text": "^3.3.0",
-    "typescript": "^5.4.3",
+    "typescript": "^5.4.0",
     "validate-npm-package-name": "^5.0.0"
   },
   "dependencies": {
@@ -74,7 +74,7 @@
     "build:ios:release": "npx turbo build:ios:release",
     "test": "cross-env FORCE_COLOR=1 yarn workspaces foreach -A -p run test",
     "typecheck": "cross-env FORCE_COLOR=1 yarn workspaces foreach -A -p run typecheck",
-    "lint": "cross-env FORCE_COLOR=1 yarn workspaces foreach -A -p run lint",
+    "lint": "cross-env FORCE_COLOR=1 yarn lint",
     "clean": "cross-env FORCE_COLOR=1 yarn workspaces foreach -A -p --exclude @omh/react-native-maps-sample-app run clean",
     "prepare": "cross-env FORCE_COLOR=1 yarn workspaces foreach -A -p --exclude @omh/react-native-maps-sample-app run prepare",
     "release": "cross-env FORCE_COLOR=1 yarn workspaces foreach -A -p --exclude @omh/react-native-maps-sample-app run release",

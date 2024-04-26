@@ -107,9 +107,7 @@ export const OmhMapView = forwardRef<OmhMapViewRef, OmhMapViewProps>(
           setCameraCoordinate: (...args) =>
             NativeOmhMapsCoreModule.setCameraCoordinate(nodeHandle, ...args),
           getProviderName: () =>
-            NativeOmhMapsCoreModule.getProviderName(
-              nodeHandle
-            ) as OmhMapProviderVariant,
+            NativeOmhMapsCoreModule.getProviderName(nodeHandle),
           takeSnapshot: (format: OmhSnapshotFormat) =>
             NativeOmhMapsCoreModule.takeSnapshot(nodeHandle, format),
         };
