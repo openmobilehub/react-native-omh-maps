@@ -109,7 +109,7 @@ export interface NativeOmhPolylineProps extends ViewProps {
   /**
    * The spans of the polyline.
    */
-  //spans;
+  //spans; TODO OMHD-198: implementation
 }
 
 export type RNOmhMapsPolylineNativeComponent =

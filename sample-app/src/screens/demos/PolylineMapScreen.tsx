@@ -1,10 +1,11 @@
-import React, { useCallback, useMemo, useState } from 'react';
+import React, { useCallback, useMemo, useRef, useState } from 'react';
 import { ScrollView, View } from 'react-native';
 import { Checkbox, Subheading } from 'react-native-paper';
 
 import {
   OmhCoordinate,
   OmhMapView,
+  OmhMapViewRef,
   OmhPolyline,
   OmhPolylineConstants,
 } from '@omh/react-native-maps-core';
@@ -27,8 +28,9 @@ import { OmhMapsOpenStreetMapProvider } from '@omh/react-native-maps-plugin-open
 import { OmhMapsAzureMapsProvider } from '@omh/react-native-maps-plugin-azuremaps';
 import useSnackbar from '../../hooks/useSnackbar';
 import useLogger from '../../hooks/useLogger';
+import { Constants } from '../../utils/Constants';
 
-const defaultPoints: OmhCoordinate[] = [
+const customizablePolylinePoints: OmhCoordinate[] = [
   { latitude: 0.0, longitude: 0.0 },
   { latitude: 30.0, longitude: 10.0 },
   { latitude: 20.0, longitude: 20.0 },
@@ -37,6 +39,11 @@ const defaultPoints: OmhCoordinate[] = [
   { latitude: 10.0, longitude: 30.0 },
   { latitude: -10.0, longitude: 40.0 },
   { latitude: 15.0, longitude: 60.0 },
+];
+
+const referencePolylinePoints: OmhCoordinate[] = [
+  { latitude: 50.0, longitude: 25.0 },
+  { latitude: -50.0, longitude: 25.0 },
 ];
 
 const PolylineMessages = {
@@ -75,7 +82,7 @@ const capItems: CapItem[] = [
       type: OmhPolylineConstants.CAP_TYPE_SQUARE,
     },
   },
-  // TODO fixme - why passing icon causes crash?
+  // TODO OMHD-198: why passing icon causes crash?
   // {
   //   label: 'Custom',
   //   value: {
@@ -158,14 +165,18 @@ const customPattern: Pattern[] = [
   },
 ];
 
+const referencePolylineColor = rgbToInt([204, 204, 204]);
+
 export const PolylineMapScreen = () => {
   const logger = useLogger('PolylineMapScreen');
   const mapProvider = useChosenMapProvider();
   const { showSnackbar } = useSnackbar();
 
+  const omhMapRef = useRef<OmhMapViewRef | null>(null);
   const [mountCustomizablePolyline, setMountCustomizablePolyline] =
     useState(true);
-  const [points, setPoints] = useState(defaultPoints);
+  const [mountReferencePolyline, setMountReferencePolyline] = useState(false);
+  const [points, setPoints] = useState(customizablePolylinePoints);
   const [isClickable, setIsClickable] = useState(false);
   const [width, setWidth] = useState(defaultWidth);
   const [colorHue, setColorHue] = useState(0);
@@ -176,6 +187,26 @@ export const PolylineMapScreen = () => {
   const [endCap, setEndCap] = useState(capItems[0]!!.value);
   const [jointType, setJointType] = useState(jointTypeItems[0]!!.value);
   const [patternOption, setPatternOption] = useState(PatternOption.NONE);
+  const [withSpan, setWithSpan] = useState(false);
+  const [spanSegments, setSpanSegments] = useState(1);
+  const [spanColorHue, setSpanColorHue] = useState(0);
+  const [spanWithGradient, setSpanWithGradient] = useState(false);
+  const [spanGradientFromColorHue, setSpanGradientFromColorHue] = useState(0);
+  const [spanGradientToColorHue, setSpanGradientToColorHue] = useState(0);
+  const [spanPattern, setSpanPattern] = useState(false);
+
+  // TODO OMHD-198: create span based on its dependencies
+  // const span = useMemo(() => {
+  //   return null;
+  // }, [
+  //   withSpan,
+  //   spanSegments,
+  //   spanColorHue,
+  //   spanWithGradient,
+  //   spanGradientFromColorHue,
+  //   spanGradientToColorHue,
+  //   spanPattern,
+  // ]);
 
   const pattern = useMemo(() => {
     switch (patternOption) {
@@ -209,17 +240,17 @@ export const PolylineMapScreen = () => {
     setPoints(randomisedPoints);
   };
 
-  const zIndexSupported = useMemo(
+  const isZIndexSupported = useMemo(
     () => mapProvider.path === OmhMapsGooglemapsProvider.path,
     [mapProvider.path]
   );
 
-  const jointTypeSupported = useMemo(
+  const isJointTypeSupported = useMemo(
     () => mapProvider.path !== OmhMapsOpenStreetMapProvider.path,
     [mapProvider.path]
   );
 
-  const patternSupported = useMemo(
+  const isPatternSupported = useMemo(
     () =>
       mapProvider.path === OmhMapsGooglemapsProvider.path ||
       mapProvider.path === OmhMapsAzureMapsProvider.path,
@@ -237,7 +268,7 @@ export const PolylineMapScreen = () => {
     return blacklist;
   }, [mapProvider.path]);
 
-  const startEndCapSupported = useMemo(
+  const isStartEndCapSupported = useMemo(
     () => mapProvider.path === OmhMapsGooglemapsProvider.path,
     [mapProvider.path]
   );
@@ -264,6 +295,11 @@ export const PolylineMapScreen = () => {
     .filter(item => !disabledCapTypes.has(item.value.type))
     .map(item => capItemToChoice(item));
 
+  const isSpanSupported = useMemo(
+    () => mapProvider.path === OmhMapsGooglemapsProvider.path,
+    [mapProvider.path]
+  );
+
   const genOnPolylineClickHandler = useCallback(
     (message: string) => () => {
       logger.log(message);
@@ -275,7 +311,18 @@ export const PolylineMapScreen = () => {
   return (
     <View style={demoStyles.rootContainer}>
       <View style={demoStyles.mapContainer}>
-        <OmhMapView width="100%" height="100%">
+        <OmhMapView
+          ref={omhMapRef}
+          width="100%"
+          height="100%"
+          onMapReady={() => {
+            logger.log("OmhMapView's OmhMap has become ready");
+
+            omhMapRef.current?.setCameraCoordinate(
+              Constants.Maps.CENTER_COORDINATE,
+              Constants.Maps.CENTER_ZOOM_LEVEL
+            );
+          }}>
           {mountCustomizablePolyline && (
             <OmhPolyline
               points={points}
@@ -291,6 +338,18 @@ export const PolylineMapScreen = () => {
               pattern={pattern}
               onPolylineClick={genOnPolylineClickHandler(
                 PolylineMessages.CUSTOMIZABLE_POLYLINE
+              )}
+            />
+          )}
+          {mountReferencePolyline && (
+            <OmhPolyline
+              points={referencePolylinePoints}
+              polylineZIndex={2}
+              clickable={true}
+              color={referencePolylineColor}
+              width={10}
+              onPolylineClick={genOnPolylineClickHandler(
+                PolylineMessages.REFERENCE_POLYLINE
               )}
             />
           )}
@@ -352,7 +411,7 @@ export const PolylineMapScreen = () => {
           />
 
           <Picker<Cap>
-            disabled={!startEndCapSupported}
+            disabled={!isStartEndCapSupported}
             label="Start Cap"
             choices={capItemChoices}
             onChange={choice => {
@@ -362,7 +421,7 @@ export const PolylineMapScreen = () => {
           />
 
           <Picker<Cap>
-            disabled={!startEndCapSupported}
+            disabled={!isStartEndCapSupported}
             label="End Cap"
             choices={capItemChoices}
             onChange={choice => {
@@ -372,7 +431,7 @@ export const PolylineMapScreen = () => {
           />
 
           <Slider
-            disabled={!zIndexSupported}
+            disabled={!isZIndexSupported}
             label={`Z Index: ${zIndex.toFixed(0)}`}
             onChange={z => setZIndex(z)}
             defaultValue={0}
@@ -382,7 +441,7 @@ export const PolylineMapScreen = () => {
           />
 
           <Picker<number>
-            disabled={!jointTypeSupported}
+            disabled={!isJointTypeSupported}
             label="Joint Type"
             choices={jointTypeItems.map(item => ({
               key: item.value.toString(),
@@ -396,7 +455,7 @@ export const PolylineMapScreen = () => {
           />
 
           <Picker<PatternOption>
-            disabled={!patternSupported}
+            disabled={!isPatternSupported}
             label="Pattern"
             choices={Object.entries(PatternOption)
               .filter(([_key, label]) => !disabledPatterns.has(label))
@@ -411,6 +470,71 @@ export const PolylineMapScreen = () => {
             value={patternOption}
           />
 
+          <Checkbox.Item
+            disabled={!isSpanSupported}
+            label="Span"
+            status={withSpan ? 'checked' : 'unchecked'}
+            onPress={() => {
+              setWithSpan(!withSpan);
+            }}
+          />
+
+          {withSpan && (
+            <>
+              <Slider
+                label={`Segments: ${spanSegments}`}
+                onChange={segments => setSpanSegments(segments)}
+                defaultValue={1}
+                step={1}
+                minimumValue={1}
+                maximumValue={7}
+              />
+              <Slider
+                label={`Span color hue: ${spanColorHue.toFixed(0)}`}
+                onChange={H => setSpanColorHue(H)}
+                defaultValue={0}
+                step={1}
+                minimumValue={0}
+                maximumValue={360}
+              />
+              <Checkbox.Item
+                label="Span gradient"
+                status={spanWithGradient ? 'checked' : 'unchecked'}
+                onPress={() => {
+                  setSpanWithGradient(!spanWithGradient);
+                }}
+              />
+              {spanWithGradient && (
+                <>
+                  <Slider
+                    label={`From color hue: ${spanGradientFromColorHue.toFixed(0)}`}
+                    onChange={H => setSpanGradientFromColorHue(H)}
+                    defaultValue={0}
+                    step={1}
+                    minimumValue={0}
+                    maximumValue={360}
+                  />
+                  <Slider
+                    label={`To color hue: ${spanGradientToColorHue.toFixed(0)}`}
+                    onChange={H => setSpanGradientToColorHue(H)}
+                    defaultValue={0}
+                    step={1}
+                    minimumValue={0}
+                    maximumValue={360}
+                  />
+                </>
+              )}
+
+              <Checkbox.Item
+                label="Pattern"
+                status={spanPattern ? 'checked' : 'unchecked'}
+                onPress={() => {
+                  setSpanPattern(!spanPattern);
+                }}
+              />
+            </>
+          )}
+
           <Subheading style={demoStyles.centeredHeading}>
             Demo behaviour
           </Subheading>
@@ -420,6 +544,14 @@ export const PolylineMapScreen = () => {
             status={mountCustomizablePolyline ? 'checked' : 'unchecked'}
             onPress={() => {
               setMountCustomizablePolyline(!mountCustomizablePolyline);
+            }}
+          />
+
+          <Checkbox.Item
+            label="Mount reference <OmhPolyline/>"
+            status={mountReferencePolyline ? 'checked' : 'unchecked'}
+            onPress={() => {
+              setMountReferencePolyline(!mountReferencePolyline);
             }}
           />
         </ScrollView>
