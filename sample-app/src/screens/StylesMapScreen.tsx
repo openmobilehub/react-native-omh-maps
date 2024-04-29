@@ -1,5 +1,5 @@
 import React from 'react';
-import { ScrollView, StyleSheet, View } from 'react-native';
+import { ScrollView, View } from 'react-native';
 
 import {
   OmhMapView,
@@ -8,7 +8,7 @@ import {
 } from '@omh/react-native-maps-core';
 
 import { demoStyles } from '../styles/demoStyles';
-import { RadioButton, Text, useTheme } from 'react-native-paper';
+import { RadioButton, Text } from 'react-native-paper';
 import { PanelRadioButtonItem } from '../components/PanelRadioButtonItem';
 
 enum RadioButtonValue {
@@ -35,9 +35,8 @@ const MAPBOX_STYLES = {
 const SUPPORTED_MAP_PROVIDERS = ['GoogleMaps', 'Mapbox'];
 
 export const StylesMapScreen = () => {
-  const theme = useTheme();
   const mapViewRef = React.useRef<OmhMapViewRef | null>(null);
-  
+
   const [mapProvider, setMapProvider] = React.useState<string | undefined>(
     undefined
   );

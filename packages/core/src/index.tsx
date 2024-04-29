@@ -4,7 +4,10 @@
  */
 
 export * from './OmhMapView';
-export { default as OmhMapView } from './OmhMapView';
+export {
+  default as OmhMapView,
+  OmhCameraMoveStartedReason,
+} from './OmhMapView';
 
 export * from './NativeOmhMapsCoreModule';
 export { default as OmhMapsModule } from './NativeOmhMapsCoreModule';

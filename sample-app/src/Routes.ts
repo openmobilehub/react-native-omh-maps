@@ -1,8 +1,8 @@
 export enum Route {
   menu = 'Menu',
   about = 'About app',
-  plainMap = 'Plain map',
-  markerMap = 'Marker map',
+  plainMap = 'Plain Map',
+  markerMap = 'Marker Map',
   cameraMap = 'Camera Map',
   stylesMap = 'Styles Map',
   // multipleMaps = 'Multiple maps',

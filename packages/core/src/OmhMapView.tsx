@@ -33,7 +33,7 @@ enum MapErrors {
   MAP_NOT_IN_TREE_YET = 'OmhMap is not mounted in the RN view tree yet.',
 }
 
-type OmhCameraMoveStartedReason =
+export type OmhCameraMoveStartedReason =
   | 'gesture'
   | 'apiAnimation'
   | 'developerAnimation'
