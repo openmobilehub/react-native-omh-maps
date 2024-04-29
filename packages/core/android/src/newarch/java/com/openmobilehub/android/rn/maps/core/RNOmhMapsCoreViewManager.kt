@@ -9,6 +9,7 @@ import com.facebook.react.uimanager.ViewGroupManager
 import com.facebook.react.uimanager.annotations.ReactProp
 import com.facebook.react.uimanager.annotations.ReactPropGroup
 import com.facebook.react.viewmanagers.RNOmhMapsCoreViewManagerInterface
+import com.openmobilehub.android.rn.maps.core.viewmanagers.RNOmhMapsCoreViewManagerImpl
 
 @ReactModule(name = RNOmhMapsCoreViewManagerImpl.NAME)
 class RNOmhMapsCoreViewManager :

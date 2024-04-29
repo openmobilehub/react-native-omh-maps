@@ -1,4 +1,4 @@
-package com.openmobilehub.android.rn.maps.core
+package com.openmobilehub.android.rn.maps.core.viewmanagers
 
 import android.content.Context
 import android.graphics.Point
