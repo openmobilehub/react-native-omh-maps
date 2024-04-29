@@ -8,6 +8,7 @@ import codegenNativeComponent from 'react-native/Libraries/Utilities/codegenNati
 export interface NativeOmhMapViewProps extends ViewProps {
   zoomEnabled?: boolean;
   rotateEnabled?: boolean;
+  mapStyle?: string;
   onMapReady?: DirectEventHandler<null>;
   onMapLoaded?: DirectEventHandler<null>;
   onCameraMoveStarted?: DirectEventHandler<{ reason: Int32 }>;

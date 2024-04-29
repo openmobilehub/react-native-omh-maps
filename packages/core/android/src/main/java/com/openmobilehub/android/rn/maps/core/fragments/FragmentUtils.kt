@@ -6,7 +6,6 @@ import androidx.fragment.app.FragmentContainerView
 import androidx.fragment.app.FragmentManager
 import com.facebook.react.bridge.ReactContext
 import com.facebook.react.uimanager.ThemedReactContext
-import com.openmobilehub.android.rn.maps.core.viewmanagers.RNOmhMapsCoreViewManagerImpl
 
 object FragmentUtils {
   fun findFragment(context: ReactContext, viewId: Int): OmhMapViewFragment? {

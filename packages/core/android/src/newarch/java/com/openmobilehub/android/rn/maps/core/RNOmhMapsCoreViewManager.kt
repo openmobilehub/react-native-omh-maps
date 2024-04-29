@@ -9,6 +9,7 @@ import com.facebook.react.uimanager.ViewGroupManager
 import com.facebook.react.uimanager.annotations.ReactProp
 import com.facebook.react.uimanager.annotations.ReactPropGroup
 import com.facebook.react.viewmanagers.RNOmhMapsCoreViewManagerInterface
+import com.openmobilehub.android.rn.maps.core.viewmanagers.RNOmhMapsCoreViewManagerImpl
 
 @ReactModule(name = RNOmhMapsCoreViewManagerImpl.NAME)
 class RNOmhMapsCoreViewManager :
@@ -58,6 +59,11 @@ class RNOmhMapsCoreViewManager :
   @ReactProp(name = "rotateEnabled")
   override fun setRotateEnabled(view: FragmentContainerView, value: Boolean) {
     omhMapViewManagerImpl.setRotateEnabled(view, value)
+  }
+
+  @ReactProp(name = "mapStyle")
+  override fun setMapStyle(view: FragmentContainerView, value: String?) {
+    omhMapViewManagerImpl.setMapStyle(view, value)
   }
 
   override fun getExportedCustomDirectEventTypeConstants(): MutableMap<String, Any> {

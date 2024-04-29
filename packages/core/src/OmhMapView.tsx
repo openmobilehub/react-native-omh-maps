@@ -33,7 +33,7 @@ enum MapErrors {
   MAP_NOT_IN_TREE_YET = 'OmhMap is not mounted in the RN view tree yet.',
 }
 
-type OmhCameraMoveStartedReason =
+export type OmhCameraMoveStartedReason =
   | 'gesture'
   | 'apiAnimation'
   | 'developerAnimation'
@@ -47,6 +47,7 @@ type OmhSnapshotFormat = 'png' | 'jpg' | 'base64';
 export type OmhMapViewProps = Omit<ViewProps, 'style'> & {
   /** The style to be applied to the map container */
   style?: Omit<ViewStyle, 'width' | 'height'> | null;
+  mapStyle?: string | object;
   width: number | Percentage;
   height: number | Percentage;
   zoomEnabled?: boolean;
@@ -72,6 +73,7 @@ export const OmhMapView = forwardRef<OmhMapViewRef, OmhMapViewProps>(
       rotateEnabled,
       onCameraIdle,
       onCameraMoveStarted,
+      mapStyle,
     },
     forwardedRef
   ) => {
@@ -162,6 +164,7 @@ export const OmhMapView = forwardRef<OmhMapViewRef, OmhMapViewProps>(
           zoomEnabled,
           rotateEnabled,
           children,
+          mapStyle: JSON.stringify(mapStyle),
         }
       : {};
 

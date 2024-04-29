@@ -2,7 +2,11 @@ import React, { useRef, useState } from 'react';
 import { Image, ScrollView, StyleSheet, View } from 'react-native';
 import { MD2Colors, Modal } from 'react-native-paper';
 
-import { OmhMapView, OmhMapViewRef } from '@omh/react-native-maps-core';
+import {
+  OmhCameraMoveStartedReason,
+  OmhMapView,
+  OmhMapViewRef,
+} from '@omh/react-native-maps-core';
 
 import { demoStyles } from '../styles/demoStyles';
 import { Constants } from '../utils/Constants';
@@ -83,8 +87,22 @@ export const CameraMapScreen = () => {
     snackbarRef.current?.show('Camera idle');
   };
 
-  const handleCameraMoveStarted = (reason: string) => {
-    snackbarRef.current?.show('Camera move started: ' + reason);
+  const handleCameraMoveStarted = (reason: OmhCameraMoveStartedReason) => {
+    let reasonCopy = 'Unknown Action';
+
+    switch (reason) {
+      case 'apiAnimation':
+        reasonCopy = 'API Animation';
+        break;
+      case 'developerAnimation':
+        reasonCopy = 'Developer Animation';
+        break;
+      case 'gesture':
+        reasonCopy = 'Gesture';
+        break;
+    }
+
+    snackbarRef.current?.show(`Camera move started by ${reasonCopy}`);
   };
 
   const handleMapLoaded = () => {
