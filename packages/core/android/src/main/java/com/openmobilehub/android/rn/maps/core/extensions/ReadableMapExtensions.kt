@@ -47,22 +47,19 @@ fun ReadableMap.toOmhCap(entity: OmhMapEntity<*>, onResult: (cap: OmhCap?) -> Un
     "round" -> onResult(OmhRoundCap())
     "square" -> onResult(OmhSquareCap())
     "custom" -> {
-      val bitmapUri = getString("icon")
+      val bitmapUri = getMap("icon")?.getString("uri")
 
       if (bitmapUri == null) {
         onResult(null)
         return
       }
 
-      DrawableLoader.loadDrawable(entity, bitmapUri) { drawable ->
-        val bitmap = drawable.toBitmap()
-        val refWidth = getDouble("refWidth").toFloat()
-
+      DrawableLoader.loadDrawable(entity, bitmapUri, { drawable ->
         onResult(OmhCustomCap(
           drawable.toBitmap(),
           getDouble("refWidth").toFloat()
         ))
-      }
+      }, null)
     }
     else -> {
       onResult(null)

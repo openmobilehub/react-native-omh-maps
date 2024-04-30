@@ -26,9 +26,6 @@ import com.openmobilehub.android.rn.maps.core.events.OmhOnCameraIdleEvent
 import com.openmobilehub.android.rn.maps.core.events.OmhOnCameraMoveStartedEvent
 import com.openmobilehub.android.rn.maps.core.events.OmhOnMapLoadedEvent
 import com.openmobilehub.android.rn.maps.core.events.OmhOnMapReadyEvent
-import com.openmobilehub.android.rn.maps.core.events.OmhOnMarkerClickEvent
-import com.openmobilehub.android.rn.maps.core.events.OmhOnMarkerDragStartEvent
-import com.openmobilehub.android.rn.maps.core.events.OmhOnPolylineClickEvent
 import com.openmobilehub.android.rn.maps.core.fragments.FragmentUtils
 import com.openmobilehub.android.rn.maps.core.fragments.OmhMapViewFragment
 import com.openmobilehub.android.rn.maps.core.utils.RNComponentUtils.dispatchEvent
@@ -110,6 +107,8 @@ class RNOmhMapsCoreViewManagerImpl(private val reactContext: ReactContext) {
     }
 
     fun removeViewAt(index: Int) {
+        // note: on old RN architecture, RN tries to unmount the child view
+        // at index 0 even when it had never been added, thus the check is omitted in such case
         val child = mountedChildren[index]
             ?: (if (BuildConfig.IS_NEW_ARCHITECTURE_ENABLED) error(ERRORS.REMOVE_VIEW_AT_CHILD_NOT_FOUND) else null)
 
@@ -306,12 +305,9 @@ class RNOmhMapsCoreViewManagerImpl(private val reactContext: ReactContext) {
                 OmhOnMapLoadedEvent,
                 OmhOnCameraIdleEvent,
                 OmhOnCameraMoveStartedEvent,
-                OmhOnMarkerClickEvent,
-                OmhOnMarkerDragStartEvent,
-                OmhOnPolylineClickEvent
             ).associateBy(
                 { it.NAME },
-                { MapBuilder.of("registrationName", it.EVENT_PROP_NAME) }
+                { MapBuilder.of("registrationName", it.REGISTRATION_NAME) }
             ).toMap()
 
         object ERRORS {

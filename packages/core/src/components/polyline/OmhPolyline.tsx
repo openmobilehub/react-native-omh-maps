@@ -105,6 +105,7 @@ export const OmhPolyline = ({
   const startCap = useMemo(() => mapCapToNative(omhStartCap), [omhStartCap]);
   const endCap = useMemo(() => mapCapToNative(omhEndCap), [omhEndCap]);
 
+  console.log('test - polyline', cap);
   return (
     <RNOmhMapsPolylineNativeComponent
       // @ts-ignore next line: missing typing for 'ref' prop on HostComponent

@@ -1,45 +1,45 @@
 import React, { memo, useMemo } from 'react';
 
+import { OmhMarkerComponentProps } from '../../types/OmhMarker';
 import { rnResourceIdToAndroidURI } from '../../utils/RNResourceTranscoder';
-import RNOmhMapsMarkerNativeComponent, {
-  NativeOmhMarkerProps,
-} from './RNOmhMapsMarkerNativeComponent';
+import RNOmhMapsMarkerNativeComponent from './RNOmhMapsMarkerNativeComponent';
 
 /**
  * The OMH Marker properties.
  */
-export type OmhMarkerProps = NativeOmhMarkerProps & {
-  /**
-   * The image resource ID to be used as the marker icon, received from an `import` or `require()` call to a bitmap ąsset.
-   */
-  icon?: number;
-};
+export type OmhMarkerProps = OmhMarkerComponentProps;
 
 /**
- * The OMH Marker component. Actual implementation is picked based on the platform capabilities (GMS or non-GMS)
- * and availability of installed providers (`@omh/react-native-maps-plugin-*`).
+ * The OMH Marker component.
  */
-export const OmhMarker = memo(({ icon, ...props }: OmhMarkerProps) => {
-  const nativeComponentRef = React.useRef<
-    typeof RNOmhMapsMarkerNativeComponent | null
-  >(null);
+export const OmhMarker = memo(
+  ({ icon, position, ...props }: OmhMarkerProps) => {
+    const nativeComponentRef = React.useRef<
+      typeof RNOmhMapsMarkerNativeComponent | null
+    >(null);
 
-  const iconURI = useMemo(
-    () =>
-      icon === null || icon === undefined
-        ? undefined
-        : rnResourceIdToAndroidURI(icon),
-    [icon]
-  );
+    const iconURI = useMemo(
+      () =>
+        icon === null || icon === undefined
+          ? undefined
+          : typeof icon === 'number'
+            ? rnResourceIdToAndroidURI(icon)
+            : icon,
+      [icon]
+    );
 
-  return (
-    <RNOmhMapsMarkerNativeComponent
-      icon={iconURI}
-      {...props}
-      // @ts-ignore next line: missing typing for 'ref' prop on HostComponent
-      ref={nativeComponentRef}
-    />
-  );
-});
+    console.log('test - marker', iconURI);
+
+    return (
+      <RNOmhMapsMarkerNativeComponent
+        icon={iconURI}
+        markerPosition={position}
+        {...props}
+        // @ts-ignore next line: missing typing for 'ref' prop on HostComponent
+        ref={nativeComponentRef}
+      />
+    );
+  }
+);
 
 export default OmhMarker;

@@ -8,6 +8,6 @@ class OmhOnCameraIdleEvent(
 
     companion object : OmhBaseEventCompanion {
         override val NAME = "topCameraIdle"
-        override val EVENT_PROP_NAME = "onCameraIdle"
+        override val REGISTRATION_NAME = "onCameraIdle"
     }
 }

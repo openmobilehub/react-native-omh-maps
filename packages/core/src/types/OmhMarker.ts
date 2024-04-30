@@ -1,109 +1,190 @@
 import { ViewProps } from 'react-native';
-import { OmhColor, OmhCoordinate, OmhEvent, OmhIcon, OmhPoint } from './common';
+
+import {
+  OmhAnchor,
+  OmhColor,
+  OmhCoordinate,
+  OmhEvent,
+  OmhIcon,
+} from './common';
 
 /**
  * Properties for the OmhMarker component.
  */
-type OmhMarkerProperties = {
-  /** The position of the marker. */
+export type OmhMarkerProperties = {
+  /**
+   * The OmhCoordinate value for the marker's position on the map.
+   *
+   * Please note that this property **needs to be updated** when the marker is finished being dragged,
+   * otherwise upon a change in properties, it will remain stuck at the property-position.
+   */
   position: OmhCoordinate;
-  /** The title of the marker. */
+
+  /**
+   * A text string that's displayed in an info window when the user taps the marker.
+   */
   title?: string;
-  /** If true, the marker is clickable. */
+
+  /**
+   * Whether the marker is clickable. If the marker is not clickable, the info window associated with this marker
+   * will be disabled and no click events will be propagated.
+   * Default: `true`.
+   */
   clickable?: boolean;
-  /** If true, the marker is draggable. */
+
+  /**
+   * Whether the marker is draggable.
+   * Default: `false`.
+   */
   draggable?: boolean;
-  /** The anchor point of the marker. */
-  anchor?: OmhPoint;
-  /** The anchor point of the info window. */
-  infoWindowAnchor?: number;
-  /** The alpha value of the marker. */
+
+  /**
+   * The anchor point of marker image.
+   */
+  anchor?: OmhAnchor;
+
+  /**
+   * The anchor point of marker info window.
+   */
+  infoWindowAnchor?: OmhAnchor;
+
+  /**
+   * The alpha (transparency) of the marker.
+   */
   alpha?: number;
-  /** The snippet of the marker. */
+
+  /**
+   * The text snippet to be shown below marker title.
+   */
   snippet?: string;
-  /** The icon of the marker. */
-  icon?: OmhIcon;
-  /** If true, the marker is visible. */
+
+  /**
+   * Whether the marker is visible.
+   */
   isVisible?: boolean;
-  /** If true, the marker is flat. */
+
+  /**
+   * Whether the marker is flat (stuck to the map) or is a billboard (rotates and tilts with the camera).
+   * Default: `false` (billboard).
+   */
   isFlat?: boolean;
-  /** The rotation of the marker. */
+
+  /**
+   * The rotation of the marker (degrees, clockwise) with respect to the map; default: `0`.
+   */
   rotation?: number;
-  /** The background color of the marker. */
+
+  /**
+   * The RGB background color of the marker represented as an integer.
+   */
   backgroundColor?: OmhColor;
+
+  /**
+   * Whether the info window associated with this marker is currently being shown.
+   */
+  isInfoWindowShown?: boolean;
+
+  /**
+   * The zIndex of the marker, which specifies the order in which the marker is drawn on the map.
+   */
+  markerZIndex?: number; // note: the name is not just zIndex, since this somehow collides with RN's property and fails to compile
+
+  /**
+   * The image to be used as the marker icon.
+   */
+  icon?: OmhIcon;
+
+  /**
+   * Controls whether the default behaviour of a clicked marker (such as opening an info window on click) for a marker click
+   * event; identical to returning `true` from native android code in `OmhOnMarkerClickListener.onMarkerClick`.
+   *
+   * The reasoning behind this is that RN does not support synchronous bi-directional callbacks for passing data in new architecture.
+   *
+   * @see https://www.openmobilehub.com/android-omh-maps/api-docs/packages/core/com.openmobilehub.android.maps.core.presentation.interfaces.maps/-omh-on-marker-click-listener/on-marker-click.html
+   */
+  consumeMarkerClicks?: boolean;
 };
+
+type MarkerPositionCarryingOmhEvent = OmhEvent<{ position: OmhCoordinate }>;
 
 /**
  * Event triggered when a marker is pressed.
  */
-type MarkerPressEvent = OmhEvent<{ omhMarkerProperties: OmhMarkerProperties }>;
+export type MarkerPressEvent = MarkerPositionCarryingOmhEvent;
 
 /**
  * Event triggered when a marker drag starts.
  */
-type MarkerDragStart = OmhEvent<{ omhMarkerProperties: OmhMarkerProperties }>;
+export type MarkerDragStartEvent = MarkerPositionCarryingOmhEvent;
 
 /**
  * Event triggered when a marker is being dragged.
  */
-type MarkerDragEvent = OmhEvent<{ omhMarkerProperties: OmhMarkerProperties }>;
+export type MarkerDragEvent = MarkerPositionCarryingOmhEvent;
 
 /**
  * Event triggered when a marker drag ends.
  */
-type MarkerDragEndEvent = OmhEvent<{
-  omhMarkerProperties: OmhMarkerProperties;
-}>;
+export type MarkerDragEndEvent = MarkerPositionCarryingOmhEvent;
 
 /**
  * Event triggered when an info window is pressed.
  */
-type InfoWindowPressEvent = OmhEvent<{
-  omhMarkerProperties: OmhMarkerProperties;
-}>;
+export type InfoWindowPressEvent = MarkerPositionCarryingOmhEvent;
 
 /**
  * Event triggered when an info window is long pressed.
  */
-type InfoWindowLongPressEvent = OmhEvent<{
-  omhMarkerProperties: OmhMarkerProperties;
-}>;
+export type InfoWindowLongPressEvent = MarkerPositionCarryingOmhEvent;
 
 /**
  * Event triggered when an info window is closed.
  */
-type InfoWindowCloseEvent = OmhEvent<{
-  omhMarkerProperties: OmhMarkerProperties;
-}>;
+export type InfoWindowCloseEvent = MarkerPositionCarryingOmhEvent;
 
 /**
  * Event triggered when an info window is opened.
  */
-type InfoWindowOpenEvent = OmhEvent<{
-  omhMarkerProperties: OmhMarkerProperties;
-}>;
+export type InfoWindowOpenEvent = MarkerPositionCarryingOmhEvent;
 
 /**
  * Events for the OmhMarker component.
  */
-export type OmhMarkerEvents = {
-  /** Called when a marker is pressed. */
+export type OmhMarkerEvents = Partial<{
+  /**
+   * Callback invoked when the marker is clicked.
+   */
   onPress: (event: MarkerPressEvent) => void;
-  /** Called when a marker drag starts. */
-  onDragStart: (event: MarkerDragStart) => void;
-  /** Called when a marker is being dragged. */
+
+  /**
+   * Callback invoked when the marker has started being dragged.
+   */
+  onDragStart: (event: MarkerDragStartEvent) => void;
+
+  /**
+   * Callback invoked when the marker is being dragged.
+   */
   onDrag: (event: MarkerDragEvent) => void;
-  /** Called when a marker drag ends. */
+
+  /**
+   * Callback invoked when the marker has finished being dragged.
+   *
+   * **Note: this callback needs to update the `position` prop.**
+   */
   onDragEnd: (event: MarkerDragEndEvent) => void;
+
   /** Called when an info window is pressed. */
   onInfoWindowPress: (event: InfoWindowPressEvent) => void;
+
   /** Called when an info window is long pressed. */
   onInfoWindowLongPress: (event: InfoWindowLongPressEvent) => void;
+
   /** Called when an info window is closed. */
   onInfoWindowClose: (event: InfoWindowCloseEvent) => void;
+
   /** Called when an info window is opened. */
   onInfoWindowOpen: (event: InfoWindowOpenEvent) => void;
-};
+}>;
 
 /**
  * Properties for the OmhMarker component.

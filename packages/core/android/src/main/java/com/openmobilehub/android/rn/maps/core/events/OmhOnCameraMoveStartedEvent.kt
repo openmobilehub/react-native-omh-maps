@@ -18,6 +18,6 @@ class OmhOnCameraMoveStartedEvent(
 
     companion object : OmhBaseEventCompanion {
         override val NAME = "topCameraMoveStarted"
-        override val EVENT_PROP_NAME = "onCameraMoveStarted"
+        override val REGISTRATION_NAME = "onCameraMoveStarted"
     }
 }

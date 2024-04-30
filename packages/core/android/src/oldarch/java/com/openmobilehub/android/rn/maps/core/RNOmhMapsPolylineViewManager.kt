@@ -85,6 +85,10 @@ class RNOmhMapsPolylineViewManager :
     return omhMapPolylineComponentManagerImpl.createViewInstance(reactContext)
   }
 
+  override fun getExportedCustomDirectEventTypeConstants(): Map<String, Any> {
+    return RNOmhMapsPolylineViewManagerImpl.EVENTS
+  }
+
   companion object {
     const val NAME = RNOmhMapsPolylineViewManagerImpl.NAME
   }

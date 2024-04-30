@@ -5,7 +5,7 @@ import com.facebook.react.bridge.WritableMap
 import com.openmobilehub.android.maps.core.presentation.models.OmhCoordinate
 import com.openmobilehub.android.rn.maps.core.extensions.toWritableMap
 
-class OmhOnMarkerDragStartEvent(
+class OmhOnMarkerPressEvent(
     surfaceId: Int,
     viewId: Int,
     val position: OmhCoordinate
@@ -19,7 +19,7 @@ class OmhOnMarkerDragStartEvent(
     }
 
     companion object : OmhBaseEventCompanion {
-        override val NAME = "topDragStart"
-        override val REGISTRATION_NAME = "onDragStart"
+        override val NAME = "topPress"
+        override val REGISTRATION_NAME = "onPress"
     }
 }

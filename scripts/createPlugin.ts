@@ -203,6 +203,7 @@ const questions: PromptObject[] = [
   ]) {
     delete packageJson[obsoletePackageJsonKey];
   }
+  packageJson.types = `lib/typescript/${pluginDirName}/src/index.d.ts`;
 
   packageJson.codegenConfig.name = packageJson.codegenConfig.name
     .replace(/RNReactNativeMaps/, 'RNOmhMaps')

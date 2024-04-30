@@ -11,7 +11,7 @@ pre-commit:
 
     check-types:
       glob: '*.{ts,tsx}'
-      run: npx tsc-files --noEmit {staged_files}
+      run: yarn typecheck
 
 commit-msg:
   parallel: true

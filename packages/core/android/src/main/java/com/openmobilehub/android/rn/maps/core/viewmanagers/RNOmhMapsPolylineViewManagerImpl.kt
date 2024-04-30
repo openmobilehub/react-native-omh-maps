@@ -5,7 +5,10 @@ import androidx.core.graphics.drawable.toBitmap
 import com.facebook.react.bridge.ReactContext
 import com.facebook.react.bridge.ReadableArray
 import com.facebook.react.bridge.ReadableMap
+import com.facebook.react.common.MapBuilder
 import com.openmobilehub.android.rn.maps.core.entities.OmhPolylineEntity
+import com.openmobilehub.android.rn.maps.core.events.OmhBaseEventCompanion
+import com.openmobilehub.android.rn.maps.core.events.OmhOnPolylineClickEvent
 import com.openmobilehub.android.rn.maps.core.extensions.toOmhCap
 import com.openmobilehub.android.rn.maps.core.extensions.toPattern
 import com.openmobilehub.android.rn.maps.core.extensions.toPoints
@@ -145,7 +148,7 @@ class RNOmhMapsPolylineViewManagerImpl {
 
     for (i in 0 until value.size()) {
       val item = value.getMap(i)
-      item.getString("stamp")?.let {
+      item.getMap("stamp")?.getString("uri")?.let {
         stampMap[i] = it
       }
     }
@@ -157,12 +160,12 @@ class RNOmhMapsPolylineViewManagerImpl {
     val bitmapMap = mutableMapOf<Int, Bitmap>()
 
     stampMap.forEach { (index, stamp) ->
-      DrawableLoader.loadDrawable(entity, stamp) { drawable ->
+      DrawableLoader.loadDrawable(entity, stamp, { drawable ->
         bitmapMap[index] = drawable.toBitmap()
         if (bitmapMap.size == stampMap.size) {
           onResourcesReady(bitmapMap)
         }
-      }
+      }, null)
     }
   }
 
@@ -192,6 +195,15 @@ class RNOmhMapsPolylineViewManagerImpl {
 
   companion object {
     const val NAME = "RNOmhMapsPolylineView"
+
+    val EVENTS: Map<String, Any> =
+      listOf<OmhBaseEventCompanion>(
+        OmhOnPolylineClickEvent,
+      ).associateBy(
+        { it.NAME },
+        { MapBuilder.of("registrationName", it.REGISTRATION_NAME) }
+      ).toMap()
+
     private const val NOT_MOUNTED_ERROR =
       "RN OmhPolyline entity has not yet been added to the OmhMap"
     private const val INCORRECT_CAP_VALUE_ERROR = "Incorrect cap value"

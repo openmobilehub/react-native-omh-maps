@@ -4,7 +4,7 @@
   "description": "React Native OMH Maps Mapbox Plugin",
   "main": "lib/commonjs/index",
   "module": "lib/module/index",
-  "types": "lib/typescript/src/index.d.ts",
+  "types": "lib/typescript/plugin-mapbox/src/index.d.ts",
   "react-native": "src/index",
   "source": "src/index",
   "files": [

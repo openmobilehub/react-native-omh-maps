@@ -10,7 +10,11 @@ import {
 
 export type NativeCap = {
   type: string;
-  icon?: string;
+  icon?: {
+    uri: string;
+    width?: Int32;
+    height?: Int32;
+  };
   refWidth?: Float;
 };
 
@@ -30,7 +34,11 @@ export type NativeOmhCoordinate = {
 
 export type NativeSpan = {
   segments: Int32;
-  stamp?: string;
+  stamp?: {
+    uri: string;
+    width?: Int32;
+    height?: Int32;
+  };
   type: string;
   color?: Double;
   fromColor?: Double;

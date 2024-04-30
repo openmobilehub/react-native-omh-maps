@@ -8,6 +8,6 @@ class OmhOnMapLoadedEvent(
 
     companion object : OmhBaseEventCompanion {
         override val NAME = "topMapLoaded"
-        override val EVENT_PROP_NAME = "onMapLoaded"
+        override val REGISTRATION_NAME = "onMapLoaded"
     }
 }

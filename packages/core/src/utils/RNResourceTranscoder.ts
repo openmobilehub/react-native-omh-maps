@@ -1,5 +1,8 @@
+import { ImageResolvedAssetSource } from 'react-native';
 import resolveAssetSource from 'react-native/Libraries/Image/resolveAssetSource';
 
-export function rnResourceIdToAndroidURI(rnResourceId: number): string {
-  return resolveAssetSource(rnResourceId).uri;
+export function rnResourceIdToAndroidURI(
+  rnResourceId: number
+): ImageResolvedAssetSource {
+  return resolveAssetSource(rnResourceId);
 }

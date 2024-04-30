@@ -8,6 +8,6 @@ class OmhOnPolylineClickEvent(
 
     companion object : OmhBaseEventCompanion {
         override val NAME = "topPolylineClick"
-        override val EVENT_PROP_NAME = "onPolylineClick"
+        override val REGISTRATION_NAME = "onPolylineClick"
     }
 }

@@ -3,7 +3,13 @@ package com.openmobilehub.android.rn.maps.core.viewmanagers
 import android.graphics.drawable.Drawable
 import com.facebook.react.bridge.ReactContext
 import com.facebook.react.bridge.ReadableMap
+import com.facebook.react.common.MapBuilder
 import com.openmobilehub.android.rn.maps.core.entities.OmhMarkerEntity
+import com.openmobilehub.android.rn.maps.core.events.OmhBaseEventCompanion
+import com.openmobilehub.android.rn.maps.core.events.OmhOnMarkerDragEndEvent
+import com.openmobilehub.android.rn.maps.core.events.OmhOnMarkerDragEvent
+import com.openmobilehub.android.rn.maps.core.events.OmhOnMarkerDragStartEvent
+import com.openmobilehub.android.rn.maps.core.events.OmhOnMarkerPressEvent
 import com.openmobilehub.android.rn.maps.core.extensions.toAnchor
 import com.openmobilehub.android.rn.maps.core.extensions.toOmhCoordinate
 import com.openmobilehub.android.rn.maps.core.utils.ColorUtils
@@ -157,17 +163,38 @@ class RNOmhMapsMarkerViewManagerImpl {
         }
     }
 
-    fun setIcon(entity: OmhMarkerEntity, value: String?) {
+    fun setIcon(entity: OmhMarkerEntity, value: ReadableMap?) {
         if (value == null) {
             setIconDrawable(entity, null)
         } else {
-            DrawableLoader.loadDrawable(entity, value) { drawable ->
-                setIconDrawable(entity, drawable)
+            val uri = value.getString("uri") ?: error("Missing 'uri' property in the icon object")
+
+            var dimensions: Pair<Int, Int>? = null
+            if (value.hasKey("width") && value.hasKey("height")) {
+                dimensions = value.getInt("width") to value.getInt("height")
             }
+
+            DrawableLoader.loadDrawable(
+                entity,
+                uri,
+                { drawable -> setIconDrawable(entity, drawable) },
+                null
+            )
         }
     }
 
     companion object {
         const val NAME = "RNOmhMapsMarkerView"
+
+        val EVENTS: Map<String, Any> =
+            listOf<OmhBaseEventCompanion>(
+                OmhOnMarkerPressEvent,
+                OmhOnMarkerDragStartEvent,
+                OmhOnMarkerDragEvent,
+                OmhOnMarkerDragEndEvent
+            ).associateBy(
+                { it.NAME },
+                { MapBuilder.of("registrationName", it.REGISTRATION_NAME) }
+            ).toMap()
     }
 }
