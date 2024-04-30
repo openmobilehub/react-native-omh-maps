@@ -48,6 +48,8 @@ export type OmhMapViewProps = {
   onMapLoaded?: () => void;
   /** Callback invoked when the map camera is idle */
   onCameraIdle?: () => void;
+  /** Callback invoked when the location button was clicked on map*/
+  onMyLocationClicked?: () => void;
   /** Callback invoked when the map camera starts to move */
   onCameraMoveStarted?: (reason: OmhCameraMoveStartedReason) => void;
   /**
@@ -77,7 +79,7 @@ export type OmhMapEvents = {
   /** Called when the map has finished loading. */
   onMapLoaded: (event: MapLoadedEvent) => void;
   /** Called when the My Location button is pressed. */
-  onMyLocationButtonPress: (event: MyLocationButtonPressEvent) => void;
+  onMyLocationClicked: (event: MyLocationButtonPressEvent) => void;
   /** Called when the camera becomes idle after movement. */
   onCameraIdle: (event: CameraIdleEvent) => void;
   /** Called when the camera starts moving. */

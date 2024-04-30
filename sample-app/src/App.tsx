@@ -14,8 +14,20 @@ import MenuScreen from './screens/MenuScreen';
 import CameraMapScreen from './screens/demos/CameraMapScreen';
 import MarkerMapScreen from './screens/demos/MarkerMapScreen';
 import PlainMapScreen from './screens/demos/PlainMapScreen';
+import LocationSharingScreen from './screens/demos/LocationSharingScreen';
+import LocationResultScreen from './screens/demos/LocationResultScreen';
 
-const Stack = createNativeStackNavigator();
+export type RootStackParamList = {
+  [Route.menu]: undefined;
+  [Route.about]: undefined;
+  [Route.plainMap]: undefined;
+  [Route.cameraMap]: undefined;
+  [Route.markerMap]: undefined;
+  [Route.locationSharing]: undefined;
+  [Route.locationResult]: { lat: number; lng: number };
+};
+
+const Stack = createNativeStackNavigator<RootStackParamList>();
 
 export default function App() {
   const theme = useCreateAdaptiveTheme();
@@ -66,6 +78,18 @@ export default function App() {
               <Stack.Screen
                 name={Route.markerMap}
                 component={MarkerMapScreen}
+                options={screenOptions}
+              />
+
+              <Stack.Screen
+                name={Route.locationSharing}
+                component={LocationSharingScreen}
+                options={screenOptions}
+              />
+
+              <Stack.Screen
+                name={Route.locationResult}
+                component={LocationResultScreen}
                 options={screenOptions}
               />
 

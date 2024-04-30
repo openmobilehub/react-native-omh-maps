@@ -19,6 +19,7 @@ import com.openmobilehub.android.maps.core.presentation.interfaces.maps.OmhOnMar
 import com.openmobilehub.android.rn.maps.core.BuildConfig
 import com.openmobilehub.android.rn.maps.core.entities.OmhMapEntity
 import com.openmobilehub.android.rn.maps.core.entities.OmhMarkerEntity
+import com.openmobilehub.android.rn.maps.core.events.OmhMyLocationButtonPressEvent
 import com.openmobilehub.android.rn.maps.core.events.OmhBaseEventCompanion
 import com.openmobilehub.android.rn.maps.core.events.OmhOnCameraIdleEvent
 import com.openmobilehub.android.rn.maps.core.events.OmhOnCameraMoveStartedEvent
@@ -276,6 +277,17 @@ class RNOmhMapsCoreViewManagerImpl(private val reactContext: ReactContext) {
                 )
             )
         }
+        omhMap.setMyLocationButtonClickListener{
+            dispatchEvent(
+                reactContext,
+                view.id,
+                OmhMyLocationButtonPressEvent(
+                    UIManagerHelper.getSurfaceId(reactContext),
+                    view.id
+                )
+            )
+          false
+        }
     }
 
     fun setZoomEnabled(view: FragmentContainerView, value: Boolean) {
@@ -286,6 +298,12 @@ class RNOmhMapsCoreViewManagerImpl(private val reactContext: ReactContext) {
         val omhMap = FragmentUtils.findFragment(view)?.omhMap
         omhMap?.setRotateGesturesEnabled(value)
     }
+
+    fun setMyLocationEnabled(view: FragmentContainerView, value: Boolean) {
+        val omhMap = FragmentUtils.findFragment(view)?.omhMap
+        omhMap?.setMyLocationEnabled(value)
+    }
+
 
     companion object {
         const val NAME = OmhMapViewFragment.NAME

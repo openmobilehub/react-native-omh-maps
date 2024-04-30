@@ -9,7 +9,7 @@ import {
 
 import NativeOmhMapsCoreModule, { Spec } from '../../NativeOmhMapsCoreModule';
 import { OmhMapViewProps } from '../../types/OmhMapView';
-import { OmhMapProviderVariant } from '../../types/common';
+import { OmhCoordinate, OmhMapProviderVariant } from '../../types/common';
 import { OmhMapsCoreModuleFunctionWithoutViewRef } from '../../utils/typeHelpers';
 import RNOmhMapsCoreViewNativeComponent from './RNOmhMapsCoreViewNativeComponent';
 
@@ -24,6 +24,7 @@ export type OmhMapViewRef = {
     () => OmhMapProviderVariant
   >;
   takeSnapshot: (resultFormat: OmhSnapshotFormat) => Promise<string>;
+  getCurrentLocation: () => Promise<OmhCoordinate>;
 };
 
 enum MapErrors {
@@ -55,6 +56,8 @@ export const OmhMapView = forwardRef<OmhMapViewRef, OmhMapViewProps>(
       rotateEnabled,
       onCameraIdle,
       onCameraMoveStarted,
+      myLocationEnabled,
+      onMyLocationClicked,
     },
     forwardedRef
   ) => {
@@ -98,6 +101,7 @@ export const OmhMapView = forwardRef<OmhMapViewRef, OmhMapViewProps>(
             setCameraCoordinate: notReadyPromiseHandler,
             getProviderName: notReadyHandler,
             takeSnapshot: notReadyPromiseHandler,
+            getCurrentLocation: notReadyPromiseHandler,
           };
         }
 
@@ -110,6 +114,8 @@ export const OmhMapView = forwardRef<OmhMapViewRef, OmhMapViewProps>(
             NativeOmhMapsCoreModule.getProviderName(nodeHandle),
           takeSnapshot: (format: OmhSnapshotFormat) =>
             NativeOmhMapsCoreModule.takeSnapshot(nodeHandle, format),
+          getCurrentLocation: () =>
+            NativeOmhMapsCoreModule.getCurrentLocation(),
         };
       },
       [getViewRefHandle]
@@ -144,6 +150,7 @@ export const OmhMapView = forwardRef<OmhMapViewRef, OmhMapViewProps>(
       ? {
           zoomEnabled,
           rotateEnabled,
+          myLocationEnabled,
           children,
         }
       : {};
@@ -178,6 +185,7 @@ export const OmhMapView = forwardRef<OmhMapViewRef, OmhMapViewProps>(
           onMapReady={handleMapReady}
           onMapLoaded={onMapLoaded}
           onCameraIdle={onCameraIdle}
+          onMyLocationClicked={onMyLocationClicked}
           onCameraMoveStarted={onCameraMoveStartedMapped}
           {...props}
         />

@@ -13,6 +13,7 @@ const menuRoutes: Route[] = [
   Route.plainMap,
   Route.cameraMap,
   Route.markerMap,
+  Route.locationSharing,
   // Route.multipleMaps,
 ];
 

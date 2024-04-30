@@ -65,4 +65,9 @@ class RNOmhMapsCoreViewManager :
     override fun getExportedCustomDirectEventTypeConstants(): Map<String, Any> {
         return RNOmhMapsCoreViewManagerImpl.EVENTS
     }
+
+    @ReactProp(name = "myLocationEnabled")
+    override fun setMyLocationEnabled(view: FragmentContainerView, value: Boolean) {
+        omhMapViewManagerImpl.setMyLocationEnabled(view, value)
+    }
 }
