@@ -172,12 +172,7 @@ export const MarkerMapScreen = () => {
             );
           }}
           width="100%"
-          height="100%"
-          // paths={{
-          //   gmsPath: defaultMapProvider.path,
-          //   nonGmsPath: defaultMapProvider.path,
-          // }}
-        >
+          height="100%">
           {mountCustomizableMarker && (
             <OmhMarker
               title={MarkerIWTitles.CONFIGURABLE_TEST_MARKER}

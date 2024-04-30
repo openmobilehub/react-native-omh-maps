@@ -181,6 +181,10 @@ class RNOmhMapsPolylineViewManagerImpl {
   }
 
   fun setSpans(entity: OmhPolylineEntity, value: ReadableArray?) {
+    if (value == null) {
+      return applyStamps(entity, null, emptyMap())
+    }
+
     decodeStamps(entity, value) {
       applyStamps(entity, value, it)
     }

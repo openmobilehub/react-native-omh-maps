@@ -76,6 +76,11 @@ class RNOmhMapsPolylineViewManager :
     omhMapPolylineComponentManagerImpl.setEndCap(view, value)
   }
 
+  @ReactProp(name = "spans")
+  override fun setSpans(view: OmhPolylineEntity, value: ReadableArray?) {
+    omhMapPolylineComponentManagerImpl.setSpans(view, value)
+  }
+
   override fun getName(): String = NAME
 
   override fun createViewInstance(reactContext: ThemedReactContext): OmhPolylineEntity {
@@ -84,10 +89,5 @@ class RNOmhMapsPolylineViewManager :
 
   companion object {
     const val NAME = RNOmhMapsPolylineViewManagerImpl.NAME
-  }
-
-  @ReactProp(name = "spans")
-  override fun setSpans(view: OmhPolylineEntity, value: ReadableArray?) {
-    omhMapPolylineComponentManagerImpl.setSpans(view, value)
   }
 }

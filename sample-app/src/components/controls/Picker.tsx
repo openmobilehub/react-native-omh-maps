@@ -1,9 +1,7 @@
 import React from 'react';
-import { View, ViewProps } from 'react-native';
-import { useTheme } from 'react-native-paper';
+import { StyleSheet, View, ViewProps } from 'react-native';
+import { Text, useTheme } from 'react-native-paper';
 import RNPickerSelect from 'react-native-picker-select';
-
-import ControlParagraph from './ControlParagraph';
 
 export type Choice<T> = { label: string; value: T; key: string };
 
@@ -23,14 +21,13 @@ export default function Picker<T>({
   choices,
   onChange,
   style,
-  centeredLabel = true,
   disabled = false,
 }: PickerProps<T>) {
   const theme = useTheme();
 
   return (
-    <View style={style}>
-      <ControlParagraph centered={centeredLabel}>{label}</ControlParagraph>
+    <View style={[styles.wrapper, style]}>
+      <Text style={styles.label}>{label}</Text>
 
       <RNPickerSelect
         onValueChange={(newValue: T) => {
@@ -57,7 +54,22 @@ export default function Picker<T>({
           color: theme.colors.onSurface,
         }))}
         disabled={disabled}
+        style={{
+          viewContainer: {
+            flex: 3,
+          },
+        }}
       />
     </View>
   );
 }
+
+const styles = StyleSheet.create({
+  wrapper: {
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  label: {
+    flex: 1,
+  },
+});

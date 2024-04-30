@@ -1,6 +1,5 @@
 import React, { useCallback, useMemo, useRef, useState } from 'react';
 import { ScrollView, View } from 'react-native';
-import { Checkbox, Subheading } from 'react-native-paper';
 
 import {
   OmhCap,
@@ -28,6 +27,7 @@ import useSnackbar from '../../hooks/useSnackbar';
 import useLogger from '../../hooks/useLogger';
 import { Constants } from '../../utils/Constants';
 import soccerBallIcon from '../../assets/img/soccer_ball.bmp';
+import { PanelCheckbox } from '../../components/controls/PanelCheckbox';
 
 const customizablePolylinePoints: OmhCoordinate[] = [
   { latitude: 0.0, longitude: 0.0 },
@@ -81,7 +81,6 @@ const capItems: CapItem[] = [
       type: OmhPolylineConstants.CAP_TYPE_SQUARE,
     },
   },
-  // TODO OMHD-198: why passing icon causes crash?
   {
     label: 'Custom',
     value: {
@@ -172,9 +171,6 @@ export const PolylineMapScreen = () => {
   const { showSnackbar } = useSnackbar();
 
   const omhMapRef = useRef<OmhMapViewRef | null>(null);
-  const [mountCustomizablePolyline, setMountCustomizablePolyline] =
-    useState(true);
-  const [mountReferencePolyline, setMountReferencePolyline] = useState(false);
   const [points, setPoints] = useState(customizablePolylinePoints);
   const [isClickable, setIsClickable] = useState(false);
   const [width, setWidth] = useState(defaultWidth);
@@ -189,10 +185,10 @@ export const PolylineMapScreen = () => {
   const [patternOption, setPatternOption] = useState(PatternOption.NONE);
   const [withSpan, setWithSpan] = useState(false);
   const [spanSegments, setSpanSegments] = useState(1);
-  const [spanColorHue, setSpanColorHue] = useState(0);
+  const [spanColorHue, setSpanColorHue] = useState(180);
   const [spanWithGradient, setSpanWithGradient] = useState(false);
-  const [spanGradientFromColorHue, setSpanGradientFromColorHue] = useState(0);
-  const [spanGradientToColorHue, setSpanGradientToColorHue] = useState(0);
+  const [spanGradientFromColorHue, setSpanGradientFromColorHue] = useState(90);
+  const [spanGradientToColorHue, setSpanGradientToColorHue] = useState(270);
   const [spanPattern, setSpanPattern] = useState(false);
 
   const pattern = useMemo(() => {
@@ -213,8 +209,8 @@ export const PolylineMapScreen = () => {
     [colorHue]
   );
 
-  const onRandomisePoints = () => {
-    let randomisedPoints = Array.from({ length: 8 }, (_, i) => {
+  const handleRandomizePointsButtonPress = () => {
+    let randomizedPoints = Array.from({ length: 8 }, (_, i) => {
       let baseLongitude = i * 5;
       let minLongitude = baseLongitude - 5;
       let maxLongitude = baseLongitude + 5;
@@ -224,7 +220,7 @@ export const PolylineMapScreen = () => {
       };
     });
 
-    setPoints(randomisedPoints);
+    setPoints(randomizedPoints);
   };
 
   const isZIndexSupported = useMemo(
@@ -282,11 +278,6 @@ export const PolylineMapScreen = () => {
     .filter(item => !disabledCapTypes.has(item.value.type))
     .map(item => capItemToChoice(item));
 
-  const isSpanSupported = useMemo(
-    () => mapProvider.path === OmhMapsGooglemapsProvider.path,
-    [mapProvider.path]
-  );
-
   const genOnPolylineClickHandler = useCallback(
     (message: string) => () => {
       logger.log(message);
@@ -310,8 +301,6 @@ export const PolylineMapScreen = () => {
     if (!withSpan) {
       return undefined;
     }
-
-    console.log('calculated spans');
 
     const defaultSpan = {
       type: 'monochromatic' as const,
@@ -350,8 +339,6 @@ export const PolylineMapScreen = () => {
     colorRGB,
   ]);
 
-  console.log('spans', spans?.[0]);
-
   return (
     <View style={demoStyles.rootContainer}>
       <View style={demoStyles.mapContainer}>
@@ -367,35 +354,31 @@ export const PolylineMapScreen = () => {
               Constants.Maps.CENTER_ZOOM_LEVEL
             );
           }}>
-          {mountCustomizablePolyline && (
-            <OmhPolyline
-              points={points}
-              clickable={isClickable}
-              color={colorRGB}
-              width={width}
-              isVisible={isVisible}
-              polylineZIndex={zIndex}
-              jointType={jointType}
-              pattern={pattern}
-              spans={spans}
-              onPolylineClick={genOnPolylineClickHandler(
-                PolylineMessages.CUSTOMIZABLE_POLYLINE
-              )}
-              {...capProps}
-            />
-          )}
-          {mountReferencePolyline && (
-            <OmhPolyline
-              points={referencePolylinePoints}
-              polylineZIndex={2}
-              clickable={true}
-              color={referencePolylineColor}
-              width={10}
-              onPolylineClick={genOnPolylineClickHandler(
-                PolylineMessages.REFERENCE_POLYLINE
-              )}
-            />
-          )}
+          <OmhPolyline
+            points={points}
+            clickable={isClickable}
+            color={colorRGB}
+            width={width}
+            isVisible={isVisible}
+            polylineZIndex={zIndex}
+            jointType={jointType}
+            pattern={pattern}
+            spans={spans}
+            onPolylineClick={genOnPolylineClickHandler(
+              PolylineMessages.CUSTOMIZABLE_POLYLINE
+            )}
+            {...capProps}
+          />
+          <OmhPolyline
+            points={referencePolylinePoints}
+            polylineZIndex={2}
+            clickable={true}
+            color={referencePolylineColor}
+            width={10}
+            onPolylineClick={genOnPolylineClickHandler(
+              PolylineMessages.REFERENCE_POLYLINE
+            )}
+          />
         </OmhMapView>
       </View>
 
@@ -404,46 +387,36 @@ export const PolylineMapScreen = () => {
           contentContainerStyle={
             demoStyles.demoControlsScrollViewContentContainer
           }>
-          <Subheading style={demoStyles.centeredHeading}>
-            Polyline properties
-          </Subheading>
-
-          <PanelButton onPress={onRandomisePoints} label="Randomize Points" />
-
-          <Checkbox.Item
+          <PanelButton
+            onPress={handleRandomizePointsButtonPress}
+            label="Randomize Points"
+          />
+          <PanelCheckbox
             label="Visible"
-            status={isVisible ? 'checked' : 'unchecked'}
-            onPress={() => {
-              setIsVisible(!isVisible);
-            }}
+            value={isVisible}
+            onValueChange={setIsVisible}
           />
-
-          <Checkbox.Item
+          <PanelCheckbox
             label="Clickable"
-            status={isClickable ? 'checked' : 'unchecked'}
-            onPress={() => {
-              setIsClickable(!isClickable);
-            }}
+            value={isClickable}
+            onValueChange={setIsClickable}
           />
-
           <Slider
-            label={`Width: ${width}`}
-            onChange={H => setWidth(H)}
+            label="Width"
+            onChange={setWidth}
             defaultValue={defaultWidth}
             step={1}
             minimumValue={0}
             maximumValue={100}
           />
-
           <Slider
-            label={`Color hue: ${colorHue.toFixed(0)}`}
-            onChange={H => setColorHue(H)}
+            label="Color"
+            onChange={setColorHue}
             defaultValue={0}
             step={1}
             minimumValue={0}
             maximumValue={360}
           />
-
           <Picker<OmhCap>
             label="Cap"
             choices={capItemChoices}
@@ -453,7 +426,6 @@ export const PolylineMapScreen = () => {
             }}
             value={cap}
           />
-
           <Picker<OmhCap>
             disabled={!isStartEndCapSupported}
             label="Start Cap"
@@ -464,7 +436,6 @@ export const PolylineMapScreen = () => {
             }}
             value={startCap}
           />
-
           <Picker<OmhCap>
             disabled={!isStartEndCapSupported}
             label="End Cap"
@@ -475,17 +446,6 @@ export const PolylineMapScreen = () => {
             }}
             value={endCap}
           />
-
-          <Slider
-            disabled={!isZIndexSupported}
-            label={`Z Index: ${zIndex.toFixed(0)}`}
-            onChange={z => setZIndex(z)}
-            defaultValue={0}
-            step={1}
-            minimumValue={0}
-            maximumValue={5}
-          />
-
           <Picker<number>
             disabled={!isJointTypeSupported}
             label="Joint Type"
@@ -499,7 +459,6 @@ export const PolylineMapScreen = () => {
             }}
             value={jointType}
           />
-
           <Picker<PatternOption>
             disabled={!isPatternSupported}
             label="Pattern"
@@ -515,91 +474,70 @@ export const PolylineMapScreen = () => {
             }}
             value={patternOption}
           />
-
-          <Checkbox.Item
-            disabled={!isSpanSupported}
-            label="Span"
-            status={withSpan ? 'checked' : 'unchecked'}
-            onPress={() => {
-              setWithSpan(!withSpan);
-            }}
+          <Slider
+            disabled={!isZIndexSupported}
+            label="Z Index"
+            onChange={setZIndex}
+            defaultValue={0}
+            step={1}
+            minimumValue={0}
+            maximumValue={5}
           />
-
+          <PanelCheckbox
+            label="Span"
+            value={withSpan}
+            onValueChange={setWithSpan}
+          />
           {withSpan && (
             <>
               <Slider
-                label={`Segments: ${spanSegments}`}
-                onChange={segments => setSpanSegments(segments)}
+                label="Segments"
+                onChange={setSpanSegments}
                 defaultValue={1}
                 step={1}
                 minimumValue={1}
                 maximumValue={7}
               />
               <Slider
-                label={`Span color hue: ${spanColorHue.toFixed(0)}`}
-                onChange={H => setSpanColorHue(H)}
-                defaultValue={0}
+                label="Span Color"
+                onChange={setSpanColorHue}
+                defaultValue={180}
                 step={1}
                 minimumValue={0}
                 maximumValue={360}
               />
-              <Checkbox.Item
-                label="Span gradient"
-                status={spanWithGradient ? 'checked' : 'unchecked'}
-                onPress={() => {
-                  setSpanWithGradient(!spanWithGradient);
-                }}
+              <PanelCheckbox
+                label="Gradient"
+                value={spanWithGradient}
+                onValueChange={setSpanWithGradient}
               />
               {spanWithGradient && (
                 <>
                   <Slider
-                    label={`From color hue: ${spanGradientFromColorHue.toFixed(0)}`}
-                    onChange={H => setSpanGradientFromColorHue(H)}
-                    defaultValue={0}
+                    label="From Color"
+                    onChange={setSpanGradientFromColorHue}
+                    defaultValue={90}
                     step={1}
                     minimumValue={0}
                     maximumValue={360}
                   />
                   <Slider
-                    label={`To color hue: ${spanGradientToColorHue.toFixed(0)}`}
-                    onChange={H => setSpanGradientToColorHue(H)}
-                    defaultValue={0}
+                    label="To Color"
+                    onChange={setSpanGradientToColorHue}
+                    defaultValue={270}
                     step={1}
                     minimumValue={0}
                     maximumValue={360}
                   />
                 </>
               )}
-
-              <Checkbox.Item
-                label="Pattern"
-                status={spanPattern ? 'checked' : 'unchecked'}
-                onPress={() => {
-                  setSpanPattern(!spanPattern);
-                }}
+              <PanelCheckbox
+                label="Span Pattern"
+                value={spanPattern}
+                onValueChange={setSpanPattern}
               />
             </>
           )}
-
-          <Subheading style={demoStyles.centeredHeading}>
-            Demo behaviour
-          </Subheading>
-
-          <Checkbox.Item
-            label="Mount customizable <OmhPolyline/>"
-            status={mountCustomizablePolyline ? 'checked' : 'unchecked'}
-            onPress={() => {
-              setMountCustomizablePolyline(!mountCustomizablePolyline);
-            }}
-          />
-
-          <Checkbox.Item
-            label="Mount reference <OmhPolyline/>"
-            status={mountReferencePolyline ? 'checked' : 'unchecked'}
-            onPress={() => {
-              setMountReferencePolyline(!mountReferencePolyline);
-            }}
-          />
         </ScrollView>
       </View>
     </View>
