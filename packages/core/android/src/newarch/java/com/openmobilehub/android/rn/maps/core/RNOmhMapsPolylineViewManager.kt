@@ -86,4 +86,8 @@ class RNOmhMapsPolylineViewManager :
     const val NAME = RNOmhMapsPolylineViewManagerImpl.NAME
   }
 
+  @ReactProp(name = "spans")
+  override fun setSpans(view: OmhPolylineEntity, value: ReadableArray?) {
+    omhMapPolylineComponentManagerImpl.setSpans(view, value)
+  }
 }

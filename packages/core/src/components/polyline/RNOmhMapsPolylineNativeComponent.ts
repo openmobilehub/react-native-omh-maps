@@ -8,12 +8,8 @@ import {
   Int32,
 } from 'react-native/Libraries/Types/CodegenTypes';
 
-export type Cap = {
+export type NativeCap = {
   type: string;
-
-  /**
-   * The image URI to be used as the cap icon.
-   */
   icon?: string;
   refWidth?: Float;
 };
@@ -30,6 +26,15 @@ export type Pattern = {
 export type NativeOmhCoordinate = {
   latitude: Double;
   longitude: Double;
+};
+
+export type NativeSpan = {
+  segments: Int32;
+  stamp?: string;
+  type: string;
+  color?: Double;
+  fromColor?: Double;
+  toColor?: Double;
 };
 
 export interface NativeOmhPolylineProps extends ViewProps {
@@ -76,17 +81,17 @@ export interface NativeOmhPolylineProps extends ViewProps {
   /**
    * The cap style of the polyline.
    */
-  cap?: Cap;
+  cap?: NativeCap;
 
   /**
    * The start cap style of the polyline.
    */
-  startCap?: Cap;
+  startCap?: NativeCap;
 
   /**
    * The end cap style of the polyline.
    */
-  endCap?: Cap;
+  endCap?: NativeCap;
 
   /**
    * Callback invoked when the polyline is clicked.
@@ -105,6 +110,8 @@ export interface NativeOmhPolylineProps extends ViewProps {
    * @see https://www.openmobilehub.com/android-omh-maps/api-docs/packages/core/com.openmobilehub.android.maps.core.presentation.interfaces.maps/-omh-on-polyline-click-listener/on-polyline-click.html
    */
   consumePolylineClicks?: boolean;
+
+  spans?: NativeSpan[];
 
   /**
    * The spans of the polyline.

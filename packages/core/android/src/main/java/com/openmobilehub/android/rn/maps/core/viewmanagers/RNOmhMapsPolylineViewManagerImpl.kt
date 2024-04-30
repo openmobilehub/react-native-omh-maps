@@ -1,5 +1,7 @@
 package com.openmobilehub.android.rn.maps.core.viewmanagers
 
+import android.graphics.Bitmap
+import androidx.core.graphics.drawable.toBitmap
 import com.facebook.react.bridge.ReactContext
 import com.facebook.react.bridge.ReadableArray
 import com.facebook.react.bridge.ReadableMap
@@ -7,7 +9,9 @@ import com.openmobilehub.android.rn.maps.core.entities.OmhPolylineEntity
 import com.openmobilehub.android.rn.maps.core.extensions.toOmhCap
 import com.openmobilehub.android.rn.maps.core.extensions.toPattern
 import com.openmobilehub.android.rn.maps.core.extensions.toPoints
+import com.openmobilehub.android.rn.maps.core.extensions.toSpans
 import com.openmobilehub.android.rn.maps.core.utils.ColorUtils
+import com.openmobilehub.android.rn.maps.core.utils.DrawableLoader
 
 class RNOmhMapsPolylineViewManagerImpl {
 
@@ -125,6 +129,60 @@ class RNOmhMapsPolylineViewManagerImpl {
       } else {
         entity.initialOptions.endCap = cap
       }
+    }
+  }
+
+  private fun decodeStamps(
+    entity: OmhPolylineEntity,
+    value: ReadableArray?,
+    onResourcesReady: (result: Map<Int, Bitmap>) -> Unit
+  ) {
+    if (value == null) {
+      return
+    }
+
+    val stampMap = mutableMapOf<Int, String>()
+
+    for (i in 0 until value.size()) {
+      val item = value.getMap(i)
+      item.getString("stamp")?.let {
+        stampMap[i] = it
+      }
+    }
+
+    if (stampMap.isEmpty()) {
+      return onResourcesReady(emptyMap())
+    }
+
+    val bitmapMap = mutableMapOf<Int, Bitmap>()
+
+    stampMap.forEach { (index, stamp) ->
+      DrawableLoader.loadDrawable(entity, stamp) { drawable ->
+        bitmapMap[index] = drawable.toBitmap()
+        if (bitmapMap.size == stampMap.size) {
+          onResourcesReady(bitmapMap)
+        }
+      }
+    }
+  }
+
+  private fun applyStamps(
+    entity: OmhPolylineEntity,
+    value: ReadableArray?,
+    bitmapMap: Map<Int, Bitmap>
+  ) {
+    val spans = value?.toSpans(bitmapMap) ?: emptyList()
+
+    if (entity.isMounted()) {
+      entity.getEntity()?.setSpans(spans) ?: error(NOT_MOUNTED_ERROR)
+    } else {
+      entity.initialOptions.spans = spans
+    }
+  }
+
+  fun setSpans(entity: OmhPolylineEntity, value: ReadableArray?) {
+    decodeStamps(entity, value) {
+      applyStamps(entity, value, it)
     }
   }
 

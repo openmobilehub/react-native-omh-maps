@@ -3,6 +3,7 @@ import { ScrollView, View } from 'react-native';
 import { Checkbox, Subheading } from 'react-native-paper';
 
 import {
+  OmhCap,
   OmhCoordinate,
   OmhMapView,
   OmhMapViewRef,
@@ -12,10 +13,7 @@ import {
 
 import Picker from '../../components/controls/Picker';
 import Slider from '../../components/controls/Slider';
-import {
-  Cap,
-  Pattern,
-} from '../../../../packages/core/src/components/polyline/RNOmhMapsPolylineNativeComponent';
+import { Pattern } from '../../../../packages/core/src/components/polyline/RNOmhMapsPolylineNativeComponent';
 import { getRandomArbitrary } from '../../utils/mathHelpers';
 import { demoStyles } from '../../styles/demoStyles';
 import { rgbToInt } from '../../utils/converters';
@@ -29,6 +27,7 @@ import { OmhMapsAzureMapsProvider } from '@omh/react-native-maps-plugin-azuremap
 import useSnackbar from '../../hooks/useSnackbar';
 import useLogger from '../../hooks/useLogger';
 import { Constants } from '../../utils/Constants';
+import soccerBallIcon from '../../assets/img/soccer_ball.bmp';
 
 const customizablePolylinePoints: OmhCoordinate[] = [
   { latitude: 0.0, longitude: 0.0 },
@@ -55,7 +54,7 @@ const defaultWidth = 10;
 
 type CapItem = {
   label: string;
-  value: Cap;
+  value: OmhCap;
 };
 
 type JointTypeItem = {
@@ -83,14 +82,14 @@ const capItems: CapItem[] = [
     },
   },
   // TODO OMHD-198: why passing icon causes crash?
-  // {
-  //   label: 'Custom',
-  //   value: {
-  //     type: OmhPolylineConstants.CAP_TYPE_CUSTOM,
-  //     icon: soccerBallIcon,
-  //     refWidth: 75.0,
-  //   },
-  // },
+  {
+    label: 'Custom',
+    value: {
+      type: OmhPolylineConstants.CAP_TYPE_CUSTOM,
+      icon: soccerBallIcon,
+      refWidth: 75.0,
+    },
+  },
 ];
 
 const jointTypeItems: JointTypeItem[] = [
@@ -185,6 +184,7 @@ export const PolylineMapScreen = () => {
   const [cap, setCap] = useState(capItems[0]!!.value);
   const [startCap, setStartCap] = useState(capItems[0]!!.value);
   const [endCap, setEndCap] = useState(capItems[0]!!.value);
+  const [shouldUseCommonCap, setShouldUseCommonCap] = useState(true);
   const [jointType, setJointType] = useState(jointTypeItems[0]!!.value);
   const [patternOption, setPatternOption] = useState(PatternOption.NONE);
   const [withSpan, setWithSpan] = useState(false);
@@ -194,19 +194,6 @@ export const PolylineMapScreen = () => {
   const [spanGradientFromColorHue, setSpanGradientFromColorHue] = useState(0);
   const [spanGradientToColorHue, setSpanGradientToColorHue] = useState(0);
   const [spanPattern, setSpanPattern] = useState(false);
-
-  // TODO OMHD-198: create span based on its dependencies
-  // const span = useMemo(() => {
-  //   return null;
-  // }, [
-  //   withSpan,
-  //   spanSegments,
-  //   spanColorHue,
-  //   spanWithGradient,
-  //   spanGradientFromColorHue,
-  //   spanGradientToColorHue,
-  //   spanPattern,
-  // ]);
 
   const pattern = useMemo(() => {
     switch (patternOption) {
@@ -308,6 +295,63 @@ export const PolylineMapScreen = () => {
     [showSnackbar, logger]
   );
 
+  const capProps = useMemo(() => {
+    if (shouldUseCommonCap) {
+      return { cap };
+    }
+
+    return {
+      startCap,
+      endCap,
+    };
+  }, [shouldUseCommonCap, cap, startCap, endCap]);
+
+  const spans = useMemo(() => {
+    if (!withSpan) {
+      return undefined;
+    }
+
+    console.log('calculated spans');
+
+    const defaultSpan = {
+      type: 'monochromatic' as const,
+      segments: 1,
+      color: colorRGB,
+    };
+
+    const span = spanWithGradient
+      ? {
+          type: 'gradient' as const,
+          segments: spanSegments,
+          fromColor: rgbToInt(
+            convert.hsv.rgb([spanGradientFromColorHue, 100, 100])
+          ),
+          toColor: rgbToInt(
+            convert.hsv.rgb([spanGradientToColorHue, 100, 100])
+          ),
+          stamp: spanPattern ? soccerBallIcon : undefined,
+        }
+      : {
+          type: 'monochromatic' as const,
+          segments: spanSegments,
+          color: rgbToInt(convert.hsv.rgb([spanColorHue, 100, 100])),
+          stamp: spanPattern ? soccerBallIcon : undefined,
+        };
+
+    return [span, defaultSpan];
+  }, [
+    withSpan,
+    spanSegments,
+    spanColorHue,
+    spanWithGradient,
+    spanGradientFromColorHue,
+    spanGradientToColorHue,
+    spanPattern,
+    colorRGB,
+  ]);
+
+  console.log('spans', spans?.[0]);
+
   return (
     <View style={demoStyles.rootContainer}>
       <View style={demoStyles.mapContainer}>
@@ -331,14 +375,13 @@ export const PolylineMapScreen = () => {
               width={width}
               isVisible={isVisible}
               polylineZIndex={zIndex}
-              cap={cap}
-              startCap={startCap}
-              endCap={endCap}
               jointType={jointType}
               pattern={pattern}
+              spans={spans}
               onPolylineClick={genOnPolylineClickHandler(
                 PolylineMessages.CUSTOMIZABLE_POLYLINE
               )}
+              {...capProps}
             />
           )}
           {mountReferencePolyline && (
@@ -401,31 +444,34 @@ export const PolylineMapScreen = () => {
             maximumValue={360}
           />
 
-          <Picker<Cap>
+          <Picker<OmhCap>
             label="Cap"
             choices={capItemChoices}
             onChange={choice => {
               setCap(choice);
+              setShouldUseCommonCap(true);
             }}
             value={cap}
           />
 
-          <Picker<Cap>
+          <Picker<OmhCap>
             disabled={!isStartEndCapSupported}
             label="Start Cap"
             choices={capItemChoices}
             onChange={choice => {
               setStartCap(choice);
+              setShouldUseCommonCap(false);
             }}
             value={startCap}
           />
 
-          <Picker<Cap>
+          <Picker<OmhCap>
             disabled={!isStartEndCapSupported}
             label="End Cap"
             choices={capItemChoices}
             onChange={choice => {
               setEndCap(choice);
+              setShouldUseCommonCap(false);
             }}
             value={endCap}
           />

@@ -1,7 +1,6 @@
 import { ViewProps } from 'react-native';
 import {
   OmhCap,
-  OmhColor,
   OmhCoordinate,
   OmhEvent,
   OmhIcon,
@@ -16,7 +15,7 @@ type OmhSpanCommon = {
   /** The number of segments in the span. */
   segments: number;
   /** The stamp icon for the span. */
-  stamp?: OmhIcon;
+  stamp?: number;
 };
 
 /**
@@ -26,7 +25,7 @@ type OmhMonochromaticSpan = {
   /** The type of the span. */
   type: 'monochromatic';
   /** The color of the span. */
-  color: OmhColor;
+  color: number;
 };
 
 /**
@@ -36,9 +35,9 @@ type OmhGradientSpan = {
   /** The type of the span. */
   type: 'gradient';
   /** The starting color of the gradient. */
-  fromColor: OmhColor;
+  fromColor: number;
   /** The ending color of the gradient. */
-  toColor: OmhColor;
+  toColor: number;
 };
 
 /**
