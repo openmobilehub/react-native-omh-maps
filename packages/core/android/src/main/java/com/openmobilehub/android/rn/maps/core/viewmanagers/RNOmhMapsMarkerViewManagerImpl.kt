@@ -178,7 +178,7 @@ class RNOmhMapsMarkerViewManagerImpl {
                 entity,
                 uri,
                 { drawable -> setIconDrawable(entity, drawable) },
-                null
+              dimensions
             )
         }
     }
