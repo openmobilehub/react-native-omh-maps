@@ -4,15 +4,15 @@ import { ScrollView, View } from 'react-native';
 import {
   OmhCap,
   OmhCoordinate,
+  OmhLineJoin,
   OmhMapView,
   OmhMapViewRef,
+  OmhPatternItem,
   OmhPolyline,
-  OmhPolylineConstants,
 } from '@omh/react-native-maps-core';
 
 import Picker from '../../components/controls/Picker';
 import Slider from '../../components/controls/Slider';
-import { Pattern } from '../../../../packages/core/src/components/polyline/RNOmhMapsPolylineNativeComponent';
 import { getRandomArbitrary } from '../../utils/mathHelpers';
 import { demoStyles } from '../../styles/demoStyles';
 import { rgbToInt } from '../../utils/converters';
@@ -34,7 +34,7 @@ enum PatternOption {
 
 type PatternItem = {
   label: PatternOption;
-  value: Pattern[] | undefined;
+  value: OmhPatternItem[] | undefined;
 };
 
 const getSupportedFeatures = (currentMapProvider?: string) => {
@@ -66,7 +66,7 @@ const getDisabledOptions = (currentMapProvider?: string) => {
   const isGoogleMaps = currentMapProvider === 'GoogleMaps';
 
   return {
-    cap: isGoogleMaps ? [] : [OmhPolylineConstants.CAP_TYPE_CUSTOM],
+    cap: isGoogleMaps ? [] : ['custom'],
     pattern: isGoogleMaps ? [] : [PatternOption.DOTTED, PatternOption.CUSTOM],
   };
 };
@@ -117,32 +117,32 @@ type CapItem = {
 
 type JointTypeItem = {
   label: string;
-  value: number;
+  value: OmhLineJoin;
 };
 
 const capItems: CapItem[] = [
   {
     label: 'Butt',
     value: {
-      type: OmhPolylineConstants.CAP_TYPE_BUTT,
+      type: 'butt',
     },
   },
   {
     label: 'Round',
     value: {
-      type: OmhPolylineConstants.CAP_TYPE_ROUND,
+      type: 'round',
     },
   },
   {
     label: 'Square',
     value: {
-      type: OmhPolylineConstants.CAP_TYPE_SQUARE,
+      type: 'square',
     },
   },
   {
     label: 'Custom',
     value: {
-      type: OmhPolylineConstants.CAP_TYPE_CUSTOM,
+      type: 'custom',
       icon: soccerBallIcon,
       refWidth: 75.0,
     },
@@ -152,65 +152,65 @@ const capItems: CapItem[] = [
 const jointTypeItems: JointTypeItem[] = [
   {
     label: 'Miter',
-    value: OmhPolylineConstants.JOINT_TYPE_MITER,
+    value: 'miter',
   },
   {
     label: 'Round',
-    value: OmhPolylineConstants.JOINT_TYPE_ROUND,
+    value: 'round',
   },
   {
     label: 'Bevel',
-    value: OmhPolylineConstants.JOINT_TYPE_BEVEL,
+    value: 'bevel',
   },
 ];
 
-const dottedPattern: Pattern[] = [
+const dottedPattern: OmhPatternItem[] = [
   {
-    type: OmhPolylineConstants.PATTERN_TYPE_DOT,
+    variant: 'dot',
   },
   {
-    type: OmhPolylineConstants.PATTERN_TYPE_GAP,
-    length: 10.0,
-  },
-];
-
-const dashedPattern: Pattern[] = [
-  {
-    type: OmhPolylineConstants.PATTERN_TYPE_DASH,
-    length: 10.0,
-  },
-  {
-    type: OmhPolylineConstants.PATTERN_TYPE_GAP,
+    variant: 'gap',
     length: 10.0,
   },
 ];
 
-const customPattern: Pattern[] = [
+const dashedPattern: OmhPatternItem[] = [
   {
-    type: OmhPolylineConstants.PATTERN_TYPE_DASH,
+    variant: 'dash',
     length: 10.0,
   },
   {
-    type: OmhPolylineConstants.PATTERN_TYPE_GAP,
+    variant: 'gap',
+    length: 10.0,
+  },
+];
+
+const customPattern: OmhPatternItem[] = [
+  {
+    variant: 'dash',
+    length: 10.0,
+  },
+  {
+    variant: 'gap',
     length: 2.0,
   },
   {
-    type: OmhPolylineConstants.PATTERN_TYPE_DASH,
+    variant: 'dash',
     length: 10.0,
   },
   {
-    type: OmhPolylineConstants.PATTERN_TYPE_GAP,
+    variant: 'gap',
     length: 5.0,
   },
   {
-    type: OmhPolylineConstants.PATTERN_TYPE_DOT,
+    variant: 'dot',
   },
   {
-    type: OmhPolylineConstants.PATTERN_TYPE_GAP,
+    variant: 'gap',
     length: 5.0,
   },
   {
-    type: OmhPolylineConstants.PATTERN_TYPE_DOT,
+    variant: 'dot',
   },
 ];
 
@@ -250,8 +250,12 @@ export const PolylineMapScreen = () => {
   const [startCap, setStartCap] = useState(capItems[0]!!.value);
   const [endCap, setEndCap] = useState(capItems[0]!!.value);
   const [shouldUseCommonCap, setShouldUseCommonCap] = useState(true);
-  const [jointType, setJointType] = useState(jointTypeItems[0]!!.value);
-  const [pattern, setPattern] = useState<Pattern[] | undefined>(undefined);
+  const [jointType, setJointType] = useState<OmhLineJoin>(
+    jointTypeItems[0]!!.value
+  );
+  const [pattern, setPattern] = useState<OmhPatternItem[] | undefined>(
+    undefined
+  );
   const [withSpan, setWithSpan] = useState(false);
   const [spanSegments, setSpanSegments] = useState(1);
   const [spanColorHue, setSpanColorHue] = useState(180);
@@ -385,7 +389,7 @@ export const PolylineMapScreen = () => {
             color={colorRGB}
             width={width}
             isVisible={isVisible}
-            polylineZIndex={zIndex}
+            zIndex={zIndex}
             jointType={jointType}
             pattern={pattern}
             spans={spans}
@@ -396,7 +400,7 @@ export const PolylineMapScreen = () => {
           />
           <OmhPolyline
             points={referencePolylinePoints}
-            polylineZIndex={2}
+            zIndex={2}
             clickable={true}
             color={referencePolylineColor}
             width={10}
@@ -471,7 +475,7 @@ export const PolylineMapScreen = () => {
             }}
             value={endCap}
           />
-          <Picker<number>
+          <Picker<OmhLineJoin>
             disabled={!supportedFeatures.jointType}
             label="Joint Type"
             choices={jointTypeItems.map(item => ({
@@ -484,7 +488,7 @@ export const PolylineMapScreen = () => {
             }}
             value={jointType}
           />
-          <Picker<Pattern[] | undefined>
+          <Picker<OmhPatternItem[] | undefined>
             disabled={!supportedFeatures.pattern}
             label="Pattern"
             choices={patternOptions}

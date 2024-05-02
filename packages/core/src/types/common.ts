@@ -54,11 +54,6 @@ export type OmhAnchor = {
 export type OmhLineJoin = 'miter' | 'round' | 'bevel';
 
 /**
- * The type of cap.
- */
-export type OmhCap = 'butt' | 'round' | 'square' | 'custom';
-
-/**
  * The variant of a pattern.
  */
 export type OmhPatternVariant = 'gap' | 'dash' | 'dot';
@@ -66,16 +61,68 @@ export type OmhPatternVariant = 'gap' | 'dash' | 'dot';
 /**
  * An item in a pattern.
  */
-export type OmhPatternItem = {
-  /** The variant of the pattern item. */
-  variant: OmhPatternVariant;
-  /** The length of the pattern item. */
-  length: number;
-};
+export type OmhPatternItem =
+  | {
+      variant: 'dot';
+    }
+  | {
+      variant: 'dash' | 'gap';
+      length: number;
+    };
 
 /**
  * A tag, which can be of any type.
  */
 export type OmhTag = any;
+
+/**
+ * Common properties for the OmhSpan types.
+ */
+type OmhSpanCommon = {
+  /** The number of segments in the span. */
+  segments: number;
+  /** The stamp icon for the span. */
+  stamp?: number;
+};
+
+/**
+ * Properties for a monochromatic OmhSpan.
+ */
+type OmhMonochromaticSpan = {
+  /** The type of the span. */
+  type: 'monochromatic';
+  /** The color of the span. */
+  color: number;
+};
+
+/**
+ * Properties for a gradient OmhSpan.
+ */
+type OmhGradientSpan = {
+  /** The type of the span. */
+  type: 'gradient';
+  /** The starting color of the gradient. */
+  fromColor: number;
+  /** The ending color of the gradient. */
+  toColor: number;
+};
+
+/**
+ * The OmhSpan type, which can be either monochromatic or gradient.
+ */
+export type OmhSpan = OmhSpanCommon & (OmhMonochromaticSpan | OmhGradientSpan);
+
+/**
+ * Cap types for polyline.
+ */
+export type OmhCap =
+  | {
+      type: 'butt' | 'round' | 'square';
+    }
+  | {
+      type: 'custom';
+      icon: number;
+      refWidth?: number;
+    };
 
 export type OmhMapProviderVariant = string;
