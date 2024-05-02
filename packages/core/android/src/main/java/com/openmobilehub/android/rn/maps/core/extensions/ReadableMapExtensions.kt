@@ -89,6 +89,7 @@ fun ReadableMap.toSpanItem(stamp: Bitmap?): OmhStyleSpan? {
   val type = getString("type") ?: return null
 
   val segments = getDouble("segments")
+
   return when (type) {
     "monochromatic" -> {
       val color = ColorUtils.toColorInt(getDouble("color"))

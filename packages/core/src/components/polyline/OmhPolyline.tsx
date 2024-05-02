@@ -23,7 +23,7 @@ export type OmhCapProps =
       endCap?: OmhCap;
     };
 
-export type OmhPolylinePropsNew = OmhCapProps &
+export type OmhPolylineProps = OmhCapProps &
   ViewProps & {
     /**
      * The points that make up the polyline.
@@ -53,7 +53,7 @@ export type OmhPolylinePropsNew = OmhCapProps &
     /**
      * The zIndex of the polyline, which specifies the order in which the polyline is drawn on the map.
      */
-    zIndex?: number; // note: the name is not just zIndex, since this somehow collides with RN's property and fails to compile
+    zIndex?: number;
 
     /**
      * The joint type of the polyline.
@@ -101,7 +101,7 @@ export const OmhPolyline = ({
   pattern,
   spans,
   onPolylineClick,
-}: OmhPolylinePropsNew) => {
+}: OmhPolylineProps) => {
   const nativeSpans = useMemo(() => {
     return spans?.map(omhSpan => {
       const stamp = omhSpan.stamp

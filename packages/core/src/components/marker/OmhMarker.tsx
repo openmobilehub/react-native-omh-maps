@@ -28,8 +28,6 @@ export const OmhMarker = memo(
       [icon]
     );
 
-    console.log('test - marker', iconURI);
-
     return (
       <RNOmhMapsMarkerNativeComponent
         icon={iconURI}
