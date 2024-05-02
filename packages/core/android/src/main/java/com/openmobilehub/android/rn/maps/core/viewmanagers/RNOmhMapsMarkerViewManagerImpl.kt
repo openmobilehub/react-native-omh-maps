@@ -24,6 +24,10 @@ internal object Constants {
 
 @Suppress("TooManyFunctions")
 class RNOmhMapsMarkerViewManagerImpl {
+
+    private var lastBackgroundColor: Double? = null
+    private var lastIconURI: String? = null
+
     fun createViewInstance(reactContext: ReactContext): OmhMarkerEntity {
         return OmhMarkerEntity(reactContext)
     }
@@ -123,13 +127,19 @@ class RNOmhMapsMarkerViewManagerImpl {
     }
 
     fun setBackgroundColor(entity: OmhMarkerEntity, value: Double) {
-        val color =
-            (0xFF000000L or value.toLong()).toInt() // impute possibly missing bits (RGB instead of ARGB)
+        // since setBackgroundColor & setIcon are mutually exclusive
+        // (overwrite each other) in the OMH SDK, we are caching the values
+        if (lastBackgroundColor != value) {
+            val color =
+                (0xFF000000L or value.toLong()).toInt() // impute possibly missing bits (RGB instead of ARGB)
 
-        if (entity.isMounted()) {
-            entity.getEntity()!!.setBackgroundColor(color)
-        } else {
-            entity.initialOptions.backgroundColor = color
+            if (entity.isMounted()) {
+                entity.getEntity()!!.setBackgroundColor(color)
+            } else {
+                entity.initialOptions.backgroundColor = color
+            }
+
+            lastBackgroundColor = value
         }
     }
 
@@ -164,22 +174,26 @@ class RNOmhMapsMarkerViewManagerImpl {
     }
 
     fun setIcon(entity: OmhMarkerEntity, value: ReadableMap?) {
-        if (value == null) {
-            setIconDrawable(entity, null)
-        } else {
-            val uri = value.getString("uri") ?: error("Missing 'uri' property in the icon object")
+        val uri = value?.getString("uri")
 
-            var dimensions: Pair<Int, Int>? = null
-            if (value.hasKey("width") && value.hasKey("height")) {
-                dimensions = value.getInt("width") to value.getInt("height")
+        if (lastIconURI != uri) {
+            if (uri == null) {
+                setIconDrawable(entity, null)
+            } else {
+                var dimensions: Pair<Int, Int>? = null
+                if (value.hasKey("width") && value.hasKey("height")) {
+                    dimensions = value.getInt("width") to value.getInt("height")
+                }
+
+                DrawableLoader.loadDrawable(
+                    entity,
+                    uri,
+                    { drawable -> setIconDrawable(entity, drawable) },
+                    dimensions
+                )
             }
 
-            DrawableLoader.loadDrawable(
-                entity,
-                uri,
-                { drawable -> setIconDrawable(entity, drawable) },
-                dimensions
-            )
+            lastIconURI = uri
         }
     }
 
