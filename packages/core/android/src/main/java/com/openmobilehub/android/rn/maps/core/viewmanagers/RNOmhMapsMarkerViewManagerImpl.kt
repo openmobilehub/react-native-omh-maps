@@ -24,8 +24,8 @@ internal object Constants {
 @Suppress("TooManyFunctions")
 class RNOmhMapsMarkerViewManagerImpl {
 
-    private var lastBackgroundColor: Double? = null
-    private var lastIconURI: String? = null
+    private var lastBackgroundColor: MutableMap<OmhMarkerEntity, Double> = mutableMapOf()
+    private var lastIconURI: MutableMap<OmhMarkerEntity, String?> = mutableMapOf()
 
     fun createViewInstance(reactContext: ReactContext): OmhMarkerEntity {
         return OmhMarkerEntity(reactContext)
@@ -128,7 +128,7 @@ class RNOmhMapsMarkerViewManagerImpl {
     fun setBackgroundColor(entity: OmhMarkerEntity, value: Double) {
         // since setBackgroundColor & setIcon are mutually exclusive
         // (overwrite each other) in the OMH SDK, we are caching the values
-        if (lastBackgroundColor != value) {
+        if (lastBackgroundColor[entity] != value) {
             val color =
                 (0xFF000000L or value.toLong()).toInt() // impute possibly missing bits (RGB instead of ARGB)
 
@@ -138,7 +138,7 @@ class RNOmhMapsMarkerViewManagerImpl {
                 entity.initialOptions.backgroundColor = color
             }
 
-            lastBackgroundColor = value
+            lastBackgroundColor[entity] = value
         }
     }
 
@@ -175,7 +175,7 @@ class RNOmhMapsMarkerViewManagerImpl {
     fun setIcon(entity: OmhMarkerEntity, value: ReadableMap?) {
         val uri = value?.getString("uri")
 
-        if (lastIconURI != uri) {
+        if (lastIconURI[entity] != uri) {
             if (uri == null) {
                 setIconDrawable(entity, null)
             } else {
@@ -192,7 +192,7 @@ class RNOmhMapsMarkerViewManagerImpl {
                 )
             }
 
-            lastIconURI = uri
+            lastIconURI[entity] = uri
         }
     }
 
