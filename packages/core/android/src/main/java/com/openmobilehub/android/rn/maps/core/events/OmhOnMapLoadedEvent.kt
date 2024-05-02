@@ -10,12 +10,12 @@ class OmhOnMapLoadedEvent(
 ) : Event<OmhOnMapLoadedEvent>(surfaceId, viewId) {
     override fun getEventName() = NAME
 
-    override fun getEventData(): WritableMap? {
+    override fun getEventData(): WritableMap {
         return Arguments.createMap()
     }
 
-    companion object {
-        const val NAME = "topMapLoaded"
-        const val EVENT_PROP_NAME = "onMapLoaded"
+    companion object : OmhBaseEventCompanion {
+        override val NAME = "topMapLoaded"
+        override val REGISTRATION_NAME = "onMapLoaded"
     }
 }

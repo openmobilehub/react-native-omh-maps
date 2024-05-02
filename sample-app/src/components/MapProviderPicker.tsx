@@ -7,7 +7,7 @@ import { OmhMapsModule } from '@omh/react-native-maps-core';
 
 import { MapProvider } from '../../../packages/core/src/NativeOmhMapsCoreModule';
 import useLogger from '../hooks/useLogger';
-import ControlParagraph from './ControlParagraph';
+import ControlParagraph from './controls/ControlParagraph';
 
 export type MapProviderPickerProps = {
   onChange: (provider: MapProvider) => void;

@@ -17,76 +17,78 @@ import com.openmobilehub.android.rn.maps.core.utils.BitmapUtils
 
 class RNOmhMapsCoreModuleImpl(private val reactContext: ReactApplicationContext) {
 
-  fun initialize(paths: ReadableMap) {
-    val gmsPath = paths.getString("gmsPath")
-    val nonGmsPath = paths.getString("nonGmsPath")
+    fun initialize(paths: ReadableMap) {
+        val gmsPath = paths.getString("gmsPath")
+        val nonGmsPath = paths.getString("nonGmsPath")
 
-    OmhMapProvider.Initiator()
-      .addGmsPath(gmsPath)
-      .addNonGmsPath(nonGmsPath)
-      .initialize()
-  }
-
-  fun getProviderName(viewRef: Double): String {
-    val fragment = FragmentUtils.requireFragment(reactContext, viewRef.toInt())
-    val omhMap = fragment.requireOmhMap()
-    val providerName = omhMap.providerName
-
-    return providerName
-  }
-
-  fun getDefaultMapProvider(): WritableMap {
-    return MapProvidersUtils().getDefaultMapProvider(reactContext).toWritableMap()
-  }
-
-  fun getAvailableMapProviders(): WritableArray {
-    return Arguments.makeNativeArray(
-      MapProvidersUtils().getAvailableMapProviders(reactContext)
-        .map(MapProvider::toWritableMap)
-    )
-  }
-
-  fun getCameraCoordinate(viewRef: Double, promise: Promise) {
-    UiThreadUtil.runOnUiThread {
-      val omhMap = FragmentUtils.requireFragment(reactContext, viewRef.toInt()).requireOmhMap()
-      val coordinates = omhMap.getCameraPositionCoordinate()
-      promise.resolve(coordinates.toWritableMap())
+        OmhMapProvider.Initiator()
+            .addGmsPath(gmsPath)
+            .addNonGmsPath(nonGmsPath)
+            .initialize()
     }
-  }
 
-  fun setCameraCoordinate(
-    viewRef: Double,
-    coordinate: ReadableMap,
-    zoomLevel: Double,
-    promise: Promise
-  ) {
-    UiThreadUtil.runOnUiThread {
-      val omhMap = FragmentUtils.requireFragment(reactContext, viewRef.toInt()).requireOmhMap()
-      omhMap.moveCamera(coordinate.toOmhCoordinate(), zoomLevel.toFloat())
-      promise.resolve(null)
+    fun getProviderName(viewRef: Double): String {
+        val fragment = FragmentUtils.requireFragment(reactContext, viewRef.toInt())
+        val omhMap = fragment.requireOmhMap()
+
+        return omhMap.providerName
     }
-  }
 
-  fun takeSnapshot(viewRef: Double, resultFormat: String, promise: Promise) {
-    val omhMap = FragmentUtils.requireFragment(reactContext, viewRef.toInt()).requireOmhMap()
 
-    UiThreadUtil.runOnUiThread {
-      omhMap.snapshot {
-        if (it == null) {
-          return@snapshot promise.reject(Error("Failed to make snapshot"))
+    fun getAvailableMapProviders(): WritableArray {
+        return Arguments.makeNativeArray(
+            MapProvidersUtils().getAvailableMapProviders(reactContext)
+                .map(MapProvider::toWritableMap)
+        )
+    }
+
+    fun getDefaultMapProvider(): WritableMap {
+        return MapProvidersUtils().getDefaultMapProvider(reactContext).toWritableMap()
+    }
+
+    fun getCameraCoordinate(viewRef: Double, promise: Promise) {
+        UiThreadUtil.runOnUiThread {
+            val omhMap =
+                FragmentUtils.requireFragment(reactContext, viewRef.toInt()).requireOmhMap()
+            val coordinates = omhMap.getCameraPositionCoordinate()
+            promise.resolve(coordinates.toWritableMap())
         }
-
-        try {
-          val result = BitmapUtils.convertBitmap(it, resultFormat, reactContext.cacheDir)
-          promise.resolve(result)
-        } catch (e: Exception) {
-          promise.reject(e)
-        }
-      }
     }
-  }
 
-  companion object {
-    const val NAME = "RNOmhMapsCoreModule"
-  }
+    fun setCameraCoordinate(
+        viewRef: Double,
+        coordinate: ReadableMap,
+        zoomLevel: Double,
+        promise: Promise
+    ) {
+        UiThreadUtil.runOnUiThread {
+            val omhMap =
+                FragmentUtils.requireFragment(reactContext, viewRef.toInt()).requireOmhMap()
+            omhMap.moveCamera(coordinate.toOmhCoordinate(), zoomLevel.toFloat())
+            promise.resolve(null)
+        }
+    }
+
+    fun takeSnapshot(viewRef: Double, resultFormat: String, promise: Promise) {
+        val omhMap = FragmentUtils.requireFragment(reactContext, viewRef.toInt()).requireOmhMap()
+
+        UiThreadUtil.runOnUiThread {
+            omhMap.snapshot {
+                if (it == null) {
+                    return@snapshot promise.reject(Error("Failed to make snapshot"))
+                }
+
+                try {
+                    val result = BitmapUtils.convertBitmap(it, resultFormat, reactContext.cacheDir)
+                    promise.resolve(result)
+                } catch (e: Exception) {
+                    promise.reject(e)
+                }
+            }
+        }
+    }
+
+    companion object {
+        const val NAME = "RNOmhMapsCoreModule"
+    }
 }

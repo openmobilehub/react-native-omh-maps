@@ -9,46 +9,46 @@ import com.facebook.react.module.annotations.ReactModule
 
 @ReactModule(name = RNOmhMapsCoreModule.NAME)
 class RNOmhMapsCoreModule(
-  reactContext: ReactApplicationContext
+    reactContext: ReactApplicationContext
 ) : NativeOmhMapsCoreModuleSpec(reactContext) {
-  private val moduleImpl = RNOmhMapsCoreModuleImpl(reactContext)
+    private val moduleImpl = RNOmhMapsCoreModuleImpl(reactContext)
 
-  override fun initialize(paths: ReadableMap) {
-    moduleImpl.initialize(paths)
-  }
+    override fun getCameraCoordinate(viewRef: Double, promise: Promise) {
+        moduleImpl.getCameraCoordinate(viewRef, promise)
+    }
 
-  override fun getProviderName(viewRef: Double): String {
-    return moduleImpl.getProviderName(viewRef)
-  }
+    override fun setCameraCoordinate(
+        viewRef: Double,
+        coordinate: ReadableMap,
+        zoomLevel: Double,
+        promise: Promise
+    ) {
+        moduleImpl.setCameraCoordinate(viewRef, coordinate, zoomLevel, promise)
+    }
 
-  override fun getDefaultMapProvider(): WritableMap {
-    return moduleImpl.getDefaultMapProvider()
-  }
+    override fun getProviderName(viewRef: Double): String {
+        return moduleImpl.getProviderName(viewRef)
+    }
 
-  override fun getAvailableMapProviders(): WritableArray {
-    return moduleImpl.getAvailableMapProviders()
-  }
+    override fun takeSnapshot(viewRef: Double, format: String, promise: Promise) {
+        moduleImpl.takeSnapshot(viewRef, format, promise)
+    }
 
-  override fun getCameraCoordinate(viewRef: Double, promise: Promise) {
-    moduleImpl.getCameraCoordinate(viewRef, promise)
-  }
+    override fun getAvailableMapProviders(): WritableArray {
+        return moduleImpl.getAvailableMapProviders()
+    }
 
-  override fun setCameraCoordinate(
-    viewRef: Double,
-    coordinate: ReadableMap,
-    zoomLevel: Double,
-    promise: Promise
-  ) {
-    moduleImpl.setCameraCoordinate(viewRef, coordinate, zoomLevel, promise)
-  }
+    override fun getDefaultMapProvider(): WritableMap {
+        return moduleImpl.getDefaultMapProvider()
+    }
 
-  override fun takeSnapshot(viewRef: Double, format: String, promise: Promise) {
-    moduleImpl.takeSnapshot(viewRef, format, promise)
-  }
+    override fun initialize(paths: ReadableMap) {
+        moduleImpl.initialize(paths)
+    }
 
-  override fun getName() = NAME
+    override fun getName() = NAME
 
-  companion object {
-    const val NAME = RNOmhMapsCoreModuleImpl.NAME
-  }
+    companion object {
+        const val NAME = RNOmhMapsCoreModuleImpl.NAME
+    }
 }

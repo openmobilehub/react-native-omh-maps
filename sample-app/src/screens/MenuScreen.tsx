@@ -2,15 +2,18 @@ import React from 'react';
 import { ScrollView, StyleSheet } from 'react-native';
 import { useTheme } from 'react-native-paper';
 
+import { MapProvider, OmhMapsModule } from '@omh/react-native-maps-core';
+
 import Route, { RoutesDescriptions } from '../Routes';
 import MapProviderPicker from '../components/MapProviderPicker';
-import MenuListItem from '../components/MenuListItem';
-import { MapProvider, OmhMapsModule } from '@omh/react-native-maps-core';
+import MenuListItem from '../components/ui/MenuListItem';
+import useMapProviderChoiceContext from '../hooks/useMapProviderChoice';
 
 const menuRoutes: Route[] = [
   Route.plainMap,
   Route.cameraMap,
   Route.markerMap,
+  // Route.multipleMaps,
   Route.stylesMap,
 ];
 
@@ -23,11 +26,10 @@ OmhMapsModule.initialize({
 
 export const MenuScreen = () => {
   const theme = useTheme();
-
-  const [_, setMapProvider] = React.useState(defaultMapProvider);
+  const { changeMapProvider, mapProvider } = useMapProviderChoiceContext();
 
   const handleMapProviderChange = (newProvider: MapProvider) => {
-    setMapProvider(newProvider);
+    changeMapProvider(newProvider);
 
     OmhMapsModule.initialize({
       gmsPath: newProvider.path,
@@ -42,7 +44,7 @@ export const MenuScreen = () => {
       }}>
       <MapProviderPicker
         style={styles.mapProviderPicker}
-        defaultProvider={defaultMapProvider}
+        defaultProvider={mapProvider}
         onChange={handleMapProviderChange}
         centeredLabel={false}
       />

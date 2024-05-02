@@ -3,13 +3,15 @@
  * @module @omh/react-native-maps-core
  */
 
-export * from './OmhMapView';
+export * from './components/mapView/OmhMapView';
 export {
   default as OmhMapView,
   OmhCameraMoveStartedReason,
-} from './OmhMapView';
+} from './components/mapView/OmhMapView';
 
 export * from './NativeOmhMapsCoreModule';
 export { default as OmhMapsModule } from './NativeOmhMapsCoreModule';
 
+export * from './components/marker/OmhMarkerConstants';
+export * from './components/marker/OmhMarker';
 export { OmhMapProviderVariant } from './types/common';

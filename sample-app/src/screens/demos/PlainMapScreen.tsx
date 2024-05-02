@@ -1,31 +1,18 @@
 import _ from 'lodash';
 import React, { useCallback, useMemo, useRef, useState } from 'react';
 import { ScrollView, StyleSheet, View } from 'react-native';
-import { MD2Colors, Subheading, useTheme } from 'react-native-paper';
+import { MD2Colors, Subheading } from 'react-native-paper';
 
-import {
-  OmhMapView,
-  OmhMapViewRef,
-  OmhMapsModule,
-} from '@omh/react-native-maps-core';
-import Slider from '@react-native-community/slider';
+import { OmhMapView, OmhMapViewRef } from '@omh/react-native-maps-core';
 
-import ControlParagraph from '../components/ControlParagraph';
-import MapProviderPicker from '../components/MapProviderPicker';
-import useChosenMapProvider from '../hooks/useChosenMapProvider';
-import useLogger from '../hooks/useLogger';
-import { demoStyles } from '../styles/demoStyles';
-import { Constants } from '../utils/Constants';
+import { Slider } from '../../components/controls/Slider';
+import useLogger from '../../hooks/useLogger';
+import { demoStyles } from '../../styles/demoStyles';
+import { Constants } from '../../utils/Constants';
 
 export const PlainMapScreen = () => {
-  const theme = useTheme();
   const logger = useLogger('PlainMapScreen');
-  const defaultMapProvider = useChosenMapProvider();
-
-  const [tintedColor, untintedColor] = useMemo(
-    () => [theme.colors.primary, theme.colors.secondary],
-    [theme.colors.primary, theme.colors.secondary]
-  );
+  // const defaultMapProvider = useChosenMapProvider();
 
   const [width, setWidth] = useState(100);
   const [height, setHeight] = useState(100);
@@ -71,7 +58,10 @@ export const PlainMapScreen = () => {
         <OmhMapView
           ref={omhMapRef}
           onMapLoaded={() => {
-            logger.log('OmhMapView has become loaded');
+            logger.log('OmhMapView has been loaded');
+          }}
+          onMapReady={() => {
+            logger.log("OmhMapView's OmhMap has become ready");
 
             omhMapRef.current?.setCameraCoordinate(
               Constants.Maps.GREENWICH_COORDINATE,
@@ -81,6 +71,10 @@ export const PlainMapScreen = () => {
           style={demoSizeModified ? styles.borderedView : null}
           width={`${width}%`}
           height={`${height}%`}
+          // paths={{
+          //   gmsPath: provider.path,
+          //   nonGmsPath: provider.path,
+          // }}
         />
       </View>
 
@@ -93,7 +87,7 @@ export const PlainMapScreen = () => {
             Demo controls
           </Subheading>
 
-          <MapProviderPicker
+          {/* <MapProviderPicker
             defaultProvider={defaultMapProvider}
             label="Live map provider override"
             onChange={newProvider => {
@@ -106,34 +100,24 @@ export const PlainMapScreen = () => {
                 nonGmsPath: newProvider.path,
               });
             }}
-          />
-
-          <ControlParagraph centered>Map width: {width}%</ControlParagraph>
+          /> */}
 
           <Slider
-            // this is not a controlled component, value is just initial value - as per the docs
-            value={100}
+            label={`Map width: ${width}%`}
+            onChange={onWidthChange}
+            defaultValue={100}
             step={1}
             minimumValue={0}
             maximumValue={100}
-            onValueChange={onWidthChange}
-            style={styles.slider}
-            minimumTrackTintColor={tintedColor}
-            maximumTrackTintColor={untintedColor}
           />
 
-          <ControlParagraph centered>Map height: {height}%</ControlParagraph>
-
           <Slider
-            // this is not a controlled component, value is just initial value - as per the docs
-            value={100}
+            label={`Map width: ${height}%`}
+            onChange={onHeightChange}
+            defaultValue={100}
             step={1}
             minimumValue={0}
             maximumValue={100}
-            onValueChange={onHeightChange}
-            style={styles.slider}
-            minimumTrackTintColor={tintedColor}
-            maximumTrackTintColor={untintedColor}
           />
         </ScrollView>
       </View>
@@ -142,11 +126,6 @@ export const PlainMapScreen = () => {
 };
 
 const styles = StyleSheet.create({
-  slider: {
-    width: '100%',
-    height: 30,
-    marginVertical: 10,
-  },
   borderedView: {
     borderWidth: 3.5,
     borderStyle: 'dashed',

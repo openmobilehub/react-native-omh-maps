@@ -1,5 +1,4 @@
 import {
-  ColorValue,
   ImageRequireSource,
   ImageURISource,
   NativeSyntheticEvent,
@@ -34,12 +33,24 @@ export type OmhPoint = {
 /**
  * A color value.
  */
-export type OmhColor = ColorValue;
+export type OmhColor = number;
 
 /**
- * An icon, which can be either a URI source or a required image source.
+ * An icon, which can be either a URI source or an imported/required image source.
  */
 export type OmhIcon = ImageURISource | ImageRequireSource;
+
+/**
+ * An anchor offset.
+ */
+export type OmhAnchor = {
+  /** The normalized (`0` - `1`) X coordinate specifier; default: `0.5`. */
+  u: number;
+  /** The normalized (`0` - `1`) Y coordinate specifier; default: `0.5`. */
+  v: number;
+};
+
+export type Percentage = `${number}%`;
 
 /**
  * The type of line join.

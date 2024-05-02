@@ -4,7 +4,8 @@ import { List, useTheme } from 'react-native-paper';
 
 import { useNavigation } from '@react-navigation/native';
 
-import Route from '../Routes';
+import Route from '../../Routes';
+import { demoStyles } from '../../styles/demoStyles';
 
 export type MenuListItemProps = {
   route: Route;
@@ -19,6 +20,7 @@ export function MenuListItem({ title, route, description }: MenuListItemProps) {
   return (
     <List.Item
       title={title ?? route}
+      titleStyle={demoStyles.boldText}
       description={description}
       onPress={() => {
         navigate.navigate(

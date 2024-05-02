@@ -48,7 +48,7 @@
     "typedoc": "^0.25.12",
     "typedoc-plugin-markdown": "^3.17.1",
     "typedoc-plugin-replace-text": "^3.3.0",
-    "typescript": "^5.4.3",
+    "typescript": ">=4.3.5 <5.4.0",
     "validate-npm-package-name": "^5.0.0"
   },
   "dependencies": {
@@ -72,14 +72,13 @@
     "build:ios:debug": "npx turbo build:ios:debug",
     "build:android:release": "npx turbo build:android:release",
     "build:ios:release": "npx turbo build:ios:release",
-    "test": "cross-env FORCE_COLOR=1 yarn workspaces foreach -Ap run test",
-    "typecheck": "cross-env FORCE_COLOR=1 yarn workspaces foreach -p --exclude @omh/react-native-maps-sample-app run typecheck",
+    "test": "cross-env FORCE_COLOR=1 yarn workspaces foreach -A -p run test",
+    "typecheck": "cross-env FORCE_COLOR=1 yarn workspaces foreach -A -p run typecheck",
     "lint": "eslint \"**/*.{js,ts,tsx}\"",
-    "clean": "cross-env FORCE_COLOR=1 yarn workspaces foreach -p --exclude @omh/react-native-maps-sample-app run clean",
-    "prepare": "cross-env FORCE_COLOR=1 yarn workspaces foreach -p --exclude @omh/react-native-maps-sample-app run prepare",
-    "release": "cross-env FORCE_COLOR=1 yarn workspaces foreach -p --exclude @omh/react-native-maps-sample-app run release",
+    "clean": "cross-env FORCE_COLOR=1 yarn workspaces foreach -A -p --exclude @omh/react-native-maps-sample-app run clean",
+    "prepare": "cross-env FORCE_COLOR=1 yarn workspaces foreach -A -p --exclude @omh/react-native-maps-sample-app run prepare",
+    "release": "cross-env FORCE_COLOR=1 yarn workspaces foreach -A -p --exclude @omh/react-native-maps-sample-app run release",
     "postinstall": "npx lefthook install",
-    "codegen": "yarn codegen:android && yarn codegen:ios",
     "codegen:android": "./sample-app/android/gradlew -p sample-app/android generateCodegenArtifactsFromSchema -t android",
     "codegen:ios": "node node_modules/react-native/scripts/generate-codegen-artifacts.js --path . --outputPath ./sample-app/ios"
   },
@@ -89,5 +88,5 @@
     "docs",
     "packages/*"
   ],
-  "packageManager": "yarn@3.6.1"
+  "packageManager": "yarn@4.1.1"
 }

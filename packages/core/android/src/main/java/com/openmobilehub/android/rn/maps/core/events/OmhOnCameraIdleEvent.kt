@@ -10,12 +10,12 @@ class OmhOnCameraIdleEvent(
 ) : Event<OmhOnCameraIdleEvent>(surfaceId, viewId) {
     override fun getEventName() = NAME
 
-    override fun getEventData(): WritableMap? {
+    override fun getEventData(): WritableMap {
         return Arguments.createMap()
     }
 
-    companion object {
-        const val NAME = "topCameraIdle"
-        const val EVENT_PROP_NAME = "onCameraIdle"
+    companion object : OmhBaseEventCompanion {
+        override val NAME = "topCameraIdle"
+        override val REGISTRATION_NAME = "onCameraIdle"
     }
 }

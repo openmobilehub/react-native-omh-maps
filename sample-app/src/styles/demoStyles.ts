@@ -20,12 +20,16 @@ export const demoStyles = StyleSheet.create({
   },
   demoControlsScrollViewContentContainer: {
     paddingVertical: 8,
+    paddingTop: 30,
     paddingHorizontal: 8,
     width: '100%',
   },
   centeredHeading: {
     textAlign: 'center',
-    fontSize: 22,
+    fontSize: 19,
     marginBottom: 20,
+  },
+  boldText: {
+    fontWeight: 'bold',
   },
 });

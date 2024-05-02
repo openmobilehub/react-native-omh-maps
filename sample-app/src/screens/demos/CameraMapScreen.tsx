@@ -8,33 +8,32 @@ import {
   OmhMapViewRef,
 } from '@omh/react-native-maps-core';
 
-import { demoStyles } from '../styles/demoStyles';
-import { Constants } from '../utils/Constants';
-import { PanelCheckbox } from '../components/PanelCheckbox';
-import { PanelButton } from '../components/PanelButton';
-import { SnackbarMy, SnackbarRef } from '../components/Snackbar';
-import { allProviders, isFeatureSupported } from '../utils/SupportUtils';
+import { PanelButton } from '../../components/PanelButton';
+import { PanelCheckbox } from '../../components/PanelCheckbox';
+import useSnackbar from '../../hooks/useSnackbar';
+import { demoStyles } from '../../styles/demoStyles';
+import { Constants } from '../../utils/Constants';
+import { isFeatureSupported } from '../../utils/SupportUtils';
 
 const getSupportedFeatures = (omhMapRef: OmhMapViewRef | null) => {
   const mapProvider = omhMapRef?.getProviderName();
-  console.log('mapProvider', mapProvider);
 
   return {
-    zoom: isFeatureSupported(mapProvider, allProviders),
+    zoom: isFeatureSupported(mapProvider, '*'),
     rotate: isFeatureSupported(mapProvider, [
       'GoogleMaps',
       'OpenStreetMap',
       'Mapbox',
     ]),
-    showCameraPosition: isFeatureSupported(mapProvider, allProviders),
-    moveCamera: isFeatureSupported(mapProvider, allProviders),
+    showCameraPosition: isFeatureSupported(mapProvider, '*'),
+    moveCamera: isFeatureSupported(mapProvider, '*'),
     makeSnapshot: isFeatureSupported(mapProvider, ['GoogleMaps', 'Mapbox']),
   };
 };
 
 export const CameraMapScreen = () => {
   const omhMapRef = useRef<OmhMapViewRef | null>(null);
-  const snackbarRef = useRef<SnackbarRef>(null);
+  const { showSnackbar } = useSnackbar();
 
   const [snapshotModalVisible, setSnapshotModalVisible] = useState(false);
   const [snapshotSource, setSnapshotSource] = useState<string | null>(null);
@@ -48,7 +47,7 @@ export const CameraMapScreen = () => {
   const handleShowCameraPositionButtonPress = async () => {
     const cameraPosition = await omhMapRef.current?.getCameraCoordinate();
     if (cameraPosition !== null) {
-      snackbarRef.current?.show(
+      showSnackbar(
         'Camera position coordinate: ' + JSON.stringify(cameraPosition, null, 2)
       );
     }
@@ -84,7 +83,7 @@ export const CameraMapScreen = () => {
   };
 
   const handleCameraIdle = () => {
-    snackbarRef.current?.show('Camera idle');
+    showSnackbar('Camera idle');
   };
 
   const handleCameraMoveStarted = (reason: OmhCameraMoveStartedReason) => {
@@ -102,7 +101,7 @@ export const CameraMapScreen = () => {
         break;
     }
 
-    snackbarRef.current?.show(`Camera move started by ${reasonCopy}`);
+    showSnackbar(`Camera move started by ${reasonCopy}`);
   };
 
   const handleMapLoaded = () => {
@@ -181,7 +180,6 @@ export const CameraMapScreen = () => {
         )}
         <PanelButton onPress={handleSnapshotModalDismiss} label="Close" />
       </Modal>
-      <SnackbarMy ref={snackbarRef} />
     </>
   );
 };

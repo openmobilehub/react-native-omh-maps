@@ -1,6 +1,5 @@
 package com.openmobilehub.android.rn.maps.core.events
 
-import androidx.lifecycle.createSavedStateHandle
 import com.facebook.react.bridge.Arguments
 import com.facebook.react.bridge.WritableMap
 import com.facebook.react.uimanager.events.Event
@@ -14,12 +13,12 @@ class OmhOnCameraMoveStartedEvent(
 
     override fun getEventData(): WritableMap? {
         return Arguments.createMap().apply {
-          putInt("reason", reason)
+            putInt("reason", reason)
         }
     }
 
-    companion object {
-        const val NAME = "topCameraMoveStarted"
-        const val EVENT_PROP_NAME = "onCameraMoveStarted"
+    companion object : OmhBaseEventCompanion {
+        override val NAME = "topCameraMoveStarted"
+        override val REGISTRATION_NAME = "onCameraMoveStarted"
     }
 }

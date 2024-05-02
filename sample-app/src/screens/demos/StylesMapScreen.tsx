@@ -1,5 +1,6 @@
 import React from 'react';
 import { ScrollView, View } from 'react-native';
+import { RadioButton, Text } from 'react-native-paper';
 
 import {
   OmhMapView,
@@ -7,9 +8,8 @@ import {
   OmhMapViewRef,
 } from '@omh/react-native-maps-core';
 
-import { demoStyles } from '../styles/demoStyles';
-import { RadioButton, Text } from 'react-native-paper';
-import { PanelRadioButtonItem } from '../components/PanelRadioButtonItem';
+import { PanelRadioButtonItem } from '../../components/PanelRadioButtonItem';
+import { demoStyles } from '../../styles/demoStyles';
 
 enum RadioButtonValue {
   None = 'None',
@@ -20,16 +20,16 @@ enum RadioButtonValue {
 
 const GOOGLE_MAPS_STYLES = {
   [RadioButtonValue.None]: undefined,
-  [RadioButtonValue.Dark]: require('../assets/mapStyles/google_style_dark.json'),
-  [RadioButtonValue.Retro]: require('../assets/mapStyles/google_style_retro.json'),
-  [RadioButtonValue.Silver]: require('../assets/mapStyles/google_style_silver.json'),
+  [RadioButtonValue.Dark]: require('../../assets/mapStyles/google_style_dark.json'),
+  [RadioButtonValue.Retro]: require('../../assets/mapStyles/google_style_retro.json'),
+  [RadioButtonValue.Silver]: require('../../assets/mapStyles/google_style_silver.json'),
 };
 
 const MAPBOX_STYLES = {
   [RadioButtonValue.None]: undefined,
-  [RadioButtonValue.Dark]: require('../assets/mapStyles/mapbox_style_dark.json'),
-  [RadioButtonValue.Retro]: require('../assets/mapStyles/mapbox_style_retro.json'),
-  [RadioButtonValue.Silver]: require('../assets/mapStyles/mapbox_style_silver.json'),
+  [RadioButtonValue.Dark]: require('../../assets/mapStyles/mapbox_style_dark.json'),
+  [RadioButtonValue.Retro]: require('../../assets/mapStyles/mapbox_style_retro.json'),
+  [RadioButtonValue.Silver]: require('../../assets/mapStyles/mapbox_style_silver.json'),
 };
 
 const SUPPORTED_MAP_PROVIDERS = ['GoogleMaps', 'Mapbox'];

@@ -7,6 +7,7 @@ import * as prettier from 'prettier';
 import prompts, { PromptObject } from 'prompts';
 import validateNpmPackage from 'validate-npm-package-name';
 
+import realCorePackageJson from '../packages/core/package.json';
 import { Constants, Templates, Utils } from './src';
 import { scriptsWorkspacePath } from './src/constants';
 import getPrettierConfig from './src/prettierConfig';
@@ -202,24 +203,28 @@ const questions: PromptObject[] = [
   ]) {
     delete packageJson[obsoletePackageJsonKey];
   }
+  packageJson.types = `lib/typescript/${pluginDirName}/src/index.d.ts`;
 
   packageJson.codegenConfig.name = packageJson.codegenConfig.name
     .replace(/RNReactNativeMaps/, 'RNOmhMaps')
     .replace(/ViewSpec/, '');
 
-  packageJson.version = '1.0.0-beta';
+  packageJson.version = realCorePackageJson.version;
 
   delete packageJson.scripts.example;
   packageJson.devDependencies = {
     '@types/node': '*',
     'del-cli': '*',
-    'eslint': '*',
     'jest': '*',
     'react-native-builder-bob': '*',
     'release-it': '*',
     'typescript': '*',
     'ts-node': '*',
   };
+
+  if (!packageJson.peerDependencies) packageJson.peerDependencies = {};
+  packageJson.peerDependencies['@omh/react-native-maps-core'] =
+    realCorePackageJson.version;
 
   fs.writeFileSync(
     packageJsonPath,

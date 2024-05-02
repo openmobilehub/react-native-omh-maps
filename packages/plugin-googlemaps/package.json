@@ -4,7 +4,7 @@
   "description": "React Native OMH Maps Googlemaps Plugin",
   "main": "lib/commonjs/index",
   "module": "lib/module/index",
-  "types": "lib/typescript/src/index.d.ts",
+  "types": "lib/typescript/plugin-googlemaps/src/index.d.ts",
   "react-native": "src/index",
   "source": "src/index",
   "files": [
@@ -51,6 +51,7 @@
     "registry": "https://registry.npmjs.org/"
   },
   "peerDependencies": {
+    "@omh/react-native-maps-core": "1.0.0-beta",
     "react": "*",
     "react-native": "*"
   },
