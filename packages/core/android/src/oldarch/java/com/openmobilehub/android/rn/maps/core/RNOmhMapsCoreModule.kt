@@ -30,7 +30,7 @@ class RNOmhMapsCoreModule(
         moduleImpl.setCameraCoordinate(viewRef, coordinate, zoomLevel, promise)
     }
 
-    @ReactMethod
+    @ReactMethod(isBlockingSynchronousMethod = true)
     fun getProviderName(viewRef: Double): String {
         return moduleImpl.getProviderName(viewRef)
     }

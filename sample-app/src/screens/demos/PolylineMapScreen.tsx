@@ -17,17 +17,75 @@ import { getRandomArbitrary } from '../../utils/mathHelpers';
 import { demoStyles } from '../../styles/demoStyles';
 import { rgbToInt } from '../../utils/converters';
 import convert from 'color-convert';
-import { OmhMapsGooglemapsProvider } from '@omh/react-native-maps-plugin-googlemaps';
-import useChosenMapProvider from '../../hooks/useChosenMapProvider';
 import { PanelButton } from '../../components/PanelButton';
-import CAP_TYPE_CUSTOM = OmhPolylineConstants.CAP_TYPE_CUSTOM;
-import { OmhMapsOpenStreetMapProvider } from '@omh/react-native-maps-plugin-openstreetmap';
-import { OmhMapsAzureMapsProvider } from '@omh/react-native-maps-plugin-azuremaps';
 import useSnackbar from '../../hooks/useSnackbar';
 import useLogger from '../../hooks/useLogger';
 import { Constants } from '../../utils/Constants';
 import soccerBallIcon from '../../assets/img/soccer_ball.bmp';
 import { PanelCheckbox } from '../../components/controls/PanelCheckbox';
+import { isFeatureSupported } from '../../utils/SupportUtils';
+
+enum PatternOption {
+  NONE = 'None',
+  DOTTED = 'Dotted',
+  DASHED = 'Dashed',
+  CUSTOM = 'Custom',
+}
+
+type PatternItem = {
+  label: PatternOption;
+  value: Pattern[] | undefined;
+};
+
+const getSupportedFeatures = (currentMapProvider?: string) => {
+  return {
+    startCap: isFeatureSupported(currentMapProvider, ['GoogleMaps']),
+    endCap: isFeatureSupported(currentMapProvider, ['GoogleMaps']),
+    jointType: isFeatureSupported(currentMapProvider, [
+      'GoogleMaps',
+      'OpenStreetMap',
+      'Mapbox',
+    ]),
+    pattern: isFeatureSupported(currentMapProvider, [
+      'GoogleMaps',
+      'AzureMaps',
+    ]),
+    zIndex: isFeatureSupported(currentMapProvider, ['GoogleMaps']),
+    span: isFeatureSupported(currentMapProvider, ['GoogleMaps']),
+  };
+};
+
+const getDisabledOptions = (currentMapProvider?: string) => {
+  if (!currentMapProvider) {
+    return {
+      cap: [],
+      pattern: [],
+    };
+  }
+
+  const isGoogleMaps = currentMapProvider === 'GoogleMaps';
+
+  return {
+    cap: isGoogleMaps ? [] : [OmhPolylineConstants.CAP_TYPE_CUSTOM],
+    pattern: isGoogleMaps ? [] : [PatternOption.DOTTED, PatternOption.CUSTOM],
+  };
+};
+
+const capItemToChoice = (item: CapItem) => {
+  return {
+    key: item.value.type,
+    label: item.label,
+    value: item.value,
+  };
+};
+
+const patternItemToChoice = (item: PatternItem) => {
+  return {
+    key: item.label,
+    label: item.label,
+    value: item.value,
+  };
+};
 
 const customizablePolylinePoints: OmhCoordinate[] = [
   { latitude: 0.0, longitude: 0.0 },
@@ -106,13 +164,6 @@ const jointTypeItems: JointTypeItem[] = [
   },
 ];
 
-enum PatternOption {
-  NONE = 'None',
-  DOTTED = 'Dotted',
-  DASHED = 'Dashed',
-  CUSTOM = 'Custom',
-}
-
 const dottedPattern: Pattern[] = [
   {
     type: OmhPolylineConstants.PATTERN_TYPE_DOT,
@@ -163,11 +214,29 @@ const customPattern: Pattern[] = [
   },
 ];
 
+const patternItems: PatternItem[] = [
+  {
+    label: PatternOption.NONE,
+    value: undefined,
+  },
+  {
+    label: PatternOption.DOTTED,
+    value: dottedPattern,
+  },
+  {
+    label: PatternOption.DASHED,
+    value: dashedPattern,
+  },
+  {
+    label: PatternOption.CUSTOM,
+    value: customPattern,
+  },
+];
+
 const referencePolylineColor = rgbToInt([204, 204, 204]);
 
 export const PolylineMapScreen = () => {
   const logger = useLogger('PolylineMapScreen');
-  const mapProvider = useChosenMapProvider();
   const { showSnackbar } = useSnackbar();
 
   const omhMapRef = useRef<OmhMapViewRef | null>(null);
@@ -182,7 +251,7 @@ export const PolylineMapScreen = () => {
   const [endCap, setEndCap] = useState(capItems[0]!!.value);
   const [shouldUseCommonCap, setShouldUseCommonCap] = useState(true);
   const [jointType, setJointType] = useState(jointTypeItems[0]!!.value);
-  const [patternOption, setPatternOption] = useState(PatternOption.NONE);
+  const [pattern, setPattern] = useState<Pattern[] | undefined>(undefined);
   const [withSpan, setWithSpan] = useState(false);
   const [spanSegments, setSpanSegments] = useState(1);
   const [spanColorHue, setSpanColorHue] = useState(180);
@@ -191,18 +260,10 @@ export const PolylineMapScreen = () => {
   const [spanGradientToColorHue, setSpanGradientToColorHue] = useState(270);
   const [spanPattern, setSpanPattern] = useState(false);
 
-  const pattern = useMemo(() => {
-    switch (patternOption) {
-      case PatternOption.NONE:
-        return undefined;
-      case PatternOption.DOTTED:
-        return dottedPattern;
-      case PatternOption.DASHED:
-        return dashedPattern;
-      case PatternOption.CUSTOM:
-        return customPattern;
-    }
-  }, [patternOption]);
+  const [supportedFeatures, setSupportedFeatures] = useState(
+    getSupportedFeatures()
+  );
+  const [disabledOptions, setDisabledOptions] = useState(getDisabledOptions());
 
   const colorRGB = useMemo(
     () => rgbToInt(convert.hsv.rgb([colorHue, 100, 100])),
@@ -223,60 +284,17 @@ export const PolylineMapScreen = () => {
     setPoints(randomizedPoints);
   };
 
-  const isZIndexSupported = useMemo(
-    () => mapProvider.path === OmhMapsGooglemapsProvider.path,
-    [mapProvider.path]
-  );
+  const capOptions = useMemo(() => {
+    return capItems
+      .filter(item => !disabledOptions.cap.includes(item.value.type))
+      .map(capItemToChoice);
+  }, [disabledOptions]);
 
-  const isJointTypeSupported = useMemo(
-    () => mapProvider.path !== OmhMapsOpenStreetMapProvider.path,
-    [mapProvider.path]
-  );
-
-  const isPatternSupported = useMemo(
-    () =>
-      mapProvider.path === OmhMapsGooglemapsProvider.path ||
-      mapProvider.path === OmhMapsAzureMapsProvider.path,
-    [mapProvider.path]
-  );
-
-  const disabledPatterns = useMemo(() => {
-    let blacklist = new Set<PatternOption>();
-
-    if (mapProvider.path === OmhMapsAzureMapsProvider.path) {
-      blacklist.add(PatternOption.DOTTED);
-      blacklist.add(PatternOption.CUSTOM);
-    }
-
-    return blacklist;
-  }, [mapProvider.path]);
-
-  const isStartEndCapSupported = useMemo(
-    () => mapProvider.path === OmhMapsGooglemapsProvider.path,
-    [mapProvider.path]
-  );
-
-  const disabledCapTypes = useMemo(() => {
-    let blacklist = new Set<string>();
-
-    if (mapProvider.path !== OmhMapsGooglemapsProvider.path) {
-      blacklist.add(CAP_TYPE_CUSTOM);
-    }
-
-    return blacklist;
-  }, [mapProvider.path]);
-
-  const capItemToChoice = (item: CapItem) => {
-    return {
-      key: item.value.type,
-      label: item.label,
-      value: item.value,
-    };
-  };
-
-  const capItemChoices = capItems
-    .filter(item => !disabledCapTypes.has(item.value.type))
-    .map(item => capItemToChoice(item));
+  const patternOptions = useMemo(() => {
+    return patternItems
+      .filter(item => !disabledOptions.pattern.includes(item.label))
+      .map(patternItemToChoice);
+  }, [disabledOptions]);
 
   const genOnPolylineClickHandler = useCallback(
     (message: string) => () => {
@@ -339,6 +357,20 @@ export const PolylineMapScreen = () => {
     colorRGB,
   ]);
 
+  const handleMapReady = () => {
+    setSupportedFeatures(
+      getSupportedFeatures(omhMapRef.current?.getProviderName())
+    );
+    setDisabledOptions(
+      getDisabledOptions(omhMapRef.current?.getProviderName())
+    );
+
+    omhMapRef.current?.setCameraCoordinate(
+      Constants.Maps.CENTER_COORDINATE,
+      Constants.Maps.CENTER_ZOOM_LEVEL
+    );
+  };
+
   return (
     <View style={demoStyles.rootContainer}>
       <View style={demoStyles.mapContainer}>
@@ -346,14 +378,7 @@ export const PolylineMapScreen = () => {
           ref={omhMapRef}
           width="100%"
           height="100%"
-          onMapReady={() => {
-            logger.log("OmhMapView's OmhMap has become ready");
-
-            omhMapRef.current?.setCameraCoordinate(
-              Constants.Maps.CENTER_COORDINATE,
-              Constants.Maps.CENTER_ZOOM_LEVEL
-            );
-          }}>
+          onMapReady={handleMapReady}>
           <OmhPolyline
             points={points}
             clickable={isClickable}
@@ -419,7 +444,7 @@ export const PolylineMapScreen = () => {
           />
           <Picker<OmhCap>
             label="Cap"
-            choices={capItemChoices}
+            choices={capOptions}
             onChange={choice => {
               setCap(choice);
               setShouldUseCommonCap(true);
@@ -427,9 +452,9 @@ export const PolylineMapScreen = () => {
             value={cap}
           />
           <Picker<OmhCap>
-            disabled={!isStartEndCapSupported}
+            disabled={!supportedFeatures.startCap}
             label="Start Cap"
-            choices={capItemChoices}
+            choices={capOptions}
             onChange={choice => {
               setStartCap(choice);
               setShouldUseCommonCap(false);
@@ -437,9 +462,9 @@ export const PolylineMapScreen = () => {
             value={startCap}
           />
           <Picker<OmhCap>
-            disabled={!isStartEndCapSupported}
+            disabled={!supportedFeatures.endCap}
             label="End Cap"
-            choices={capItemChoices}
+            choices={capOptions}
             onChange={choice => {
               setEndCap(choice);
               setShouldUseCommonCap(false);
@@ -447,7 +472,7 @@ export const PolylineMapScreen = () => {
             value={endCap}
           />
           <Picker<number>
-            disabled={!isJointTypeSupported}
+            disabled={!supportedFeatures.jointType}
             label="Joint Type"
             choices={jointTypeItems.map(item => ({
               key: item.value.toString(),
@@ -459,23 +484,15 @@ export const PolylineMapScreen = () => {
             }}
             value={jointType}
           />
-          <Picker<PatternOption>
-            disabled={!isPatternSupported}
+          <Picker<Pattern[] | undefined>
+            disabled={!supportedFeatures.pattern}
             label="Pattern"
-            choices={Object.entries(PatternOption)
-              .filter(([_key, label]) => !disabledPatterns.has(label))
-              .map(([key, label]) => ({
-                key,
-                label,
-                value: label,
-              }))}
-            onChange={choice => {
-              setPatternOption(choice);
-            }}
-            value={patternOption}
+            choices={patternOptions}
+            onChange={setPattern}
+            value={pattern}
           />
           <Slider
-            disabled={!isZIndexSupported}
+            disabled={!supportedFeatures.zIndex}
             label="Z Index"
             onChange={setZIndex}
             defaultValue={0}
@@ -484,6 +501,7 @@ export const PolylineMapScreen = () => {
             maximumValue={5}
           />
           <PanelCheckbox
+            enabled={supportedFeatures.span}
             label="Span"
             value={withSpan}
             onValueChange={setWithSpan}
