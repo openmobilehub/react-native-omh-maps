@@ -286,6 +286,10 @@ class RNOmhMapsCoreViewManagerImpl(private val reactContext: ReactContext) {
         omhMap?.setRotateGesturesEnabled(value)
     }
 
+    fun setMapStyle(view: FragmentContainerView, value: String?) {
+        FragmentUtils.findFragment(view)?.omhMap?.setMapStyle(value)
+    }
+
     companion object {
         const val NAME = OmhMapViewFragment.NAME
 

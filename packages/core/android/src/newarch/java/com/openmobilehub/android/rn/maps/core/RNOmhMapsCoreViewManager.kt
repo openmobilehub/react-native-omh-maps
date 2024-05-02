@@ -62,6 +62,11 @@ class RNOmhMapsCoreViewManager :
 
     override fun getName() = RNOmhMapsCoreViewManagerImpl.NAME
 
+    @ReactProp(name = "mapStyle")
+    override fun setMapStyle(view: FragmentContainerView, value: String?) {
+        omhMapViewManagerImpl.setMapStyle(view, value)
+    }
+
     override fun getExportedCustomDirectEventTypeConstants(): Map<String, Any> {
         return RNOmhMapsCoreViewManagerImpl.EVENTS
     }

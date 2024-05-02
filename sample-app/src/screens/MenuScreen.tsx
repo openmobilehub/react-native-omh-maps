@@ -14,6 +14,7 @@ const menuRoutes: Route[] = [
   Route.cameraMap,
   Route.markerMap,
   // Route.multipleMaps,
+  Route.stylesMap,
 ];
 
 const defaultMapProvider = OmhMapsModule.getDefaultMapProvider();
