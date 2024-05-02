@@ -1,4 +1,8 @@
-import { ImageRequireSource, NativeSyntheticEvent } from 'react-native';
+import {
+  ImageRequireSource,
+  ImageURISource,
+  NativeSyntheticEvent,
+} from 'react-native';
 
 /**
  * A common abstraction of map event.
@@ -34,9 +38,7 @@ export type OmhColor = number;
 /**
  * An icon, which can be either a URI source or an imported/required image source.
  */
-export type OmhIcon =
-  | { uri: string; width?: number; height?: number }
-  | ImageRequireSource;
+export type OmhIcon = ImageURISource | ImageRequireSource;
 
 /**
  * An anchor offset.

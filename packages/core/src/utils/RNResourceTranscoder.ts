@@ -1,8 +1,7 @@
-import { ImageResolvedAssetSource } from 'react-native';
-import resolveAssetSource from 'react-native/Libraries/Image/resolveAssetSource';
+import { Image, ImageResolvedAssetSource } from 'react-native';
 
-export function rnResourceIdToAndroidURI(
-  rnResourceId: number
-): ImageResolvedAssetSource {
-  return resolveAssetSource(rnResourceId);
+import { OmhIcon } from '../types/common';
+
+export function resolveResource(resource: OmhIcon): ImageResolvedAssetSource {
+  return Image.resolveAssetSource(resource);
 }

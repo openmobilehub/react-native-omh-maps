@@ -1,7 +1,7 @@
 import React, { memo, useMemo } from 'react';
 
 import { OmhMarkerComponentProps } from '../../types/OmhMarker';
-import { rnResourceIdToAndroidURI } from '../../utils/RNResourceTranscoder';
+import { resolveResource } from '../../utils/RNResourceTranscoder';
 import RNOmhMapsMarkerNativeComponent from './RNOmhMapsMarkerNativeComponent';
 
 /**
@@ -23,7 +23,7 @@ export const OmhMarker = memo(
         icon === null || icon === undefined
           ? undefined
           : typeof icon === 'number'
-            ? rnResourceIdToAndroidURI(icon)
+            ? resolveResource(icon)
             : icon,
       [icon]
     );

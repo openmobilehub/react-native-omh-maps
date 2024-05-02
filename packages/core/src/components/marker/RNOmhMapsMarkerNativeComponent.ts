@@ -36,7 +36,7 @@ export interface NativeOmhMarkerProps extends ViewProps {
   isInfoWindowShown?: boolean;
   markerZIndex?: Float; // note: the name is not just zIndex, since this somehow collides with RN's property and fails to compile
   icon?: {
-    uri: string;
+    uri?: string;
     width?: Int32;
     height?: Int32;
   };
