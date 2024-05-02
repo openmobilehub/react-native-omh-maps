@@ -17,6 +17,13 @@ export type Anchor = {
   v: Float;
 };
 
+export type NativePositionEventData = {
+  position: {
+    latitude: Double;
+    longitude: Double;
+  };
+};
+
 /**
  * Properties for the OmhMarker component.
  */
@@ -41,12 +48,10 @@ export interface NativeOmhMarkerProps extends ViewProps {
     height?: Int32;
   };
   consumeMarkerClicks?: boolean;
-  onPress?: DirectEventHandler<{
-    consumed: boolean;
-  }>;
-  onDragStart?: DirectEventHandler<NativeOmhCoordinate>;
-  onDrag?: DirectEventHandler<NativeOmhCoordinate>;
-  onDragEnd?: DirectEventHandler<NativeOmhCoordinate>;
+  onMarkerPress?: DirectEventHandler<NativePositionEventData>;
+  onDragStart?: DirectEventHandler<NativePositionEventData>;
+  onDrag?: DirectEventHandler<NativePositionEventData>;
+  onDragEnd?: DirectEventHandler<NativePositionEventData>;
 }
 
 export type RNOmhMapsMarkerNativeComponent =

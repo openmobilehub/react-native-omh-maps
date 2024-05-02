@@ -96,14 +96,15 @@ export const MarkerMapScreen = () => {
   const onCustomizableMarkerDragStart = useCallback(
     (event: MarkerDragStartEvent) => {
       const {
-        position: { latitude, longitude },
-      } = event.nativeEvent;
+          position: { latitude, longitude },
+        } = event.nativeEvent,
+        message = `Customizable marker has started being dragged from: ${formatPosition({ latitude, longitude })}`;
 
-      logger.log(
-        `Customizable marker has started being dragged from: ${formatPosition({ latitude, longitude })}`
-      );
+      logger.log(message);
+
+      showSnackbar(message);
     },
-    [logger]
+    [logger, showSnackbar]
   );
 
   const onCustomizableMarkerDrag = useCallback(
@@ -122,16 +123,17 @@ export const MarkerMapScreen = () => {
   const onCustomizableMarkerDragEnd = useCallback(
     (event: MarkerDragEndEvent) => {
       const {
-        position: { latitude, longitude },
-      } = event.nativeEvent;
+          position: { latitude, longitude },
+        } = event.nativeEvent,
+        message = `Customizable has finished being dragged at: ${formatPosition({ latitude, longitude })}`;
 
-      logger.log(
-        `Customizable has finished being dragged at: ${formatPosition({ latitude, longitude })}`
-      );
+      logger.log(message);
+
+      showSnackbar(message);
 
       setCustomizableMarkerPosition({ latitude, longitude });
     },
-    [logger]
+    [logger, showSnackbar]
   );
 
   const customizableMarkerColorRGB = useMemo(

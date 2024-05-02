@@ -88,20 +88,6 @@ class OmhMapViewFragment : Fragment() {
         super.onStop()
     }
 
-    fun getCameraPositionCoordinate(promise: Promise) {
-        UiThreadUtil.runOnUiThread {
-            val coords = omhMap?.getCameraPositionCoordinate()
-            promise.resolve(coords?.toWritableMap())
-        }
-    }
-
-    fun setCameraPositionCoordinate(coordinate: OmhCoordinate, zoomLevel: Float, promise: Promise) {
-        UiThreadUtil.runOnUiThread {
-            omhMap?.moveCamera(coordinate, zoomLevel)
-            promise.resolve(null)
-        }
-    }
-
     companion object {
         const val NAME = "RNOmhMapsCoreView"
     }

@@ -5,7 +5,6 @@ import com.facebook.react.bridge.ReactContext
 import com.facebook.react.bridge.ReadableMap
 import com.facebook.react.common.MapBuilder
 import com.openmobilehub.android.rn.maps.core.entities.OmhMarkerEntity
-import com.openmobilehub.android.rn.maps.core.events.OmhBaseEventCompanion
 import com.openmobilehub.android.rn.maps.core.events.OmhOnMarkerDragEndEvent
 import com.openmobilehub.android.rn.maps.core.events.OmhOnMarkerDragEvent
 import com.openmobilehub.android.rn.maps.core.events.OmhOnMarkerDragStartEvent
@@ -201,11 +200,11 @@ class RNOmhMapsMarkerViewManagerImpl {
         const val NAME = "RNOmhMapsMarkerView"
 
         val EVENTS: Map<String, Any> =
-            listOf<OmhBaseEventCompanion>(
-                OmhOnMarkerPressEvent,
+            listOf(
                 OmhOnMarkerDragStartEvent,
                 OmhOnMarkerDragEvent,
-                OmhOnMarkerDragEndEvent
+                OmhOnMarkerDragEndEvent,
+                OmhOnMarkerPressEvent
             ).associateBy(
                 { it.NAME },
                 { MapBuilder.of("registrationName", it.REGISTRATION_NAME) }

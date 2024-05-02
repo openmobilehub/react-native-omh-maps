@@ -13,7 +13,7 @@ export type OmhMarkerProps = OmhMarkerComponentProps;
  * The OMH Marker component.
  */
 export const OmhMarker = memo(
-  ({ icon, position, ...props }: OmhMarkerProps) => {
+  ({ icon, position, onPress, ...props }: OmhMarkerProps) => {
     const nativeComponentRef = React.useRef<
       typeof RNOmhMapsMarkerNativeComponent | null
     >(null);
@@ -30,9 +30,10 @@ export const OmhMarker = memo(
 
     return (
       <RNOmhMapsMarkerNativeComponent
+        {...props}
         icon={iconURI}
         markerPosition={position}
-        {...props}
+        onMarkerPress={onPress}
         // @ts-ignore next line: missing typing for 'ref' prop on HostComponent
         ref={nativeComponentRef}
       />
