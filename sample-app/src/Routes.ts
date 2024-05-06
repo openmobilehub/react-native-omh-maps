@@ -5,6 +5,8 @@ export enum Route {
   markerMap = 'Marker Map',
   cameraMap = 'Camera Map',
   stylesMap = 'Styles Map',
+  locationSharing = 'Location Sharing Map',
+  locationResult = 'Location Result',
   // multipleMaps = 'Multiple maps',
 }
 
@@ -15,6 +17,8 @@ export const RoutesDescriptions: Record<Route, string> = {
   [Route.markerMap]: 'Interactive map with markers.',
   [Route.cameraMap]: 'Map showcasing the camera features',
   [Route.stylesMap]: 'Map showcasing custom styles',
+  [Route.locationSharing]: 'Map showcasing location sharing via deep links',
+  [Route.locationResult]: 'Location result screen',
   // [Route.multipleMaps]:
   //   'Multiple maps from different providers displayed simultaneously.',
 };

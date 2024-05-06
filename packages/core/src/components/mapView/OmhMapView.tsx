@@ -37,6 +37,8 @@ export const OmhMapView = forwardRef<OmhMapViewRef, OmhMapViewProps>(
       onCameraMoveStarted,
       mapStyle,
       onMapReady,
+      myLocationEnabled,
+      onMyLocationClicked,
     },
     forwardedRef
   ) => {
@@ -80,6 +82,7 @@ export const OmhMapView = forwardRef<OmhMapViewRef, OmhMapViewProps>(
             setCameraCoordinate: notReadyPromiseHandler,
             getProviderName: notReadyHandler,
             takeSnapshot: notReadyPromiseHandler,
+            getCurrentLocation: notReadyPromiseHandler,
           };
         }
 
@@ -92,6 +95,8 @@ export const OmhMapView = forwardRef<OmhMapViewRef, OmhMapViewProps>(
             NativeOmhMapsCoreModule.getProviderName(nodeHandle),
           takeSnapshot: (format: OmhSnapshotFormat) =>
             NativeOmhMapsCoreModule.takeSnapshot(nodeHandle, format),
+          getCurrentLocation: () =>
+            NativeOmhMapsCoreModule.getCurrentLocation(),
         };
       },
       [getViewRefHandle]
@@ -126,6 +131,7 @@ export const OmhMapView = forwardRef<OmhMapViewRef, OmhMapViewProps>(
       ? {
           zoomEnabled,
           rotateEnabled,
+          myLocationEnabled,
           children,
           mapStyle: JSON.stringify(mapStyle),
         }
@@ -161,6 +167,7 @@ export const OmhMapView = forwardRef<OmhMapViewRef, OmhMapViewProps>(
           onMapReady={handleMapReady}
           onMapLoaded={onMapLoaded}
           onCameraIdle={onCameraIdle}
+          onMyLocationClicked={onMyLocationClicked}
           onCameraMoveStarted={onCameraMoveStartedMapped}
           {...props}
         />
@@ -184,6 +191,7 @@ export type OmhMapViewRef = {
     () => OmhMapProviderVariant
   >;
   takeSnapshot: (resultFormat: OmhSnapshotFormat) => Promise<string>;
+  getCurrentLocation: () => Promise<OmhCoordinate>;
 };
 
 enum MapErrors {
@@ -216,6 +224,8 @@ export type OmhMapViewProps = Omit<ViewProps, 'style'> & {
   onMapLoaded?: () => void;
   /** Callback invoked when the map camera is idle */
   onCameraIdle?: () => void;
+  /** Callback invoked when the location button was clicked on map*/
+  onMyLocationClicked?: () => void;
   /** Callback invoked when the map camera starts to move */
   onCameraMoveStarted?: (reason: OmhCameraMoveStartedReason) => void;
   /**

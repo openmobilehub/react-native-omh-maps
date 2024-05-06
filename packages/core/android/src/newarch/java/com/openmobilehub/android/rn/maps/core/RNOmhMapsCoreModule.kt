@@ -9,7 +9,7 @@ import com.facebook.react.module.annotations.ReactModule
 
 @ReactModule(name = RNOmhMapsCoreModule.NAME)
 class RNOmhMapsCoreModule(
-    reactContext: ReactApplicationContext
+    val reactContext: ReactApplicationContext
 ) : NativeOmhMapsCoreModuleSpec(reactContext) {
     private val moduleImpl = RNOmhMapsCoreModuleImpl(reactContext)
 
@@ -40,6 +40,10 @@ class RNOmhMapsCoreModule(
 
     override fun getDefaultMapProvider(): WritableMap {
         return moduleImpl.getDefaultMapProvider()
+    }
+
+    override fun getCurrentLocation(promise: Promise?) {
+        moduleImpl.getCurrentLocation(promise = promise, reactContext = reactContext)
     }
 
     override fun initialize(paths: ReadableMap) {
