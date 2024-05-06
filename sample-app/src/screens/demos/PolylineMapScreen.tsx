@@ -43,7 +43,7 @@ const getSupportedFeatures = (currentMapProvider?: string) => {
     endCap: isFeatureSupported(currentMapProvider, ['GoogleMaps']),
     jointType: isFeatureSupported(currentMapProvider, [
       'GoogleMaps',
-      'OpenStreetMap',
+      'AzureMaps',
       'Mapbox',
     ]),
     pattern: isFeatureSupported(currentMapProvider, [
