@@ -55,12 +55,15 @@ fun ReadableMap.toOmhCap(entity: OmhMapEntity<*>, onResult: (cap: OmhCap?) -> Un
       }
 
       DrawableLoader.loadDrawable(entity, bitmapUri, { drawable ->
-        onResult(OmhCustomCap(
-          drawable.toBitmap(),
-          getDouble("refWidth").toFloat()
-        ))
+        onResult(
+          OmhCustomCap(
+            drawable.toBitmap(),
+            getDouble("refWidth").toFloat()
+          )
+        )
       }, null)
     }
+
     else -> {
       onResult(null)
     }
@@ -95,6 +98,7 @@ fun ReadableMap.toSpanItem(stamp: Bitmap?): OmhStyleSpan? {
       val color = ColorUtils.toColorInt(getDouble("color"))
       OmhStyleSpanMonochromatic(color, segments, stamp)
     }
+
     "gradient" -> {
       val fromColor = ColorUtils.toColorInt(getDouble("fromColor"))
       val toColor = ColorUtils.toColorInt(getDouble("toColor"))
