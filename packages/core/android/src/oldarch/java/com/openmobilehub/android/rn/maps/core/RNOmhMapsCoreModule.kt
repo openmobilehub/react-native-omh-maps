@@ -16,7 +16,7 @@ import com.openmobilehub.android.rn.maps.core.extensions.toWritableMap
 
 @ReactModule(name = RNOmhMapsCoreModule.NAME)
 class RNOmhMapsCoreModule(
-    reactContext: ReactApplicationContext
+    val reactContext: ReactApplicationContext
 ) : ReactContextBaseJavaModule(reactContext) {
     private val moduleImpl = RNOmhMapsCoreModuleImpl(reactContext)
 
@@ -62,15 +62,7 @@ class RNOmhMapsCoreModule(
 
     @ReactMethod
     fun getCurrentLocation(promise: Promise?) {
-        val onSuccessListener = OmhSuccessListener { omhCoordinate ->
-            promise?.resolve(omhCoordinate.toWritableMap())
-        }
-
-        val onFailureListener = OmhFailureListener {
-          promise?.resolve(null)
-        }
-        OmhMapProvider.getInstance().provideOmhLocation(reactApplicationContext)
-          .getCurrentLocation(onSuccessListener, onFailureListener)
+        moduleImpl.getCurrentLocation(promise = promise, reactContext = reactContext)
     }
 
     override fun getName() = NAME

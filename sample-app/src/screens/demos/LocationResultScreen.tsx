@@ -35,9 +35,7 @@ export const LocationResultScreen = ({ route }: Props) => {
         <Button
           style={styles.button}
           mode="contained"
-          onPress={() => {
-            shareUrlWithMessage();
-          }}>
+          onPress={shareUrlWithMessage}>
           Share location
         </Button>
       </View>

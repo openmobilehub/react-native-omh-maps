@@ -35,8 +35,8 @@ export const LocationSharingScreen = ({ navigation }: Props) => {
 
   const [locationEnabled, setLocationEnabled] = useState(false);
   const [tooltipVisible, setTooltipVisible] = useState(false);
-  const [latText, setLatText] = useState(0.0);
-  const [lngText, setLngText] = useState(0.0);
+  const [lat, setLat] = useState(0.0);
+  const [lng, setLng] = useState(0.0);
 
   const omhMapRef = useRef<OmhMapViewRef | null>(null);
   const { showSnackbar } = useSnackbar();
@@ -62,26 +62,24 @@ export const LocationSharingScreen = ({ navigation }: Props) => {
   };
 
   const handleFabClicked = () => {
-    navigation.navigate(Route.locationResult, { lat: latText, lng: lngText });
+    navigation.navigate(Route.locationResult, { lat: lat, lng: lng });
   };
 
-  const handleCameraMoveStarted = (_: string) => {
+  const handleCameraMoveStarted = () => {
     moveMarkerUp();
   };
 
-  const handleCameraIdle = () => {
+  const handleCameraIdle = async () => {
     moveMarkerDown();
-    var location = omhMapRef.current?.getCameraCoordinate();
-    location
-      ?.then(currentLocation => {
-        if (currentLocation != null) {
-          setLngText(currentLocation.longitude);
-          setLatText(currentLocation.latitude);
-        }
-      })
-      .catch(error => {
-        logger.error('cannot find location' + error);
-      });
+    try {
+      const currentLocation = await omhMapRef.current?.getCameraCoordinate();
+      if (currentLocation != null) {
+        setLng(currentLocation.longitude);
+        setLat(currentLocation.latitude);
+      }
+    } catch (error) {
+      logger.error('cannot find location' + error);
+    }
   };
 
   const handleMapLoaded = () => {
@@ -92,27 +90,26 @@ export const LocationSharingScreen = ({ navigation }: Props) => {
     requestLocationPermission();
   };
 
-  const showUserLocation = () => {
-    var location = omhMapRef.current?.getCurrentLocation();
-    location
-      ?.then(currentLocation => {
-        omhMapRef.current?.setCameraCoordinate(currentLocation, 15.0);
-        setLngText(currentLocation.longitude);
-        setLatText(currentLocation.latitude);
-      })
-      .catch(error => {
-        logger.error('cannot find location' + error);
-      });
+  const showUserLocation = async () => {
+    try {
+      const currentLocation = await omhMapRef.current?.getCurrentLocation();
+      omhMapRef.current?.setCameraCoordinate(currentLocation, 15.0);
+      setLng(currentLocation.longitude);
+      setLat(currentLocation.latitude);
+    } catch (error) {
+      logger.error('cannot find location ' + error);
+    }
   };
 
   const requestLocationPermission = async () => {
-    requestMultiple([
-      PERMISSIONS.ANDROID.ACCESS_FINE_LOCATION,
-      PERMISSIONS.ANDROID.ACCESS_COARSE_LOCATION,
-    ]).then(statuses => {
-      var fineLocationAccessGranted =
+    try {
+      const statuses = await requestMultiple([
+        PERMISSIONS.ANDROID.ACCESS_FINE_LOCATION,
+        PERMISSIONS.ANDROID.ACCESS_COARSE_LOCATION,
+      ]);
+      const fineLocationAccessGranted =
         statuses[PERMISSIONS.ANDROID.ACCESS_FINE_LOCATION] === RESULTS.GRANTED;
-      var coarseLocationAccessGranted =
+      const coarseLocationAccessGranted =
         statuses[PERMISSIONS.ANDROID.ACCESS_COARSE_LOCATION] ===
         RESULTS.GRANTED;
 
@@ -120,7 +117,25 @@ export const LocationSharingScreen = ({ navigation }: Props) => {
         setLocationEnabled(!locationEnabled);
         showUserLocation();
       }
-    });
+    } catch (error) {
+      logger.error('there was an issue with requestin permissions ' + error);
+    }
+
+    // requestMultiple([
+    //   PERMISSIONS.ANDROID.ACCESS_FINE_LOCATION,
+    //   PERMISSIONS.ANDROID.ACCESS_COARSE_LOCATION,
+    // ]).then(statuses => {
+    //   var fineLocationAccessGranted =
+    //     statuses[PERMISSIONS.ANDROID.ACCESS_FINE_LOCATION] === RESULTS.GRANTED;
+    //   var coarseLocationAccessGranted =
+    //     statuses[PERMISSIONS.ANDROID.ACCESS_COARSE_LOCATION] ===
+    //     RESULTS.GRANTED;
+
+    //   if (fineLocationAccessGranted && coarseLocationAccessGranted) {
+    //     setLocationEnabled(!locationEnabled);
+    //     showUserLocation();
+    //   }
+    // });
   };
 
   return (
@@ -160,8 +175,8 @@ export const LocationSharingScreen = ({ navigation }: Props) => {
           </TouchableOpacity>
           {tooltipVisible && (
             <View style={styles.tooltip}>
-              <Text>Lat: {latText}</Text>
-              <Text>Lng: {lngText}</Text>
+              <Text>Lat: {lat}</Text>
+              <Text>Lng: {lng}</Text>
             </View>
           )}
         </View>
