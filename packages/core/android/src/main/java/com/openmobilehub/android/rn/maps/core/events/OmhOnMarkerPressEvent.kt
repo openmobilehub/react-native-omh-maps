@@ -2,6 +2,7 @@ package com.openmobilehub.android.rn.maps.core.events
 
 import com.facebook.react.bridge.Arguments
 import com.facebook.react.bridge.WritableMap
+import com.facebook.react.uimanager.events.Event
 import com.openmobilehub.android.maps.core.presentation.models.OmhCoordinate
 import com.openmobilehub.android.rn.maps.core.extensions.toWritableMap
 
@@ -9,7 +10,7 @@ class OmhOnMarkerPressEvent(
     surfaceId: Int,
     viewId: Int,
     val position: OmhCoordinate
-) : OmhBaseEvent(surfaceId, viewId) {
+) : Event<OmhOnMarkerPressEvent>(surfaceId, viewId) {
     override fun getEventName() = NAME
 
     override fun getEventData(): WritableMap {
@@ -19,7 +20,7 @@ class OmhOnMarkerPressEvent(
     }
 
     companion object : OmhBaseEventCompanion {
-        override val NAME = "topPress"
-        override val REGISTRATION_NAME = "onPress"
+        override val NAME = "topMarkerPress"
+        override val REGISTRATION_NAME = "onMarkerPress"
     }
 }

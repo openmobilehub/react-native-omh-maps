@@ -19,13 +19,12 @@ import { OmhMapsAzureMapsProvider } from '@omh/react-native-maps-plugin-azuremap
 import { OmhMapsGooglemapsProvider } from '@omh/react-native-maps-plugin-googlemaps';
 import { OmhMapsOpenStreetMapProvider } from '@omh/react-native-maps-plugin-openstreetmap';
 
-import OmhMarker from '../../../../packages/core/src/components/marker/OmhMarker';
-import { Anchor } from '../../../../packages/core/src/components/marker/RNOmhMapsMarkerNativeComponent';
-import {
+import OmhMarker, {
   MarkerDragEndEvent,
   MarkerDragEvent,
   MarkerDragStartEvent,
-} from '../../../../packages/core/src/types/OmhMarker';
+} from '../../../../packages/core/src/components/marker/OmhMarker';
+import { Anchor } from '../../../../packages/core/src/components/marker/RNOmhMapsMarkerNativeComponent';
 import soccerBallIcon from '../../assets/img/soccer_ball.bmp';
 import Picker from '../../components/controls/Picker';
 import Slider from '../../components/controls/Slider';
@@ -96,14 +95,15 @@ export const MarkerMapScreen = () => {
   const onCustomizableMarkerDragStart = useCallback(
     (event: MarkerDragStartEvent) => {
       const {
-        position: { latitude, longitude },
-      } = event.nativeEvent;
+          position: { latitude, longitude },
+        } = event.nativeEvent,
+        message = `Customizable marker has started being dragged from: ${formatPosition({ latitude, longitude })}`;
 
-      logger.log(
-        `Customizable marker has started being dragged from: ${formatPosition({ latitude, longitude })}`
-      );
+      logger.log(message);
+
+      showSnackbar(message);
     },
-    [logger]
+    [logger, showSnackbar]
   );
 
   const onCustomizableMarkerDrag = useCallback(
@@ -122,16 +122,17 @@ export const MarkerMapScreen = () => {
   const onCustomizableMarkerDragEnd = useCallback(
     (event: MarkerDragEndEvent) => {
       const {
-        position: { latitude, longitude },
-      } = event.nativeEvent;
+          position: { latitude, longitude },
+        } = event.nativeEvent,
+        message = `Customizable has finished being dragged at: ${formatPosition({ latitude, longitude })}`;
 
-      logger.log(
-        `Customizable has finished being dragged at: ${formatPosition({ latitude, longitude })}`
-      );
+      logger.log(message);
+
+      showSnackbar(message);
 
       setCustomizableMarkerPosition({ latitude, longitude });
     },
-    [logger]
+    [logger, showSnackbar]
   );
 
   const customizableMarkerColorRGB = useMemo(
@@ -181,7 +182,12 @@ export const MarkerMapScreen = () => {
             );
           }}
           width="100%"
-          height="100%">
+          height="100%"
+          // paths={{
+          //   gmsPath: defaultMapProvider.path,
+          //   nonGmsPath: defaultMapProvider.path,
+          // }}
+        >
           {mountCustomizableMarker && (
             <OmhMarker
               title={MarkerIWTitles.CONFIGURABLE_TEST_MARKER}

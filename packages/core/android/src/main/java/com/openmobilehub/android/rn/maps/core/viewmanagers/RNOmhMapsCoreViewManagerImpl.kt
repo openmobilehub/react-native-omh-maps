@@ -16,12 +16,11 @@ import com.facebook.react.uimanager.UIManagerHelper
 import com.openmobilehub.android.maps.core.presentation.interfaces.maps.OmhMap
 import com.openmobilehub.android.maps.core.presentation.interfaces.maps.OmhMarker
 import com.openmobilehub.android.maps.core.presentation.interfaces.maps.OmhOnMarkerDragListener
-import com.openmobilehub.android.maps.core.presentation.interfaces.maps.OmhPolyline
 import com.openmobilehub.android.rn.maps.core.BuildConfig
+import com.openmobilehub.android.maps.core.presentation.interfaces.maps.OmhPolyline
 import com.openmobilehub.android.rn.maps.core.entities.OmhMapEntity
 import com.openmobilehub.android.rn.maps.core.entities.OmhMarkerEntity
 import com.openmobilehub.android.rn.maps.core.entities.OmhPolylineEntity
-import com.openmobilehub.android.rn.maps.core.events.OmhBaseEventCompanion
 import com.openmobilehub.android.rn.maps.core.events.OmhOnCameraIdleEvent
 import com.openmobilehub.android.rn.maps.core.events.OmhOnCameraMoveStartedEvent
 import com.openmobilehub.android.rn.maps.core.events.OmhOnMapLoadedEvent
@@ -296,11 +295,15 @@ class RNOmhMapsCoreViewManagerImpl(private val reactContext: ReactContext) {
         omhMap?.setRotateGesturesEnabled(value)
     }
 
+    fun setMapStyle(view: FragmentContainerView, value: String?) {
+        FragmentUtils.findFragment(view)?.omhMap?.setMapStyle(value)
+    }
+
     companion object {
         const val NAME = OmhMapViewFragment.NAME
 
         val EVENTS: Map<String, Any> =
-            listOf<OmhBaseEventCompanion>(
+            listOf(
                 OmhOnMapReadyEvent,
                 OmhOnMapLoadedEvent,
                 OmhOnCameraIdleEvent,

@@ -48,6 +48,8 @@ export type OmhAnchor = {
   v: number;
 };
 
+export type Percentage = `${number}%`;
+
 /**
  * The type of line join.
  */

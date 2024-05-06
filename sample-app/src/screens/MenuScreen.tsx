@@ -14,6 +14,7 @@ const menuRoutes: Route[] = [
   Route.cameraMap,
   Route.markerMap,
   Route.polylineMap,
+  Route.stylesMap,
   // Route.multipleMaps,
 ];
 

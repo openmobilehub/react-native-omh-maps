@@ -6,7 +6,7 @@ export interface MapProvider {
   path: string;
 }
 
-export type OmhCoordinate = {
+type OmhCoordinate = {
   latitude: number;
   longitude: number;
 };

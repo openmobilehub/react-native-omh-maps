@@ -1,7 +1,6 @@
 import React, { useCallback, useMemo } from 'react';
 import { ViewProps } from 'react-native';
 import RNOmhMapsPolylineNativeComponent from './RNOmhMapsPolylineNativeComponent';
-import { rnResourceIdToAndroidURI } from '../../utils/RNResourceTranscoder';
 import {
   OmhCap,
   OmhCoordinate,
@@ -10,6 +9,7 @@ import {
   OmhSpan,
 } from '../../types/common';
 import { mapCapToNative } from './OmhPolylineHelpers';
+import { resolveResource } from '../../utils/RNResourceTranscoder';
 
 export type OmhCapProps =
   | {
@@ -104,9 +104,7 @@ export const OmhPolyline = ({
 }: OmhPolylineProps) => {
   const nativeSpans = useMemo(() => {
     return spans?.map(omhSpan => {
-      const stamp = omhSpan.stamp
-        ? rnResourceIdToAndroidURI(omhSpan.stamp)
-        : undefined;
+      const stamp = omhSpan.stamp ? resolveResource(omhSpan.stamp) : undefined;
 
       if (omhSpan.type === 'monochromatic') {
         return {

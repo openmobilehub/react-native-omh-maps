@@ -6,6 +6,6 @@
 import { MapProvider } from '@omh/react-native-maps-core';
 
 export const OmhMapsGooglemapsProvider: MapProvider = {
-  name: 'Google Maps',
+  name: 'GoogleMaps',
   path: 'com.openmobilehub.android.maps.plugin.googlemaps.presentation.OmhMapFactoryImpl',
 };

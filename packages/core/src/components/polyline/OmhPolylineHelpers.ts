@@ -1,5 +1,5 @@
 import { OmhCap } from '../../types/common';
-import { rnResourceIdToAndroidURI } from '../../utils/RNResourceTranscoder';
+import { resolveResource } from '../../utils/RNResourceTranscoder';
 
 export const mapCapToNative = (cap?: OmhCap) => {
   if (!cap) {
@@ -10,7 +10,7 @@ export const mapCapToNative = (cap?: OmhCap) => {
     return {
       type: cap.type,
       refWidth: cap.refWidth || 0,
-      icon: rnResourceIdToAndroidURI(cap.icon),
+      icon: resolveResource(cap.icon),
     };
   }
 

@@ -2,12 +2,13 @@ package com.openmobilehub.android.rn.maps.core.events
 
 import com.facebook.react.bridge.Arguments
 import com.facebook.react.bridge.WritableMap
+import com.facebook.react.uimanager.events.Event
 
 class OmhOnCameraMoveStartedEvent(
     surfaceId: Int,
     viewId: Int,
     val reason: Int,
-) : OmhBaseEvent(surfaceId, viewId) {
+) : Event<OmhOnCameraMoveStartedEvent>(surfaceId, viewId) {
     override fun getEventName() = NAME
 
     override fun getEventData(): WritableMap? {

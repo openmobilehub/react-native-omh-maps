@@ -5,14 +5,12 @@ import com.facebook.react.bridge.ReactContext
 import com.facebook.react.bridge.ReadableMap
 import com.facebook.react.common.MapBuilder
 import com.openmobilehub.android.rn.maps.core.entities.OmhMarkerEntity
-import com.openmobilehub.android.rn.maps.core.events.OmhBaseEventCompanion
 import com.openmobilehub.android.rn.maps.core.events.OmhOnMarkerDragEndEvent
 import com.openmobilehub.android.rn.maps.core.events.OmhOnMarkerDragEvent
 import com.openmobilehub.android.rn.maps.core.events.OmhOnMarkerDragStartEvent
 import com.openmobilehub.android.rn.maps.core.events.OmhOnMarkerPressEvent
 import com.openmobilehub.android.rn.maps.core.extensions.toAnchor
 import com.openmobilehub.android.rn.maps.core.extensions.toOmhCoordinate
-import com.openmobilehub.android.rn.maps.core.utils.ColorUtils
 import com.openmobilehub.android.rn.maps.core.utils.DrawableLoader
 import com.openmobilehub.android.rn.maps.core.utils.RNComponentUtils.requirePropertyNotNull
 import com.openmobilehub.android.maps.core.presentation.models.Constants as OmhConstants
@@ -25,6 +23,10 @@ internal object Constants {
 
 @Suppress("TooManyFunctions")
 class RNOmhMapsMarkerViewManagerImpl {
+
+    private var lastBackgroundColor: MutableMap<OmhMarkerEntity, Double> = mutableMapOf()
+    private var lastIconURI: MutableMap<OmhMarkerEntity, String?> = mutableMapOf()
+
     fun createViewInstance(reactContext: ReactContext): OmhMarkerEntity {
         return OmhMarkerEntity(reactContext)
     }
@@ -124,12 +126,19 @@ class RNOmhMapsMarkerViewManagerImpl {
     }
 
     fun setBackgroundColor(entity: OmhMarkerEntity, value: Double) {
-        val color = ColorUtils.toColorInt(value)
+        // since setBackgroundColor & setIcon are mutually exclusive
+        // (overwrite each other) in the OMH SDK, we are caching the values
+        if (lastBackgroundColor[entity] != value) {
+            val color =
+                (0xFF000000L or value.toLong()).toInt() // impute possibly missing bits (RGB instead of ARGB)
 
-        if (entity.isMounted()) {
-            entity.getEntity()!!.setBackgroundColor(color)
-        } else {
-            entity.initialOptions.backgroundColor = color
+            if (entity.isMounted()) {
+                entity.getEntity()!!.setBackgroundColor(color)
+            } else {
+                entity.initialOptions.backgroundColor = color
+            }
+
+            lastBackgroundColor[entity] = value
         }
     }
 
@@ -164,22 +173,26 @@ class RNOmhMapsMarkerViewManagerImpl {
     }
 
     fun setIcon(entity: OmhMarkerEntity, value: ReadableMap?) {
-        if (value == null) {
-            setIconDrawable(entity, null)
-        } else {
-            val uri = value.getString("uri") ?: error("Missing 'uri' property in the icon object")
+        val uri = value?.getString("uri")
 
-            var dimensions: Pair<Int, Int>? = null
-            if (value.hasKey("width") && value.hasKey("height")) {
-                dimensions = value.getInt("width") to value.getInt("height")
+        if (lastIconURI[entity] != uri) {
+            if (uri == null) {
+                setIconDrawable(entity, null)
+            } else {
+                var dimensions: Pair<Int, Int>? = null
+                if (value.hasKey("width") && value.hasKey("height")) {
+                    dimensions = value.getInt("width") to value.getInt("height")
+                }
+
+                DrawableLoader.loadDrawable(
+                    entity,
+                    uri,
+                    { drawable -> setIconDrawable(entity, drawable) },
+                    dimensions
+                )
             }
 
-            DrawableLoader.loadDrawable(
-                entity,
-                uri,
-                { drawable -> setIconDrawable(entity, drawable) },
-              dimensions
-            )
+            lastIconURI[entity] = uri
         }
     }
 
@@ -187,11 +200,11 @@ class RNOmhMapsMarkerViewManagerImpl {
         const val NAME = "RNOmhMapsMarkerView"
 
         val EVENTS: Map<String, Any> =
-            listOf<OmhBaseEventCompanion>(
-                OmhOnMarkerPressEvent,
+            listOf(
                 OmhOnMarkerDragStartEvent,
                 OmhOnMarkerDragEvent,
-                OmhOnMarkerDragEndEvent
+                OmhOnMarkerDragEndEvent,
+                OmhOnMarkerPressEvent
             ).associateBy(
                 { it.NAME },
                 { MapBuilder.of("registrationName", it.REGISTRATION_NAME) }

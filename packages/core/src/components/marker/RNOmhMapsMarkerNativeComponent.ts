@@ -17,6 +17,13 @@ export type Anchor = {
   v: Float;
 };
 
+export type NativePositionEventData = {
+  position: {
+    latitude: Double;
+    longitude: Double;
+  };
+};
+
 /**
  * Properties for the OmhMarker component.
  */
@@ -36,17 +43,15 @@ export interface NativeOmhMarkerProps extends ViewProps {
   isInfoWindowShown?: boolean;
   markerZIndex?: Float; // note: the name is not just zIndex, since this somehow collides with RN's property and fails to compile
   icon?: {
-    uri: string;
+    uri?: string;
     width?: Int32;
     height?: Int32;
   };
   consumeMarkerClicks?: boolean;
-  onPress?: DirectEventHandler<{
-    consumed: boolean;
-  }>;
-  onDragStart?: DirectEventHandler<NativeOmhCoordinate>;
-  onDrag?: DirectEventHandler<NativeOmhCoordinate>;
-  onDragEnd?: DirectEventHandler<NativeOmhCoordinate>;
+  onMarkerPress?: DirectEventHandler<NativePositionEventData>;
+  onDragStart?: DirectEventHandler<NativePositionEventData>;
+  onDrag?: DirectEventHandler<NativePositionEventData>;
+  onDragEnd?: DirectEventHandler<NativePositionEventData>;
 }
 
 export type RNOmhMapsMarkerNativeComponent =
