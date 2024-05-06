@@ -120,22 +120,6 @@ export const LocationSharingScreen = ({ navigation }: Props) => {
     } catch (error) {
       logger.error('there was an issue with requestin permissions ' + error);
     }
-
-    // requestMultiple([
-    //   PERMISSIONS.ANDROID.ACCESS_FINE_LOCATION,
-    //   PERMISSIONS.ANDROID.ACCESS_COARSE_LOCATION,
-    // ]).then(statuses => {
-    //   var fineLocationAccessGranted =
-    //     statuses[PERMISSIONS.ANDROID.ACCESS_FINE_LOCATION] === RESULTS.GRANTED;
-    //   var coarseLocationAccessGranted =
-    //     statuses[PERMISSIONS.ANDROID.ACCESS_COARSE_LOCATION] ===
-    //     RESULTS.GRANTED;
-
-    //   if (fineLocationAccessGranted && coarseLocationAccessGranted) {
-    //     setLocationEnabled(!locationEnabled);
-    //     showUserLocation();
-    //   }
-    // });
   };
 
   return (
