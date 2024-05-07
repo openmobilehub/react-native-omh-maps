@@ -8,12 +8,12 @@ import {
   OmhMapViewRef,
 } from '@omh/react-native-maps-core';
 
-import { PanelButton } from '../../components/PanelButton';
-import { PanelCheckbox } from '../../components/PanelCheckbox';
+import { PanelButton } from '../../components/controls/PanelButton';
 import useSnackbar from '../../hooks/useSnackbar';
 import { demoStyles } from '../../styles/demoStyles';
 import { Constants } from '../../utils/Constants';
 import { isFeatureSupported } from '../../utils/SupportUtils';
+import { PanelCheckbox } from '../../components/controls/PanelCheckbox';
 
 const getSupportedFeatures = (omhMapRef: OmhMapViewRef | null) => {
   const mapProvider = omhMapRef?.getProviderName();

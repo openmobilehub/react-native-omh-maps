@@ -17,7 +17,7 @@ import { getRandomArbitrary } from '../../utils/mathHelpers';
 import { demoStyles } from '../../styles/demoStyles';
 import { rgbToInt } from '../../utils/converters';
 import convert from 'color-convert';
-import { PanelButton } from '../../components/PanelButton';
+import { PanelButton } from '../../components/controls/PanelButton';
 import useSnackbar from '../../hooks/useSnackbar';
 import useLogger from '../../hooks/useLogger';
 import { Constants } from '../../utils/Constants';
