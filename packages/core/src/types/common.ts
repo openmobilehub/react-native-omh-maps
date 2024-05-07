@@ -72,59 +72,11 @@ export type OmhPatternItem =
       length: number;
     };
 
-/**
- * A tag, which can be of any type.
- */
+export type OmhMapProviderVariant = string;
+
 export type OmhTag = any;
 
-/**
- * Common properties for the OmhSpan types.
- */
-type OmhSpanCommon = {
-  /** The number of segments in the span. */
-  segments: number;
-  /** The stamp icon for the span. */
-  stamp?: number;
+export type MapProvider = {
+  name: string;
+  path: string;
 };
-
-/**
- * Properties for a monochromatic OmhSpan.
- */
-type OmhMonochromaticSpan = {
-  /** The type of the span. */
-  type: 'monochromatic';
-  /** The color of the span. */
-  color: number;
-};
-
-/**
- * Properties for a gradient OmhSpan.
- */
-type OmhGradientSpan = {
-  /** The type of the span. */
-  type: 'gradient';
-  /** The starting color of the gradient. */
-  fromColor: number;
-  /** The ending color of the gradient. */
-  toColor: number;
-};
-
-/**
- * The OmhSpan type, which can be either monochromatic or gradient.
- */
-export type OmhSpan = OmhSpanCommon & (OmhMonochromaticSpan | OmhGradientSpan);
-
-/**
- * Cap types for polyline.
- */
-export type OmhCap =
-  | {
-      type: 'butt' | 'round' | 'square';
-    }
-  | {
-      type: 'custom';
-      icon: number;
-      refWidth?: number;
-    };
-
-export type OmhMapProviderVariant = string;

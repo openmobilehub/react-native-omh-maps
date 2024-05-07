@@ -1,5 +1,5 @@
-import { OmhCap } from '../../types/common';
 import { resolveResource } from '../../utils/RNResourceTranscoder';
+import { OmhCap } from './OmhPolyline.types';
 
 export const mapCapToNative = (cap?: OmhCap) => {
   if (!cap) {

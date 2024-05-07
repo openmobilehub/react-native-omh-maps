@@ -27,6 +27,7 @@
     "@react-navigation/native": "^6.1.17",
     "@react-navigation/native-stack": "^6.9.26",
     "color-convert": "^2.0.1",
+    "react-native-maps": "^1.15.1",
     "react-native-paper": "^5.12.3",
     "react-native-permissions": "^4.1.5",
     "react-native-picker-select": "^9.1.3",
