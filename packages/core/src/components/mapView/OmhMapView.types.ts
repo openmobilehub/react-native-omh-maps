@@ -1,9 +1,5 @@
-import { ViewProps, ViewStyle } from 'react-native';
-import {
-  OmhCoordinate,
-  OmhMapProviderVariant,
-  Percentage,
-} from '../../types/common';
+import { ViewProps } from 'react-native';
+import { OmhCoordinate, OmhMapProviderVariant } from '../../types/common';
 
 /**
  * Reason for the camera movement on the map.
@@ -22,17 +18,11 @@ export type OmhSnapshotFormat = 'png' | 'jpg' | 'base64';
 /**
  * The OMH Map View properties.
  */
-export type OmhMapViewProps = Omit<ViewProps, 'style'> & {
+export type OmhMapViewProps = ViewProps & {
   /** The scale factor of the map. */
   scaleFactor?: number;
-  /** The style to be applied to the map container */
-  style?: Omit<ViewStyle, 'width' | 'height'> | null;
   /** The JSON map style */
   mapStyle?: string | object;
-  /** The width and height of the map */
-  width: number | Percentage;
-  /** The width and height of the map */
-  height: number | Percentage;
   /** If true, rotation is enabled on the map. */
   rotateEnabled?: boolean;
   /** If true, zoom is enabled on the map. */
@@ -49,12 +39,6 @@ export type OmhMapViewProps = Omit<ViewProps, 'style'> & {
   onMyLocationClicked?: () => void;
   /** Callback invoked when the map camera starts to move */
   onCameraMoveStarted?: (reason: OmhCameraMoveStartedReason) => void;
-  /**
-   * Map entities to be shown inside the map.
-   *
-   * **Note:** only OMH Map entities are allowed. Non-map children will be ignored.
-   */
-  children?: React.ReactNode;
 };
 
 /**

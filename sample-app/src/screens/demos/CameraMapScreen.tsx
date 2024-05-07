@@ -124,8 +124,6 @@ export const CameraMapScreen = () => {
             onMapLoaded={handleMapLoaded}
             onCameraIdle={handleCameraIdle}
             onCameraMoveStarted={handleCameraMoveStarted}
-            width={`100%`}
-            height={`100%`}
           />
         </View>
         <View style={demoStyles.demoControlsScrollViewContainer}>

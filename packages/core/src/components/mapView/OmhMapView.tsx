@@ -6,7 +6,7 @@ import {
   View,
   findNodeHandle,
 } from 'react-native';
-import NativeOmhMapsCoreModule from '../../NativeOmhMapsCoreModule';
+import NativeOmhMapsCoreModule from '../../modules/core/NativeOmhMapsCoreModule';
 import RNOmhMapsCoreViewNativeComponent from './RNOmhMapsCoreViewNativeComponent';
 import {
   OmhCameraMoveStartedReason,
@@ -14,6 +14,7 @@ import {
   OmhMapViewRef,
   OmhSnapshotFormat,
 } from './OmhMapView.types';
+import { mergeStyles } from '../../utils/styleHelpers';
 
 enum MapErrors {
   MAP_NOT_IN_TREE_YET = 'OmhMap is not mounted in the RN view tree yet.',
@@ -27,8 +28,6 @@ export const OmhMapView = forwardRef<OmhMapViewRef, OmhMapViewProps>(
   (
     {
       style,
-      width,
-      height,
       onMapLoaded,
       children,
       zoomEnabled,
@@ -44,6 +43,9 @@ export const OmhMapView = forwardRef<OmhMapViewRef, OmhMapViewProps>(
   ) => {
     const [isMapReady, setIsMapReady] = useState(false);
     const [componentSize, setComponentSize] = useState({ width: 0, height: 0 });
+
+    const mergedStyles = mergeStyles(style);
+    const { width, height, ...restStyles } = mergedStyles || {};
 
     const nativeComponentRef = React.useRef<
       typeof RNOmhMapsCoreViewNativeComponent | null
@@ -144,17 +146,14 @@ export const OmhMapView = forwardRef<OmhMapViewRef, OmhMapViewProps>(
           // RN needs to calculate the actual size of the container (i.e., the available size)
           const { width: laidOutWidth, height: laidOutHeight } =
             event.nativeEvent.layout;
-
           setComponentSize({ width: laidOutWidth, height: laidOutHeight });
         }}
         style={[
           styles.mapContainer,
+          restStyles,
           {
-            ...style,
-            // below: since the native child component does not impose proper size when in controlled size mode,
-            // always provide fallback values that fill the available space by default
-            width: width ?? '100%',
-            height: height ?? '100%',
+            width: width || '100%',
+            height: height || '100%',
           },
         ]}>
         <RNOmhMapsCoreViewNativeComponent

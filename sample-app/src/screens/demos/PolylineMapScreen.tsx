@@ -378,11 +378,7 @@ export const PolylineMapScreen = () => {
   return (
     <View style={demoStyles.rootContainer}>
       <View style={demoStyles.mapContainer}>
-        <OmhMapView
-          ref={omhMapRef}
-          width="100%"
-          height="100%"
-          onMapReady={handleMapReady}>
+        <OmhMapView ref={omhMapRef} onMapReady={handleMapReady}>
           <OmhPolyline
             points={points}
             clickable={isClickable}

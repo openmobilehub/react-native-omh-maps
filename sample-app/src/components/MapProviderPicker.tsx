@@ -3,9 +3,8 @@ import { View, ViewProps } from 'react-native';
 import { useTheme } from 'react-native-paper';
 import RNPickerSelect from 'react-native-picker-select';
 
-import { OmhMapsModule } from '@omh/react-native-maps-core';
+import { OmhMapsModule, MapProvider } from '@omh/react-native-maps-core';
 
-import { MapProvider } from '../../../packages/core/src/NativeOmhMapsCoreModule';
 import useLogger from '../hooks/useLogger';
 import ControlParagraph from './controls/ControlParagraph';
 

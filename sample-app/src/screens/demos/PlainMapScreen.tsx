@@ -12,7 +12,6 @@ import { Constants } from '../../utils/Constants';
 
 export const PlainMapScreen = () => {
   const logger = useLogger('PlainMapScreen');
-  // const defaultMapProvider = useChosenMapProvider();
 
   const [width, setWidth] = useState(100);
   const [height, setHeight] = useState(100);
@@ -68,13 +67,10 @@ export const PlainMapScreen = () => {
               15.0
             );
           }}
-          style={demoSizeModified ? styles.borderedView : null}
-          width={`${width}%`}
-          height={`${height}%`}
-          // paths={{
-          //   gmsPath: provider.path,
-          //   nonGmsPath: provider.path,
-          // }}
+          style={[
+            { height: `${height}%`, width: `${width}%` },
+            demoSizeModified ? styles.borderedView : null,
+          ]}
         />
       </View>
 

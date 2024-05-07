@@ -134,8 +134,6 @@ export const LocationSharingScreen = ({ navigation }: Props) => {
           onCameraMoveStarted={handleCameraMoveStarted}
           myLocationEnabled={locationEnabled}
           onMyLocationClicked={handleLocationClicked}
-          width={`100%`}
-          height={`100%`}
         />
         <FAB
           onPress={handleFabClicked}

@@ -48,8 +48,6 @@ export type OmhAnchor = {
   v: number;
 };
 
-export type Percentage = `${number}%`;
-
 /**
  * The type of line join.
  */
@@ -79,4 +77,9 @@ export type OmhTag = any;
 export type MapProvider = {
   name: string;
   path: string;
+};
+
+export type Paths = {
+  gmsPath: string;
+  nonGmsPath: string;
 };

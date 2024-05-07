@@ -73,8 +73,6 @@ export const StylesMapScreen = () => {
         <OmhMapView
           ref={mapViewRef}
           onMapLoaded={handleMapLoaded}
-          width={`100%`}
-          height={`100%`}
           mapStyle={mapStyle}
         />
       </View>

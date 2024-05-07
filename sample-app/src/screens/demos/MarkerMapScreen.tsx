@@ -180,14 +180,7 @@ export const MarkerMapScreen = () => {
               Constants.Maps.GREENWICH_COORDINATE,
               15.0
             );
-          }}
-          width="100%"
-          height="100%"
-          // paths={{
-          //   gmsPath: defaultMapProvider.path,
-          //   nonGmsPath: defaultMapProvider.path,
-          // }}
-        >
+          }}>
           {mountCustomizableMarker && (
             <OmhMarker
               title={MarkerIWTitles.CONFIGURABLE_TEST_MARKER}
