@@ -3,7 +3,7 @@ name: CD
 on:
   push:
     branches:
-      - feat/OMHD-168-interactions-and-gestures #TODO: Change it
+      - main
 
 # GITHUB_TOKEN needs to be granted the permissions required to make a Pages deployment
 permissions:
@@ -58,8 +58,6 @@ jobs:
         uses: actions/deploy-pages@v4
 
   sample-app-android:
-    #TODO: Change it
-    if: false 
     name: Build and publish Android app
     runs-on: ubuntu-latest
 
