@@ -1,19 +1,19 @@
-import { MapProvider, Providers } from '../../types/common';
+import { OmhMapProvider, Providers } from '../../types/common';
 import { IOmhMapsModule } from './OmhMapsModule.types';
 
 const MAP_PROVIDERS = [
   {
     name: 'Apple',
-    path: 'apple',
+    path: 'apple', // path not used in iOS
   },
   {
     name: 'Google',
-    path: 'google',
+    path: 'google', // path not used in iOS
   },
 ];
 
-class OmhMapModuleClass implements IOmhMapsModule {
-  private selectedMapProvider: MapProvider = this.getDefaultMapProvider();
+class OmhMapModuleImpl implements IOmhMapsModule {
+  private selectedMapProvider: OmhMapProvider = this.getDefaultMapProvider();
 
   getSelectedMapProvider() {
     return this.selectedMapProvider;
@@ -36,4 +36,4 @@ class OmhMapModuleClass implements IOmhMapsModule {
   }
 }
 
-export const OmhMapsModule = new OmhMapModuleClass();
+export const OmhMapsModule = new OmhMapModuleImpl();

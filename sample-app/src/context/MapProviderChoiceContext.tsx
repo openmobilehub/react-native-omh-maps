@@ -1,10 +1,10 @@
 import React, { PropsWithChildren, createContext } from 'react';
 
-import { MapProvider, OmhMapsModule } from '@omh/react-native-maps-core';
+import { OmhMapProvider, OmhMapsModule } from '@omh/react-native-maps-core';
 
 export type MapProviderContextType = {
-  mapProvider: MapProvider;
-  changeMapProvider: (mapProvider: MapProvider) => void;
+  mapProvider: OmhMapProvider;
+  changeMapProvider: (mapProvider: OmhMapProvider) => void;
 };
 
 export const MapProviderChoiceContext = createContext<MapProviderContextType>({
@@ -15,7 +15,7 @@ export const MapProviderChoiceContext = createContext<MapProviderContextType>({
 export function MapProviderChoiceContextProvider({
   children,
 }: PropsWithChildren<{}>) {
-  const [mapProvider, setMapProvider] = React.useState<MapProvider>(
+  const [mapProvider, setMapProvider] = React.useState<OmhMapProvider>(
     OmhMapsModule.getDefaultMapProvider()
   );
 

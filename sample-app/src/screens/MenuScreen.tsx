@@ -2,7 +2,7 @@ import React from 'react';
 import { ScrollView, StyleSheet } from 'react-native';
 import { useTheme } from 'react-native-paper';
 
-import { MapProvider, OmhMapsModule } from '@omh/react-native-maps-core';
+import { OmhMapProvider, OmhMapsModule } from '@omh/react-native-maps-core';
 
 import Route, { RoutesDescriptions } from '../Routes';
 import MapProviderPicker from '../components/MapProviderPicker';
@@ -29,8 +29,7 @@ export const MenuScreen = () => {
   const theme = useTheme();
   const { changeMapProvider, mapProvider } = useMapProviderChoiceContext();
 
-  const handleMapProviderChange = (newProvider: MapProvider) => {
-    console.log('🚀 ~ handleMapProviderChange ~ newProvider:', newProvider);
+  const handleMapProviderChange = (newProvider: OmhMapProvider) => {
     changeMapProvider(newProvider);
 
     OmhMapsModule.initialize({

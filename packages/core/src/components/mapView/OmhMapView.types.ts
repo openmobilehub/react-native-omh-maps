@@ -1,5 +1,5 @@
 import { ViewProps } from 'react-native';
-import { OmhCoordinate, OmhMapProviderVariant } from '../../types/common';
+import { OmhCoordinate, OmhMapProviderName } from '../../types/common';
 
 /**
  * Reason for the camera movement on the map.
@@ -50,7 +50,7 @@ export type OmhMapViewRef = {
     coordinate: OmhCoordinate,
     zoomLevel: number
   ) => Promise<void>;
-  getProviderName: () => OmhMapProviderVariant;
+  getProviderName: () => OmhMapProviderName;
   takeSnapshot: (resultFormat: OmhSnapshotFormat) => Promise<string>;
   getCurrentLocation: () => Promise<OmhCoordinate>;
 };

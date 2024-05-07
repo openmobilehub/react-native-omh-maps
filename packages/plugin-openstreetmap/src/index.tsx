@@ -3,9 +3,9 @@
  * @module @omh/react-native-maps-plugin-openstreetmap
  */
 
-import { MapProvider } from '@omh/react-native-maps-core';
+import { OmhMapProvider } from '@omh/react-native-maps-core';
 
-export const OmhMapsOpenStreetMapProvider: MapProvider = {
+export const OmhMapsOpenStreetMapProvider: OmhMapProvider = {
   name: 'OpenStreetMap',
   path: 'com.openmobilehub.android.maps.plugin.openstreetmap.presentation.OmhMapFactoryImpl',
 };

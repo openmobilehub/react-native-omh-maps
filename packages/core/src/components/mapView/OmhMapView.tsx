@@ -152,6 +152,8 @@ export const OmhMapView = forwardRef<OmhMapViewRef, OmhMapViewProps>(
           styles.mapContainer,
           restStyles,
           {
+            // below: since the native child component does not impose proper size when in controlled size mode,
+            // always provide fallback values that fill the available space by default
             width: width || '100%',
             height: height || '100%',
           },

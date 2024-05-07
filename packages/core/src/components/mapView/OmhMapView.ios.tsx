@@ -9,11 +9,15 @@ export const OmhMapView = forwardRef<OmhMapViewRef, OmhMapViewProps>(
     const mergedStyles = mergeStyles(style);
     const { width, height, ...restStyles } = mergedStyles || {};
 
-    const provider = OmhMapsModule.getSelectedMapProvider();
+    // If undefined, Apple provider will be used
+    const provider =
+      OmhMapsModule.getSelectedMapProvider().name === 'Google'
+        ? 'google'
+        : undefined;
 
     return (
       <MapView
-        provider={provider.name === 'Google' ? 'google' : undefined}
+        provider={provider}
         style={[
           { height: height || '100%', width: width || '100%' },
           restStyles,

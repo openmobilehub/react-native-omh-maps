@@ -1,9 +1,11 @@
-import { ViewStyle } from 'react-native';
+import { StyleProp, ViewStyle } from 'react-native';
 
-export const mergeStyles = (styles: any): ViewStyle | undefined => {
+export const mergeStyles = (
+  styles: StyleProp<ViewStyle>
+): ViewStyle | undefined => {
   const isArray = Array.isArray(styles);
 
-  if (!isArray) return styles;
+  if (!isArray) return styles as ViewStyle;
 
   const filteredStyles = styles.filter(
     style => style !== null && style !== undefined

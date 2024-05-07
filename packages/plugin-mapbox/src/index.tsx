@@ -3,9 +3,9 @@
  * @module @omh/react-native-maps-plugin-mapbox
  */
 
-import { MapProvider } from '@omh/react-native-maps-core';
+import { OmhMapProvider } from '@omh/react-native-maps-core';
 
-export const OmhMapsMapboxProvider: MapProvider = {
+export const OmhMapsMapboxProvider: OmhMapProvider = {
   name: 'Mapbox',
   path: 'com.openmobilehub.android.maps.plugin.mapbox.presentation.OmhMapFactoryImpl',
 };

@@ -11,7 +11,7 @@ type OmhCoordinate = {
   longitude: number;
 };
 
-export type Paths = {
+type Paths = {
   gmsPath: string;
   nonGmsPath: string;
 };

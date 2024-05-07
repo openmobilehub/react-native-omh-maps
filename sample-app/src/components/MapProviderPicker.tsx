@@ -3,17 +3,17 @@ import { View, ViewProps } from 'react-native';
 import { useTheme } from 'react-native-paper';
 import RNPickerSelect from 'react-native-picker-select';
 
-import { OmhMapsModule, MapProvider } from '@omh/react-native-maps-core';
+import { OmhMapsModule, OmhMapProvider } from '@omh/react-native-maps-core';
 
 import useLogger from '../hooks/useLogger';
 import ControlParagraph from './controls/ControlParagraph';
 
 export type MapProviderPickerProps = {
-  onChange: (provider: MapProvider) => void;
+  onChange: (provider: OmhMapProvider) => void;
   style?: ViewProps['style'];
   centeredLabel?: boolean;
   label?: string;
-  defaultProvider?: MapProvider | (() => MapProvider);
+  defaultProvider?: OmhMapProvider | (() => OmhMapProvider);
 };
 
 export default function MapProviderPicker({
@@ -30,7 +30,8 @@ export default function MapProviderPicker({
     []
   );
 
-  const [provider, setProvider] = React.useState<MapProvider>(defaultProvider);
+  const [provider, setProvider] =
+    React.useState<OmhMapProvider>(defaultProvider);
 
   return (
     <View style={style}>

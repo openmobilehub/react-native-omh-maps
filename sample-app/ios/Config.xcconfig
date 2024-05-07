@@ -1,0 +1,8 @@
+//
+//  Config.xcconfig
+//  RnOmhMapsExample
+//
+//  Created by Maciej Budzinski on 07/05/2024.
+//
+
+#include? "Secrets.xcconfig"

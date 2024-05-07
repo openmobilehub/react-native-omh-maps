@@ -30,6 +30,7 @@ DerivedData
 project.xcworkspace
 .bundle
 **/.xcode.env.local
+**/Secrets.xcconfig
 
 # Android/IJ
 #

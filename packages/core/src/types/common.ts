@@ -70,16 +70,28 @@ export type OmhPatternItem =
       length: number;
     };
 
-export type OmhMapProviderVariant = string;
+/**
+ * A provider name type.
+ */
+export type OmhMapProviderName = string;
 
+/**
+ * A tag for a map element.
+ */
 export type OmhTag = any;
 
-export type MapProvider = {
-  name: string;
+/**
+ * A map provider, used to initialize the map view.
+ */
+export type OmhMapProvider = {
+  name: OmhMapProviderName;
   path: string;
 };
 
+/**
+ * A map provider pair.
+ */
 export type Providers = {
-  gmsProvider: MapProvider;
-  nonGmsProvider: MapProvider;
+  gmsProvider: OmhMapProvider;
+  nonGmsProvider: OmhMapProvider;
 };

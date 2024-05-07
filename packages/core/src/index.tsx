@@ -18,4 +18,4 @@ export * from './modules/core/OmhMapsModule.types';
 
 export * from './types/common';
 
-import './types.d.ts';
+import './types.d.ts'; // provides react-native resolveAssetSource typings to consumers of the library

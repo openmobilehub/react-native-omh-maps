@@ -8,7 +8,14 @@
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
-  [GMSServices provideAPIKey:@"AIzaSyDqH-r1HRO3cJ8zpb1F5sq3b7WUIbaCfZw"];
+  NSBundle *mainBundle = [NSBundle mainBundle];
+  NSString *apiKey = [mainBundle objectForInfoDictionaryKey:@"GoogleMapsAPIKey"];
+  
+  if (apiKey) {
+    [GMSServices provideAPIKey:apiKey];
+  } else {
+    NSLog(@"Google Maps API key is missing. Make sure you have followed the installation instructions.");
+  }
   
   self.moduleName = @"RnOmhMapsExample";
   // You can add your custom initial props in the dictionary below.
