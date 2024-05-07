@@ -85,6 +85,20 @@ const referencePolygonOutline: OmhCoordinate[] = [
   { latitude: -30.0, longitude: 30.0 },
 ];
 
+const holesOutlines: OmhCoordinate[][] = [
+  [
+    { latitude: -20.0, longitude: -10.0 },
+    { latitude: -20.0, longitude: 0.0 },
+    { latitude: -10.0, longitude: 0.0 },
+    { latitude: -10.0, longitude: -10.0 },
+  ],
+  [
+    { latitude: 0.0, longitude: 5.0 },
+    { latitude: 0.0, longitude: 10.0 },
+    { latitude: 10.0, longitude: 7.5 },
+  ],
+];
+
 const PolygonMessages = {
   CUSTOMIZABLE_POLYLINE: 'Customizable Polygon Pressed',
   REFERENCE_POLYLINE: 'Reference Polygon pressed',
@@ -190,6 +204,7 @@ export const PolygonMapScreen = () => {
   const omhMapRef = useRef<OmhMapViewRef | null>(null);
   const [outline, setOutline] = useState(customizablePolygonOutline);
   const [isClickable, setIsClickable] = useState(false);
+  const [withHoles, setWithHoles] = useState(false);
   const [strokeWidth, setStrokeWidth] = useState(defaultWidth);
   const [strokeColorHue, setStrokeColorHue] = useState(0);
   const [fillColorHue, setFillColorHue] = useState(100);
@@ -216,6 +231,14 @@ export const PolygonMapScreen = () => {
     () => rgbToInt(convert.hsv.rgb([fillColorHue, 100, 100])),
     [fillColorHue]
   );
+
+  const holes = useMemo(() => {
+    if (withHoles) {
+      return holesOutlines;
+    }
+
+    return [];
+  }, [withHoles]);
 
   const handleRandomizeOutlineButtonPress = () => {
     const getNegativeRandomizedValue = () => {
@@ -282,6 +305,7 @@ export const PolygonMapScreen = () => {
             clickable={isClickable}
             strokeColor={strokeColorRGB}
             fillColor={fillColorRGB}
+            holes={holes}
             strokeWidth={strokeWidth}
             isVisible={isVisible}
             zIndex={zIndex}
@@ -322,6 +346,11 @@ export const PolygonMapScreen = () => {
             label="Clickable"
             value={isClickable}
             onValueChange={setIsClickable}
+          />
+          <PanelCheckbox
+            label="Holes"
+            value={withHoles}
+            onValueChange={setWithHoles}
           />
           <Slider
             label="Stroke Width"

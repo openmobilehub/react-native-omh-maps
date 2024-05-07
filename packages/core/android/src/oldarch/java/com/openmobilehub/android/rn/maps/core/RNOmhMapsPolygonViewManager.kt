@@ -39,6 +39,11 @@ class RNOmhMapsPolygonViewManager :
     omhMapPolygonComponentManagerImpl.setFillColor(view, value)
   }
 
+  @ReactProp(name = "holes")
+  fun setHoles(view: OmhPolygonEntity, value: ReadableArray?) {
+    omhMapPolygonComponentManagerImpl.setHoles(view, value)
+  }
+
   @ReactProp(name = "strokeWidth")
   fun setStrokeWidth(view: OmhPolygonEntity, value: Float) {
     omhMapPolygonComponentManagerImpl.setStrokeWidth(view, value)

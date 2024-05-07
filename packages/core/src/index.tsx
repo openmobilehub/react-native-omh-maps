@@ -14,6 +14,7 @@ export * from './components/polyline/OmhPolyline';
 export * from './components/polyline/OmhPolyline.types';
 
 export * from './components/polygon/OmhPolygon';
+export * from './components/polygon/OmhPolygon.types';
 
 export * from './modules/core/OmhMapsModule';
 export * from './modules/core/OmhMapsModule.types';

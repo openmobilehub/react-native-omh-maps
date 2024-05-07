@@ -16,6 +16,15 @@ fun ReadableArray.toPoints(): List<OmhCoordinate> {
   return points
 }
 
+fun ReadableArray.toListOfPoints(): List<List<OmhCoordinate>> {
+  val listOfPoints = mutableListOf<List<OmhCoordinate>>()
+  for (i in 0 until size()) {
+    val item = getArray(i)
+    listOfPoints.add(item.toPoints())
+  }
+  return listOfPoints
+}
+
 fun ReadableArray.toPattern(): List<OmhPatternItem> {
   val patterns = mutableListOf<OmhPatternItem?>()
   for (i in 0 until size()) {

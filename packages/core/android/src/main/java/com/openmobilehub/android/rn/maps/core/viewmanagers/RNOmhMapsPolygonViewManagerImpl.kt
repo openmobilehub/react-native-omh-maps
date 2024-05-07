@@ -6,6 +6,7 @@ import com.facebook.react.common.MapBuilder
 import com.openmobilehub.android.rn.maps.core.entities.OmhPolygonEntity
 import com.openmobilehub.android.rn.maps.core.events.OmhBaseEventCompanion
 import com.openmobilehub.android.rn.maps.core.events.OmhOnPolygonClickEvent
+import com.openmobilehub.android.rn.maps.core.extensions.toListOfPoints
 import com.openmobilehub.android.rn.maps.core.extensions.toPattern
 import com.openmobilehub.android.rn.maps.core.extensions.toPoints
 import com.openmobilehub.android.rn.maps.core.utils.ColorUtils
@@ -52,6 +53,15 @@ class RNOmhMapsPolygonViewManagerImpl {
       entity.getEntity()?.setFillColor(fillColor) ?: error(NOT_MOUNTED_ERROR)
     } else {
       entity.initialOptions.fillColor = fillColor
+    }
+  }
+
+  fun setHoles(entity: OmhPolygonEntity, value: ReadableArray?) {
+    val holes = value?.toListOfPoints() ?: emptyList()
+    if (entity.isMounted()) {
+      entity.getEntity()?.setHoles(holes) ?: error(NOT_MOUNTED_ERROR)
+    } else {
+      entity.initialOptions.holes = holes
     }
   }
 

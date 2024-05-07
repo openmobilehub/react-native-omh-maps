@@ -23,6 +23,7 @@ export interface NativeOmhPolygonProps extends ViewProps {
   clickable?: boolean;
   strokeColor?: Double; // note: Int32 is too small, there is no Int64, so Double is used
   fillColor?: Double; // note: Int32 is too small, there is no Int64, so Double is used
+  holes?: NativeOmhCoordinate[][];
   strokeWidth?: Float;
   isVisible?: boolean;
   polygonZIndex?: Float; // note: the name is not just zIndex, since this somehow collides with RN's property and fails to compile
