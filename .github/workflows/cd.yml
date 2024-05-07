@@ -12,25 +12,7 @@ permissions:
   id-token: write # to verify the deployment originates from an appropriate source
 
 jobs:
-  # this job sets up the dependencies in the monorepo & caches them and runs first
-  # which speeds up the other jobs, as they will use the cached node_modules
-  setup-monorepo:
-    name: Setup monorepo
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v4
-
-      - name: Setup
-        uses: ./.github/actions/setup
-        with:
-          MAPBOX_SECRET_TOKEN: ${{ secrets.MAPBOX_SECRET_TOKEN }}
-          MAPBOX_PUBLIC_TOKEN: ${{ secrets.MAPBOX_PUBLIC_TOKEN }}
-          GOOGLE_MAPS_API_KEY: ${{ secrets.GOOGLE_MAPS_API_KEY }}
-          AZURE_MAPS_SUBSCRIPTION_KEY: ${{ secrets.AZURE_MAPS_SUBSCRIPTION_KEY }}
-
   build-documentation:
-    needs: setup-monorepo
     # TODO: Fix in https://callstackio.atlassian.net/browse/OMHD-277
     if: false
     name: Build documentation
@@ -76,7 +58,6 @@ jobs:
         uses: actions/deploy-pages@v4
 
   sample-app-android:
-    needs: setup-monorepo
     name: Build and publish Android app
     runs-on: ubuntu-latest
 
@@ -146,58 +127,141 @@ jobs:
           debug: true
           gitReleaseNotes: true
 
-  # sample-app-ios:
-  #   needs: setup-monorepo
-  #   runs-on: macos-14
-  #   env:
-  #     TURBO_CACHE_DIR: .turbo/ios
-  #   steps:
-  #     - name: Checkout
-  #       uses: actions/checkout@v4
+  # Build and publish iOS app is split into two jobs because the App Center step does not support macOS. 
+  build-sample-app-ios:
+    name: Build iOS sample app
+    runs-on: macos-14
+    env:
+      SAMPLE_APP_PATH: 'sample-app/ios'
 
-  #     - name: Setup
-  #       uses: ./.github/actions/setup
-  # with:
-  #   MAPBOX_SECRET_TOKEN: ${{ secrets.MAPBOX_SECRET_TOKEN }}
-  #   MAPBOX_PUBLIC_TOKEN: ${{ secrets.MAPBOX_PUBLIC_TOKEN }}
-  #   GOOGLE_MAPS_API_KEY: ${{ secrets.GOOGLE_MAPS_API_KEY }}
-  #   AZURE_MAPS_SUBSCRIPTION_KEY: ${{ secrets.AZURE_MAPS_SUBSCRIPTION_KEY }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
 
-  #     - name: Cache turborepo for iOS
-  #       uses: actions/cache@v4
-  #       with:
-  #         path: ${{ env.TURBO_CACHE_DIR }}
-  #         key: ${{ runner.os }}-turborepo-ios-${{ hashFiles('yarn.lock') }}
-  #         restore-keys: |
-  #           ${{ runner.os }}-turborepo-ios-
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version-file: .nvmrc
 
-  #     - name: Check turborepo cache for iOS
-  #       run: |
-  #         TURBO_CACHE_STATUS=$(node -p "($(yarn turbo run build:ios --cache-dir="${{ env.TURBO_CACHE_DIR }}" --dry=json)).tasks.find(t => t.task === 'build:ios').cache.status")
+      - name: Cache JS dependencies
+        id: yarn-cache
+        uses: actions/cache@v4
+        with:
+          path: |
+            **/node_modules
+            .yarn/install-state.gz
+          key: ${{ runner.os }}-yarn-${{ hashFiles('yarn.lock') }}-${{ hashFiles('**/package.json', '!node_modules/**') }}
+          restore-keys: |
+            ${{ runner.os }}-yarn-${{ hashFiles('yarn.lock') }}
+            ${{ runner.os }}-yarn-
 
-  #         if [[ $TURBO_CACHE_STATUS == "HIT" ]]; then
-  #           echo "turbo_cache_hit=1" >> $GITHUB_ENV
-  #         fi
+      - name: Install JS dependencies
+        if: steps.yarn-cache.outputs.cache-hit != 'true'
+        run: yarn install --immutable
+        shell: bash
 
-  #     - name: Cache cocoapods
-  #       if: env.turbo_cache_hit != 1
-  #       id: cocoapods-cache
-  #       uses: actions/cache@v4
-  #       with:
-  #         path: |
-  #           **/ios/Pods
-  #         key: ${{ runner.os }}-cocoapods-${{ hashFiles('sample-app/ios/Podfile.lock') }}
-  #         restore-keys: |
-  #           ${{ runner.os }}-cocoapods-
+      - name: Install Gems
+        run: |
+          cd ./sample-app && bundle install
+        shell: bash
 
-  #     - name: Install cocoapods
-  #       if: env.turbo_cache_hit != 1 && steps.cocoapods-cache.outputs.cache-hit != 'true'
-  #       run: |
-  #         cd sample-app/ios
-  #         pod install
-  #       env:
-  #         NO_FLIPPER: 1
+      - name: Cache Pods
+        uses: actions/cache@v4
+        with:
+          path: |
+            **/Pods
+          key: ${{ runner.os }}-pods-${{ hashFiles('**/Podfile.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-pods-
 
-  #     - name: Build example for iOS
-  #       run: |
-  #         yarn turbo run build:ios --cache-dir="${{ env.TURBO_CACHE_DIR }}"
+      - name: Install Pods
+        run: |
+          cd ./sample-app && bundle exec pod install --project-directory=./ios
+        shell: bash
+
+      - name: Install the Apple certificate and provisioning profile
+        env:
+          BUILD_CERTIFICATE_BASE64: ${{ secrets.BUILD_CERTIFICATE_BASE64 }}
+          P12_PASSWORD: ${{ secrets.P12_PASSWORD }}
+          BUILD_PROVISION_PROFILE_BASE64: ${{ secrets.BUILD_PROVISION_PROFILE_BASE64 }}
+          KEYCHAIN_PASSWORD: ${{ secrets.KEYCHAIN_PASSWORD }}
+
+        run: |
+          # create variables
+          CERTIFICATE_PATH=$RUNNER_TEMP/build_certificate.p12
+          PP_PATH=$RUNNER_TEMP/build_pp.mobileprovision
+          KEYCHAIN_PATH=$RUNNER_TEMP/app-signing.keychain-db
+
+          # import certificate and provisioning profile from secrets
+          echo -n "$BUILD_CERTIFICATE_BASE64" | base64 --decode -o $CERTIFICATE_PATH
+          echo -n "$BUILD_PROVISION_PROFILE_BASE64" | base64 --decode -o $PP_PATH
+
+          # create temporary keychain
+          security create-keychain -p "$KEYCHAIN_PASSWORD" $KEYCHAIN_PATH
+          security set-keychain-settings -lut 21600 $KEYCHAIN_PATH
+          security unlock-keychain -p "$KEYCHAIN_PASSWORD" $KEYCHAIN_PATH
+
+          # import certificate to keychain
+          security import $CERTIFICATE_PATH -P "$P12_PASSWORD" -A -t cert -f pkcs12 -k $KEYCHAIN_PATH
+          security set-key-partition-list -S apple-tool:,apple: -k "$KEYCHAIN_PASSWORD" $KEYCHAIN_PATH
+          security list-keychain -d user -s $KEYCHAIN_PATH
+
+          # apply provisioning profile
+          mkdir -p ~/Library/MobileDevice/Provisioning\ Profiles
+          cp $PP_PATH ~/Library/MobileDevice/Provisioning\ Profiles
+
+      - name: Build archive
+        run: |
+          cd ${{ env.SAMPLE_APP_PATH }}
+          xcodebuild -workspace RnOmhMapsExample.xcworkspace \
+          -scheme "RnOmhMapsExample" \
+          -sdk iphoneos \
+          -configuration Release \
+          -destination generic/platform=iOS \
+          -archivePath $RUNNER_TEMP/RnOmhMapsExample.xcarchive \
+          archive
+
+      - name: Export ipa
+        env:
+          EXPORT_OPTIONS_PLIST: ${{ secrets.EXPORT_OPTIONS_PLIST }}
+
+        run: |
+          # create variables
+          EXPORT_OPTS_PATH=$RUNNER_TEMP/ExportOptions.plist
+
+          # import profile lists from secrets
+          echo -n "$EXPORT_OPTIONS_PLIST" | base64 --decode -o $EXPORT_OPTS_PATH
+
+          # extract .ipa
+          xcodebuild -exportArchive -archivePath $RUNNER_TEMP/RnOmhMapsExample.xcarchive -exportOptionsPlist $EXPORT_OPTS_PATH -exportPath $RUNNER_TEMP/build
+
+      - name: Upload artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: RnOmhMapsExample.ipa
+          path: ${{ runner.temp }}/build/RnOmhMapsExample.ipa
+
+  distribute-sample-app-ios:
+    name: Distribute iOS app
+    needs: build-sample-app-ios
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Download artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: RnOmhMapsExample.ipa
+
+      - name: Upload ipa to AppCenter
+        uses: wzieba/AppCenter-Github-Action@v1
+        with:
+          appName: ${{ secrets.APP_CENTER_APP_NAME_IOS }}
+          group: ${{ secrets.APP_CENTER_GROUP }}
+          token: ${{ secrets.APP_CENTER_TOKEN_IOS }}
+          file: RnOmhMapsExample.ipa
+          notifyTesters: true
+          debug: true
+          gitReleaseNotes: true
