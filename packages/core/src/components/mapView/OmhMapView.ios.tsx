@@ -1,4 +1,10 @@
-import React, { forwardRef, useImperativeHandle, useRef } from 'react';
+import React, {
+  forwardRef,
+  useCallback,
+  useImperativeHandle,
+  useMemo,
+  useRef,
+} from 'react';
 import MapView, { Details, Region, SnapshotOptions } from 'react-native-maps';
 import {
   OmhMapViewProps,
@@ -8,19 +14,13 @@ import {
 import { mergeStyles } from '../../utils/styleHelpers';
 import { OmhMapsModule } from '../../modules/core/OmhMapsModule.ios';
 import { OmhCoordinate } from '../../types/common';
-import { getLatitudeDelta, getLongitudeDelta } from './OmhMapViewHelpers';
+import {
+  getLatitudeDelta,
+  getLongitudeDelta,
+  notReadyHandler,
+  notReadyPromiseHandler,
+} from './OmhMapViewHelpers';
 import { LayoutChangeEvent } from 'react-native';
-
-enum MapErrors {
-  MAP_NOT_IN_TREE_YET = 'OmhMap is not mounted in the RN view tree yet.',
-}
-
-const notReadyPromiseHandler = () =>
-  Promise.reject(new Error(MapErrors.MAP_NOT_IN_TREE_YET));
-
-const notReadyHandler = () => {
-  throw new Error(MapErrors.MAP_NOT_IN_TREE_YET);
-};
 
 export const OmhMapView = forwardRef<OmhMapViewRef, OmhMapViewProps>(
   (
@@ -42,7 +42,7 @@ export const OmhMapView = forwardRef<OmhMapViewRef, OmhMapViewProps>(
       null
     );
 
-    const mergedStyles = mergeStyles(style);
+    const mergedStyles = useMemo(() => mergeStyles(style), [style]);
     const { width, height, ...restStyles } = mergedStyles || {};
 
     const provider = OmhMapsModule.getSelectedMapProvider();
@@ -54,7 +54,6 @@ export const OmhMapView = forwardRef<OmhMapViewRef, OmhMapViewProps>(
 
         if (safeMapViewRef === null) {
           return {
-            getViewRefHandle: notReadyHandler,
             getCameraCoordinate: notReadyPromiseHandler,
             setCameraCoordinate: notReadyPromiseHandler,
             getCurrentLocation: notReadyPromiseHandler,
@@ -125,32 +124,35 @@ export const OmhMapView = forwardRef<OmhMapViewRef, OmhMapViewProps>(
       [provider.name]
     );
 
-    const handleRegionChange = (_region: Region, details: Details) => {
-      if (!onCameraMoveStarted) {
-        return;
-      }
+    const handleRegionChange = useCallback(
+      (_region: Region, details: Details) => {
+        if (!onCameraMoveStarted) {
+          return;
+        }
 
-      if (isRegionChangeInProgress.current === true) {
-        return;
-      }
+        if (isRegionChangeInProgress.current === true) {
+          return;
+        }
 
-      isRegionChangeInProgress.current = true;
+        isRegionChangeInProgress.current = true;
 
-      onCameraMoveStarted(details.isGesture ? 'gesture' : 'unknown');
-    };
+        onCameraMoveStarted(details.isGesture ? 'gesture' : 'unknown');
+      },
+      [onCameraMoveStarted]
+    );
 
-    const handleCameraIdle = () => {
+    const handleCameraIdle = useCallback(() => {
       isRegionChangeInProgress.current = false;
 
       onCameraIdle?.();
-    };
+    }, [onCameraIdle]);
 
-    const handleLayout = (event: LayoutChangeEvent) => {
+    const handleLayout = useCallback((event: LayoutChangeEvent) => {
       mapDimensions.current = {
         width: event.nativeEvent.layout.width,
         height: event.nativeEvent.layout.height,
       };
-    };
+    }, []);
 
     return (
       <MapView

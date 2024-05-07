@@ -8,3 +8,14 @@ export const getLongitudeDelta = (zoomLevel: number, width: number) => {
 export const getLatitudeDelta = (zoomLevel: number, height: number) => {
   return ((360 / Math.pow(2, zoomLevel)) * height) / 256;
 };
+
+export enum MapErrors {
+  MAP_NOT_IN_TREE_YET = 'OmhMapView is not mounted in the RN view tree yet.',
+}
+
+export const notReadyPromiseHandler = () =>
+  Promise.reject(new Error(MapErrors.MAP_NOT_IN_TREE_YET));
+
+export const notReadyHandler = () => {
+  throw new Error(MapErrors.MAP_NOT_IN_TREE_YET);
+};

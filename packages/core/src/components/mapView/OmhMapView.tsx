@@ -15,10 +15,11 @@ import {
   OmhSnapshotFormat,
 } from './OmhMapView.types';
 import { mergeStyles } from '../../utils/styleHelpers';
-
-enum MapErrors {
-  MAP_NOT_IN_TREE_YET = 'OmhMap is not mounted in the RN view tree yet.',
-}
+import {
+  MapErrors,
+  notReadyHandler,
+  notReadyPromiseHandler,
+} from './OmhMapViewHelpers';
 
 /**
  * The OMH Map View component. Actual implementation is picked based on the platform capabilities (GMS or non-GMS)
@@ -72,13 +73,6 @@ export const OmhMapView = forwardRef<OmhMapViewRef, OmhMapViewProps>(
         const nodeHandle = getViewRefHandle();
 
         if (nodeHandle === null) {
-          const notReadyPromiseHandler = () =>
-            Promise.reject(new Error(MapErrors.MAP_NOT_IN_TREE_YET));
-
-          const notReadyHandler = () => {
-            throw new Error(MapErrors.MAP_NOT_IN_TREE_YET);
-          };
-
           return {
             getCameraCoordinate: notReadyPromiseHandler,
             setCameraCoordinate: notReadyPromiseHandler,
