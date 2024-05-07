@@ -11,7 +11,6 @@ import com.bumptech.glide.request.target.CustomTarget
 import com.bumptech.glide.request.transition.Transition
 import com.openmobilehub.android.rn.maps.core.entities.OmhMapEntity
 
-
 internal object DrawableLoader {
 
     private val jobsMap: MutableMap<OmhMapEntity<*>, CustomTarget<Drawable?>> = mutableMapOf()

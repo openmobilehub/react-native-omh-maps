@@ -17,6 +17,13 @@ export namespace Constants {
       longitude: 25.6628,
     };
     export const SAHARA_ZOOM_LEVEL = 5;
+
+    export const CENTER_COORDINATE: OmhCoordinate = {
+      latitude: 0.0,
+      longitude: 0.0,
+    };
+
+    export const CENTER_ZOOM_LEVEL = 0;
   }
 
   export namespace UI {

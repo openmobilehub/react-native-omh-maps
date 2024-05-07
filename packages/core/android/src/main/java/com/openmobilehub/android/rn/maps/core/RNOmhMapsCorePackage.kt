@@ -54,6 +54,6 @@ class RNOmhMapsCoreTurboPackage : TurboReactPackage() {
         /**
          * Here declare the list of exported native components
          */
-        return listOf(RNOmhMapsCoreViewManager(), RNOmhMapsMarkerViewManager())
+        return listOf(RNOmhMapsCoreViewManager(), RNOmhMapsMarkerViewManager(), RNOmhMapsPolylineViewManager())
     }
 }

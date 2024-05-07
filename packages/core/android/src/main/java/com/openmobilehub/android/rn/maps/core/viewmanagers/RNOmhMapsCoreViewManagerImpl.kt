@@ -17,8 +17,10 @@ import com.openmobilehub.android.maps.core.presentation.interfaces.maps.OmhMap
 import com.openmobilehub.android.maps.core.presentation.interfaces.maps.OmhMarker
 import com.openmobilehub.android.maps.core.presentation.interfaces.maps.OmhOnMarkerDragListener
 import com.openmobilehub.android.rn.maps.core.BuildConfig
+import com.openmobilehub.android.maps.core.presentation.interfaces.maps.OmhPolyline
 import com.openmobilehub.android.rn.maps.core.entities.OmhMapEntity
 import com.openmobilehub.android.rn.maps.core.entities.OmhMarkerEntity
+import com.openmobilehub.android.rn.maps.core.entities.OmhPolylineEntity
 import com.openmobilehub.android.rn.maps.core.events.OmhMyLocationButtonPressEvent
 import com.openmobilehub.android.rn.maps.core.events.OmhOnCameraIdleEvent
 import com.openmobilehub.android.rn.maps.core.events.OmhOnCameraMoveStartedEvent
@@ -244,6 +246,13 @@ class RNOmhMapsCoreViewManagerImpl(private val reactContext: ReactContext) {
                 )
             }
         })
+
+      omhMap.setOnPolylineClickListener { clickedOmhPolyline ->
+        findChildOfType<OmhPolylineEntity, OmhPolyline>(clickedOmhPolyline)?.onClickListener?.onPolylineClick(
+          clickedOmhPolyline
+        )
+          ?: false
+      }
 
         omhMap.setOnMapLoadedCallback {
             dispatchEvent(

@@ -105,3 +105,4 @@ class RNOmhMapsCoreModuleImpl(private val reactContext: ReactApplicationContext)
         const val NAME = "RNOmhMapsCoreModule"
     }
 }
+
