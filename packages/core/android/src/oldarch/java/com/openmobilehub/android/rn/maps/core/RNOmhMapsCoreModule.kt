@@ -8,10 +8,15 @@ import com.facebook.react.module.annotations.ReactModule
 import com.facebook.react.bridge.WritableArray
 import com.facebook.react.bridge.WritableMap
 import com.facebook.react.bridge.ReadableMap
+import com.openmobilehub.android.maps.core.factories.OmhMapProvider
+import com.openmobilehub.android.maps.core.presentation.interfaces.location.OmhFailureListener
+import com.openmobilehub.android.maps.core.presentation.interfaces.location.OmhSuccessListener
+import com.openmobilehub.android.rn.maps.core.extensions.toWritableMap
+
 
 @ReactModule(name = RNOmhMapsCoreModule.NAME)
 class RNOmhMapsCoreModule(
-    reactContext: ReactApplicationContext
+    val reactContext: ReactApplicationContext
 ) : ReactContextBaseJavaModule(reactContext) {
     private val moduleImpl = RNOmhMapsCoreModuleImpl(reactContext)
 
@@ -54,6 +59,14 @@ class RNOmhMapsCoreModule(
     fun initialize(paths: ReadableMap) {
         moduleImpl.initialize(paths)
     }
+
+    @ReactMethod
+    fun getCurrentLocation(promise: Promise?) {
+        moduleImpl.getCurrentLocation(promise = promise, reactContext = reactContext)
+    }
+
+    override fun getName() = NAME
+
 
     override fun getName() = NAME
 

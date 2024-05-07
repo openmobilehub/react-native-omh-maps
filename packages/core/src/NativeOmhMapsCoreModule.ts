@@ -28,6 +28,7 @@ export interface Spec extends TurboModule {
   ): Promise<void>;
   getAvailableMapProviders(): MapProvider[];
   getDefaultMapProvider(): MapProvider;
+  getCurrentLocation(): Promise<OmhCoordinate>;
 }
 
 export default TurboModuleRegistry.getEnforcing<Spec>('RNOmhMapsCoreModule');

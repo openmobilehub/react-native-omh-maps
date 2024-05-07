@@ -12,10 +12,10 @@ import useMapProviderChoiceContext from '../hooks/useMapProviderChoice';
 const menuRoutes: Route[] = [
   Route.plainMap,
   Route.cameraMap,
+  Route.locationSharing,
   Route.markerMap,
   Route.polylineMap,
   Route.stylesMap,
-  // Route.multipleMaps,
 ];
 
 const defaultMapProvider = OmhMapsModule.getDefaultMapProvider();
