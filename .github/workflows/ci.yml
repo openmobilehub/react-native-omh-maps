@@ -15,14 +15,6 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Setup Secrets
-        run: |
-          ls -al
-          echo -n $IOS_SECRETS_BASE_64 | base64 --decode > ./sample-app/ios/Secrets.xcconfig
-          cd ./sample-app/ios
-          ls -al
-        shell: bash
-
       - name: Setup
         uses: ./.github/actions/setup
         with:
