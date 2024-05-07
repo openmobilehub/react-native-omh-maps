@@ -1,5 +1,5 @@
 import React, { useRef, useState } from 'react';
-import { Image, ScrollView, StyleSheet, View } from 'react-native';
+import { Image, Platform, ScrollView, StyleSheet, View } from 'react-native';
 import { MD2Colors, Modal } from 'react-native-paper';
 
 import {
@@ -17,6 +17,16 @@ import { isFeatureSupported } from '../../utils/SupportUtils';
 
 const getSupportedFeatures = (omhMapRef: OmhMapViewRef | null) => {
   const mapProvider = omhMapRef?.getProviderName();
+
+  if (Platform.OS === 'ios') {
+    return {
+      zoom: true,
+      rotate: true,
+      showCameraPosition: true,
+      moveCamera: true,
+      makeSnapshot: true,
+    };
+  }
 
   return {
     zoom: isFeatureSupported(mapProvider, '*'),
@@ -42,7 +52,7 @@ export const CameraMapScreen = () => {
 
   const [supportedFeatures, setSupportedFeatures] = useState<
     ReturnType<typeof getSupportedFeatures>
-  >(getSupportedFeatures(null));
+  >(() => getSupportedFeatures(omhMapRef.current));
 
   const handleShowCameraPositionButtonPress = async () => {
     const cameraPosition = await omhMapRef.current?.getCameraCoordinate();

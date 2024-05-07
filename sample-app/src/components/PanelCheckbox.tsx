@@ -21,6 +21,7 @@ export const PanelCheckbox = ({
 
   return (
     <Checkbox.Item
+      mode="android"
       style={styles.checkbox}
       status={value ? 'checked' : 'unchecked'}
       onPress={handlePress}
