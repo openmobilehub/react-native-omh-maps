@@ -1,5 +1,5 @@
 import React, { useRef, useState } from 'react';
-import { Image, ScrollView, StyleSheet, View } from 'react-native';
+import { Image, Platform, ScrollView, StyleSheet, View } from 'react-native';
 import { MD2Colors, Modal } from 'react-native-paper';
 
 import {
@@ -8,15 +8,25 @@ import {
   OmhMapViewRef,
 } from '@omh/react-native-maps-core';
 
-import { PanelButton } from '../../components/PanelButton';
-import { PanelCheckbox } from '../../components/PanelCheckbox';
+import { PanelButton } from '../../components/controls/PanelButton';
 import useSnackbar from '../../hooks/useSnackbar';
 import { demoStyles } from '../../styles/demoStyles';
 import { Constants } from '../../utils/Constants';
 import { isFeatureSupported } from '../../utils/SupportUtils';
+import { PanelCheckbox } from '../../components/controls/PanelCheckbox';
 
 const getSupportedFeatures = (omhMapRef: OmhMapViewRef | null) => {
   const mapProvider = omhMapRef?.getProviderName();
+
+  if (Platform.OS === 'ios') {
+    return {
+      zoom: true,
+      rotate: true,
+      showCameraPosition: true,
+      moveCamera: true,
+      makeSnapshot: true,
+    };
+  }
 
   return {
     zoom: isFeatureSupported(mapProvider, '*'),
@@ -42,7 +52,7 @@ export const CameraMapScreen = () => {
 
   const [supportedFeatures, setSupportedFeatures] = useState<
     ReturnType<typeof getSupportedFeatures>
-  >(getSupportedFeatures(null));
+  >(() => getSupportedFeatures(omhMapRef.current));
 
   const handleShowCameraPositionButtonPress = async () => {
     const cameraPosition = await omhMapRef.current?.getCameraCoordinate();

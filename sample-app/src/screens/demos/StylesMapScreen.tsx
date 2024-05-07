@@ -8,7 +8,7 @@ import {
   OmhMapViewRef,
 } from '@omh/react-native-maps-core';
 
-import { PanelRadioButtonItem } from '../../components/PanelRadioButtonItem';
+import { PanelRadioButtonItem } from '../../components/controls/PanelRadioButtonItem';
 import { demoStyles } from '../../styles/demoStyles';
 
 enum RadioButtonValue {

@@ -21,6 +21,7 @@ export const PanelCheckbox = ({
 
   return (
     <Checkbox.Item
+      mode="android"
       disabled={!enabled}
       style={styles.checkbox}
       status={value ? 'checked' : 'unchecked'}

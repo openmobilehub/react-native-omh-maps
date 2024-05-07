@@ -127,7 +127,7 @@ jobs:
           debug: true
           gitReleaseNotes: true
 
-  # Build and publish iOS app is split into two jobs because the App Center step does not support macOS. 
+  # Build and publish iOS app is split into two jobs because the App Center step does not support macOS.
   build-sample-app-ios:
     name: Build iOS sample app
     runs-on: macos-14
@@ -178,10 +178,12 @@ jobs:
         run: |
           cd ./sample-app && bundle exec pod install --project-directory=./ios
         shell: bash
-      
+
       - name: Setup Secrets
+        env:
+          IOS_SECRETS_BASE_64: ${{ secrets.IOS_SECRETS_BASE_64 }}
         run: |
-          echo -n $IOS_SECRETS_BASE_64 | base64 --decode > ./sample-app/ios/Secrets.xcconfig
+          echo -n $IOS_SECRETS_BASE_64 | base64 --decode -o ./sample-app/ios/Secrets.xcconfig
         shell: bash
 
       - name: Install the Apple certificate and provisioning profile
