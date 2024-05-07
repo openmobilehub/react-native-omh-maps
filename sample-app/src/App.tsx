@@ -18,6 +18,7 @@ import PolylineMapScreen from './screens/demos/PolylineMapScreen';
 import StylesMapScreen from './screens/demos/StylesMapScreen';
 import LocationSharingScreen from './screens/demos/LocationSharingScreen';
 import LocationResultScreen from './screens/demos/LocationResultScreen';
+import PolygonMapScreen from './screens/demos/PolygonMapScreen';
 
 export type RootStackParamList = {
   [Route.menu]: undefined;
@@ -86,6 +87,12 @@ export default function App() {
               <Stack.Screen
                 name={Route.polylineMap}
                 component={PolylineMapScreen}
+                options={screenOptions}
+              />
+
+              <Stack.Screen
+                name={Route.polygonMap}
+                component={PolygonMapScreen}
                 options={screenOptions}
               />
 

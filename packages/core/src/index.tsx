@@ -13,6 +13,8 @@ export * from './components/marker/OmhMarkerConstants';
 export * from './components/polyline/OmhPolyline';
 export * from './components/polyline/OmhPolyline.types';
 
+export * from './components/polygon/OmhPolygon';
+
 export * from './modules/core/OmhMapsModule';
 export * from './modules/core/OmhMapsModule.types';
 
