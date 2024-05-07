@@ -1,7 +1,7 @@
-import { MapProvider, OmhCoordinate, Paths } from '../../types/common';
+import { MapProvider, OmhCoordinate, Providers } from '../../types/common';
 
 export interface IOmhMapsModule {
-  initialize(paths: Paths): void;
+  initialize(providers: Providers): void;
   getAvailableMapProviders(): MapProvider[];
   getDefaultMapProvider(): MapProvider;
   getCurrentLocation(): Promise<OmhCoordinate>;

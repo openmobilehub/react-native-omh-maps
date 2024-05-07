@@ -79,7 +79,7 @@ export type MapProvider = {
   path: string;
 };
 
-export type Paths = {
-  gmsPath: string;
-  nonGmsPath: string;
+export type Providers = {
+  gmsProvider: MapProvider;
+  nonGmsProvider: MapProvider;
 };

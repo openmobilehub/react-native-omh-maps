@@ -14,16 +14,14 @@ import {
   OmhMapView,
   OmhMapViewRef,
   OmhMarkerConstants,
+  OmhMarker,
+  MarkerDragEndEvent,
+  MarkerDragEvent,
+  MarkerDragStartEvent,
 } from '@omh/react-native-maps-core';
 import { OmhMapsAzureMapsProvider } from '@omh/react-native-maps-plugin-azuremaps';
 import { OmhMapsGooglemapsProvider } from '@omh/react-native-maps-plugin-googlemaps';
 import { OmhMapsOpenStreetMapProvider } from '@omh/react-native-maps-plugin-openstreetmap';
-
-import OmhMarker, {
-  MarkerDragEndEvent,
-  MarkerDragEvent,
-  MarkerDragStartEvent,
-} from '../../../../packages/core/src/components/marker/OmhMarker';
 import { Anchor } from '../../../../packages/core/src/components/marker/RNOmhMapsMarkerNativeComponent';
 import soccerBallIcon from '../../assets/img/soccer_ball.bmp';
 import Picker from '../../components/controls/Picker';

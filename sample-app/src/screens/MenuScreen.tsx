@@ -21,8 +21,8 @@ const menuRoutes: Route[] = [
 const defaultMapProvider = OmhMapsModule.getDefaultMapProvider();
 
 OmhMapsModule.initialize({
-  gmsPath: defaultMapProvider.path,
-  nonGmsPath: defaultMapProvider.path,
+  gmsProvider: defaultMapProvider,
+  nonGmsProvider: defaultMapProvider,
 });
 
 export const MenuScreen = () => {
@@ -30,11 +30,12 @@ export const MenuScreen = () => {
   const { changeMapProvider, mapProvider } = useMapProviderChoiceContext();
 
   const handleMapProviderChange = (newProvider: MapProvider) => {
+    console.log('🚀 ~ handleMapProviderChange ~ newProvider:', newProvider);
     changeMapProvider(newProvider);
 
     OmhMapsModule.initialize({
-      gmsPath: newProvider.path,
-      nonGmsPath: newProvider.path,
+      gmsProvider: newProvider,
+      nonGmsProvider: newProvider,
     });
   };
 

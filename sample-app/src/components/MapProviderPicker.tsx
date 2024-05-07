@@ -37,10 +37,12 @@ export default function MapProviderPicker({
       <ControlParagraph centered={centeredLabel}>{label}</ControlParagraph>
 
       <RNPickerSelect
-        onValueChange={(value?: MapProvider['path']) => {
-          const newProvider = availableProviders.find(p => p.path === value);
+        onValueChange={(newProviderName: string) => {
+          const newProvider = availableProviders.find(
+            ({ name }) => name === newProviderName
+          );
 
-          if (!newProvider || newProvider.path === provider.path) return;
+          if (!newProvider || newProvider.name === provider.name) return;
 
           logger.log(
             `New provider '${newProvider.name}' (${newProvider.path}) has been selected from map provider selection dropdown.`
@@ -49,17 +51,20 @@ export default function MapProviderPicker({
           setProvider(newProvider);
           onChange(newProvider);
         }}
-        value={provider.path}
         placeholder={
           // empty object to disable placeholder
           {}
         }
-        items={availableProviders.map(p => ({
-          label: p.name,
-          value: p.path,
-          key: p.path,
+        items={availableProviders.map(({ name }) => ({
+          label: name,
+          value: name,
           color: theme.colors.onSurface,
         }))}
+        style={{
+          inputIOS: {
+            paddingLeft: 16,
+          },
+        }}
       />
     </View>
   );
