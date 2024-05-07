@@ -2,10 +2,21 @@
 
 #import <React/RCTBundleURLProvider.h>
 
+#import <GoogleMaps/GoogleMaps.h>
+
 @implementation AppDelegate
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
+  NSBundle *mainBundle = [NSBundle mainBundle];
+  NSString *apiKey = [mainBundle objectForInfoDictionaryKey:@"GoogleMapsAPIKey"];
+  
+  if (apiKey) {
+    [GMSServices provideAPIKey:apiKey];
+  } else {
+    NSLog(@"Google Maps API key is missing. Make sure you have followed the installation instructions.");
+  }
+  
   self.moduleName = @"RnOmhMapsExample";
   // You can add your custom initial props in the dictionary below.
   // They will be passed down to the ViewController used by React Native.

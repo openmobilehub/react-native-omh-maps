@@ -178,6 +178,11 @@ jobs:
         run: |
           cd ./sample-app && bundle exec pod install --project-directory=./ios
         shell: bash
+      
+      - name: Setup Secrets
+        run: |
+          echo -n $IOS_SECRETS_BASE_64 | base64 --decode > ./sample-app/ios/Secrets.xcconfig
+        shell: bash
 
       - name: Install the Apple certificate and provisioning profile
         env:

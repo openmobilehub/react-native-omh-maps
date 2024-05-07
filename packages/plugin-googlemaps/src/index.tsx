@@ -3,9 +3,9 @@
  * @module @omh/react-native-maps-plugin-googlemaps
  */
 
-import { MapProvider } from '@omh/react-native-maps-core';
+import { OmhMapProvider } from '@omh/react-native-maps-core';
 
-export const OmhMapsGooglemapsProvider: MapProvider = {
+export const OmhMapsGooglemapsProvider: OmhMapProvider = {
   name: 'GoogleMaps',
   path: 'com.openmobilehub.android.maps.plugin.googlemaps.presentation.OmhMapFactoryImpl',
 };

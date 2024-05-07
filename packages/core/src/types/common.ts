@@ -48,8 +48,6 @@ export type OmhAnchor = {
   v: number;
 };
 
-export type Percentage = `${number}%`;
-
 /**
  * The type of line join.
  */
@@ -73,58 +71,27 @@ export type OmhPatternItem =
     };
 
 /**
- * A tag, which can be of any type.
+ * A provider name type.
+ */
+export type OmhMapProviderName = string;
+
+/**
+ * A tag for a map element.
  */
 export type OmhTag = any;
 
 /**
- * Common properties for the OmhSpan types.
+ * A map provider, used to initialize the map view.
  */
-type OmhSpanCommon = {
-  /** The number of segments in the span. */
-  segments: number;
-  /** The stamp icon for the span. */
-  stamp?: number;
+export type OmhMapProvider = {
+  name: OmhMapProviderName;
+  path: string;
 };
 
 /**
- * Properties for a monochromatic OmhSpan.
+ * A map provider pair.
  */
-type OmhMonochromaticSpan = {
-  /** The type of the span. */
-  type: 'monochromatic';
-  /** The color of the span. */
-  color: number;
+export type Providers = {
+  gmsProvider: OmhMapProvider;
+  nonGmsProvider: OmhMapProvider;
 };
-
-/**
- * Properties for a gradient OmhSpan.
- */
-type OmhGradientSpan = {
-  /** The type of the span. */
-  type: 'gradient';
-  /** The starting color of the gradient. */
-  fromColor: number;
-  /** The ending color of the gradient. */
-  toColor: number;
-};
-
-/**
- * The OmhSpan type, which can be either monochromatic or gradient.
- */
-export type OmhSpan = OmhSpanCommon & (OmhMonochromaticSpan | OmhGradientSpan);
-
-/**
- * Cap types for polyline.
- */
-export type OmhCap =
-  | {
-      type: 'butt' | 'round' | 'square';
-    }
-  | {
-      type: 'custom';
-      icon: number;
-      refWidth?: number;
-    };
-
-export type OmhMapProviderVariant = string;

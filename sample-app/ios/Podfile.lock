@@ -4,6 +4,30 @@ PODS:
   - FBLazyVector (0.74.0)
   - fmt (9.1.0)
   - glog (0.3.5)
+  - Google-Maps-iOS-Utils (4.2.2):
+    - Google-Maps-iOS-Utils/Clustering (= 4.2.2)
+    - Google-Maps-iOS-Utils/Geometry (= 4.2.2)
+    - Google-Maps-iOS-Utils/GeometryUtils (= 4.2.2)
+    - Google-Maps-iOS-Utils/Heatmap (= 4.2.2)
+    - Google-Maps-iOS-Utils/QuadTree (= 4.2.2)
+    - GoogleMaps (~> 7.3)
+  - Google-Maps-iOS-Utils/Clustering (4.2.2):
+    - Google-Maps-iOS-Utils/QuadTree
+    - GoogleMaps (~> 7.3)
+  - Google-Maps-iOS-Utils/Geometry (4.2.2):
+    - GoogleMaps (~> 7.3)
+  - Google-Maps-iOS-Utils/GeometryUtils (4.2.2):
+    - GoogleMaps (~> 7.3)
+  - Google-Maps-iOS-Utils/Heatmap (4.2.2):
+    - Google-Maps-iOS-Utils/QuadTree
+    - GoogleMaps (~> 7.3)
+  - Google-Maps-iOS-Utils/QuadTree (4.2.2):
+    - GoogleMaps (~> 7.3)
+  - GoogleMaps (7.4.0):
+    - GoogleMaps/Maps (= 7.4.0)
+  - GoogleMaps/Base (7.4.0)
+  - GoogleMaps/Maps (7.4.0):
+    - GoogleMaps/Base
   - hermes-engine (0.74.0):
     - hermes-engine/Pre-built (= 0.74.0)
   - hermes-engine/Pre-built (0.74.0)
@@ -1040,6 +1064,12 @@ PODS:
   - React-Mapbuffer (0.74.0):
     - glog
     - React-debug
+  - react-native-google-maps (1.15.1):
+    - Google-Maps-iOS-Utils (= 4.2.2)
+    - GoogleMaps (= 7.4.0)
+    - React-Core
+  - react-native-maps (1.15.1):
+    - React-Core
   - react-native-safe-area-context (4.10.1):
     - React-Core
   - react-native-slider (4.5.2):
@@ -1293,6 +1323,8 @@ PODS:
     - React-utils (= 0.74.0)
   - RNCPicker (2.7.5):
     - React-Core
+  - RNPermissions (4.1.5):
+    - React-Core
   - RNScreens (3.31.1):
     - DoubleConversion
     - glog
@@ -1315,27 +1347,8 @@ PODS:
     - ReactCommon/turbomodule/bridging
     - ReactCommon/turbomodule/core
     - Yoga
-  - RNVectorIcons (10.0.3):
-    - DoubleConversion
-    - glog
-    - hermes-engine
-    - RCT-Folly (= 2024.01.01.00)
-    - RCTRequired
-    - RCTTypeSafety
-    - React-Codegen
+  - RNShare (10.2.0):
     - React-Core
-    - React-debug
-    - React-Fabric
-    - React-featureflags
-    - React-graphics
-    - React-ImageManager
-    - React-NativeModulesApple
-    - React-RCTFabric
-    - React-rendererdebug
-    - React-utils
-    - ReactCommon/turbomodule/bridging
-    - ReactCommon/turbomodule/core
-    - Yoga
   - SocketRocket (0.7.0)
   - Yoga (0.0.0)
 
@@ -1377,6 +1390,8 @@ DEPENDENCIES:
   - React-jsitracing (from `../../node_modules/react-native/ReactCommon/hermes/executor/`)
   - React-logger (from `../../node_modules/react-native/ReactCommon/logger`)
   - React-Mapbuffer (from `../../node_modules/react-native/ReactCommon`)
+  - react-native-google-maps (from `../../node_modules/react-native-maps`)
+  - react-native-maps (from `../../node_modules/react-native-maps`)
   - react-native-safe-area-context (from `../../node_modules/react-native-safe-area-context`)
   - "react-native-slider (from `../../node_modules/@react-native-community/slider`)"
   - React-nativeconfig (from `../../node_modules/react-native/ReactCommon`)
@@ -1403,12 +1418,15 @@ DEPENDENCIES:
   - React-utils (from `../../node_modules/react-native/ReactCommon/react/utils`)
   - ReactCommon/turbomodule/core (from `../../node_modules/react-native/ReactCommon`)
   - "RNCPicker (from `../../node_modules/@react-native-picker/picker`)"
+  - RNPermissions (from `../../node_modules/react-native-permissions`)
   - RNScreens (from `../../node_modules/react-native-screens`)
-  - RNVectorIcons (from `../../node_modules/react-native-vector-icons`)
+  - RNShare (from `../../node_modules/react-native-share`)
   - Yoga (from `../../node_modules/react-native/ReactCommon/yoga`)
 
 SPEC REPOS:
   trunk:
+    - Google-Maps-iOS-Utils
+    - GoogleMaps
     - SocketRocket
 
 EXTERNAL SOURCES:
@@ -1483,6 +1501,10 @@ EXTERNAL SOURCES:
     :path: "../../node_modules/react-native/ReactCommon/logger"
   React-Mapbuffer:
     :path: "../../node_modules/react-native/ReactCommon"
+  react-native-google-maps:
+    :path: "../../node_modules/react-native-maps"
+  react-native-maps:
+    :path: "../../node_modules/react-native-maps"
   react-native-safe-area-context:
     :path: "../../node_modules/react-native-safe-area-context"
   react-native-slider:
@@ -1535,10 +1557,12 @@ EXTERNAL SOURCES:
     :path: "../../node_modules/react-native/ReactCommon"
   RNCPicker:
     :path: "../../node_modules/@react-native-picker/picker"
+  RNPermissions:
+    :path: "../../node_modules/react-native-permissions"
   RNScreens:
     :path: "../../node_modules/react-native-screens"
-  RNVectorIcons:
-    :path: "../../node_modules/react-native-vector-icons"
+  RNShare:
+    :path: "../../node_modules/react-native-share"
   Yoga:
     :path: "../../node_modules/react-native/ReactCommon/yoga"
 
@@ -1548,6 +1572,8 @@ SPEC CHECKSUMS:
   FBLazyVector: 026c8f4ae67b06e088ae01baa2271ef8a26c0e8c
   fmt: 4c2741a687cc09f0634a2e2c72a838b99f1ff120
   glog: c5d68082e772fa1c511173d6b30a9de2c05a69a2
+  Google-Maps-iOS-Utils: f77eab4c4326d7e6a277f8e23a0232402731913a
+  GoogleMaps: 032f676450ba0779bd8ce16840690915f84e57ac
   hermes-engine: 6eae7edb2f563ee41d7c1f91f4f2e57c26d8a5c3
   omh-react-native-maps-core: 774254314a2f01350995f6b69f5041320bbf8adb
   omh-react-native-maps-plugin-azuremaps: cbdf9c655537146fea17dd2ce894f08cc7fbe341
@@ -1578,6 +1604,8 @@ SPEC CHECKSUMS:
   React-jsitracing: 36a2bbc272300313653d980de5ab700ec86c534a
   React-logger: 03f2f7b955cfe24593a2b8c9705c23e142d1ad24
   React-Mapbuffer: 5e05d78fe6505f4a054b86f415733d4ad02dd314
+  react-native-google-maps: 7aae26cd61058ca41f54ed4abb127dbe20ad9184
+  react-native-maps: 4c07b21deac3ac3579558956b63e288efb8725bb
   react-native-safe-area-context: dcab599c527c2d7de2d76507a523d20a0b83823d
   react-native-slider: ce295d2bf830a7990af05b0bd70ab28c133e230c
   React-nativeconfig: 951ec32f632e81cbd7d40aebb3211313251c092e
@@ -1604,11 +1632,12 @@ SPEC CHECKSUMS:
   React-utils: f013537c3371270d2095bff1d594d00d4bc9261b
   ReactCommon: 2cde697fd80bd31da1d6448d25a5803088585219
   RNCPicker: 3e2c37a8328f368ce14da050cdc8231deb5fc9f9
+  RNPermissions: 294531ede5a64d1528463e88fffef05675842042
   RNScreens: b32a9ff15bea7fcdbe5dff6477bc503f792b1208
-  RNVectorIcons: 50ea777efffdd991a22e968aa312d75da7ff46c3
+  RNShare: 554a91f5cfbe4adac4cfe3654826ee8b299fe365
   SocketRocket: abac6f5de4d4d62d24e11868d7a2f427e0ef940d
   Yoga: 56f906bf6c11c931588191dde1229fd3e4e3d557
 
-PODFILE CHECKSUM: 0b8969d73b822b4767e58d63314dc7ffef427f85
+PODFILE CHECKSUM: bc74b017e699be42734f072a37f046f30ae4f8a7
 
 COCOAPODS: 1.14.3

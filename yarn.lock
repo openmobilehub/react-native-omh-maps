@@ -4107,12 +4107,14 @@ __metadata:
     del-cli: "npm:*"
     jest: "npm:*"
     react-native-builder-bob: "npm:*"
+    react-native-maps: "npm:^1.15.1"
     release-it: "npm:*"
     ts-node: "npm:*"
     typescript: "npm:*"
   peerDependencies:
     react: "*"
     react-native: "*"
+    react-native-maps: ^1.15.1
   languageName: unknown
   linkType: soft
 
@@ -4219,6 +4221,7 @@ __metadata:
     color-convert: "npm:^2.0.1"
     react: "npm:*"
     react-native: "npm:*"
+    react-native-maps: "npm:^1.15.1"
     react-native-paper: "npm:^5.12.3"
     react-native-permissions: "npm:^4.1.5"
     react-native-picker-select: "npm:^9.1.3"
@@ -5364,6 +5367,13 @@ __metadata:
     "@types/qs": "npm:*"
     "@types/serve-static": "npm:*"
   checksum: 10/7a6d26cf6f43d3151caf4fec66ea11c9d23166e4f3102edfe45a94170654a54ea08cf3103d26b3928d7ebcc24162c90488e33986b7e3a5f8941225edd5eb18c7
+  languageName: node
+  linkType: hard
+
+"@types/geojson@npm:^7946.0.13":
+  version: 7946.0.14
+  resolution: "@types/geojson@npm:7946.0.14"
+  checksum: 10/ae511bee6488ae3bd5a3a3347aedb0371e997b14225b8983679284e22fa4ebd88627c6e3ff8b08bf4cc35068cb29310c89427311ffc9322c255615821a922e71
   languageName: node
   linkType: hard
 
@@ -17502,6 +17512,22 @@ __metadata:
   bin:
     bob: bin/bob
   checksum: 10/e2f98f26bf25863a9ae6403c7bf316021ad664dab3fdaab15df1695e724a7e7c167078147c59469f74855450e360fc730fafd0720a493aff4b360107e8416b94
+  languageName: node
+  linkType: hard
+
+"react-native-maps@npm:^1.15.1":
+  version: 1.15.1
+  resolution: "react-native-maps@npm:1.15.1"
+  dependencies:
+    "@types/geojson": "npm:^7946.0.13"
+  peerDependencies:
+    react: ">= 17.0.1"
+    react-native: ">= 0.64.3"
+    react-native-web: ">= 0.11"
+  peerDependenciesMeta:
+    react-native-web:
+      optional: true
+  checksum: 10/0f561d880b30fe1236b792a0288e58f219183251643f293b557891b53fd0089f924603ba6119ad50c3e103cb0a13f2b746be319b9cb0bb0b08b1b82ddba77177
   languageName: node
   linkType: hard
 

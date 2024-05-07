@@ -1,17 +1,17 @@
 import type { TurboModule } from 'react-native';
 import { TurboModuleRegistry } from 'react-native';
 
-export interface MapProvider {
+type MapProvider = {
   name: string;
   path: string;
-}
+};
 
 type OmhCoordinate = {
   latitude: number;
   longitude: number;
 };
 
-export type Paths = {
+type Paths = {
   gmsPath: string;
   nonGmsPath: string;
 };
