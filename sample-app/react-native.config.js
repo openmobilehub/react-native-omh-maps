@@ -6,5 +6,15 @@ module.exports = {
     [pak.name]: {
       root: path.join(path.dirname(__filename), '..'),
     },
+    'react-native-vector-icons': {
+      platforms: {
+        ios: null,
+      },
+    },
+    'react-native-maps': {
+      platforms: {
+        android: null,
+      },
+    },
   },
 };
