@@ -1,7 +1,8 @@
 import React, { memo, useMemo } from 'react';
+
 import { resolveResource } from '../../utils/RNResourceTranscoder';
-import RNOmhMapsMarkerNativeComponent from './RNOmhMapsMarkerNativeComponent';
 import { OmhMarkerProps } from './OmhMarker.types';
+import RNOmhMapsMarkerNativeComponent from './RNOmhMapsMarkerNativeComponent';
 
 /**
  * The OMH Marker component.
@@ -12,7 +13,7 @@ export const OmhMarker = memo(
       typeof RNOmhMapsMarkerNativeComponent | null
     >(null);
 
-    const iconURI = useMemo(
+    const resolvedIcon = useMemo(
       () =>
         icon === null || icon === undefined
           ? undefined
@@ -25,7 +26,18 @@ export const OmhMarker = memo(
     return (
       <RNOmhMapsMarkerNativeComponent
         {...props}
-        icon={iconURI}
+        icon={
+          resolvedIcon
+            ? {
+                ...resolvedIcon,
+                // compensate for image resizing occurring in the native library that properly sizes Drawables
+                width: resolvedIcon.width ? resolvedIcon.width * 3 : undefined,
+                height: resolvedIcon.height
+                  ? resolvedIcon.height * 3
+                  : undefined,
+              }
+            : undefined
+        }
         markerPosition={position}
         onMarkerPress={onPress}
         // @ts-ignore next line: missing typing for 'ref' prop on HostComponent

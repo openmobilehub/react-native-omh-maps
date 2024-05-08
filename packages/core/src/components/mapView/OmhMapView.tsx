@@ -6,20 +6,21 @@ import {
   View,
   findNodeHandle,
 } from 'react-native';
+
 import NativeOmhMapsCoreModule from '../../modules/core/NativeOmhMapsCoreModule';
-import RNOmhMapsCoreViewNativeComponent from './RNOmhMapsCoreViewNativeComponent';
+import { mergeStyles } from '../../utils/styleHelpers';
 import {
   OmhCameraMoveStartedReason,
   OmhMapViewProps,
   OmhMapViewRef,
   OmhSnapshotFormat,
 } from './OmhMapView.types';
-import { mergeStyles } from '../../utils/styleHelpers';
 import {
   MapErrors,
   notReadyHandler,
   notReadyPromiseHandler,
 } from './OmhMapViewHelpers';
+import RNOmhMapsCoreViewNativeComponent from './RNOmhMapsCoreViewNativeComponent';
 
 /**
  * The OMH Map View component. Actual implementation is picked based on the platform capabilities (GMS or non-GMS)
@@ -39,6 +40,7 @@ export const OmhMapView = forwardRef<OmhMapViewRef, OmhMapViewProps>(
       onMapReady,
       myLocationEnabled,
       onMyLocationClicked,
+      infoWindowViewMode: customInfoWindowView = 'default',
     },
     forwardedRef
   ) => {
@@ -164,6 +166,7 @@ export const OmhMapView = forwardRef<OmhMapViewRef, OmhMapViewProps>(
           onCameraIdle={onCameraIdle}
           onMyLocationClicked={onMyLocationClicked}
           onCameraMoveStarted={onCameraMoveStartedMapped}
+          customInfoWindowView={customInfoWindowView}
           {...props}
         />
       </View>

@@ -63,6 +63,11 @@ class RNOmhMapsCoreViewManager :
         omhMapViewManagerImpl.setMapStyle(view, value)
     }
 
+    @ReactProp(name = "customInfoWindowView")
+    fun setCustomInfoWindowView(view: FragmentContainerView, value: String?) {
+        omhMapViewManagerImpl.setCustomInfoWindowView(view, value)
+    }
+
     override fun getName() = RNOmhMapsCoreViewManagerImpl.NAME
 
     override fun getExportedCustomDirectEventTypeConstants(): Map<String, Any> {

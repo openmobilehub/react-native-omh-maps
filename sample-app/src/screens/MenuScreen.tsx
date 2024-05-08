@@ -14,6 +14,7 @@ const menuRoutes: Route[] = [
   Route.cameraMap,
   Route.locationSharing,
   Route.markerMap,
+  Route.infoWindowMap,
   Route.polylineMap,
   Route.polygonMap,
   Route.stylesMap,

@@ -5,6 +5,7 @@ import android.graphics.Point
 import android.os.Build
 import android.util.Log
 import android.view.View
+import android.view.View.MeasureSpec
 import android.view.WindowManager
 import androidx.fragment.app.FragmentContainerView
 import com.facebook.react.bridge.Dynamic
@@ -13,12 +14,13 @@ import com.facebook.react.bridge.UiThreadUtil
 import com.facebook.react.common.MapBuilder
 import com.facebook.react.uimanager.ThemedReactContext
 import com.facebook.react.uimanager.UIManagerHelper
+import com.openmobilehub.android.maps.core.presentation.interfaces.maps.OmhInfoWindowViewFactory
 import com.openmobilehub.android.maps.core.presentation.interfaces.maps.OmhMap
 import com.openmobilehub.android.maps.core.presentation.interfaces.maps.OmhMarker
 import com.openmobilehub.android.maps.core.presentation.interfaces.maps.OmhOnMarkerDragListener
 import com.openmobilehub.android.maps.core.presentation.interfaces.maps.OmhPolygon
-import com.openmobilehub.android.rn.maps.core.BuildConfig
 import com.openmobilehub.android.maps.core.presentation.interfaces.maps.OmhPolyline
+import com.openmobilehub.android.rn.maps.core.BuildConfig
 import com.openmobilehub.android.rn.maps.core.entities.OmhMapEntity
 import com.openmobilehub.android.rn.maps.core.entities.OmhMarkerEntity
 import com.openmobilehub.android.rn.maps.core.entities.OmhPolygonEntity
@@ -32,13 +34,32 @@ import com.openmobilehub.android.rn.maps.core.fragments.FragmentUtils
 import com.openmobilehub.android.rn.maps.core.fragments.OmhMapViewFragment
 import com.openmobilehub.android.rn.maps.core.utils.RNComponentUtils.dispatchEvent
 
+
 @Suppress("TooManyFunctions")
 class RNOmhMapsCoreViewManagerImpl(private val reactContext: ReactContext) {
+
     var height: Int? = null
     var width: Int? = null
     private val mountedChildren = HashMap<Int, OmhMapEntity<*>>()
     private val addEntitiesQueue = mutableListOf<Pair<View, Int>>()
+    private val onMapLoadedActionsQueue = mutableListOf<() -> Unit>()
     private var isMounted = false
+    private var mapLoaded = false
+
+    private val universalInfoWindowViewFactory = object : OmhInfoWindowViewFactory {
+        override fun createInfoWindowView(marker: OmhMarker): View {
+            val entity = findChildOfType<OmhMarkerEntity, OmhMarker>(marker)
+                ?: error(ERRORS.CHILD_NOT_FOUND)
+
+            return entity.infoWindow ?: error(
+                "Custom Info Window view not found as the one and only child of map's OmhMarker rendered at index #${
+                    mountedChildren.values.indexOf(
+                        entity
+                    )
+                }"
+            )
+        }
+    }
 
     fun createViewInstance(reactContext: ThemedReactContext): FragmentContainerView {
         return FragmentContainerView(reactContext)
@@ -50,10 +71,10 @@ class RNOmhMapsCoreViewManagerImpl(private val reactContext: ReactContext) {
         val fragment = FragmentUtils.findFragment(reactContext, view.id)
         val omhMapView = fragment?.omhMapView
 
-        omhMapView?.getMapAsync {
-            fragment.omhMap = it
+        omhMapView?.getMapAsync { omhMap ->
+            fragment.omhMap = omhMap
 
-            setupListeners(it, reactContext, view)
+            setupListeners(omhMap, reactContext, view)
 
             dispatchEvent(
                 reactContext,
@@ -85,6 +106,7 @@ class RNOmhMapsCoreViewManagerImpl(private val reactContext: ReactContext) {
             when (child) {
                 is OmhMapEntity<*> -> {
                     child.mountEntity(omhMap, child.id)
+                    if (mapLoaded) child.handleMapLoaded()
                 }
 
                 else -> {
@@ -138,6 +160,7 @@ class RNOmhMapsCoreViewManagerImpl(private val reactContext: ReactContext) {
                 transaction.commitNowAllowingStateLoss()
 
                 isMounted = false
+                mapLoaded = false
             }
         }
     }
@@ -190,14 +213,14 @@ class RNOmhMapsCoreViewManagerImpl(private val reactContext: ReactContext) {
             }
 
             view.measure(
-                View.MeasureSpec.makeMeasureSpec(calcWidth, View.MeasureSpec.EXACTLY),
-                View.MeasureSpec.makeMeasureSpec(calcHeight, View.MeasureSpec.EXACTLY)
+                MeasureSpec.makeMeasureSpec(calcWidth, MeasureSpec.EXACTLY),
+                MeasureSpec.makeMeasureSpec(calcHeight, MeasureSpec.EXACTLY)
             )
         } else {
             //  if size specified by RN, take exactly it
             view.measure(
-                View.MeasureSpec.makeMeasureSpec(width!!, View.MeasureSpec.EXACTLY),
-                View.MeasureSpec.makeMeasureSpec(height!!, View.MeasureSpec.EXACTLY)
+                MeasureSpec.makeMeasureSpec(width!!, MeasureSpec.EXACTLY),
+                MeasureSpec.makeMeasureSpec(height!!, MeasureSpec.EXACTLY)
             )
         }
 
@@ -259,21 +282,30 @@ class RNOmhMapsCoreViewManagerImpl(private val reactContext: ReactContext) {
             }
         })
 
-      omhMap.setOnPolylineClickListener { clickedOmhPolyline ->
-        findChildOfType<OmhPolylineEntity, OmhPolyline>(clickedOmhPolyline)?.onClickListener?.onPolylineClick(
-          clickedOmhPolyline
-        )
-          ?: false
-      }
+        omhMap.setOnPolylineClickListener { clickedOmhPolyline ->
+            findChildOfType<OmhPolylineEntity, OmhPolyline>(clickedOmhPolyline)?.onClickListener?.onPolylineClick(
+                clickedOmhPolyline
+            )
+                ?: false
+        }
 
-      omhMap.setOnPolygonClickListener() { clickedOmhPolygon ->
-        findChildOfType<OmhPolygonEntity, OmhPolygon>(clickedOmhPolygon)?.onClickListener?.onPolygonClick(
-          clickedOmhPolygon
-        )
-          ?: false
-      }
+        omhMap.setOnPolygonClickListener { clickedOmhPolygon ->
+            findChildOfType<OmhPolygonEntity, OmhPolygon>(clickedOmhPolygon)?.onClickListener?.onPolygonClick(
+                clickedOmhPolygon
+            )
+                ?: false
+        }
 
         omhMap.setOnMapLoadedCallback {
+            mapLoaded = true
+            mountedChildren.values.forEach {
+                it.handleMapLoaded()
+            }
+            onMapLoadedActionsQueue.forEach {
+                it.invoke()
+            }
+            onMapLoadedActionsQueue.clear()
+
             dispatchEvent(
                 reactContext,
                 view.id,
@@ -304,7 +336,7 @@ class RNOmhMapsCoreViewManagerImpl(private val reactContext: ReactContext) {
                 )
             )
         }
-        omhMap.setMyLocationButtonClickListener{
+        omhMap.setMyLocationButtonClickListener {
             dispatchEvent(
                 reactContext,
                 view.id,
@@ -313,7 +345,7 @@ class RNOmhMapsCoreViewManagerImpl(private val reactContext: ReactContext) {
                     view.id
                 )
             )
-          false
+            false
         }
     }
 
@@ -328,6 +360,47 @@ class RNOmhMapsCoreViewManagerImpl(private val reactContext: ReactContext) {
 
     fun setMapStyle(view: FragmentContainerView, value: String?) {
         FragmentUtils.findFragment(view)?.omhMap?.setMapStyle(value)
+    }
+
+    fun setCustomInfoWindowView(view: FragmentContainerView, value: String?) {
+        when (value ?: "default") {
+            "default" -> {
+                queueOnMapLoadedAction {
+                    val omhMap = FragmentUtils.findFragment(view)?.omhMap
+
+                    omhMap?.setCustomInfoWindowViewFactory(null)
+                    omhMap?.setCustomInfoWindowContentsViewFactory(null)
+                }
+            }
+
+            "custom-window" -> {
+                queueOnMapLoadedAction {
+                    val omhMap = FragmentUtils.findFragment(view)?.omhMap
+
+                    omhMap?.setCustomInfoWindowViewFactory(universalInfoWindowViewFactory)
+                    omhMap?.setCustomInfoWindowContentsViewFactory(null)
+                }
+            }
+
+            "custom-contents" -> {
+                queueOnMapLoadedAction {
+                    val omhMap = FragmentUtils.findFragment(view)?.omhMap
+
+                    omhMap?.setCustomInfoWindowViewFactory(null)
+                    omhMap?.setCustomInfoWindowContentsViewFactory(universalInfoWindowViewFactory)
+                }
+            }
+
+            else -> error("Unsupported custom info window view type: $value")
+        }
+    }
+
+    private fun queueOnMapLoadedAction(action: () -> Unit) {
+        if (mapLoaded) {
+            action.invoke()
+        } else {
+            onMapLoadedActionsQueue.add(action)
+        }
     }
 
     fun setMyLocationEnabled(view: FragmentContainerView, value: Boolean) {
@@ -350,12 +423,6 @@ class RNOmhMapsCoreViewManagerImpl(private val reactContext: ReactContext) {
             ).toMap()
 
         object ERRORS {
-            const val MAP_INSTANCE_NOT_AVAILABLE =
-                "RN-managed OmhMap instance not available. Did you wait for the map to become ready?"
-
-            const val MAP_FRAGMENT_NOT_FOUND =
-                "RN-managed OmhMap fragment not found. Did you wait for the map to mount?"
-
             const val UNSUPPORTED_CHILD_VIEW_TYPE =
                 "Unsupported child view type mounted inside RN OmhMap"
 

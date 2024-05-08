@@ -1,9 +1,11 @@
 package com.openmobilehub.android.rn.maps.core.viewmanagers
 
 import android.graphics.drawable.Drawable
+import android.view.View
 import com.facebook.react.bridge.ReactContext
 import com.facebook.react.bridge.ReadableMap
 import com.facebook.react.common.MapBuilder
+import com.openmobilehub.android.rn.maps.core.entities.OmhMapInfoWindowContents
 import com.openmobilehub.android.rn.maps.core.entities.OmhMarkerEntity
 import com.openmobilehub.android.rn.maps.core.events.OmhOnMarkerDragEndEvent
 import com.openmobilehub.android.rn.maps.core.events.OmhOnMarkerDragEvent
@@ -29,6 +31,33 @@ class RNOmhMapsMarkerViewManagerImpl {
 
     fun createViewInstance(reactContext: ReactContext): OmhMarkerEntity {
         return OmhMarkerEntity(reactContext)
+    }
+
+    private fun ensureChildViewOperationIndexValid(index: Int) {
+        require(index == 0) { "OmhMarkerView can only have one child" }
+    }
+
+    fun addView(entity: OmhMarkerEntity, child: View, index: Int) {
+        ensureChildViewOperationIndexValid(index)
+        require(child is OmhMapInfoWindowContents) {
+            "OmhMarkerView's first and only child - if present"
+                .plus(" - has to be OmhMapInfoWindowContents component")
+        }
+
+        child.markerEntity = entity
+        entity.infoWindow = child
+    }
+
+    fun getChildAt(entity: OmhMarkerEntity, index: Int): View? {
+        ensureChildViewOperationIndexValid(index)
+
+        return entity.infoWindow
+    }
+
+    fun removeViewAt(entity: OmhMarkerEntity, index: Int) {
+        ensureChildViewOperationIndexValid(index)
+
+        entity.infoWindow = null
     }
 
     fun setPosition(entity: OmhMarkerEntity, value: ReadableMap?) {
@@ -150,12 +179,12 @@ class RNOmhMapsMarkerViewManagerImpl {
         }
     }
 
-    fun setIsInfoWindowShown(entity: OmhMarkerEntity, value: Boolean) {
-        entity.queueOnMountAction {
+    fun setShowInfoWindow(entity: OmhMarkerEntity, value: Boolean) {
+        entity.queueOnMapReadyAction {
             if (value) {
-                it.showInfoWindow()
+                it?.showInfoWindow()
             } else {
-                it.hideInfoWindow()
+                it?.hideInfoWindow()
             }
         }
     }

@@ -54,7 +54,7 @@ internal object DrawableLoader {
                     options.outWidth = overrideResolution.first
                     options.outHeight = overrideResolution.second
                 }
-    
+
                 val bitmap = BitmapFactory.decodeResource(
                     context.resources,
                     resId,

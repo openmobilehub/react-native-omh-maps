@@ -1,4 +1,5 @@
 import { ViewProps } from 'react-native';
+
 import { OmhCoordinate, OmhMapProviderName } from '../../types/common';
 
 /**
@@ -14,6 +15,15 @@ export type OmhCameraMoveStartedReason =
  * The OMH Snapshot format.
  */
 export type OmhSnapshotFormat = 'png' | 'jpg' | 'base64';
+
+export enum OmhInfoWindowViewMode {
+  /** Overrides the whole IW view, including both the window frame and its contents */
+  CUSTOM_WINDOW = 'custom-window',
+  /** Overrides only the IW's contents, leaving the default IW frame */
+  CUSTOM_CONTENTS = 'custom-contents',
+  /** Uses the default IW frame & contents; default option */
+  DEFAULT = 'default',
+}
 
 /**
  * The OMH Map View properties.
@@ -39,6 +49,18 @@ export type OmhMapViewProps = ViewProps & {
   onMyLocationClicked?: () => void;
   /** Callback invoked when the map camera starts to move */
   onCameraMoveStarted?: (reason: OmhCameraMoveStartedReason) => void;
+  /**
+   * The view mode that controls whether - for each marker - to:
+   * - show the default info window view for the marker (`OmhInfoWindowViewMode.DEFAULT`)
+   * - show a custom info window view for the marker, which overrides both the default contents and window container view (`OmhInfoWindowViewMode.CUSTOM_CONTENTS`)
+   * - show a custom info window contents view for the marker, using the default window container view (`OmhInfoWindowViewMode.CUSTOM_WINDOW`)
+   *
+   * The two latter options (`OmhInfoWindowViewMode.CUSTOM_CONTENTS` and `OmhInfoWindowViewMode.CUSTOM_WINDOW`) require the marker to have a custom info window view provided by
+   * rendering a **single** child inside **every** `OmhMarker` component.
+   *
+   * @default OmhInfoWindowViewMode.DEFAULT
+   */
+  infoWindowViewMode?: OmhInfoWindowViewMode;
 };
 
 /**

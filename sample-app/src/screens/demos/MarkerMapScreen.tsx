@@ -11,17 +11,18 @@ import { PixelRatio, ScrollView, View } from 'react-native';
 import { Checkbox, Subheading } from 'react-native-paper';
 
 import {
-  OmhMapView,
-  OmhMapViewRef,
-  OmhMarkerConstants,
-  OmhMarker,
   MarkerDragEndEvent,
   MarkerDragEvent,
   MarkerDragStartEvent,
+  OmhMapView,
+  OmhMapViewRef,
+  OmhMarker,
+  OmhMarkerConstants,
 } from '@omh/react-native-maps-core';
 import { OmhMapsAzureMapsProvider } from '@omh/react-native-maps-plugin-azuremaps';
 import { OmhMapsGooglemapsProvider } from '@omh/react-native-maps-plugin-googlemaps';
 import { OmhMapsOpenStreetMapProvider } from '@omh/react-native-maps-plugin-openstreetmap';
+
 import { Anchor } from '../../../../packages/core/src/components/marker/RNOmhMapsMarkerNativeComponent';
 import soccerBallIcon from '../../assets/img/soccer_ball.bmp';
 import Picker from '../../components/controls/Picker';
@@ -33,7 +34,7 @@ import { demoStyles } from '../../styles/demoStyles';
 import { Constants } from '../../utils/Constants';
 import { formatPosition, rgbToInt } from '../../utils/converters';
 
-const MarkerIWTitles = {
+export const MarkerIWTitles = {
   CONFIGURABLE_TEST_MARKER: 'Configurable test marker',
   STATIC_ICON_MARKER_NON_DRAGGABLE: 'Static icon marker (non-draggable)',
   STATIC_COLORED_MARKER_DRAGGABLE: 'Static colored marker (draggable)',
@@ -216,8 +217,8 @@ export const MarkerMapScreen = () => {
                       DemoMarkerAppearance.NETWORK_ASSET
                     ? {
                         uri: 'https://www.openmobilehub.com/images/logo/omh_logo.png',
-                        width: PixelRatio.getPixelSizeForLayoutSize(38),
-                        height: PixelRatio.getPixelSizeForLayoutSize(38),
+                        width: PixelRatio.getPixelSizeForLayoutSize(24),
+                        height: PixelRatio.getPixelSizeForLayoutSize(24),
                       }
                     : undefined
               }

@@ -8,10 +8,26 @@ fun interface OmhMapEntityOnMountAction<E> {
     fun onMount(entity: E)
 }
 
+fun interface OmhMapEntityOnMapReadyAction<E> {
+    fun onMapReady(entity: E?)
+}
+
 abstract class OmhMapEntity<E>(context: Context) : ReactViewGroup(context) {
     private var entity: E? = null
     private val onMountActionsQueue = mutableListOf<OmhMapEntityOnMountAction<E>>()
+    private val onMapLoadedActionsQueue = mutableListOf<OmhMapEntityOnMapReadyAction<E>>()
     var viewId: Int = -1
+    private var mapLoaded = false
+
+    fun handleMapLoaded() {
+        if (mapLoaded) return
+
+        mapLoaded = true
+        onMapLoadedActionsQueue.forEach { action ->
+            action.onMapReady(entity)
+        }
+        onMapLoadedActionsQueue.clear()
+    }
 
     fun mountEntity(
         omhMap: OmhMap,
@@ -33,6 +49,16 @@ abstract class OmhMapEntity<E>(context: Context) : ReactViewGroup(context) {
             action.onMount(entity!!)
         } else {
             onMountActionsQueue.add(action)
+        }
+    }
+
+    fun queueOnMapReadyAction(action: OmhMapEntityOnMapReadyAction<E>) {
+        if (mapLoaded) {
+            queueOnMountAction {
+                action.onMapReady(it)
+            }
+        } else {
+            onMapLoadedActionsQueue.add(action)
         }
     }
 

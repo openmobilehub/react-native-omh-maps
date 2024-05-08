@@ -1,4 +1,5 @@
 import { ViewProps } from 'react-native';
+
 import {
   OmhAnchor,
   OmhColor,
@@ -86,7 +87,7 @@ export type OmhMarkerProperties = {
   /**
    * Whether the info window associated with this marker is currently being shown.
    */
-  isInfoWindowShown?: boolean;
+  showInfoWindow?: boolean;
 
   /**
    * The zIndex of the marker, which specifies the order in which the marker is drawn on the map.

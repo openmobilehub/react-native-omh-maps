@@ -90,16 +90,16 @@ class RNOmhMapsCoreModuleImpl(private val reactContext: ReactApplicationContext)
         }
     }
 
-  fun getCurrentLocation(promise: Promise?, reactContext: ReactApplicationContext) {
-    val onSuccessListener = OmhSuccessListener { omhCoordinate ->
-      promise?.resolve(omhCoordinate.toWritableMap())
+    fun getCurrentLocation(promise: Promise?, reactContext: ReactApplicationContext) {
+        val onSuccessListener = OmhSuccessListener { omhCoordinate ->
+            promise?.resolve(omhCoordinate.toWritableMap())
+        }
+        val onFailureListener = OmhFailureListener {
+            promise?.resolve(null)
+        }
+        OmhMapProvider.getInstance().provideOmhLocation(reactContext)
+            .getCurrentLocation(onSuccessListener, onFailureListener)
     }
-    val onFailureListener = OmhFailureListener {
-      promise?.resolve(null)
-    }
-    OmhMapProvider.getInstance().provideOmhLocation(reactContext)
-      .getCurrentLocation(onSuccessListener, onFailureListener)
-  }
 
     companion object {
         const val NAME = "RNOmhMapsCoreModule"

@@ -1,3 +1,4 @@
+import convert from 'color-convert';
 import React, { useCallback, useMemo, useRef, useState } from 'react';
 import { ScrollView, View } from 'react-native';
 
@@ -11,20 +12,20 @@ import {
   OmhPolyline,
 } from '@omh/react-native-maps-core';
 
+import soccerBallIcon from '../../assets/img/soccer_ball.bmp';
+import { PanelButton } from '../../components/controls/PanelButton';
+import { PanelCheckbox } from '../../components/controls/PanelCheckbox';
 import Picker from '../../components/controls/Picker';
 import Slider from '../../components/controls/Slider';
-import { getRandomArbitrary } from '../../utils/mathHelpers';
-import { demoStyles } from '../../styles/demoStyles';
-import { rgbToInt } from '../../utils/converters';
-import convert from 'color-convert';
-import { PanelButton } from '../../components/controls/PanelButton';
-import useSnackbar from '../../hooks/useSnackbar';
 import useLogger from '../../hooks/useLogger';
-import { Constants } from '../../utils/Constants';
-import soccerBallIcon from '../../assets/img/soccer_ball.bmp';
-import { PanelCheckbox } from '../../components/controls/PanelCheckbox';
-import { isFeatureSupported } from '../../utils/SupportUtils';
+import useSnackbar from '../../hooks/useSnackbar';
+import { demoStyles } from '../../styles/demoStyles';
 import { PatternItem, PatternOption } from '../../types/common';
+import { Constants } from '../../utils/Constants';
+import { isFeatureSupported } from '../../utils/SupportUtils';
+import { rgbToInt } from '../../utils/converters';
+import { getRandomArbitrary } from '../../utils/mathHelpers';
+
 import jointTypeItems = Constants.JointType.jointTypeItems;
 import patternItems = Constants.Pattern.patternItems;
 

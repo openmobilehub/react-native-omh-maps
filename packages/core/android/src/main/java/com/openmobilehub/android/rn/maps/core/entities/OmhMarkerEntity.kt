@@ -1,6 +1,7 @@
 package com.openmobilehub.android.rn.maps.core.entities
 
 import android.annotation.SuppressLint
+import android.view.ViewGroup
 import com.facebook.react.bridge.ReactContext
 import com.facebook.react.uimanager.UIManagerHelper
 import com.openmobilehub.android.maps.core.presentation.interfaces.maps.OmhMap
@@ -20,6 +21,17 @@ class OmhMarkerEntity(private val context: ReactContext) :
 
     val initialOptions = OmhMarkerOptions()
     var consumeMarkerClicks = false
+
+    var infoWindow: OmhMapInfoWindowContents? = null
+    private var lastIWParentView: ViewGroup? = null
+
+    fun setNewIWParent(container: ViewGroup) {
+        lastIWParentView?.removeView(this.infoWindow)
+
+        container.addView(this.infoWindow)
+
+        lastIWParentView = container
+    }
 
     var onClickListener = OmhOnMarkerClickListener {
         RNComponentUtils.dispatchEvent(
@@ -64,7 +76,6 @@ class OmhMarkerEntity(private val context: ReactContext) :
                 )
             )
         }
-
     }
 
     override fun mountEntity(omhMap: OmhMap) {
