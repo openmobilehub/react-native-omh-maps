@@ -67,9 +67,6 @@ class RNOmhMapsCoreModule(
 
     override fun getName() = NAME
 
-
-    override fun getName() = NAME
-
     companion object {
         const val NAME = RNOmhMapsCoreModuleImpl.NAME
     }
