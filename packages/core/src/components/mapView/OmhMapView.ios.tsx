@@ -17,6 +17,7 @@ import { OmhCoordinate } from '../../types/common';
 import {
   getLatitudeDelta,
   getLongitudeDelta,
+  isMapStyleElement,
   notReadyHandler,
   notReadyPromiseHandler,
 } from './OmhMapViewHelpers';
@@ -32,6 +33,7 @@ export const OmhMapView = forwardRef<OmhMapViewRef, OmhMapViewProps>(
       onCameraIdle,
       onCameraMoveStarted,
       children,
+      mapStyle,
     },
     forwardedRef
   ) => {
@@ -154,6 +156,24 @@ export const OmhMapView = forwardRef<OmhMapViewRef, OmhMapViewProps>(
       };
     }, []);
 
+    const customMapStyle = useMemo(() => {
+      if (!mapStyle) {
+        return undefined;
+      }
+
+      let safeMapStyle = mapStyle;
+
+      if (typeof mapStyle === 'string') {
+        safeMapStyle = JSON.parse(mapStyle);
+      }
+
+      if (!isMapStyleElement(safeMapStyle)) {
+        return undefined;
+      }
+
+      return safeMapStyle;
+    }, [mapStyle]);
+
     return (
       <MapView
         ref={mapViewRef}
@@ -167,6 +187,7 @@ export const OmhMapView = forwardRef<OmhMapViewRef, OmhMapViewProps>(
         onRegionChangeComplete={handleCameraIdle}
         onRegionChange={handleRegionChange}
         onMapReady={onMapLoaded}
+        customMapStyle={customMapStyle}
         style={[
           { height: height || '100%', width: width || '100%' },
           restStyles,
