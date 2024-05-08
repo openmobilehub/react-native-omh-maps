@@ -16,7 +16,6 @@ const menuRoutes: Route[] = [
   Route.markerMap,
   Route.polylineMap,
   Route.stylesMap,
-  Route.sharedLocationMap,
 ];
 
 const defaultMapProvider = OmhMapsModule.getDefaultMapProvider();
