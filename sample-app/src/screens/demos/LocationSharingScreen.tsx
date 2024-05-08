@@ -14,7 +14,7 @@ import {
   PERMISSIONS,
   RESULTS,
 } from 'react-native-permissions';
-import { FAB } from 'react-native-paper';
+import { ActivityIndicator, FAB } from 'react-native-paper';
 import shadow from '../../assets/img/marker_shadow.webp';
 import pinMarker from '../../assets/img/marker_pin.png';
 import useSnackbar from '../../hooks/useSnackbar';
@@ -43,6 +43,8 @@ export const LocationSharingScreen = ({ navigation }: Props) => {
   const [tooltipVisible, setTooltipVisible] = useState(false);
   const [lat, setLat] = useState(0.0);
   const [lng, setLng] = useState(0.0);
+
+  const [isLoading, setIsLoading] = useState(true);
 
   const omhMapRef = useRef<OmhMapViewRef | null>(null);
   const { showSnackbar } = useSnackbar();
@@ -102,26 +104,22 @@ export const LocationSharingScreen = ({ navigation }: Props) => {
       omhMapRef.current?.setCameraCoordinate(currentLocation, 15.0);
       setLng(currentLocation.longitude);
       setLat(currentLocation.latitude);
+      setIsLoading(false);
     } catch (error) {
+      showSnackbar('Error getting location');
       logger.error('cannot find location ' + error);
     }
   };
 
   const requestLocationPermission = async () => {
-    if (Platform.OS === 'ios') {
-      try {
-        const permissionGranted = await request(
-          PERMISSIONS.IOS.LOCATION_WHEN_IN_USE
-        );
-        if (permissionGranted === RESULTS.GRANTED) {
-          setLocationEnabled(true);
-          showUserLocation();
-        }
-      } catch (error) {
-        logger.error('there was an issue with requestin permissions ' + error);
-      }
-    } else {
-      try {
+    try {
+      let permissionsGranted = false;
+
+      if (Platform.OS === 'ios') {
+        permissionsGranted =
+          (await request(PERMISSIONS.IOS.LOCATION_WHEN_IN_USE)) ===
+          RESULTS.GRANTED;
+      } else {
         const statuses = await requestMultiple([
           PERMISSIONS.ANDROID.ACCESS_FINE_LOCATION,
           PERMISSIONS.ANDROID.ACCESS_COARSE_LOCATION,
@@ -133,13 +131,21 @@ export const LocationSharingScreen = ({ navigation }: Props) => {
           statuses[PERMISSIONS.ANDROID.ACCESS_COARSE_LOCATION] ===
           RESULTS.GRANTED;
 
-        if (fineLocationAccessGranted && coarseLocationAccessGranted) {
-          setLocationEnabled(!locationEnabled);
-          showUserLocation();
-        }
-      } catch (error) {
-        logger.error('there was an issue with requestin permissions ' + error);
+        permissionsGranted =
+          fineLocationAccessGranted && coarseLocationAccessGranted;
       }
+
+      if (permissionsGranted) {
+        setLocationEnabled(true);
+        showUserLocation();
+      } else {
+        setIsLoading(false);
+        showSnackbar('Location permission denied');
+      }
+    } catch (error) {
+      setIsLoading(false);
+      showSnackbar('Error requesting location permission');
+      logger.error('there was an issue with requestin permissions ' + error);
     }
   };
 
@@ -196,6 +202,11 @@ export const LocationSharingScreen = ({ navigation }: Props) => {
           }}
         />
       </View>
+      <ActivityIndicator
+        animating={isLoading}
+        size={'large'}
+        style={styles.activityIndicator}
+      />
     </View>
   );
 };
@@ -250,5 +261,8 @@ const styles = StyleSheet.create({
     pointerEvents: 'box-none',
   },
   shadow: { position: 'absolute' },
+  activityIndicator: {
+    position: 'absolute',
+  },
 });
 export default LocationSharingScreen;
