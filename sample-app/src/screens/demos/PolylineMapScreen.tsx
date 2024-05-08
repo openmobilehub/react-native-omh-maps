@@ -24,18 +24,9 @@ import { Constants } from '../../utils/Constants';
 import soccerBallIcon from '../../assets/img/soccer_ball.bmp';
 import { PanelCheckbox } from '../../components/controls/PanelCheckbox';
 import { isFeatureSupported } from '../../utils/SupportUtils';
-
-enum PatternOption {
-  NONE = 'None',
-  DOTTED = 'Dotted',
-  DASHED = 'Dashed',
-  CUSTOM = 'Custom',
-}
-
-type PatternItem = {
-  label: PatternOption;
-  value: OmhPatternItem[] | undefined;
-};
+import { PatternItem, PatternOption } from '../../types/common';
+import jointTypeItems = Constants.JointType.jointTypeItems;
+import patternItems = Constants.Pattern.patternItems;
 
 const getSupportedFeatures = (currentMapProvider?: string) => {
   return {
@@ -115,11 +106,6 @@ type CapItem = {
   value: OmhCap;
 };
 
-type JointTypeItem = {
-  label: string;
-  value: OmhLineJoin;
-};
-
 const capItems: CapItem[] = [
   {
     label: 'Butt',
@@ -146,90 +132,6 @@ const capItems: CapItem[] = [
       icon: soccerBallIcon,
       refWidth: 75.0,
     },
-  },
-];
-
-const jointTypeItems: JointTypeItem[] = [
-  {
-    label: 'Miter',
-    value: 'miter',
-  },
-  {
-    label: 'Round',
-    value: 'round',
-  },
-  {
-    label: 'Bevel',
-    value: 'bevel',
-  },
-];
-
-const dottedPattern: OmhPatternItem[] = [
-  {
-    variant: 'dot',
-  },
-  {
-    variant: 'gap',
-    length: 10.0,
-  },
-];
-
-const dashedPattern: OmhPatternItem[] = [
-  {
-    variant: 'dash',
-    length: 10.0,
-  },
-  {
-    variant: 'gap',
-    length: 10.0,
-  },
-];
-
-const customPattern: OmhPatternItem[] = [
-  {
-    variant: 'dash',
-    length: 10.0,
-  },
-  {
-    variant: 'gap',
-    length: 2.0,
-  },
-  {
-    variant: 'dash',
-    length: 10.0,
-  },
-  {
-    variant: 'gap',
-    length: 5.0,
-  },
-  {
-    variant: 'dot',
-  },
-  {
-    variant: 'gap',
-    length: 5.0,
-  },
-  {
-    variant: 'dot',
-  },
-];
-
-const patternItems: PatternItem[] = [
-  {
-    label: PatternOption.NONE,
-    value: undefined,
-  },
-  {
-    label: PatternOption.DOTTED,
-    value: dottedPattern,
-  },
-  {
-    label: PatternOption.DASHED,
-    value: dashedPattern,
-  },
-  {
-    label: PatternOption.CUSTOM,
-    value: customPattern,
   },
 ];
 
