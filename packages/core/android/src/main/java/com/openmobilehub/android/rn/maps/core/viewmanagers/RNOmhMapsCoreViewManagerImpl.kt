@@ -36,6 +36,7 @@ class RNOmhMapsCoreViewManagerImpl(private val reactContext: ReactContext) {
     var width: Int? = null
     private val mountedChildren = HashMap<Int, OmhMapEntity<*>>()
     private val addEntitiesQueue = mutableListOf<Pair<View, Int>>()
+    private var isMounted = false
 
     fun createViewInstance(reactContext: ThemedReactContext): FragmentContainerView {
         return FragmentContainerView(reactContext)
@@ -107,6 +108,11 @@ class RNOmhMapsCoreViewManagerImpl(private val reactContext: ReactContext) {
     }
 
     fun removeViewAt(index: Int) {
+        // note: on old RN architecture, RN unmounts the fragment first, and then the children
+        // which causes a NullPointerException when unmountEntity() triggers calls to underlying
+        // native entities, which are bound to a non-existent map that has already been unmounted
+        if (!isMounted) return
+
         // note: on old RN architecture, RN tries to unmount the child view
         // at index 0 even when it had never been added, thus the check is omitted in such case
         val child = mountedChildren[index]
@@ -128,6 +134,8 @@ class RNOmhMapsCoreViewManagerImpl(private val reactContext: ReactContext) {
                 val transaction = fragmentManager.beginTransaction()
                 transaction.remove(fragment)
                 transaction.commitNowAllowingStateLoss()
+
+                isMounted = false
             }
         }
     }
@@ -157,6 +165,8 @@ class RNOmhMapsCoreViewManagerImpl(private val reactContext: ReactContext) {
                 layoutChildren(view)
             }
             transaction.commitNowAllowingStateLoss()
+
+            isMounted = true
         }
     }
 
