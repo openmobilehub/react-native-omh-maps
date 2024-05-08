@@ -52,5 +52,4 @@ export type OmhMapViewRef = {
   ) => Promise<void>;
   getProviderName: () => OmhMapProviderName;
   takeSnapshot: (resultFormat: OmhSnapshotFormat) => Promise<string>;
-  getCurrentLocation: () => Promise<OmhCoordinate>;
 };

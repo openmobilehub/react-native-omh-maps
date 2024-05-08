@@ -20,7 +20,11 @@ import useSnackbar from '../../hooks/useSnackbar';
 import Route from '../../Routes';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 
-import { OmhMapView, OmhMapViewRef } from '@omh/react-native-maps-core';
+import {
+  OmhMapView,
+  OmhMapViewRef,
+  OmhMapsLocationModule,
+} from '@omh/react-native-maps-core';
 
 import useLogger from '../../hooks/useLogger';
 import { demoStyles } from '../../styles/demoStyles';
@@ -92,7 +96,7 @@ export const LocationSharingScreen = ({ navigation }: Props) => {
 
   const showUserLocation = async () => {
     try {
-      const currentLocation = await omhMapRef.current?.getCurrentLocation();
+      const currentLocation = await OmhMapsLocationModule.getCurrentLocation();
       omhMapRef.current?.setCameraCoordinate(currentLocation, 15.0);
       setLng(currentLocation.longitude);
       setLat(currentLocation.latitude);
