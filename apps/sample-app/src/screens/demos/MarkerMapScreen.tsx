@@ -11,18 +11,19 @@ import { PixelRatio, ScrollView, View } from 'react-native';
 import { Checkbox, Subheading } from 'react-native-paper';
 
 import {
-  OmhMapView,
-  OmhMapViewRef,
-  OmhMarkerConstants,
-  OmhMarker,
   MarkerDragEndEvent,
   MarkerDragEvent,
   MarkerDragStartEvent,
+  OmhAnchor,
+  OmhMapView,
+  OmhMapViewRef,
+  OmhMarker,
+  OmhMarkerConstants,
 } from '@omh/react-native-maps-core';
 import { OmhMapsAzureMapsProvider } from '@omh/react-native-maps-plugin-azuremaps';
 import { OmhMapsGooglemapsProvider } from '@omh/react-native-maps-plugin-googlemaps';
 import { OmhMapsOpenStreetMapProvider } from '@omh/react-native-maps-plugin-openstreetmap';
-import { Anchor } from '../../../../packages/core/src/components/marker/RNOmhMapsMarkerNativeComponent';
+
 import soccerBallIcon from '../../assets/img/soccer_ball.bmp';
 import Picker from '../../components/controls/Picker';
 import Slider from '../../components/controls/Slider';
@@ -70,7 +71,7 @@ export const MarkerMapScreen = () => {
   const [customizableMarkerRotation, setCustomizableMarkerRotation] =
     useState(0);
   const [customizableMarkerAnchor, setCustomizableMarkerAnchor] =
-    useState<Anchor>({
+    useState<OmhAnchor>({
       u: OmhMarkerConstants.ANCHOR_CENTER.u,
       v: OmhMarkerConstants.ANCHOR_CENTER.v,
     });

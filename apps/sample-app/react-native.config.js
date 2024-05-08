@@ -1,10 +1,10 @@
-const path = require('path');
 const pak = require('./package.json');
+const root = require('./config-constants');
 
 module.exports = {
   dependencies: {
     [pak.name]: {
-      root: path.join(path.dirname(__filename), '..'),
+      root,
     },
     'react-native-vector-icons': {
       platforms: {

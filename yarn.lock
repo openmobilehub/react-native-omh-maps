@@ -4202,9 +4202,9 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@omh/react-native-maps-sample-app@workspace:sample-app":
+"@omh/react-native-maps-sample-app@workspace:apps/sample-app":
   version: 0.0.0-use.local
-  resolution: "@omh/react-native-maps-sample-app@workspace:sample-app"
+  resolution: "@omh/react-native-maps-sample-app@workspace:apps/sample-app"
   dependencies:
     "@omh/react-native-maps-core": "workspace:^"
     "@omh/react-native-maps-plugin-azuremaps": "workspace:^"

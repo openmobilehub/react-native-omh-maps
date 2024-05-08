@@ -2,7 +2,7 @@
 
 This project is a monorepo managed using [Yarn workspaces](https://yarnpkg.com/features/workspaces). It contains the following packages:
 
-- An example app in the `sample-app/` directory.
+- An example app in the `apps/sample-app/` directory.
 - The core library in the `packages/react-native-maps-core/` directory.
 - Plugin packages in the `packages/react-native-maps-plugin-*/` directories.
 
@@ -20,11 +20,11 @@ To develop, it is required that the [React Native Codegen](https://github.com/re
 yarn codegen:android
 ```
 
-The [example app](https://github.com/openmobilehub/react-native-omh-maps/tree/main/sample-app/) demonstrates usage of the library. You need to run it to test any changes you make.
+The [example app](https://github.com/openmobilehub/react-native-omh-maps/tree/main/apps/sample-app/) demonstrates usage of the library. You need to run it to test any changes you make.
 
 It is configured to use the local version of the library, so any changes you make to the library's source code will be reflected in the example app. Changes to the library's JavaScript code will be reflected in the example app without a rebuild, but native code changes will require a rebuild of the example app.
 
-To edit the Java or Kotlin files, open `sample-app/android` in Android studio and find the source files at `omh_rn-maps-core` under `Android`.
+To edit the Java or Kotlin files, open `apps/sample-app/android` in Android studio and find the source files at `omh_rn-maps-core` under `Android`.
 
 You can use various commands from the root directory to work with the project.
 
