@@ -109,7 +109,9 @@ export const PolygonMapScreen = () => {
   const [withHoles, setWithHoles] = useState(false);
   const [strokeWidth, setStrokeWidth] = useState(defaultWidth);
   const [strokeColorHue, setStrokeColorHue] = useState(0);
-  const [fillColorHue, setFillColorHue] = useState(100);
+  const [fillColorHue, setFillColorHue] = useState<number | undefined>(
+    undefined
+  );
   const [isVisible, setIsVisible] = useState(true);
   const [zIndex, setZIndex] = useState(0);
   const [strokeJointType, setStrokeJointType] = useState<OmhLineJoin>(
@@ -130,7 +132,10 @@ export const PolygonMapScreen = () => {
   );
 
   const fillColorRGB = useMemo(
-    () => rgbToInt(convert.hsv.rgb([fillColorHue, 100, 100])),
+    () =>
+      fillColorHue
+        ? rgbToInt(convert.hsv.rgb([fillColorHue, 100, 100]))
+        : undefined,
     [fillColorHue]
   );
 
@@ -273,7 +278,7 @@ export const PolygonMapScreen = () => {
           <Slider
             label="Fill Color"
             onChange={setFillColorHue}
-            defaultValue={100}
+            defaultValue={0}
             step={1}
             minimumValue={0}
             maximumValue={360}
