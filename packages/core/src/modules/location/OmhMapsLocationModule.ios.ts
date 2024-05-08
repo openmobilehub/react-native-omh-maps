@@ -1,6 +1,31 @@
+import Geolocation, {
+  GeolocationOptions,
+} from '@react-native-community/geolocation';
 import { IOmhMapsLocationModule } from './OmhMapsLocationModule.types';
+import { OmhCoordinate } from '../../types/common';
+
+const getLocation = async (
+  options?: GeolocationOptions
+): Promise<OmhCoordinate> => {
+  return new Promise(resolve => {
+    Geolocation.getCurrentPosition(
+      position =>
+        resolve({
+          latitude: position.coords.latitude,
+          longitude: position.coords.longitude,
+        }),
+      error => {
+        throw error;
+      },
+      {
+        enableHighAccuracy: true,
+        ...options,
+      }
+    );
+  });
+};
 
 export const OmhMapsLocationModule: IOmhMapsLocationModule = {
-  getCurrentLocation: () => Promise.resolve({ latitude: 0, longitude: 0 }),
-  getLastLocation: () => Promise.resolve({ latitude: 0, longitude: 0 }),
+  getCurrentLocation: async () => getLocation({ maximumAge: 0 }),
+  getLastLocation: () => getLocation({ maximumAge: Infinity }),
 };

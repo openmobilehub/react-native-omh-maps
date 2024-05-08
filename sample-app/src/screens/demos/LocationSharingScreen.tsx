@@ -1,19 +1,20 @@
 import React, { useRef, useState } from 'react';
 import {
-  ScrollView,
   View,
   Image,
   Text,
   TouchableOpacity,
   Animated,
   StyleSheet,
+  Platform,
 } from 'react-native';
 import {
+  request,
   requestMultiple,
   PERMISSIONS,
   RESULTS,
 } from 'react-native-permissions';
-import { Checkbox, FAB } from 'react-native-paper';
+import { FAB } from 'react-native-paper';
 import shadow from '../../assets/img/marker_shadow.webp';
 import pinMarker from '../../assets/img/marker_pin.png';
 import useSnackbar from '../../hooks/useSnackbar';
@@ -29,6 +30,7 @@ import {
 import useLogger from '../../hooks/useLogger';
 import { demoStyles } from '../../styles/demoStyles';
 import { RootStackParamList } from '../../App';
+import { PanelCheckbox } from '../../components/controls/PanelCheckbox';
 
 type Props = NativeStackScreenProps<RootStackParamList, Route.locationSharing>;
 
@@ -106,23 +108,38 @@ export const LocationSharingScreen = ({ navigation }: Props) => {
   };
 
   const requestLocationPermission = async () => {
-    try {
-      const statuses = await requestMultiple([
-        PERMISSIONS.ANDROID.ACCESS_FINE_LOCATION,
-        PERMISSIONS.ANDROID.ACCESS_COARSE_LOCATION,
-      ]);
-      const fineLocationAccessGranted =
-        statuses[PERMISSIONS.ANDROID.ACCESS_FINE_LOCATION] === RESULTS.GRANTED;
-      const coarseLocationAccessGranted =
-        statuses[PERMISSIONS.ANDROID.ACCESS_COARSE_LOCATION] ===
-        RESULTS.GRANTED;
-
-      if (fineLocationAccessGranted && coarseLocationAccessGranted) {
-        setLocationEnabled(!locationEnabled);
-        showUserLocation();
+    if (Platform.OS === 'ios') {
+      try {
+        const permissionGranted = await request(
+          PERMISSIONS.IOS.LOCATION_WHEN_IN_USE
+        );
+        if (permissionGranted === RESULTS.GRANTED) {
+          setLocationEnabled(true);
+          showUserLocation();
+        }
+      } catch (error) {
+        logger.error('there was an issue with requestin permissions ' + error);
       }
-    } catch (error) {
-      logger.error('there was an issue with requestin permissions ' + error);
+    } else {
+      try {
+        const statuses = await requestMultiple([
+          PERMISSIONS.ANDROID.ACCESS_FINE_LOCATION,
+          PERMISSIONS.ANDROID.ACCESS_COARSE_LOCATION,
+        ]);
+        const fineLocationAccessGranted =
+          statuses[PERMISSIONS.ANDROID.ACCESS_FINE_LOCATION] ===
+          RESULTS.GRANTED;
+        const coarseLocationAccessGranted =
+          statuses[PERMISSIONS.ANDROID.ACCESS_COARSE_LOCATION] ===
+          RESULTS.GRANTED;
+
+        if (fineLocationAccessGranted && coarseLocationAccessGranted) {
+          setLocationEnabled(!locationEnabled);
+          showUserLocation();
+        }
+      } catch (error) {
+        logger.error('there was an issue with requestin permissions ' + error);
+      }
     }
   };
 
@@ -168,19 +185,16 @@ export const LocationSharingScreen = ({ navigation }: Props) => {
         </View>
       </View>
       <View style={styles.bottomScrollContainer}>
-        <ScrollView contentContainerStyle={styles.bottomContainer}>
-          <Checkbox.Item
-            label="My Location Enabled"
-            status={locationEnabled ? 'checked' : 'unchecked'}
-            onPress={() => {
-              if (locationEnabled) {
-                setLocationEnabled(false);
-              } else {
-                enableLocation();
-              }
-            }}
-          />
-        </ScrollView>
+        <PanelCheckbox
+          label="My Location Enabled"
+          value={locationEnabled}
+          onValueChange={value => {
+            setLocationEnabled(value);
+            if (value) {
+              showUserLocation();
+            }
+          }}
+        />
       </View>
     </View>
   );
@@ -188,8 +202,7 @@ export const LocationSharingScreen = ({ navigation }: Props) => {
 
 const styles = StyleSheet.create({
   bottomContainer: {
-    paddingVertical: 8,
-    paddingTop: 7,
+    paddingVertical: 16,
     paddingHorizontal: 8,
     width: '100%',
   },
@@ -201,6 +214,7 @@ const styles = StyleSheet.create({
   },
   bottomScrollContainer: {
     flex: 0.1,
+    padding: 16,
     overflow: 'hidden',
     width: '100%',
   },
@@ -214,7 +228,14 @@ const styles = StyleSheet.create({
   fab: {
     position: 'absolute',
     right: 10,
-    bottom: 10,
+    ...Platform.select({
+      ios: {
+        top: 10,
+      },
+      android: {
+        bottom: 10,
+      },
+    }),
   },
   markerContainer: {
     position: 'absolute',
@@ -225,6 +246,8 @@ const styles = StyleSheet.create({
     display: 'flex',
     justifyContent: 'center',
     alignItems: 'center',
+    // backgroundColor: 'red',
+    pointerEvents: 'box-none',
   },
   shadow: { position: 'absolute' },
 });

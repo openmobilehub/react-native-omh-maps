@@ -17,10 +17,10 @@ export function AppBarHeader({
 
   return (
     <Appbar.Header style={[options.headerStyle, styles.header]}>
-      <Appbar.BackAction disabled={!back} onPress={navigation.goBack} />
-
+      {back ? (
+        <Appbar.BackAction disabled={!back} onPress={navigation.goBack} />
+      ) : null}
       <Appbar.Content title={title} style={styles.headerTitle} />
-
       {route.name !== Route.about && (
         <Appbar.Action
           icon="information-outline"

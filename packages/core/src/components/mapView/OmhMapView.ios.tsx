@@ -34,6 +34,7 @@ export const OmhMapView = forwardRef<OmhMapViewRef, OmhMapViewProps>(
       onCameraMoveStarted,
       children,
       mapStyle,
+      myLocationEnabled,
     },
     forwardedRef
   ) => {
@@ -188,6 +189,8 @@ export const OmhMapView = forwardRef<OmhMapViewRef, OmhMapViewProps>(
         onRegionChangeComplete={handleCameraIdle}
         onRegionChange={handleRegionChange}
         onMapReady={onMapLoaded}
+        showsUserLocation={myLocationEnabled}
+        showsMyLocationButton={true}
         customMapStyle={customMapStyle}
         style={[
           { height: height || '100%', width: width || '100%' },
