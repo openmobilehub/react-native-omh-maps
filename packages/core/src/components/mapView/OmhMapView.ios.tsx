@@ -168,6 +168,7 @@ export const OmhMapView = forwardRef<OmhMapViewRef, OmhMapViewProps>(
       }
 
       if (!isMapStyleElement(safeMapStyle)) {
+        console.warn('Invalid map style provided!');
         return undefined;
       }
 
