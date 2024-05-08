@@ -1,5 +1,5 @@
 import React from 'react';
-import { ScrollView, View } from 'react-native';
+import { Platform, ScrollView, View } from 'react-native';
 import { RadioButton, Text } from 'react-native-paper';
 
 import {
@@ -32,7 +32,8 @@ const MAPBOX_STYLES = {
   [RadioButtonValue.Silver]: require('../../assets/mapStyles/mapbox_style_silver.json'),
 };
 
-const SUPPORTED_MAP_PROVIDERS = ['GoogleMaps', 'Mapbox'];
+const SUPPORTED_MAP_PROVIDERS =
+  Platform.OS === 'ios' ? ['Google'] : ['GoogleMaps', 'Mapbox'];
 
 export const StylesMapScreen = () => {
   const mapViewRef = React.useRef<OmhMapViewRef | null>(null);
@@ -56,6 +57,7 @@ export const StylesMapScreen = () => {
 
     switch (mapProvider) {
       case 'GoogleMaps':
+      case 'Google':
         setMapStyle(GOOGLE_MAPS_STYLES[value]);
         break;
       case 'Mapbox':
