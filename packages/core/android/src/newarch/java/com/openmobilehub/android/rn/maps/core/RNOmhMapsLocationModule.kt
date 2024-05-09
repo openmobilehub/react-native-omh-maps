@@ -22,6 +22,10 @@ class RNOmhMapsLocationModule(
     moduleImpl.getLastLocation(promise)
   }
 
+  override fun getTypedExportedConstants(): MutableMap<String, Any> {
+    return moduleImpl.getConstants()
+  }
+
   override fun getName() = NAME
 
   companion object {

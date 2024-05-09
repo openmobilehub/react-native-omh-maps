@@ -190,7 +190,7 @@ export const OmhMapView = forwardRef<OmhMapViewRef, OmhMapViewProps>(
         onRegionChange={handleRegionChange}
         onMapReady={onMapLoaded}
         showsUserLocation={myLocationEnabled}
-        showsMyLocationButton={true}
+        showsMyLocationButton={myLocationEnabled}
         customMapStyle={customMapStyle}
         style={[
           { height: height || '100%', width: width || '100%' },

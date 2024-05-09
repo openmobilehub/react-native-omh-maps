@@ -1,7 +1,6 @@
 package com.openmobilehub.android.rn.maps.core
 
 import android.Manifest
-import android.annotation.SuppressLint
 import android.content.pm.PackageManager
 import androidx.annotation.RequiresPermission
 import androidx.core.content.ContextCompat
@@ -19,11 +18,11 @@ class RNOmhMapsLocationModuleImpl(private val reactContext: ReactApplicationCont
       promise.resolve(omhCoordinate.toWritableMap())
     }
     val onFailureListener = OmhFailureListener {
-      promise.reject(Error(it))
+      promise.reject(ErrorCodes.OMH_LOCATION_MODULE, it)
     }
 
     if (!checkPermissions()) {
-      return promise.reject(Error("Permissions denied"))
+      return promise.reject(ErrorCodes.PERMISSION_DENIED, Error("Before getting location, you need to grant permissions."))
     }
 
     OmhMapProvider.getInstance().provideOmhLocation(reactContext)
@@ -36,11 +35,11 @@ class RNOmhMapsLocationModuleImpl(private val reactContext: ReactApplicationCont
       promise.resolve(omhCoordinate.toWritableMap())
     }
     val onFailureListener = OmhFailureListener {
-      promise.reject(Error(it))
+      promise.reject(ErrorCodes.OMH_LOCATION_MODULE, it)
     }
 
     if (!checkPermissions()) {
-      return promise.reject(Error("Permissions denied"))
+      return promise.reject(ErrorCodes.PERMISSION_DENIED, Error("Before getting location, you need to grant permissions."))
     }
 
     OmhMapProvider.getInstance().provideOmhLocation(reactContext)
@@ -58,8 +57,18 @@ class RNOmhMapsLocationModuleImpl(private val reactContext: ReactApplicationCont
     ) == PackageManager.PERMISSION_GRANTED
   }
 
+  fun getConstants(): MutableMap<String, Any> {
+    return mutableMapOf(
+      "PERMISSIONS_DENIED_ERROR_CODE" to ErrorCodes.PERMISSION_DENIED,
+      "OMH_LOCATION_MODULE_ERROR_CODE" to ErrorCodes.OMH_LOCATION_MODULE
+    )
+  }
+
   companion object {
     const val NAME = "RNOmhMapsLocationModule"
+    object ErrorCodes {
+      const val PERMISSION_DENIED = "PERMISSION_DENIED_ERROR"
+      const val OMH_LOCATION_MODULE = "OMH_LOCATION_MODULE_ERROR"
+    }
   }
 }
-

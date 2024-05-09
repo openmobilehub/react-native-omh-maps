@@ -9,6 +9,10 @@ type NativeCoordinate = {
 export interface Spec extends TurboModule {
   getCurrentLocation(): Promise<NativeCoordinate>;
   getLastLocation(): Promise<NativeCoordinate>;
+  getConstants(): {
+    PERMISSIONS_DENIED_ERROR_CODE: string;
+    OMH_LOCATION_MODULE_ERROR_CODE: string;
+  };
 }
 
 export default TurboModuleRegistry.getEnforcing<Spec>(

@@ -1,7 +1,10 @@
 import Geolocation, {
   GeolocationOptions,
 } from '@react-native-community/geolocation';
-import { IOmhMapsLocationModule } from './OmhMapsLocationModule.types';
+import {
+  IOmhMapsLocationModule,
+  OmhLocationError,
+} from './OmhMapsLocationModule.types';
 import { OmhCoordinate } from '../../types/common';
 
 const getLocation = async (
@@ -15,7 +18,10 @@ const getLocation = async (
           longitude: position.coords.longitude,
         }),
       error => {
-        throw error;
+        throw new OmhLocationError(
+          error.message,
+          error.PERMISSION_DENIED === 1
+        );
       },
       {
         enableHighAccuracy: true,
