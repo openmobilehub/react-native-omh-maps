@@ -16,5 +16,10 @@ module.exports = {
         android: null,
       },
     },
+    '@react-native-community/geolocation': {
+      platforms: {
+        android: null,
+      },
+    },
   },
 };

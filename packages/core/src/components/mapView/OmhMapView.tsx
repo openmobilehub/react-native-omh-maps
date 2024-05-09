@@ -78,7 +78,6 @@ export const OmhMapView = forwardRef<OmhMapViewRef, OmhMapViewProps>(
             setCameraCoordinate: notReadyPromiseHandler,
             getProviderName: notReadyHandler,
             takeSnapshot: notReadyPromiseHandler,
-            getCurrentLocation: notReadyPromiseHandler,
           };
         }
 
@@ -91,8 +90,6 @@ export const OmhMapView = forwardRef<OmhMapViewRef, OmhMapViewProps>(
             NativeOmhMapsCoreModule.getProviderName(nodeHandle),
           takeSnapshot: (format: OmhSnapshotFormat) =>
             NativeOmhMapsCoreModule.takeSnapshot(nodeHandle, format),
-          getCurrentLocation: () =>
-            NativeOmhMapsCoreModule.getCurrentLocation(),
         };
       },
       [getViewRefHandle]

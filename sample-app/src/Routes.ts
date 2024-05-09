@@ -9,6 +9,7 @@ export enum Route {
   stylesMap = 'Styles Map',
   locationSharing = 'Location Sharing Map',
   locationResult = 'Location Result',
+  sharedLocationMap = 'Shared Location Map',
   // multipleMaps = 'Multiple maps',
 }
 
@@ -23,6 +24,7 @@ export const RoutesDescriptions: Record<Route, string> = {
   [Route.stylesMap]: 'Map showcasing custom styles',
   [Route.locationSharing]: 'Map showcasing location sharing via deep links',
   [Route.locationResult]: 'Location result screen',
+  [Route.sharedLocationMap]: 'Map displaying shared location',
   // [Route.multipleMaps]:
   //   'Multiple maps from different providers displayed simultaneously.',
 };

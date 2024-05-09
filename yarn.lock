@@ -4103,6 +4103,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@omh/react-native-maps-core@workspace:packages/core"
   dependencies:
+    "@react-native-community/geolocation": "npm:^3.2.1"
     "@types/node": "npm:*"
     del-cli: "npm:*"
     jest: "npm:*"
@@ -4112,9 +4113,10 @@ __metadata:
     ts-node: "npm:*"
     typescript: "npm:*"
   peerDependencies:
+    "@react-native-community/geolocation": ">=3.0.0"
     react: "*"
     react-native: "*"
-    react-native-maps: ^1.15.1
+    react-native-maps: ">=1.15.0"
   languageName: unknown
   linkType: soft
 
@@ -4211,6 +4213,7 @@ __metadata:
     "@omh/react-native-maps-plugin-googlemaps": "workspace:^"
     "@omh/react-native-maps-plugin-mapbox": "workspace:^"
     "@omh/react-native-maps-plugin-openstreetmap": "workspace:^"
+    "@react-native-community/geolocation": "npm:^3.2.1"
     "@react-native-community/hooks": "npm:^3.0.0"
     "@react-native-community/slider": "npm:^4.5.2"
     "@react-native-picker/picker": "npm:^2.7.5"
@@ -4528,6 +4531,16 @@ __metadata:
   bin:
     react-native: build/bin.js
   checksum: 10/f5998b846adfbacfaf863f7681a7b2af088883d6c0959da96167bd58e6bd2a80df32eb4ed84a9904f88ced3b7790d12676e80dc159d1c7ef96d847ab41efe7f4
+  languageName: node
+  linkType: hard
+
+"@react-native-community/geolocation@npm:^3.2.1":
+  version: 3.2.1
+  resolution: "@react-native-community/geolocation@npm:3.2.1"
+  peerDependencies:
+    react: "*"
+    react-native: "*"
+  checksum: 10/644294f0e70219b154bb9d68b762096ef53bc11c4f3263262dd6772b077b5d1bb328ebfea1a447dc192b9692c5672438f209b1a8d45e54af4fd52dff9424cd14
   languageName: node
   linkType: hard
 

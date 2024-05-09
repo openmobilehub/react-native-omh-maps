@@ -108,7 +108,7 @@ export const PlainMapScreen = () => {
           />
 
           <Slider
-            label={`Map width: ${height}%`}
+            label={`Map height: ${height}%`}
             onChange={onHeightChange}
             defaultValue={100}
             step={1}

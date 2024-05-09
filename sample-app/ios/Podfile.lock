@@ -1064,6 +1064,27 @@ PODS:
   - React-Mapbuffer (0.74.0):
     - glog
     - React-debug
+  - react-native-geolocation (3.2.1):
+    - DoubleConversion
+    - glog
+    - hermes-engine
+    - RCT-Folly (= 2024.01.01.00)
+    - RCTRequired
+    - RCTTypeSafety
+    - React-Codegen
+    - React-Core
+    - React-debug
+    - React-Fabric
+    - React-featureflags
+    - React-graphics
+    - React-ImageManager
+    - React-NativeModulesApple
+    - React-RCTFabric
+    - React-rendererdebug
+    - React-utils
+    - ReactCommon/turbomodule/bridging
+    - ReactCommon/turbomodule/core
+    - Yoga
   - react-native-google-maps (1.15.1):
     - Google-Maps-iOS-Utils (= 4.2.2)
     - GoogleMaps (= 7.4.0)
@@ -1390,6 +1411,7 @@ DEPENDENCIES:
   - React-jsitracing (from `../../node_modules/react-native/ReactCommon/hermes/executor/`)
   - React-logger (from `../../node_modules/react-native/ReactCommon/logger`)
   - React-Mapbuffer (from `../../node_modules/react-native/ReactCommon`)
+  - "react-native-geolocation (from `../../node_modules/@react-native-community/geolocation`)"
   - react-native-google-maps (from `../../node_modules/react-native-maps`)
   - react-native-maps (from `../../node_modules/react-native-maps`)
   - react-native-safe-area-context (from `../../node_modules/react-native-safe-area-context`)
@@ -1501,6 +1523,8 @@ EXTERNAL SOURCES:
     :path: "../../node_modules/react-native/ReactCommon/logger"
   React-Mapbuffer:
     :path: "../../node_modules/react-native/ReactCommon"
+  react-native-geolocation:
+    :path: "../../node_modules/@react-native-community/geolocation"
   react-native-google-maps:
     :path: "../../node_modules/react-native-maps"
   react-native-maps:
@@ -1604,6 +1628,7 @@ SPEC CHECKSUMS:
   React-jsitracing: 36a2bbc272300313653d980de5ab700ec86c534a
   React-logger: 03f2f7b955cfe24593a2b8c9705c23e142d1ad24
   React-Mapbuffer: 5e05d78fe6505f4a054b86f415733d4ad02dd314
+  react-native-geolocation: fe0562c94eb0b6334f266aea717448dfd9b08cd0
   react-native-google-maps: 7aae26cd61058ca41f54ed4abb127dbe20ad9184
   react-native-maps: 4c07b21deac3ac3579558956b63e288efb8725bb
   react-native-safe-area-context: dcab599c527c2d7de2d76507a523d20a0b83823d
@@ -1632,12 +1657,12 @@ SPEC CHECKSUMS:
   React-utils: f013537c3371270d2095bff1d594d00d4bc9261b
   ReactCommon: 2cde697fd80bd31da1d6448d25a5803088585219
   RNCPicker: 3e2c37a8328f368ce14da050cdc8231deb5fc9f9
-  RNPermissions: 294531ede5a64d1528463e88fffef05675842042
+  RNPermissions: 107a3106f541d738b80450cdf2dd9fbd134646eb
   RNScreens: b32a9ff15bea7fcdbe5dff6477bc503f792b1208
   RNShare: 554a91f5cfbe4adac4cfe3654826ee8b299fe365
   SocketRocket: abac6f5de4d4d62d24e11868d7a2f427e0ef940d
   Yoga: 56f906bf6c11c931588191dde1229fd3e4e3d557
 
-PODFILE CHECKSUM: bc74b017e699be42734f072a37f046f30ae4f8a7
+PODFILE CHECKSUM: b1df9252be87c6fbe77f41ef4cff09541bc37046
 
 COCOAPODS: 1.14.3
