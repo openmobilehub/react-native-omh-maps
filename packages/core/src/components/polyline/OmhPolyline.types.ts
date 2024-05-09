@@ -1,5 +1,10 @@
 import { ViewProps } from 'react-native';
-import { OmhCoordinate, OmhLineJoin, OmhPatternItem } from '../../types/common';
+import {
+  OmhColor,
+  OmhCoordinate,
+  OmhLineJoin,
+  OmhPatternItem,
+} from '../../types/common';
 
 /**
  * Common properties for the OmhSpan types.
@@ -78,7 +83,7 @@ export type OmhPolylineProps = OmhCapProps &
     /**
      * The RGB color of the polyline stroke represented as an integer.
      */
-    color?: number; // note: Int32 is too small, there is no Int64, so Double is used
+    color?: OmhColor;
 
     /**
      * The width of the polyline stroke.

@@ -15,6 +15,7 @@ const menuRoutes: Route[] = [
   Route.locationSharing,
   Route.markerMap,
   Route.polylineMap,
+  Route.polygonMap,
   Route.stylesMap,
 ];
 
