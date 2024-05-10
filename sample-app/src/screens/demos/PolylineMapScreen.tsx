@@ -14,7 +14,7 @@ import Picker from '../../components/controls/Picker';
 import Slider from '../../components/controls/Slider';
 import { getRandomArbitrary } from '../../utils/mathHelpers';
 import { demoStyles } from '../../styles/demoStyles';
-import { patternOptionToPattern, rgbToInt } from '../../utils/converters';
+import { rgbToInt } from '../../utils/converters';
 import convert from 'color-convert';
 import { PanelButton } from '../../components/controls/PanelButton';
 import useSnackbar from '../../hooks/useSnackbar';
@@ -25,6 +25,7 @@ import { PanelCheckbox } from '../../components/controls/PanelCheckbox';
 import { isFeatureSupported } from '../../utils/SupportUtils';
 import { PatternOption } from '../../types/common';
 import jointTypeItems = Constants.JointType.jointTypeItems;
+import patterns = Constants.Pattern.patterns;
 
 const getSupportedFeatures = (currentMapProvider?: string) => {
   return {
@@ -196,10 +197,7 @@ export const PolylineMapScreen = () => {
       }));
   }, [disabledOptions]);
 
-  const pattern = useMemo(
-    () => patternOptionToPattern(patternOption),
-    [patternOption]
-  );
+  const pattern = useMemo(() => patterns[patternOption], [patternOption]);
 
   const genOnPolylineClickHandler = useCallback(
     (message: string) => () => {

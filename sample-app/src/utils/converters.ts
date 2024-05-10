@@ -1,8 +1,6 @@
 import type { RGB } from 'color-convert/conversions';
 
-import { OmhCoordinate, OmhPatternItem } from '@omh/react-native-maps-core';
-import { PatternOption } from '../types/common';
-import { Constants } from './Constants';
+import { OmhCoordinate } from '@omh/react-native-maps-core';
 
 /**
  * Converts an RGB color to an ARGB Android color-like integer.
@@ -26,24 +24,4 @@ export function rgbToInt(rgb: RGB): number {
  */
 export function formatPosition(position: OmhCoordinate): string {
   return `${position.latitude.toFixed(6)}, ${position.longitude.toFixed(6)}`;
-}
-
-/**
- * Converts PatternOption to an array of OmhPatternItem.
- * @param option used on UI.
- * @returns an array of OmhPatternItem creating desired pattern.
- */
-export function patternOptionToPattern(
-  option: PatternOption
-): OmhPatternItem[] | undefined {
-  switch (option) {
-    case PatternOption.NONE:
-      return undefined;
-    case PatternOption.DOTTED:
-      return Constants.Pattern.dottedPattern;
-    case PatternOption.DASHED:
-      return Constants.Pattern.dashedPattern;
-    case PatternOption.CUSTOM:
-      return Constants.Pattern.customPattern;
-  }
 }
