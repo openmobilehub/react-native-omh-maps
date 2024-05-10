@@ -28,6 +28,5 @@ export function convertToPattern(
       }
     }
   }
-  console.log(patternArray);
   return patternArray;
 }

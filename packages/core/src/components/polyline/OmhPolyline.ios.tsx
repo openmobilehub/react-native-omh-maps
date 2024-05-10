@@ -45,7 +45,7 @@ export const OmhPolyline = ({
     isVisible && (
       <Polyline
         coordinates={points}
-        strokeWidth={width || 0 / 2}
+        strokeWidth={(width || 0) / 2}
         strokeColor={color ? omhColorToString(color) : undefined}
         zIndex={zIndex}
         lineJoin={jointType}
