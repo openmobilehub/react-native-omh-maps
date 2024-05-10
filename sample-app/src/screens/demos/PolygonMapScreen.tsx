@@ -39,6 +39,12 @@ const getSupportedFeatures = (currentMapProvider?: string) => {
       currentMapProvider,
       Platform.OS === 'ios' ? ['Google'] : ['GoogleMaps']
     ),
+    holes: isFeatureSupported(
+      currentMapProvider,
+      Platform.OS === 'ios'
+        ? ['Google']
+        : ['GoogleMaps', 'AzureMaps', 'Mapbox', 'OpenStreetMap']
+    ),
   };
 };
 
@@ -260,6 +266,7 @@ export const PolygonMapScreen = () => {
             onValueChange={setIsClickable}
           />
           <PanelCheckbox
+            enabled={supportedFeatures.holes}
             label="Holes"
             value={withHoles}
             onValueChange={setWithHoles}
