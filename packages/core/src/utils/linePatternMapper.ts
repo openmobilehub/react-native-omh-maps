@@ -1,7 +1,5 @@
 import { OmhPatternItem } from '../types/common';
 
-const multiplierFactor = 10000;
-
 export function convertToPattern(
   input: OmhPatternItem[] | undefined
 ): number[] | undefined {
@@ -18,18 +16,14 @@ export function convertToPattern(
         if (!shouldBeDash) {
           patternArray.push(0);
         }
-        patternArray.push(
-          (input[index]?.variant.length || 0) * multiplierFactor
-        );
+        patternArray.push(input[index]?.variant.length || 0);
         break;
       }
       case 'gap': {
         if (shouldBeDash) {
           patternArray.push(0);
         }
-        patternArray.push(
-          (input[index]?.variant.length || 0) * multiplierFactor
-        );
+        patternArray.push(input[index]?.variant.length || 0);
         break;
       }
     }
