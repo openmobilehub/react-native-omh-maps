@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet, View, ViewProps } from 'react-native';
+import { Platform, StyleSheet, View, ViewProps, ViewStyle } from 'react-native';
 import { Text, useTheme } from 'react-native-paper';
 import RNPickerSelect from 'react-native-picker-select';
 
@@ -68,6 +68,11 @@ const styles = StyleSheet.create({
   wrapper: {
     flexDirection: 'row',
     alignItems: 'center',
+    ...Platform.select<ViewStyle>({
+      ios: {
+        marginVertical: 10,
+      },
+    }),
   },
   label: {
     flex: 1,

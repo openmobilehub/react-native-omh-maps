@@ -1,11 +1,10 @@
 import { OmhPatternItem } from '../types/common';
 
 export function convertToPattern(
-  input: OmhPatternItem[] | undefined,
-  scaleFactor: number = 1
+  input: OmhPatternItem[] | undefined
 ): number[] | undefined {
   if (!input) return undefined;
-  const patternArray = [];
+  var patternArray = [];
   for (let index = 0; index < input.length; index++) {
     const shouldBeDash = index % 2 === 0;
     switch (input[index]?.variant) {
@@ -17,17 +16,18 @@ export function convertToPattern(
         if (!shouldBeDash) {
           patternArray.push(0);
         }
-        patternArray.push((input[index]?.variant.length || 0) * scaleFactor);
+        patternArray.push(input[index]?.variant.length || 0);
         break;
       }
       case 'gap': {
         if (shouldBeDash) {
           patternArray.push(0);
         }
-        patternArray.push((input[index]?.variant.length || 0) * scaleFactor);
+        patternArray.push(input[index]?.variant.length || 0);
         break;
       }
     }
   }
+  console.log(patternArray);
   return patternArray;
 }
