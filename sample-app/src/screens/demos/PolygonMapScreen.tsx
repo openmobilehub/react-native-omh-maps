@@ -52,6 +52,7 @@ const getDisabledOptions = (currentMapProvider?: string) => {
   if (!currentMapProvider) {
     return {
       pattern: [],
+      jointType: [],
     };
   }
 
@@ -62,6 +63,7 @@ const getDisabledOptions = (currentMapProvider?: string) => {
 
   return {
     pattern: isGoogleMaps ? [] : [PatternOption.DOTTED, PatternOption.CUSTOM],
+    jointType: Platform.OS === 'ios' ? ['miter'] : [],
   };
 };
 
@@ -117,7 +119,7 @@ export const PolygonMapScreen = () => {
   const [isVisible, setIsVisible] = useState(true);
   const [zIndex, setZIndex] = useState(0);
   const [strokeJointType, setStrokeJointType] = useState<OmhLineJoin>(
-    jointTypeItems[0]!!.value
+    Platform.OS === 'ios' ? 'bevel' : 'miter'
   );
   const [strokePatternOption, setStrokePatternOption] = useState<PatternOption>(
     PatternOption.NONE
@@ -189,6 +191,16 @@ export const PolygonMapScreen = () => {
         key,
         label,
         value: label,
+      }));
+  }, [disabledOptions]);
+
+  const jointTypeOptions = useMemo(() => {
+    return jointTypeItems
+      .filter(item => !disabledOptions.jointType.includes(item.value))
+      .map(item => ({
+        key: item.value,
+        label: item.label,
+        value: item.value,
       }));
   }, [disabledOptions]);
 
@@ -298,11 +310,7 @@ export const PolygonMapScreen = () => {
           <Picker<OmhLineJoin>
             disabled={!supportedFeatures.jointType}
             label="Stroke Joint Type"
-            choices={jointTypeItems.map(item => ({
-              key: item.value.toString(),
-              label: item.label,
-              value: item.value,
-            }))}
+            choices={jointTypeOptions}
             onChange={choice => {
               setStrokeJointType(choice);
             }}
