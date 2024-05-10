@@ -1,5 +1,5 @@
 import React, { useCallback, useMemo, useRef, useState } from 'react';
-import { ScrollView, View } from 'react-native';
+import { Platform, ScrollView, View } from 'react-native';
 
 import {
   OmhCoordinate,
@@ -28,16 +28,18 @@ import patternItems = Constants.Pattern.patternItems;
 
 const getSupportedFeatures = (currentMapProvider?: string) => {
   return {
-    jointType: isFeatureSupported(currentMapProvider, [
-      'GoogleMaps',
-      'AzureMaps',
-      'Mapbox',
-    ]),
-    pattern: isFeatureSupported(currentMapProvider, [
-      'GoogleMaps',
-      'AzureMaps',
-    ]),
-    zIndex: isFeatureSupported(currentMapProvider, ['GoogleMaps']),
+    jointType: isFeatureSupported(
+      currentMapProvider,
+      Platform.OS === 'ios' ? ['Apple'] : ['GoogleMaps', 'AzureMaps', 'Mapbox']
+    ),
+    pattern: isFeatureSupported(
+      currentMapProvider,
+      Platform.OS === 'ios' ? ['Google'] : ['GoogleMaps', 'AzureMaps']
+    ),
+    zIndex: isFeatureSupported(
+      currentMapProvider,
+      Platform.OS === 'ios' ? ['Google'] : ['GoogleMaps']
+    ),
   };
 };
 
@@ -48,7 +50,10 @@ const getDisabledOptions = (currentMapProvider?: string) => {
     };
   }
 
-  const isGoogleMaps = currentMapProvider === 'GoogleMaps';
+  const isGoogleMaps =
+    Platform.OS === 'ios'
+      ? currentMapProvider === 'Google'
+      : currentMapProvider === 'GoogleMaps';
 
   return {
     pattern: isGoogleMaps ? [] : [PatternOption.DOTTED, PatternOption.CUSTOM],
