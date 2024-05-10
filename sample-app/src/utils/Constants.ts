@@ -1,5 +1,5 @@
 import { OmhCoordinate, OmhPatternItem } from '@omh/react-native-maps-core';
-import { JointTypeItem, PatternItem, PatternOption } from '../types/common';
+import { JointTypeItem, PatternOption } from '../types/common';
 
 export namespace Constants {
   export namespace Maps {
@@ -82,24 +82,13 @@ export namespace Constants {
       },
     ];
 
-    export const patternItems: PatternItem[] = [
+    export const patterns: Record<PatternOption, OmhPatternItem[] | undefined> =
       {
-        label: PatternOption.NONE,
-        value: undefined,
-      },
-      {
-        label: PatternOption.DOTTED,
-        value: dottedPattern,
-      },
-      {
-        label: PatternOption.DASHED,
-        value: dashedPattern,
-      },
-      {
-        label: PatternOption.CUSTOM,
-        value: customPattern,
-      },
-    ];
+        [PatternOption.NONE]: undefined,
+        [PatternOption.DOTTED]: dottedPattern,
+        [PatternOption.DASHED]: dashedPattern,
+        [PatternOption.CUSTOM]: customPattern,
+      };
   }
 
   export namespace JointType {

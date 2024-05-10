@@ -35,7 +35,7 @@ export default function Picker<T>({
 
           if (!newChoice) {
             console.warn(
-              `[Picker] Couldn't find just-selected value '${value}' in choices`
+              `[Picker] Couldn't find just-selected value '${newValue}' in choices`
             );
             return;
           }
