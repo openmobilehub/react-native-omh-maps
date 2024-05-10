@@ -6,7 +6,6 @@ import {
   OmhLineJoin,
   OmhMapView,
   OmhMapViewRef,
-  OmhPatternItem,
   OmhPolygon,
 } from '@omh/react-native-maps-core';
 
@@ -14,7 +13,7 @@ import Picker from '../../components/controls/Picker';
 import Slider from '../../components/controls/Slider';
 import { getRandomArbitrary } from '../../utils/mathHelpers';
 import { demoStyles } from '../../styles/demoStyles';
-import { rgbToInt } from '../../utils/converters';
+import { patternOptionToPattern, rgbToInt } from '../../utils/converters';
 import convert from 'color-convert';
 import { PanelButton } from '../../components/controls/PanelButton';
 import useSnackbar from '../../hooks/useSnackbar';
@@ -22,9 +21,8 @@ import useLogger from '../../hooks/useLogger';
 import { Constants } from '../../utils/Constants';
 import { PanelCheckbox } from '../../components/controls/PanelCheckbox';
 import { isFeatureSupported } from '../../utils/SupportUtils';
-import { PatternItem, PatternOption } from '../../types/common';
+import { PatternOption } from '../../types/common';
 import jointTypeItems = Constants.JointType.jointTypeItems;
-import patternItems = Constants.Pattern.patternItems;
 
 const getSupportedFeatures = (currentMapProvider?: string) => {
   return {
@@ -57,14 +55,6 @@ const getDisabledOptions = (currentMapProvider?: string) => {
 
   return {
     pattern: isGoogleMaps ? [] : [PatternOption.DOTTED, PatternOption.CUSTOM],
-  };
-};
-
-const patternItemToChoice = (item: PatternItem) => {
-  return {
-    key: item.label,
-    label: item.label,
-    value: item.value,
   };
 };
 
@@ -122,9 +112,9 @@ export const PolygonMapScreen = () => {
   const [strokeJointType, setStrokeJointType] = useState<OmhLineJoin>(
     jointTypeItems[0]!!.value
   );
-  const [strokePattern, setStrokePattern] = useState<
-    OmhPatternItem[] | undefined
-  >(undefined);
+  const [strokePatternOption, setStrokePatternOption] = useState<PatternOption>(
+    PatternOption.NONE
+  );
 
   const [supportedFeatures, setSupportedFeatures] = useState(
     getSupportedFeatures()
@@ -151,6 +141,11 @@ export const PolygonMapScreen = () => {
 
     return [];
   }, [withHoles]);
+
+  const strokePattern = useMemo(
+    () => patternOptionToPattern(strokePatternOption),
+    [strokePatternOption]
+  );
 
   const handleRandomizeOutlineButtonPress = () => {
     const getNegativeRandomizedValue = () => {
@@ -181,9 +176,13 @@ export const PolygonMapScreen = () => {
   };
 
   const patternOptions = useMemo(() => {
-    return patternItems
-      .filter(item => !disabledOptions.pattern.includes(item.label))
-      .map(patternItemToChoice);
+    return Object.entries(PatternOption)
+      .filter(([_key, label]) => !disabledOptions.pattern.includes(label))
+      .map(([key, label]) => ({
+        key,
+        label,
+        value: label,
+      }));
   }, [disabledOptions]);
 
   const genOnPolygonClickHandler = useCallback(
@@ -301,12 +300,12 @@ export const PolygonMapScreen = () => {
             }}
             value={strokeJointType}
           />
-          <Picker<OmhPatternItem[] | undefined>
+          <Picker<PatternOption>
             disabled={!supportedFeatures.pattern}
             label="Stroke Pattern"
             choices={patternOptions}
-            onChange={setStrokePattern}
-            value={strokePattern}
+            onChange={setStrokePatternOption}
+            value={strokePatternOption}
           />
           <Slider
             disabled={!supportedFeatures.zIndex}

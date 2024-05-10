@@ -7,7 +7,6 @@ import {
   OmhLineJoin,
   OmhMapView,
   OmhMapViewRef,
-  OmhPatternItem,
   OmhPolyline,
 } from '@omh/react-native-maps-core';
 
@@ -15,7 +14,7 @@ import Picker from '../../components/controls/Picker';
 import Slider from '../../components/controls/Slider';
 import { getRandomArbitrary } from '../../utils/mathHelpers';
 import { demoStyles } from '../../styles/demoStyles';
-import { rgbToInt } from '../../utils/converters';
+import { patternOptionToPattern, rgbToInt } from '../../utils/converters';
 import convert from 'color-convert';
 import { PanelButton } from '../../components/controls/PanelButton';
 import useSnackbar from '../../hooks/useSnackbar';
@@ -24,9 +23,8 @@ import { Constants } from '../../utils/Constants';
 import soccerBallIcon from '../../assets/img/soccer_ball.bmp';
 import { PanelCheckbox } from '../../components/controls/PanelCheckbox';
 import { isFeatureSupported } from '../../utils/SupportUtils';
-import { PatternItem, PatternOption } from '../../types/common';
+import { PatternOption } from '../../types/common';
 import jointTypeItems = Constants.JointType.jointTypeItems;
-import patternItems = Constants.Pattern.patternItems;
 
 const getSupportedFeatures = (currentMapProvider?: string) => {
   return {
@@ -65,14 +63,6 @@ const getDisabledOptions = (currentMapProvider?: string) => {
 const capItemToChoice = (item: CapItem) => {
   return {
     key: item.value.type,
-    label: item.label,
-    value: item.value,
-  };
-};
-
-const patternItemToChoice = (item: PatternItem) => {
-  return {
-    key: item.label,
     label: item.label,
     value: item.value,
   };
@@ -155,8 +145,8 @@ export const PolylineMapScreen = () => {
   const [jointType, setJointType] = useState<OmhLineJoin>(
     jointTypeItems[0]!!.value
   );
-  const [pattern, setPattern] = useState<OmhPatternItem[] | undefined>(
-    undefined
+  const [patternOption, setPatternOption] = useState<PatternOption>(
+    PatternOption.NONE
   );
   const [withSpan, setWithSpan] = useState(false);
   const [spanSegments, setSpanSegments] = useState(1);
@@ -197,10 +187,19 @@ export const PolylineMapScreen = () => {
   }, [disabledOptions]);
 
   const patternOptions = useMemo(() => {
-    return patternItems
-      .filter(item => !disabledOptions.pattern.includes(item.label))
-      .map(patternItemToChoice);
+    return Object.entries(PatternOption)
+      .filter(([_key, label]) => !disabledOptions.pattern.includes(label))
+      .map(([key, label]) => ({
+        key,
+        label,
+        value: label,
+      }));
   }, [disabledOptions]);
+
+  const pattern = useMemo(
+    () => patternOptionToPattern(patternOption),
+    [patternOption]
+  );
 
   const genOnPolylineClickHandler = useCallback(
     (message: string) => () => {
@@ -386,12 +385,12 @@ export const PolylineMapScreen = () => {
             }}
             value={jointType}
           />
-          <Picker<OmhPatternItem[] | undefined>
+          <Picker<PatternOption>
             disabled={!supportedFeatures.pattern}
             label="Pattern"
             choices={patternOptions}
-            onChange={setPattern}
-            value={pattern}
+            onChange={setPatternOption}
+            value={patternOption}
           />
           <Slider
             disabled={!supportedFeatures.zIndex}
