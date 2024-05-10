@@ -34,7 +34,7 @@ const getSupportedFeatures = (currentMapProvider?: string) => {
     ),
     pattern: isFeatureSupported(
       currentMapProvider,
-      Platform.OS === 'ios' ? ['Google'] : ['GoogleMaps', 'AzureMaps']
+      Platform.OS === 'ios' ? ['Apple'] : ['GoogleMaps', 'AzureMaps']
     ),
     zIndex: isFeatureSupported(
       currentMapProvider,

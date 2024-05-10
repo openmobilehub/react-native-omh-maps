@@ -2,6 +2,7 @@ import React, { useMemo } from 'react';
 import { OmhPolygonProps } from './OmhPolygon.types';
 import { Polygon } from 'react-native-maps';
 import { omhColorToString } from '../../utils/colorHelper';
+import { convertToPattern } from '../../utils/linePatternMapper';
 
 export const OmhPolygon = ({
   outline,
@@ -14,7 +15,7 @@ export const OmhPolygon = ({
   zIndex,
   strokeJointType,
   consumePolygonClicks = true,
-  //strokePattern,
+  strokePattern,
   onPolygonClick,
 }: OmhPolygonProps) => {
   const mappedHoles = useMemo(() => {
@@ -28,6 +29,10 @@ export const OmhPolygon = ({
     return holes;
   }, [holes]);
 
+  const mappedPattern = useMemo(() => {
+    return convertToPattern(strokePattern);
+  }, [strokePattern]);
+
   return (
     isVisible && (
       <Polygon
@@ -39,8 +44,10 @@ export const OmhPolygon = ({
         holes={mappedHoles}
         zIndex={zIndex}
         tappable={clickable}
+        lineDashPattern={mappedPattern}
         onPress={() => {
-          onPolygonClick?.(consumePolygonClicks);
+          // tappable is only supported on Google Maps only
+          if (clickable) onPolygonClick?.(consumePolygonClicks);
         }}
       />
     )
