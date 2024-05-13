@@ -8,6 +8,10 @@ import com.openmobilehub.android.rn.maps.core.entities.OmhMarkerEntity
 import com.openmobilehub.android.rn.maps.core.events.OmhOnMarkerDragEndEvent
 import com.openmobilehub.android.rn.maps.core.events.OmhOnMarkerDragEvent
 import com.openmobilehub.android.rn.maps.core.events.OmhOnMarkerDragStartEvent
+import com.openmobilehub.android.rn.maps.core.events.OmhOnMarkerIWClose
+import com.openmobilehub.android.rn.maps.core.events.OmhOnMarkerIWLongPressEvent
+import com.openmobilehub.android.rn.maps.core.events.OmhOnMarkerIWOpen
+import com.openmobilehub.android.rn.maps.core.events.OmhOnMarkerIWPressEvent
 import com.openmobilehub.android.rn.maps.core.events.OmhOnMarkerPressEvent
 import com.openmobilehub.android.rn.maps.core.extensions.toAnchor
 import com.openmobilehub.android.rn.maps.core.extensions.toOmhCoordinate
@@ -203,7 +207,11 @@ class RNOmhMapsMarkerViewManagerImpl {
                 OmhOnMarkerDragStartEvent,
                 OmhOnMarkerDragEvent,
                 OmhOnMarkerDragEndEvent,
-                OmhOnMarkerPressEvent
+                OmhOnMarkerPressEvent,
+                OmhOnMarkerIWPressEvent,
+                OmhOnMarkerIWLongPressEvent,
+                OmhOnMarkerIWOpen,
+                OmhOnMarkerIWClose
             ).associateBy(
                 { it.NAME },
                 { MapBuilder.of("registrationName", it.REGISTRATION_NAME) }

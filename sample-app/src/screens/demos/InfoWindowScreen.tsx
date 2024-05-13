@@ -34,7 +34,7 @@ export const InfoWindowScreen = () => {
   // demo behaviour
   const [toggleIWOnMarkerClick, setToggleIWOnMarkerClick] = useState(true);
   const [hideIWOnClick, setHideIWOnClick] = useState(true);
-  const [showInfoWindow, setShowInfoWindow] = useState(true);
+  const [showInfoWindow, setShowInfoWindow] = useState(false);
 
   // marker properties
   const [markerVisible, setMarkerVisible] = useState(true);
@@ -78,33 +78,27 @@ export const InfoWindowScreen = () => {
               if (hideIWOnClick) {
                 setShowInfoWindow(false);
               } else {
-                showSnackbar('Info window clicked');
+                showSnackbar('Info window pressed');
               }
+            }}
+            onInfoWindowLongPress={() => {
+              showSnackbar('Info window long-pressed');
+            }}
+            onInfoWindowOpen={() => {
+              showSnackbar('Info window has been opened');
+              setShowInfoWindow(true); // this handles synchronizing the state variable with actual IW state
+            }}
+            onInfoWindowClose={() => {
+              showSnackbar('Info window has been closed');
+              setShowInfoWindow(false); // this handles synchronizing the state variable with actual IW state
             }}
             onPress={() => {
               if (toggleIWOnMarkerClick) {
                 setShowInfoWindow(!showInfoWindow);
               }
             }}
-            onDragStart={({ nativeEvent }) => {
-              showSnackbar('Info window has started being dragged');
-              console.log(
-                'IW started being dragged from position:',
-                nativeEvent.position
-              );
-            }}
-            onDrag={({ nativeEvent }) => {
-              console.log('IW is being dragged to:', nativeEvent.position);
-            }}
-            onDragEnd={({ nativeEvent }) => {
-              showSnackbar('Info window has stopped being dragged');
-              console.log(
-                'IW finished being dragged at position:',
-                nativeEvent.position
-              );
-            }}
             infoWindowAnchor={IWAnchor}
-            draggable
+            consumeMarkerClicks
           />
         </OmhMapView>
       </View>

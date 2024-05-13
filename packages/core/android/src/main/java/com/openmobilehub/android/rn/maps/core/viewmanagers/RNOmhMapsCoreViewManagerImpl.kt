@@ -16,6 +16,7 @@ import com.facebook.react.uimanager.ThemedReactContext
 import com.facebook.react.uimanager.UIManagerHelper
 import com.openmobilehub.android.maps.core.presentation.interfaces.maps.OmhMap
 import com.openmobilehub.android.maps.core.presentation.interfaces.maps.OmhMarker
+import com.openmobilehub.android.maps.core.presentation.interfaces.maps.OmhOnInfoWindowOpenStatusChangeListener
 import com.openmobilehub.android.maps.core.presentation.interfaces.maps.OmhOnMarkerDragListener
 import com.openmobilehub.android.maps.core.presentation.interfaces.maps.OmhPolygon
 import com.openmobilehub.android.maps.core.presentation.interfaces.maps.OmhPolyline
@@ -264,6 +265,36 @@ class RNOmhMapsCoreViewManagerImpl(private val reactContext: ReactContext) {
                     marker
                 )
             }
+        })
+
+        omhMap.setOnInfoWindowClickListener { marker ->
+            findChildOfType<OmhMarkerEntity, OmhMarker>(marker)?.onInfoWindowClickListener?.onInfoWindowClick(
+                marker
+            )
+        }
+
+        omhMap.setOnInfoWindowLongClickListener { marker ->
+            findChildOfType<OmhMarkerEntity, OmhMarker>(marker)?.onInfoWindowLongClickListener?.onInfoWindowLongClick(
+                marker
+            )
+        }
+
+        omhMap.setOnInfoWindowOpenStatusChangeListener(object :
+            OmhOnInfoWindowOpenStatusChangeListener {
+            override fun onInfoWindowClose(marker: OmhMarker) {
+                val entity = findChildOfType<OmhMarkerEntity, OmhMarker>(marker)
+                entity?.onInfoWindowOpenStatusChangeListener?.onInfoWindowClose(
+                    marker
+                )
+            }
+
+            override fun onInfoWindowOpen(marker: OmhMarker) {
+                val entity = findChildOfType<OmhMarkerEntity, OmhMarker>(marker)
+                entity?.onInfoWindowOpenStatusChangeListener?.onInfoWindowOpen(
+                    marker
+                )
+            }
+
         })
 
         omhMap.setOnPolylineClickListener { clickedOmhPolyline ->

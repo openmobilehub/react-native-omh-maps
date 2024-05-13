@@ -52,6 +52,10 @@ export interface NativeOmhMarkerProps extends ViewProps {
   onDragStart?: DirectEventHandler<NativePositionEventData>;
   onDrag?: DirectEventHandler<NativePositionEventData>;
   onDragEnd?: DirectEventHandler<NativePositionEventData>;
+  onInfoWindowPress: DirectEventHandler<NativePositionEventData>;
+  onInfoWindowLongPress: DirectEventHandler<NativePositionEventData>;
+  onInfoWindowClose: DirectEventHandler<{}>;
+  onInfoWindowOpen: DirectEventHandler<{}>;
 }
 
 export type RNOmhMapsMarkerNativeComponent =

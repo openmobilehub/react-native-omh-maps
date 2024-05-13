@@ -1,4 +1,4 @@
-import { ViewProps } from 'react-native';
+import { NativeSyntheticEvent, ViewProps } from 'react-native';
 
 import {
   OmhAnchor,
@@ -145,12 +145,12 @@ export type InfoWindowLongPressEvent = MarkerPositionCarryingOmhEvent;
 /**
  * Event triggered when an info window is closed.
  */
-export type InfoWindowCloseEvent = MarkerPositionCarryingOmhEvent;
+export type InfoWindowCloseEvent = NativeSyntheticEvent<{}>;
 
 /**
  * Event triggered when an info window is opened.
  */
-export type InfoWindowOpenEvent = MarkerPositionCarryingOmhEvent;
+export type InfoWindowOpenEvent = NativeSyntheticEvent<{}>;
 
 /**
  * Events for the OmhMarker component.
