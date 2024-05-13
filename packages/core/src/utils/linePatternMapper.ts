@@ -4,7 +4,7 @@ export function convertToPattern(
   input: OmhPatternItem[] | undefined
 ): number[] | undefined {
   if (!input) return undefined;
-  var patternArray = [];
+  const patternArray = [];
   for (let index = 0; index < input.length; index++) {
     const shouldBeDash = index % 2 === 0;
     switch (input[index]?.variant) {

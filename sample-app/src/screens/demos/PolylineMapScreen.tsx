@@ -87,7 +87,7 @@ const getDisabledOptions = (currentMapProvider?: string) => {
     };
   } else {
     return {
-      cap: [],
+      cap: [CapType.CUSTOM],
       pattern: [PatternOption.DOTTED, PatternOption.CUSTOM],
     };
   }
