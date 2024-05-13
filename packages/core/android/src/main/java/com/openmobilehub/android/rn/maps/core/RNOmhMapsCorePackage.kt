@@ -57,7 +57,6 @@ class RNOmhMapsCoreTurboPackage : TurboReactPackage() {
         return listOf(
             RNOmhMapsCoreViewManager(),
             RNOmhMapsMarkerViewManager(),
-            RNOmhMapsInfoWindowContentsViewManager(),
             RNOmhMapsPolylineViewManager(),
             RNOmhMapsPolygonViewManager()
         )

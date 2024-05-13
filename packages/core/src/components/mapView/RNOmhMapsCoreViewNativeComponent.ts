@@ -15,7 +15,6 @@ export interface NativeOmhMapViewProps extends ViewProps {
   onCameraMoveStarted?: DirectEventHandler<{ reason: Int32 }>;
   onCameraIdle?: DirectEventHandler<null>;
   onMyLocationClicked?: DirectEventHandler<null>;
-  customInfoWindowView: string;
 }
 
 export type NativeOmhMapViewComponent = HostComponent<NativeOmhMapViewProps>;

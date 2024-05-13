@@ -22,16 +22,7 @@ class OmhMarkerEntity(private val context: ReactContext) :
     val initialOptions = OmhMarkerOptions()
     var consumeMarkerClicks = false
 
-    var infoWindow: OmhMapInfoWindowContents? = null
     private var lastIWParentView: ViewGroup? = null
-
-    fun setNewIWParent(container: ViewGroup) {
-        lastIWParentView?.removeView(this.infoWindow)
-
-        container.addView(this.infoWindow)
-
-        lastIWParentView = container
-    }
 
     var onClickListener = OmhOnMarkerClickListener {
         RNComponentUtils.dispatchEvent(

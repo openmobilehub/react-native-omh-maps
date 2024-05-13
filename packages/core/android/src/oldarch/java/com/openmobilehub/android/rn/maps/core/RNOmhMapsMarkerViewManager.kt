@@ -19,18 +19,6 @@ class RNOmhMapsMarkerViewManager :
         return omhMapMarkerComponentManagerImpl.createViewInstance(reactContext)
     }
 
-    override fun addView(entity: OmhMarkerEntity, child: View, index: Int) {
-        omhMapMarkerComponentManagerImpl.addView(entity, child, index)
-    }
-
-    override fun getChildAt(entity: OmhMarkerEntity, index: Int): View? {
-        return omhMapMarkerComponentManagerImpl.getChildAt(entity, index)
-    }
-
-    override fun removeViewAt(entity: OmhMarkerEntity, index: Int) {
-        omhMapMarkerComponentManagerImpl.removeViewAt(entity, index)
-    }
-
     @ReactProp(name = "markerPosition")
     fun setMarkerPosition(entity: OmhMarkerEntity, value: ReadableMap?) {
         omhMapMarkerComponentManagerImpl.setPosition(entity, value)

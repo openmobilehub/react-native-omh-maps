@@ -1,28 +1,22 @@
-import _ from 'lodash';
 import React, { useRef, useState } from 'react';
-import { ScrollView, StyleSheet, Text, View } from 'react-native';
+import { ScrollView, StyleSheet, View } from 'react-native';
 import { Button, Checkbox, Subheading } from 'react-native-paper';
 
 import {
   OmhInfoWindowConstants,
-  OmhInfoWindowViewMode,
   OmhMapView,
   OmhMapViewRef,
   OmhMarker,
   OmhMarkerConstants,
 } from '@omh/react-native-maps-core';
 
-import { OmhInfoWindowContents } from '../../../../packages/core/src/components/infoWindow/OmhInfoWindowContents';
 import { Anchor } from '../../../../packages/core/src/components/marker/RNOmhMapsMarkerNativeComponent';
-import Picker from '../../components/controls/Picker';
 import Slider from '../../components/controls/Slider';
 import useLogger from '../../hooks/useLogger';
 import useSnackbar from '../../hooks/useSnackbar';
 import { demoStyles } from '../../styles/demoStyles';
 import { Constants } from '../../utils/Constants';
 import { MarkerIWTitles } from './MarkerMapScreen';
-
-const disabledMarkerAppearances: Set<OmhInfoWindowViewMode> = new Set(); // TODO: implement this!
 
 export const InfoWindowScreen = () => {
   const logger = useLogger('MarkerMapScreen');
@@ -36,16 +30,11 @@ export const InfoWindowScreen = () => {
     u: OmhInfoWindowConstants.IW_ANCHOR_CENTER_ABOVE.u,
     v: OmhInfoWindowConstants.IW_ANCHOR_CENTER_ABOVE.v,
   });
-  const [IWViewMode, setIWViewMode] = useState(
-    OmhInfoWindowViewMode.CUSTOM_WINDOW
-  );
 
   // demo behaviour
-  const [rerenderIWWhenDragging, setRerenderIWWhenDragging] = useState(true);
   const [toggleIWOnMarkerClick, setToggleIWOnMarkerClick] = useState(true);
   const [hideIWOnClick, setHideIWOnClick] = useState(true);
   const [showInfoWindow, setShowInfoWindow] = useState(true);
-  const [IWContentsKey, setIWContentsKey] = useState<string>('');
 
   // marker properties
   const [markerVisible, setMarkerVisible] = useState(true);
@@ -71,8 +60,7 @@ export const InfoWindowScreen = () => {
               Constants.Maps.GREENWICH_COORDINATE,
               15.0
             );
-          }}
-          infoWindowViewMode={IWViewMode}>
+          }}>
           <OmhMarker
             title={MarkerIWTitles.CONFIGURABLE_TEST_MARKER}
             position={Constants.Maps.GREENWICH_COORDINATE}
@@ -98,29 +86,26 @@ export const InfoWindowScreen = () => {
                 setShowInfoWindow(!showInfoWindow);
               }
             }}
-            onDrag={() => {
-              setIWContentsKey(_.uniqueId());
+            onDragStart={({ nativeEvent }) => {
+              showSnackbar('Info window has started being dragged');
+              console.log(
+                'IW started being dragged from position:',
+                nativeEvent.position
+              );
+            }}
+            onDrag={({ nativeEvent }) => {
+              console.log('IW is being dragged to:', nativeEvent.position);
+            }}
+            onDragEnd={({ nativeEvent }) => {
+              showSnackbar('Info window has stopped being dragged');
+              console.log(
+                'IW finished being dragged at position:',
+                nativeEvent.position
+              );
             }}
             infoWindowAnchor={IWAnchor}
-            draggable>
-            <OmhInfoWindowContents key={IWContentsKey}>
-              <Text
-                style={{
-                  backgroundColor: 'magenta',
-                  textAlign: 'center',
-                  opacity: 0.85,
-                  // The Interop Layer doesn't work on either Android or iOS if a legacy view is specifying a custom `ShadowNode`, i.e. in Android by overriding the method `getShadowNodeClass`, `createShadowNodeInstance` etc. Fabric won't call those methods and the widget will most likely be rendered incorrectly (i.e. wrong size, 0 height so unclickable, etc.). You can either work around this by not using custom `ShadowNode` or by converting your library to use TurboModules/Fabric without the Interop Layer.
-                  borderWidth: 4,
-                  borderStyle: 'dashed',
-                  borderColor: 'red',
-                }}>
-                ASDQJDD
-                {/* {'\n'}
-                  {'\n'}
-                  {'\n'} 87787 1290370947 87324 89372 kjhgiu */}
-              </Text>
-            </OmhInfoWindowContents>
-          </OmhMarker>
+            draggable
+          />
         </OmhMapView>
       </View>
 
@@ -169,32 +154,9 @@ export const InfoWindowScreen = () => {
             maximumValue={OmhInfoWindowConstants.IW_ANCHOR_CENTER_BELOW.v}
           />
 
-          <Picker<OmhInfoWindowViewMode>
-            label="Appearance"
-            choices={Object.entries(OmhInfoWindowViewMode)
-              .filter(([_key, label]) => !disabledMarkerAppearances.has(label))
-              .map(([key, label]) => ({
-                key,
-                label,
-                value: label,
-              }))}
-            onChange={choice => {
-              setIWViewMode(choice);
-            }}
-            value={IWViewMode}
-          />
-
           <Subheading style={demoStyles.centeredHeading}>
             Demo behaviour
           </Subheading>
-
-          <Checkbox.Item
-            label="Re-render info window when dragging"
-            status={rerenderIWWhenDragging ? 'checked' : 'unchecked'}
-            onPress={() => {
-              setRerenderIWWhenDragging(!rerenderIWWhenDragging);
-            }}
-          />
 
           <Checkbox.Item
             label="Info win. toggles on marker click"

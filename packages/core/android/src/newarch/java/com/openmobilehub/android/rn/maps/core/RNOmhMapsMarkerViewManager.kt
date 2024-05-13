@@ -1,6 +1,5 @@
 package com.openmobilehub.android.rn.maps.core
 
-import android.view.View
 import com.facebook.react.bridge.ReadableMap
 import com.facebook.react.module.annotations.ReactModule
 import com.facebook.react.uimanager.ThemedReactContext
@@ -19,18 +18,6 @@ class RNOmhMapsMarkerViewManager :
 
     override fun createViewInstance(reactContext: ThemedReactContext): OmhMarkerEntity {
         return omhMapMarkerComponentManagerImpl.createViewInstance(reactContext)
-    }
-
-    override fun addView(entity: OmhMarkerEntity, child: View, index: Int) {
-        omhMapMarkerComponentManagerImpl.addView(entity, child, index)
-    }
-
-    override fun getChildAt(entity: OmhMarkerEntity, index: Int): View? {
-        return omhMapMarkerComponentManagerImpl.getChildAt(entity, index)
-    }
-
-    override fun removeViewAt(entity: OmhMarkerEntity, index: Int) {
-        omhMapMarkerComponentManagerImpl.removeViewAt(entity, index)
     }
 
     @ReactProp(name = "markerPosition")

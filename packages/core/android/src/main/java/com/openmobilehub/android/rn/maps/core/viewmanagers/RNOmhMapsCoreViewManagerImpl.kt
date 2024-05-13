@@ -14,7 +14,6 @@ import com.facebook.react.bridge.UiThreadUtil
 import com.facebook.react.common.MapBuilder
 import com.facebook.react.uimanager.ThemedReactContext
 import com.facebook.react.uimanager.UIManagerHelper
-import com.openmobilehub.android.maps.core.presentation.interfaces.maps.OmhInfoWindowViewFactory
 import com.openmobilehub.android.maps.core.presentation.interfaces.maps.OmhMap
 import com.openmobilehub.android.maps.core.presentation.interfaces.maps.OmhMarker
 import com.openmobilehub.android.maps.core.presentation.interfaces.maps.OmhOnMarkerDragListener
@@ -45,21 +44,6 @@ class RNOmhMapsCoreViewManagerImpl(private val reactContext: ReactContext) {
     private val onMapLoadedActionsQueue = mutableListOf<() -> Unit>()
     private var isMounted = false
     private var mapLoaded = false
-
-    private val universalInfoWindowViewFactory = object : OmhInfoWindowViewFactory {
-        override fun createInfoWindowView(marker: OmhMarker): View {
-            val entity = findChildOfType<OmhMarkerEntity, OmhMarker>(marker)
-                ?: error(ERRORS.CHILD_NOT_FOUND)
-
-            return entity.infoWindow ?: error(
-                "Custom Info Window view not found as the one and only child of map's OmhMarker rendered at index #${
-                    mountedChildren.values.indexOf(
-                        entity
-                    )
-                }"
-            )
-        }
-    }
 
     fun createViewInstance(reactContext: ThemedReactContext): FragmentContainerView {
         return FragmentContainerView(reactContext)
@@ -360,39 +344,6 @@ class RNOmhMapsCoreViewManagerImpl(private val reactContext: ReactContext) {
 
     fun setMapStyle(view: FragmentContainerView, value: String?) {
         FragmentUtils.findFragment(view)?.omhMap?.setMapStyle(value)
-    }
-
-    fun setCustomInfoWindowView(view: FragmentContainerView, value: String?) {
-        when (value ?: "default") {
-            "default" -> {
-                queueOnMapLoadedAction {
-                    val omhMap = FragmentUtils.findFragment(view)?.omhMap
-
-                    omhMap?.setCustomInfoWindowViewFactory(null)
-                    omhMap?.setCustomInfoWindowContentsViewFactory(null)
-                }
-            }
-
-            "custom-window" -> {
-                queueOnMapLoadedAction {
-                    val omhMap = FragmentUtils.findFragment(view)?.omhMap
-
-                    omhMap?.setCustomInfoWindowViewFactory(universalInfoWindowViewFactory)
-                    omhMap?.setCustomInfoWindowContentsViewFactory(null)
-                }
-            }
-
-            "custom-contents" -> {
-                queueOnMapLoadedAction {
-                    val omhMap = FragmentUtils.findFragment(view)?.omhMap
-
-                    omhMap?.setCustomInfoWindowViewFactory(null)
-                    omhMap?.setCustomInfoWindowContentsViewFactory(universalInfoWindowViewFactory)
-                }
-            }
-
-            else -> error("Unsupported custom info window view type: $value")
-        }
     }
 
     private fun queueOnMapLoadedAction(action: () -> Unit) {

@@ -40,7 +40,6 @@ export const OmhMapView = forwardRef<OmhMapViewRef, OmhMapViewProps>(
       onMapReady,
       myLocationEnabled,
       onMyLocationClicked,
-      infoWindowViewMode: customInfoWindowView = 'default',
     },
     forwardedRef
   ) => {
@@ -166,7 +165,6 @@ export const OmhMapView = forwardRef<OmhMapViewRef, OmhMapViewProps>(
           onCameraIdle={onCameraIdle}
           onMyLocationClicked={onMyLocationClicked}
           onCameraMoveStarted={onCameraMoveStartedMapped}
-          customInfoWindowView={customInfoWindowView}
           {...props}
         />
       </View>
