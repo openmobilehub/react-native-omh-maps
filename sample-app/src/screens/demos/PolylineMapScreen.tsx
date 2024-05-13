@@ -64,7 +64,7 @@ const getSupportedFeatures = (currentMapProvider?: string) => {
     ),
     span: isFeatureSupported(
       currentMapProvider,
-      Platform.OS === 'ios' ? ['Google'] : ['GoogleMaps']
+      Platform.OS === 'ios' ? [] : ['GoogleMaps']
     ),
   };
 };
@@ -375,7 +375,9 @@ export const PolylineMapScreen = () => {
             choices={capOptions}
             onChange={choice => {
               setStartCapType(choice);
-              setShouldUseCommonCap(false);
+              setShouldUseCommonCap(
+                choice === endCapType && choice === capType
+              );
             }}
             value={startCapType}
           />
@@ -385,7 +387,9 @@ export const PolylineMapScreen = () => {
             choices={capOptions}
             onChange={choice => {
               setEndCapType(choice);
-              setShouldUseCommonCap(false);
+              setShouldUseCommonCap(
+                choice === startCapType && choice === capType
+              );
             }}
             value={endCapType}
           />
