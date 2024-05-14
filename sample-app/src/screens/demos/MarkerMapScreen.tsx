@@ -243,17 +243,14 @@ export const MarkerMapScreen = () => {
           onMapReady={() => {
             logger.log("OmhMapView's OmhMap has become ready");
 
-            setSupportedFeatures(
-              getSupportedFeatures(omhMapRef.current?.getProviderName())
-            );
+            const providerName = omhMapRef.current?.getProviderName();
 
-            setDisabledOptions(
-              getDisabledOptions(omhMapRef.current?.getProviderName())
-            );
+            setSupportedFeatures(getSupportedFeatures(providerName));
+            setDisabledOptions(getDisabledOptions(providerName));
 
             omhMapRef.current?.setCameraCoordinate(
               Constants.Maps.GREENWICH_COORDINATE,
-              15.0
+              Platform.OS === 'ios' && providerName === 'Apple' ? 14.0 : 15.0
             );
           }}>
           {mountCustomizableMarker && (
