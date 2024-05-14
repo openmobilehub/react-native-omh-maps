@@ -53,7 +53,7 @@ export type OmhCap =
   | {
       type: 'custom';
       icon: number;
-      refWidth?: number;
+      refWidth: number;
     };
 
 export type OmhCapProps =
