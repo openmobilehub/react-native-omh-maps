@@ -20,11 +20,10 @@ export const OmhMarker = ({
   infoWindowAnchor,
   alpha,
   snippet,
-  isVisible,
+  isVisible = true,
   isFlat,
   rotation,
   backgroundColor,
-  //isInfoWindowShown,
   markerZIndex,
   icon,
   consumeMarkerClicks,
@@ -32,10 +31,6 @@ export const OmhMarker = ({
   onDragStart,
   onDrag,
   onDragEnd,
-  //onInfoWindowPress,
-  //onInfoWindowLongPress,
-  //onInfoWindowClose,
-  //onInfoWindowOpen,
 }: OmhMarkerProps) => {
   const anchorToPoint = (
     omhAnchor: OmhAnchor | undefined
@@ -111,12 +106,9 @@ export const OmhMarker = ({
         pinColor={pinColor}
         flat={isFlat}
         rotation={rotation}
-        //titleVisibility={isInfoWindowShown}
-        //subtitleVisibility={isInfoWindowShown}
         zIndex={markerZIndex}
         icon={icon}
         stopPropagation={consumeMarkerClicks}
-        //isPreselected={isInfoWindowShown}
         onPress={handleOnPress}
         onDragStart={handleOnDragStart}
         onDragEnd={handleOnDragEnd}

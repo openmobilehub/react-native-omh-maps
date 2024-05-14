@@ -34,6 +34,7 @@ const MarkerIWTitles = {
   CONFIGURABLE_TEST_MARKER: 'Configurable test marker',
   STATIC_ICON_MARKER_NON_DRAGGABLE: 'Static icon marker (non-draggable)',
   STATIC_COLORED_MARKER_DRAGGABLE: 'Static colored marker (draggable)',
+  STATIC_COLORED_MARKER_NON_DRAGGABLE: 'Static colored marker (non-draggable)',
 };
 
 enum DemoMarkerAppearance {
@@ -47,9 +48,7 @@ const getSupportedFeatures = (currentMapProvider?: string) => {
   return {
     zIndex: isFeatureSupported(
       currentMapProvider,
-      Platform.OS === 'ios'
-        ? ['Google', 'Apple'] // verify
-        : ['GoogleMaps']
+      Platform.OS === 'ios' ? ['Google', 'Apple'] : ['GoogleMaps']
     ),
     draggable: isFeatureSupported(
       currentMapProvider,
@@ -211,6 +210,22 @@ export const MarkerMapScreen = () => {
     [customizableMarkerColorHue]
   );
 
+  const showStaticIconMarker = useMemo(
+    () =>
+      !disabledOptions.markerAppearance.includes(
+        DemoMarkerAppearance.LOCAL_ASSET_ICON
+      ),
+    [disabledOptions.markerAppearance]
+  );
+
+  const staticColoredMarkerTitle = useMemo(
+    () =>
+      supportedFeatures.draggable
+        ? MarkerIWTitles.STATIC_COLORED_MARKER_DRAGGABLE
+        : MarkerIWTitles.STATIC_COLORED_MARKER_NON_DRAGGABLE,
+    [supportedFeatures.draggable]
+  );
+
   useEffect(() => {
     if (!supportedFeatures.draggable) {
       setCustomizableMarkerDraggable(false);
@@ -286,30 +301,31 @@ export const MarkerMapScreen = () => {
             />
           )}
 
-          <OmhMarker
-            title={MarkerIWTitles.STATIC_ICON_MARKER_NON_DRAGGABLE}
-            position={{
-              latitude: Constants.Maps.GREENWICH_COORDINATE.latitude + 0.0016,
-              longitude: Constants.Maps.GREENWICH_COORDINATE.longitude + 0.002,
-            }}
-            onPress={genMarkerOnPressHandler(
-              MarkerIWTitles.STATIC_ICON_MARKER_NON_DRAGGABLE
-            )}
-            markerZIndex={1.9}
-            icon={soccerBallIcon}
-          />
+          {showStaticIconMarker && (
+            <OmhMarker
+              title={MarkerIWTitles.STATIC_ICON_MARKER_NON_DRAGGABLE}
+              position={{
+                latitude: Constants.Maps.GREENWICH_COORDINATE.latitude + 0.0016,
+                longitude:
+                  Constants.Maps.GREENWICH_COORDINATE.longitude + 0.002,
+              }}
+              onPress={genMarkerOnPressHandler(
+                MarkerIWTitles.STATIC_ICON_MARKER_NON_DRAGGABLE
+              )}
+              markerZIndex={1.9}
+              icon={soccerBallIcon}
+            />
+          )}
 
           <OmhMarker
-            title={MarkerIWTitles.STATIC_COLORED_MARKER_DRAGGABLE}
+            title={staticColoredMarkerTitle}
             position={{
               latitude: Constants.Maps.GREENWICH_COORDINATE.latitude + 0.0016,
               longitude: Constants.Maps.GREENWICH_COORDINATE.longitude - 0.002,
             }}
             backgroundColor={0x005918}
             draggable={true}
-            onPress={genMarkerOnPressHandler(
-              MarkerIWTitles.STATIC_COLORED_MARKER_DRAGGABLE
-            )}
+            onPress={genMarkerOnPressHandler(staticColoredMarkerTitle)}
             markerZIndex={2.9}
           />
         </OmhMapView>
