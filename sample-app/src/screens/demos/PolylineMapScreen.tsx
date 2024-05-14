@@ -348,7 +348,7 @@ export const PolylineMapScreen = () => {
             onChange={setWidth}
             defaultValue={defaultWidth}
             step={1}
-            minimumValue={0}
+            minimumValue={1}
             maximumValue={100}
           />
           <Slider
