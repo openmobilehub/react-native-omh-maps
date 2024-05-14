@@ -7,7 +7,7 @@ import React, {
   useRef,
   useState,
 } from 'react';
-import { PixelRatio, ScrollView, View } from 'react-native';
+import { PixelRatio, Platform, ScrollView, View } from 'react-native';
 import { Checkbox, Subheading } from 'react-native-paper';
 
 import {
@@ -19,19 +19,16 @@ import {
   MarkerDragEvent,
   MarkerDragStartEvent,
 } from '@omh/react-native-maps-core';
-import { OmhMapsAzureMapsProvider } from '@omh/react-native-maps-plugin-azuremaps';
-import { OmhMapsGooglemapsProvider } from '@omh/react-native-maps-plugin-googlemaps';
-import { OmhMapsOpenStreetMapProvider } from '@omh/react-native-maps-plugin-openstreetmap';
 import { Anchor } from '../../../../packages/core/src/components/marker/RNOmhMapsMarkerNativeComponent';
 import soccerBallIcon from '../../assets/img/soccer_ball.bmp';
 import Picker from '../../components/controls/Picker';
 import Slider from '../../components/controls/Slider';
-import useChosenMapProvider from '../../hooks/useChosenMapProvider';
 import useLogger from '../../hooks/useLogger';
 import useSnackbar from '../../hooks/useSnackbar';
 import { demoStyles } from '../../styles/demoStyles';
 import { Constants } from '../../utils/Constants';
 import { formatPosition, rgbToInt } from '../../utils/converters';
+import { isFeatureSupported } from '../../utils/SupportUtils';
 
 const MarkerIWTitles = {
   CONFIGURABLE_TEST_MARKER: 'Configurable test marker',
@@ -46,12 +43,88 @@ enum DemoMarkerAppearance {
   CUSTOM_COLOR = 'Custom color',
 }
 
+const getSupportedFeatures = (currentMapProvider?: string) => {
+  return {
+    zIndex: isFeatureSupported(
+      currentMapProvider,
+      Platform.OS === 'ios'
+        ? ['Google', 'Apple'] // verify
+        : ['GoogleMaps']
+    ),
+    draggable: isFeatureSupported(
+      currentMapProvider,
+      Platform.OS === 'ios'
+        ? ['Google']
+        : ['GoogleMaps', 'OpenStreetMap', 'Mapbox']
+    ),
+    alpha: isFeatureSupported(
+      currentMapProvider,
+      Platform.OS === 'ios'
+        ? ['Google']
+        : ['GoogleMaps', 'OpenStreetMap', 'Mapbox', 'AzureMaps']
+    ),
+    clickable: isFeatureSupported(
+      currentMapProvider,
+      Platform.OS === 'ios'
+        ? ['Google']
+        : ['GoogleMaps', 'OpenStreetMap', 'Mapbox', 'AzureMaps']
+    ),
+    flat: isFeatureSupported(
+      currentMapProvider,
+      Platform.OS === 'ios'
+        ? ['Google']
+        : ['GoogleMaps', 'OpenStreetMap', 'Mapbox', 'AzureMaps']
+    ),
+    rotation: isFeatureSupported(
+      currentMapProvider,
+      Platform.OS === 'ios'
+        ? ['Google']
+        : ['GoogleMaps', 'OpenStreetMap', 'Mapbox', 'AzureMaps']
+    ),
+    anchor: isFeatureSupported(
+      currentMapProvider,
+      Platform.OS === 'ios'
+        ? ['Google']
+        : ['GoogleMaps', 'OpenStreetMap', 'Mapbox', 'AzureMaps']
+    ),
+  };
+};
+
+const getDisabledOptions = (currentMapProvider?: string) => {
+  if (!currentMapProvider) {
+    return {
+      markerAppearance: [],
+    };
+  }
+
+  const androidDisabledOptions =
+    currentMapProvider === 'OpenStreetMap'
+      ? [DemoMarkerAppearance.CUSTOM_COLOR]
+      : [];
+  const iosDisabledOptions =
+    currentMapProvider === 'Apple'
+      ? [
+          DemoMarkerAppearance.LOCAL_ASSET_ICON,
+          DemoMarkerAppearance.NETWORK_ASSET,
+        ]
+      : [];
+
+  return {
+    markerAppearance:
+      Platform.OS === 'ios' ? iosDisabledOptions : androidDisabledOptions,
+  };
+};
+
 export const MarkerMapScreen = () => {
   const logger = useLogger('MarkerMapScreen');
-  const mapProvider = useChosenMapProvider();
   const { showSnackbar } = useSnackbar();
 
   const omhMapRef = useRef<OmhMapViewRef | null>(null);
+  const [supportedFeatures, setSupportedFeatures] = useState(
+    getSupportedFeatures()
+  );
+  const [disabledOptions, setDisabledOptions] = useState(getDisabledOptions());
+
   const [mountCustomizableMarker, setMountCustomizableMarker] = useState(true);
   const [customizableMarkerVisible, setCustomizableMarkerVisible] =
     useState(true);
@@ -138,30 +211,11 @@ export const MarkerMapScreen = () => {
     [customizableMarkerColorHue]
   );
 
-  // disable some marker appearances based on provider availability
-  const disabledMarkerAppearances = useMemo(() => {
-    let blacklist = new Set<DemoMarkerAppearance>();
-
-    if (mapProvider.path === OmhMapsOpenStreetMapProvider.path) {
-      blacklist.add(DemoMarkerAppearance.CUSTOM_COLOR);
-    }
-
-    return blacklist;
-  }, [mapProvider.path]);
-
-  // zIndex is only supported by Google Maps provider
-  const zIndexSupported = useMemo(
-    () => mapProvider.path === OmhMapsGooglemapsProvider.path,
-    [mapProvider.path]
-  );
-
-  // markers' draggability is not supported by Azure Maps provider;
-  // the checkbox var needs to be set to false as well, thus useEffect is used
   useEffect(() => {
-    if (mapProvider.path === OmhMapsAzureMapsProvider.path) {
+    if (!supportedFeatures.draggable) {
       setCustomizableMarkerDraggable(false);
     }
-  }, [mapProvider.path]);
+  }, [supportedFeatures.draggable]);
 
   return (
     <View style={demoStyles.rootContainer}>
@@ -173,6 +227,14 @@ export const MarkerMapScreen = () => {
           }}
           onMapReady={() => {
             logger.log("OmhMapView's OmhMap has become ready");
+
+            setSupportedFeatures(
+              getSupportedFeatures(omhMapRef.current?.getProviderName())
+            );
+
+            setDisabledOptions(
+              getDisabledOptions(omhMapRef.current?.getProviderName())
+            );
 
             omhMapRef.current?.setCameraCoordinate(
               Constants.Maps.GREENWICH_COORDINATE,
@@ -271,6 +333,7 @@ export const MarkerMapScreen = () => {
           />
 
           <Checkbox.Item
+            disabled={!supportedFeatures.flat}
             label="Flat"
             status={customizableMarkerFlat ? 'checked' : 'unchecked'}
             onPress={() => {
@@ -279,6 +342,7 @@ export const MarkerMapScreen = () => {
           />
 
           <Checkbox.Item
+            disabled={!supportedFeatures.clickable}
             label="Clickable"
             status={customizableMarkerClickable ? 'checked' : 'unchecked'}
             onPress={() => {
@@ -287,7 +351,7 @@ export const MarkerMapScreen = () => {
           />
 
           <Checkbox.Item
-            disabled={mapProvider.path === OmhMapsAzureMapsProvider.path}
+            disabled={!supportedFeatures.draggable}
             label="Draggable"
             status={customizableMarkerDraggable ? 'checked' : 'unchecked'}
             onPress={() => {
@@ -304,6 +368,7 @@ export const MarkerMapScreen = () => {
           />
 
           <Slider
+            disabled={!supportedFeatures.rotation}
             label={`Rotation: ${customizableMarkerRotation.toFixed(0)}°`}
             onChange={zIndex => setCustomizableMarkerRotation(zIndex)}
             defaultValue={0}
@@ -313,6 +378,7 @@ export const MarkerMapScreen = () => {
           />
 
           <Slider
+            disabled={!supportedFeatures.anchor}
             label={`Anchor U: ${(customizableMarkerAnchor.u * 100).toFixed(0)}%`}
             onChange={u =>
               setCustomizableMarkerAnchor({
@@ -327,6 +393,7 @@ export const MarkerMapScreen = () => {
           />
 
           <Slider
+            disabled={!supportedFeatures.anchor}
             label={`Anchor V: ${(customizableMarkerAnchor.v * 100).toFixed(0)}%`}
             onChange={v =>
               setCustomizableMarkerAnchor({
@@ -341,6 +408,7 @@ export const MarkerMapScreen = () => {
           />
 
           <Slider
+            disabled={!supportedFeatures.alpha}
             label={`Alpha: ${(customizableMarkerAlpha * 100).toFixed(0)}%`}
             onChange={alpha => setCustomizableMarkerAlpha(alpha)}
             defaultValue={1}
@@ -352,7 +420,10 @@ export const MarkerMapScreen = () => {
           <Picker<DemoMarkerAppearance>
             label="Appearance"
             choices={Object.entries(DemoMarkerAppearance)
-              .filter(([_key, label]) => !disabledMarkerAppearances.has(label))
+              .filter(
+                ([_key, label]) =>
+                  !disabledOptions.markerAppearance.includes(label)
+              )
               .map(([key, label]) => ({
                 key,
                 label,
@@ -377,7 +448,7 @@ export const MarkerMapScreen = () => {
           />
 
           <Slider
-            disabled={!zIndexSupported}
+            disabled={!supportedFeatures.zIndex}
             label={`Z Index: ${customizableMarkerZIndex.toFixed(0)}`}
             onChange={zIndex => setCustomizableMarkerZIndex(zIndex)}
             defaultValue={0}
