@@ -33,6 +33,11 @@ export const OmhPolygon = ({
     return convertToPattern(strokePattern);
   }, [strokePattern]);
 
+  const handleOnPress = () => {
+    // tappable is supported on Google Maps only
+    if (clickable) onPolygonClick?.(consumePolygonClicks);
+  };
+
   return (
     isVisible && (
       <Polygon
@@ -45,10 +50,7 @@ export const OmhPolygon = ({
         zIndex={zIndex}
         tappable={clickable}
         lineDashPattern={mappedPattern}
-        onPress={() => {
-          // tappable is only supported on Google Maps only
-          if (clickable) onPolygonClick?.(consumePolygonClicks);
-        }}
+        onPress={handleOnPress}
       />
     )
   );
