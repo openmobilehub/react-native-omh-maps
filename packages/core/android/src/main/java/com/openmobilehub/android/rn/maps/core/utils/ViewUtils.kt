@@ -1,20 +1,21 @@
 package com.openmobilehub.android.rn.maps.core.utils
 
 import android.view.View
-import com.facebook.react.bridge.ReactContext
-import com.facebook.react.uimanager.UIManagerModule
 
 object ViewUtils {
-    inline fun <reified T> requireView(reactContext: ReactContext, tag: Int): T where T : View {
-        reactContext.getNativeModule(UIManagerModule::class.java)?.resolveView(tag)
-            ?.let {
-                require(it is T) {
-                    "View with tag $tag is not a ${T::class.simpleName} entity"
-                }
+    fun manuallyLayoutView(view: View) {
+        view.requestLayout()
+        view.forceLayout()
 
-                return it
-            }
-
-        throw IllegalArgumentException("View with tag $tag not found")
+        view.measure(
+            View.MeasureSpec.makeMeasureSpec(view.width, View.MeasureSpec.EXACTLY),
+            View.MeasureSpec.makeMeasureSpec(view.height, View.MeasureSpec.EXACTLY)
+        )
+        view.layout(
+            view.left,
+            view.top,
+            view.right,
+            view.bottom
+        )
     }
 }

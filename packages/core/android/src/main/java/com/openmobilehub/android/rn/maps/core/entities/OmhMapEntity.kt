@@ -3,13 +3,14 @@ package com.openmobilehub.android.rn.maps.core.entities
 import android.content.Context
 import com.facebook.react.views.view.ReactViewGroup
 import com.openmobilehub.android.maps.core.presentation.interfaces.maps.OmhMap
+import com.openmobilehub.android.maps.core.presentation.interfaces.maps.OmhMapView
 
 fun interface OmhMapEntityOnMountAction<E> {
     fun onMount(entity: E)
 }
 
 fun interface OmhMapEntityOnMapReadyAction<E> {
-    fun onMapReady(entity: E?)
+    fun onMapReady(entity: E?, omhMap: OmhMap, omhMapView: OmhMapView?)
 }
 
 abstract class OmhMapEntity<E>(context: Context) : ReactViewGroup(context) {
@@ -18,13 +19,18 @@ abstract class OmhMapEntity<E>(context: Context) : ReactViewGroup(context) {
     private val onMapLoadedActionsQueue = mutableListOf<OmhMapEntityOnMapReadyAction<E>>()
     var viewId: Int = -1
     private var mapLoaded = false
+    private lateinit var omhMap: OmhMap
+    private var omhMapView: OmhMapView? = null
 
-    fun handleMapLoaded() {
+    fun handleMapLoaded(omhMap: OmhMap, omhMapView: OmhMapView?) {
+        this.omhMap = omhMap
+        this.omhMapView = omhMapView
+
         if (mapLoaded) return
 
         mapLoaded = true
         onMapLoadedActionsQueue.forEach { action ->
-            action.onMapReady(entity)
+            action.onMapReady(entity, omhMap, omhMapView)
         }
         onMapLoadedActionsQueue.clear()
     }
@@ -55,7 +61,7 @@ abstract class OmhMapEntity<E>(context: Context) : ReactViewGroup(context) {
     fun queueOnMapReadyAction(action: OmhMapEntityOnMapReadyAction<E>) {
         if (mapLoaded) {
             queueOnMountAction {
-                action.onMapReady(it)
+                action.onMapReady(it, omhMap, omhMapView)
             }
         } else {
             onMapLoadedActionsQueue.add(action)

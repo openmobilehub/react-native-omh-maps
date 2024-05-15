@@ -3,6 +3,7 @@ package com.openmobilehub.android.rn.maps.core.viewmanagers
 import android.graphics.drawable.Drawable
 import com.facebook.react.bridge.ReactContext
 import com.facebook.react.bridge.ReadableMap
+import com.facebook.react.bridge.UiThreadUtil
 import com.facebook.react.common.MapBuilder
 import com.openmobilehub.android.rn.maps.core.entities.OmhMarkerEntity
 import com.openmobilehub.android.rn.maps.core.events.OmhOnMarkerDragEndEvent
@@ -17,6 +18,7 @@ import com.openmobilehub.android.rn.maps.core.extensions.toAnchor
 import com.openmobilehub.android.rn.maps.core.extensions.toOmhCoordinate
 import com.openmobilehub.android.rn.maps.core.utils.DrawableLoader
 import com.openmobilehub.android.rn.maps.core.utils.RNComponentUtils.requirePropertyNotNull
+import com.openmobilehub.android.rn.maps.core.utils.ViewUtils
 import com.openmobilehub.android.maps.core.presentation.models.Constants as OmhConstants
 
 internal object Constants {
@@ -154,11 +156,15 @@ class RNOmhMapsMarkerViewManagerImpl {
     }
 
     fun setShowInfoWindow(entity: OmhMarkerEntity, value: Boolean) {
-        entity.queueOnMapReadyAction {
-            if (value) {
-                it?.showInfoWindow()
-            } else {
-                it?.hideInfoWindow()
+        entity.queueOnMapReadyAction { marker, _, omhMapView ->
+            UiThreadUtil.runOnUiThread {
+                if (value) {
+                    marker?.showInfoWindow()
+                } else {
+                    marker?.hideInfoWindow()
+                }
+
+                omhMapView?.getView()?.let { ViewUtils.manuallyLayoutView(it) }
             }
         }
     }

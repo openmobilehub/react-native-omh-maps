@@ -15,6 +15,7 @@ import com.facebook.react.common.MapBuilder
 import com.facebook.react.uimanager.ThemedReactContext
 import com.facebook.react.uimanager.UIManagerHelper
 import com.openmobilehub.android.maps.core.presentation.interfaces.maps.OmhMap
+import com.openmobilehub.android.maps.core.presentation.interfaces.maps.OmhMapView
 import com.openmobilehub.android.maps.core.presentation.interfaces.maps.OmhMarker
 import com.openmobilehub.android.maps.core.presentation.interfaces.maps.OmhOnInfoWindowOpenStatusChangeListener
 import com.openmobilehub.android.maps.core.presentation.interfaces.maps.OmhOnMarkerDragListener
@@ -45,6 +46,7 @@ class RNOmhMapsCoreViewManagerImpl(private val reactContext: ReactContext) {
     private val onMapLoadedActionsQueue = mutableListOf<() -> Unit>()
     private var isMounted = false
     private var mapLoaded = false
+    private var omhMapView: OmhMapView? = null
 
     fun createViewInstance(reactContext: ThemedReactContext): FragmentContainerView {
         return FragmentContainerView(reactContext)
@@ -54,10 +56,10 @@ class RNOmhMapsCoreViewManagerImpl(private val reactContext: ReactContext) {
         mountFragment(view)
 
         val fragment = FragmentUtils.findFragment(reactContext, view.id)
-        val omhMapView = fragment?.omhMapView
+        omhMapView = fragment?.omhMapView
 
         omhMapView?.getMapAsync { omhMap ->
-            fragment.omhMap = omhMap
+            fragment?.omhMap = omhMap
 
             setupListeners(omhMap, reactContext, view)
 
@@ -91,7 +93,7 @@ class RNOmhMapsCoreViewManagerImpl(private val reactContext: ReactContext) {
             when (child) {
                 is OmhMapEntity<*> -> {
                     child.mountEntity(omhMap, child.id)
-                    if (mapLoaded) child.handleMapLoaded()
+                    if (mapLoaded) child.handleMapLoaded(omhMap, omhMapView)
                 }
 
                 else -> {
@@ -314,7 +316,7 @@ class RNOmhMapsCoreViewManagerImpl(private val reactContext: ReactContext) {
         omhMap.setOnMapLoadedCallback {
             mapLoaded = true
             mountedChildren.values.forEach {
-                it.handleMapLoaded()
+                it.handleMapLoaded(omhMap, omhMapView)
             }
             onMapLoadedActionsQueue.forEach {
                 it.invoke()
