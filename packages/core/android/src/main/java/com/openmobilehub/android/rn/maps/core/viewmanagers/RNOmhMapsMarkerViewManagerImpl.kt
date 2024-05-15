@@ -84,7 +84,13 @@ class RNOmhMapsMarkerViewManagerImpl {
         val anchor = value?.toAnchor() ?: Constants.DEFAULT_IW_ANCHOR
 
         if (entity.isMounted()) {
-            entity.getEntity()!!.setInfoWindowAnchor(anchor.first, anchor.second)
+            entity.queueOnMapReadyAction { _, _, omhMapView ->
+                UiThreadUtil.runOnUiThread {
+                    entity.getEntity()!!.setInfoWindowAnchor(anchor.first, anchor.second)
+
+                    omhMapView?.getView()?.let { ViewUtils.manuallyLayoutView(it) }
+                }
+            }
         } else {
             entity.initialOptions.infoWindowAnchor = anchor
         }
