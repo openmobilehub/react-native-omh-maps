@@ -16,6 +16,7 @@ class RNOmhMapsCoreTurboPackage : TurboReactPackage() {
     override fun getModule(name: String, reactContext: ReactApplicationContext): NativeModule? {
         return when (name) {
             RNOmhMapsCoreModule.NAME -> RNOmhMapsCoreModule(reactContext)
+            RNOmhMapsLocationModule.NAME -> RNOmhMapsLocationModule(reactContext)
             else -> null
         }
     }
@@ -28,7 +29,8 @@ class RNOmhMapsCoreTurboPackage : TurboReactPackage() {
          * Here declare the array of exported modules
          */
         val moduleList: Array<Class<out NativeModule?>> = arrayOf(
-            RNOmhMapsCoreModule::class.java
+            RNOmhMapsCoreModule::class.java,
+            RNOmhMapsLocationModule::class.java
         )
         val reactModuleInfoMap: MutableMap<String, ReactModuleInfo> = HashMap()
         /**

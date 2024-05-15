@@ -16,7 +16,7 @@ export const LocationResultScreen = ({ route }: Props) => {
   const shareUrlWithMessage = async () => {
     const shareOptions = {
       title: 'Sharing link',
-      url: `https://com.openmobilehub.android.maps.sample/maps?lat=${route.params.lat}&lng=${route.params.lng}`,
+      url: `omhsampleapp://maps?lat=${route.params.lat}&lng=${route.params.lng}`,
     };
 
     try {

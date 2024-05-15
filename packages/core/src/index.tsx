@@ -21,6 +21,8 @@ export * from './components/polygon/OmhPolygon.types';
 export * from './modules/core/OmhMapsModule';
 export * from './modules/core/OmhMapsModule.types';
 
+export * from './modules/location/OmhMapsLocationModule';
+
 export * from './types/common';
 
 import './types.d.ts'; // provides react-native resolveAssetSource typings to consumers of the library

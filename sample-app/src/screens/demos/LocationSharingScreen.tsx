@@ -1,30 +1,36 @@
 import React, { useRef, useState } from 'react';
 import {
-  ScrollView,
   View,
   Image,
   Text,
   TouchableOpacity,
   Animated,
   StyleSheet,
+  Platform,
 } from 'react-native';
 import {
+  request,
   requestMultiple,
   PERMISSIONS,
   RESULTS,
 } from 'react-native-permissions';
-import { Checkbox, FAB } from 'react-native-paper';
+import { ActivityIndicator, FAB } from 'react-native-paper';
 import shadow from '../../assets/img/marker_shadow.webp';
 import pinMarker from '../../assets/img/marker_pin.png';
 import useSnackbar from '../../hooks/useSnackbar';
 import Route from '../../Routes';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 
-import { OmhMapView, OmhMapViewRef } from '@omh/react-native-maps-core';
+import {
+  OmhMapView,
+  OmhMapViewRef,
+  OmhMapsLocationModule,
+} from '@omh/react-native-maps-core';
 
 import useLogger from '../../hooks/useLogger';
 import { demoStyles } from '../../styles/demoStyles';
 import { RootStackParamList } from '../../App';
+import { PanelCheckbox } from '../../components/controls/PanelCheckbox';
 
 type Props = NativeStackScreenProps<RootStackParamList, Route.locationSharing>;
 
@@ -37,6 +43,8 @@ export const LocationSharingScreen = ({ navigation }: Props) => {
   const [tooltipVisible, setTooltipVisible] = useState(false);
   const [lat, setLat] = useState(0.0);
   const [lng, setLng] = useState(0.0);
+
+  const [isLoading, setIsLoading] = useState(true);
 
   const omhMapRef = useRef<OmhMapViewRef | null>(null);
   const { showSnackbar } = useSnackbar();
@@ -92,32 +100,51 @@ export const LocationSharingScreen = ({ navigation }: Props) => {
 
   const showUserLocation = async () => {
     try {
-      const currentLocation = await omhMapRef.current?.getCurrentLocation();
+      const currentLocation = await OmhMapsLocationModule.getCurrentLocation();
       omhMapRef.current?.setCameraCoordinate(currentLocation, 15.0);
       setLng(currentLocation.longitude);
       setLat(currentLocation.latitude);
+      setIsLoading(false);
     } catch (error) {
+      showSnackbar('Error getting location');
       logger.error('cannot find location ' + error);
     }
   };
 
   const requestLocationPermission = async () => {
     try {
-      const statuses = await requestMultiple([
-        PERMISSIONS.ANDROID.ACCESS_FINE_LOCATION,
-        PERMISSIONS.ANDROID.ACCESS_COARSE_LOCATION,
-      ]);
-      const fineLocationAccessGranted =
-        statuses[PERMISSIONS.ANDROID.ACCESS_FINE_LOCATION] === RESULTS.GRANTED;
-      const coarseLocationAccessGranted =
-        statuses[PERMISSIONS.ANDROID.ACCESS_COARSE_LOCATION] ===
-        RESULTS.GRANTED;
+      let permissionsGranted = false;
 
-      if (fineLocationAccessGranted && coarseLocationAccessGranted) {
-        setLocationEnabled(!locationEnabled);
+      if (Platform.OS === 'ios') {
+        permissionsGranted =
+          (await request(PERMISSIONS.IOS.LOCATION_WHEN_IN_USE)) ===
+          RESULTS.GRANTED;
+      } else {
+        const statuses = await requestMultiple([
+          PERMISSIONS.ANDROID.ACCESS_FINE_LOCATION,
+          PERMISSIONS.ANDROID.ACCESS_COARSE_LOCATION,
+        ]);
+        const fineLocationAccessGranted =
+          statuses[PERMISSIONS.ANDROID.ACCESS_FINE_LOCATION] ===
+          RESULTS.GRANTED;
+        const coarseLocationAccessGranted =
+          statuses[PERMISSIONS.ANDROID.ACCESS_COARSE_LOCATION] ===
+          RESULTS.GRANTED;
+
+        permissionsGranted =
+          fineLocationAccessGranted && coarseLocationAccessGranted;
+      }
+
+      if (permissionsGranted) {
+        setLocationEnabled(true);
         showUserLocation();
+      } else {
+        setIsLoading(false);
+        showSnackbar('Location permission denied');
       }
     } catch (error) {
+      setIsLoading(false);
+      showSnackbar('Error requesting location permission');
       logger.error('there was an issue with requestin permissions ' + error);
     }
   };
@@ -164,28 +191,29 @@ export const LocationSharingScreen = ({ navigation }: Props) => {
         </View>
       </View>
       <View style={styles.bottomScrollContainer}>
-        <ScrollView contentContainerStyle={styles.bottomContainer}>
-          <Checkbox.Item
-            label="My Location Enabled"
-            status={locationEnabled ? 'checked' : 'unchecked'}
-            onPress={() => {
-              if (locationEnabled) {
-                setLocationEnabled(false);
-              } else {
-                enableLocation();
-              }
-            }}
-          />
-        </ScrollView>
+        <PanelCheckbox
+          label="My Location Enabled"
+          value={locationEnabled}
+          onValueChange={value => {
+            setLocationEnabled(value);
+            if (value) {
+              showUserLocation();
+            }
+          }}
+        />
       </View>
+      <ActivityIndicator
+        animating={isLoading}
+        size={'large'}
+        style={styles.activityIndicator}
+      />
     </View>
   );
 };
 
 const styles = StyleSheet.create({
   bottomContainer: {
-    paddingVertical: 8,
-    paddingTop: 7,
+    paddingVertical: 16,
     paddingHorizontal: 8,
     width: '100%',
   },
@@ -197,6 +225,7 @@ const styles = StyleSheet.create({
   },
   bottomScrollContainer: {
     flex: 0.1,
+    padding: 16,
     overflow: 'hidden',
     width: '100%',
   },
@@ -210,7 +239,14 @@ const styles = StyleSheet.create({
   fab: {
     position: 'absolute',
     right: 10,
-    bottom: 10,
+    ...Platform.select({
+      ios: {
+        top: 10,
+      },
+      android: {
+        bottom: 10,
+      },
+    }),
   },
   markerContainer: {
     position: 'absolute',
@@ -221,7 +257,12 @@ const styles = StyleSheet.create({
     display: 'flex',
     justifyContent: 'center',
     alignItems: 'center',
+    // backgroundColor: 'red',
+    pointerEvents: 'box-none',
   },
   shadow: { position: 'absolute' },
+  activityIndicator: {
+    position: 'absolute',
+  },
 });
 export default LocationSharingScreen;

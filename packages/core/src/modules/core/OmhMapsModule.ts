@@ -11,5 +11,4 @@ export const OmhMapsModule: IOmhMapsModule = {
   },
   getAvailableMapProviders: NativeOmhMapsModule.getAvailableMapProviders,
   getDefaultMapProvider: NativeOmhMapsModule.getDefaultMapProvider,
-  getCurrentLocation: NativeOmhMapsModule.getCurrentLocation,
 };

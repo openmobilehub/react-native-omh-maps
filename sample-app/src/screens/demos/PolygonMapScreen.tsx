@@ -1,12 +1,11 @@
 import React, { useCallback, useMemo, useRef, useState } from 'react';
-import { ScrollView, View } from 'react-native';
+import { Platform, ScrollView, View } from 'react-native';
 
 import {
   OmhCoordinate,
   OmhLineJoin,
   OmhMapView,
   OmhMapViewRef,
-  OmhPatternItem,
   OmhPolygon,
 } from '@omh/react-native-maps-core';
 
@@ -22,22 +21,30 @@ import useLogger from '../../hooks/useLogger';
 import { Constants } from '../../utils/Constants';
 import { PanelCheckbox } from '../../components/controls/PanelCheckbox';
 import { isFeatureSupported } from '../../utils/SupportUtils';
-import { PatternItem, PatternOption } from '../../types/common';
+import { PatternOption } from '../../types/common';
 import jointTypeItems = Constants.JointType.jointTypeItems;
-import patternItems = Constants.Pattern.patternItems;
+import patterns = Constants.Pattern.patterns;
 
 const getSupportedFeatures = (currentMapProvider?: string) => {
   return {
-    jointType: isFeatureSupported(currentMapProvider, [
-      'GoogleMaps',
-      'AzureMaps',
-      'Mapbox',
-    ]),
-    pattern: isFeatureSupported(currentMapProvider, [
-      'GoogleMaps',
-      'AzureMaps',
-    ]),
-    zIndex: isFeatureSupported(currentMapProvider, ['GoogleMaps']),
+    jointType: isFeatureSupported(
+      currentMapProvider,
+      Platform.OS === 'ios' ? ['Apple'] : ['GoogleMaps', 'AzureMaps', 'Mapbox']
+    ),
+    pattern: isFeatureSupported(
+      currentMapProvider,
+      Platform.OS === 'ios' ? ['Apple'] : ['GoogleMaps', 'AzureMaps']
+    ),
+    zIndex: isFeatureSupported(
+      currentMapProvider,
+      Platform.OS === 'ios' ? ['Google'] : ['GoogleMaps']
+    ),
+    holes: isFeatureSupported(
+      currentMapProvider,
+      Platform.OS === 'ios'
+        ? ['Google']
+        : ['GoogleMaps', 'AzureMaps', 'Mapbox', 'OpenStreetMap']
+    ),
   };
 };
 
@@ -45,21 +52,18 @@ const getDisabledOptions = (currentMapProvider?: string) => {
   if (!currentMapProvider) {
     return {
       pattern: [],
+      jointType: [],
     };
   }
 
-  const isGoogleMaps = currentMapProvider === 'GoogleMaps';
+  const isGoogleMaps =
+    Platform.OS === 'ios'
+      ? currentMapProvider === 'Google'
+      : currentMapProvider === 'GoogleMaps';
 
   return {
     pattern: isGoogleMaps ? [] : [PatternOption.DOTTED, PatternOption.CUSTOM],
-  };
-};
-
-const patternItemToChoice = (item: PatternItem) => {
-  return {
-    key: item.label,
-    label: item.label,
-    value: item.value,
+    jointType: Platform.OS === 'ios' ? ['miter'] : [],
   };
 };
 
@@ -115,11 +119,11 @@ export const PolygonMapScreen = () => {
   const [isVisible, setIsVisible] = useState(true);
   const [zIndex, setZIndex] = useState(0);
   const [strokeJointType, setStrokeJointType] = useState<OmhLineJoin>(
-    jointTypeItems[0]!!.value
+    Platform.OS === 'ios' ? 'bevel' : 'miter'
   );
-  const [strokePattern, setStrokePattern] = useState<
-    OmhPatternItem[] | undefined
-  >(undefined);
+  const [strokePatternOption, setStrokePatternOption] = useState<PatternOption>(
+    PatternOption.NONE
+  );
 
   const [supportedFeatures, setSupportedFeatures] = useState(
     getSupportedFeatures()
@@ -146,6 +150,11 @@ export const PolygonMapScreen = () => {
 
     return [];
   }, [withHoles]);
+
+  const strokePattern = useMemo(
+    () => patterns[strokePatternOption],
+    [strokePatternOption]
+  );
 
   const handleRandomizeOutlineButtonPress = () => {
     const getNegativeRandomizedValue = () => {
@@ -176,9 +185,23 @@ export const PolygonMapScreen = () => {
   };
 
   const patternOptions = useMemo(() => {
-    return patternItems
-      .filter(item => !disabledOptions.pattern.includes(item.label))
-      .map(patternItemToChoice);
+    return Object.entries(PatternOption)
+      .filter(([_key, label]) => !disabledOptions.pattern.includes(label))
+      .map(([key, label]) => ({
+        key,
+        label,
+        value: label,
+      }));
+  }, [disabledOptions]);
+
+  const jointTypeOptions = useMemo(() => {
+    return jointTypeItems
+      .filter(item => !disabledOptions.jointType.includes(item.value))
+      .map(item => ({
+        key: item.value,
+        label: item.label,
+        value: item.value,
+      }));
   }, [disabledOptions]);
 
   const genOnPolygonClickHandler = useCallback(
@@ -255,6 +278,7 @@ export const PolygonMapScreen = () => {
             onValueChange={setIsClickable}
           />
           <PanelCheckbox
+            enabled={supportedFeatures.holes}
             label="Holes"
             value={withHoles}
             onValueChange={setWithHoles}
@@ -286,22 +310,18 @@ export const PolygonMapScreen = () => {
           <Picker<OmhLineJoin>
             disabled={!supportedFeatures.jointType}
             label="Stroke Joint Type"
-            choices={jointTypeItems.map(item => ({
-              key: item.value.toString(),
-              label: item.label,
-              value: item.value,
-            }))}
+            choices={jointTypeOptions}
             onChange={choice => {
               setStrokeJointType(choice);
             }}
             value={strokeJointType}
           />
-          <Picker<OmhPatternItem[] | undefined>
+          <Picker<PatternOption>
             disabled={!supportedFeatures.pattern}
             label="Stroke Pattern"
             choices={patternOptions}
-            onChange={setStrokePattern}
-            value={strokePattern}
+            onChange={setStrokePatternOption}
+            value={strokePatternOption}
           />
           <Slider
             disabled={!supportedFeatures.zIndex}

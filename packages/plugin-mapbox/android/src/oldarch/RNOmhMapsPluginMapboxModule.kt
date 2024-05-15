@@ -7,11 +7,16 @@ import com.facebook.react.module.annotations.ReactModule
 
 @ReactModule(name = RNOmhMapsPluginMapboxModule.NAME)
 class RNOmhMapsPluginMapboxModule(
-    reactContext: ReactApplicationContext
+    private val reactContext: ReactApplicationContext
 ) : ReactContextBaseJavaModule(reactContext) {
     @ReactMethod
     fun setPublicToken(publicToken: String) {
         RNOmhMapsPluginMapboxModuleImpl.setPublicToken(publicToken)
+    }
+
+    @ReactMethod
+    fun tweakCompass(viewRef: Double) {
+      RNOmhMapsPluginMapboxModuleImpl.tweakCompass(viewRef, reactContext)
     }
 
     override fun getName() = NAME

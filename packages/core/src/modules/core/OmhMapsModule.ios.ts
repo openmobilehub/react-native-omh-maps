@@ -30,10 +30,6 @@ class OmhMapModuleImpl implements IOmhMapsModule {
   getDefaultMapProvider() {
     return MAP_PROVIDERS[0]!;
   }
-
-  getCurrentLocation() {
-    return Promise.resolve({ latitude: 0, longitude: 0 });
-  }
 }
 
 export const OmhMapsModule = new OmhMapModuleImpl();

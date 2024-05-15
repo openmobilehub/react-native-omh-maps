@@ -42,10 +42,6 @@ class RNOmhMapsCoreModule(
         return moduleImpl.getDefaultMapProvider()
     }
 
-    override fun getCurrentLocation(promise: Promise?) {
-        moduleImpl.getCurrentLocation(promise = promise, reactContext = reactContext)
-    }
-
     override fun initialize(paths: ReadableMap) {
         moduleImpl.initialize(paths)
     }

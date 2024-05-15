@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet, View, ViewProps } from 'react-native';
+import { Platform, StyleSheet, View, ViewProps, ViewStyle } from 'react-native';
 import { Text, useTheme } from 'react-native-paper';
 import RNPickerSelect from 'react-native-picker-select';
 
@@ -27,7 +27,7 @@ export default function Picker<T>({
 
   return (
     <View style={[styles.wrapper, style]}>
-      <Text style={styles.label}>{label}</Text>
+      <Text style={[styles.label, disabled && styles.disabled]}>{label}</Text>
 
       <RNPickerSelect
         onValueChange={(newValue: T) => {
@@ -35,7 +35,7 @@ export default function Picker<T>({
 
           if (!newChoice) {
             console.warn(
-              `[Picker] Couldn't find just-selected value '${value}' in choices`
+              `[Picker] Couldn't find just-selected value '${newValue}' in choices`
             );
             return;
           }
@@ -58,6 +58,8 @@ export default function Picker<T>({
           viewContainer: {
             flex: 3,
           },
+          inputAndroid: disabled ? styles.disabled : undefined,
+          inputIOS: disabled ? styles.disabled : undefined,
         }}
       />
     </View>
@@ -68,8 +70,16 @@ const styles = StyleSheet.create({
   wrapper: {
     flexDirection: 'row',
     alignItems: 'center',
+    ...Platform.select<ViewStyle>({
+      ios: {
+        marginVertical: 10,
+      },
+    }),
   },
   label: {
     flex: 1,
+  },
+  disabled: {
+    opacity: 0.5,
   },
 });

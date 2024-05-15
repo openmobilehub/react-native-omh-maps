@@ -9,8 +9,6 @@ import com.facebook.react.bridge.WritableArray
 import com.facebook.react.bridge.WritableMap
 import com.openmobilehub.android.maps.core.factories.OmhMapProvider
 import com.openmobilehub.android.maps.core.model.MapProvider
-import com.openmobilehub.android.maps.core.presentation.interfaces.location.OmhFailureListener
-import com.openmobilehub.android.maps.core.presentation.interfaces.location.OmhSuccessListener
 import com.openmobilehub.android.maps.core.utils.MapProvidersUtils
 import com.openmobilehub.android.rn.maps.core.extensions.toOmhCoordinate
 import com.openmobilehub.android.rn.maps.core.extensions.toWritableMap
@@ -88,17 +86,6 @@ class RNOmhMapsCoreModuleImpl(private val reactContext: ReactApplicationContext)
                 }
             }
         }
-    }
-
-    fun getCurrentLocation(promise: Promise?, reactContext: ReactApplicationContext) {
-        val onSuccessListener = OmhSuccessListener { omhCoordinate ->
-            promise?.resolve(omhCoordinate.toWritableMap())
-        }
-        val onFailureListener = OmhFailureListener {
-            promise?.resolve(null)
-        }
-        OmhMapProvider.getInstance().provideOmhLocation(reactContext)
-            .getCurrentLocation(onSuccessListener, onFailureListener)
     }
 
     companion object {

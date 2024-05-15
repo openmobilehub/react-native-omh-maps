@@ -19,6 +19,7 @@ import MarkerMapScreen from './screens/demos/MarkerMapScreen';
 import PlainMapScreen from './screens/demos/PlainMapScreen';
 import PolygonMapScreen from './screens/demos/PolygonMapScreen';
 import PolylineMapScreen from './screens/demos/PolylineMapScreen';
+import { SharedLocationMapScreen } from './screens/demos/SharedLocationMapScreen';
 import StylesMapScreen from './screens/demos/StylesMapScreen';
 
 export type RootStackParamList = {
@@ -28,7 +29,11 @@ export type RootStackParamList = {
   [Route.cameraMap]: undefined;
   [Route.markerMap]: undefined;
   [Route.locationSharing]: undefined;
+  [Route.polylineMap]: undefined;
+  [Route.polygonMap]: undefined;
+  [Route.stylesMap]: undefined;
   [Route.locationResult]: { lat: number; lng: number };
+  [Route.sharedLocationMap]: { lat: number; lng: number };
 };
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
@@ -49,7 +54,17 @@ export default function App() {
     <PaperProvider theme={theme}>
       <MapProviderChoiceContextProvider>
         <SnackbarProvider>
-          <NavigationContainer>
+          <NavigationContainer
+            linking={{
+              prefixes: ['omhsampleapp://'],
+              config: {
+                initialRouteName: Route.menu,
+                screens: {
+                  [Route.sharedLocationMap]: 'maps',
+                  [Route.menu]: '',
+                },
+              },
+            }}>
             <Stack.Navigator
               screenOptions={{
                 header: AppBarHeader,
@@ -118,6 +133,12 @@ export default function App() {
               <Stack.Screen
                 name={Route.locationResult}
                 component={LocationResultScreen}
+                options={screenOptions}
+              />
+
+              <Stack.Screen
+                name={Route.sharedLocationMap}
+                component={SharedLocationMapScreen}
                 options={screenOptions}
               />
 
