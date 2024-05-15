@@ -95,11 +95,26 @@ export const OmhMapView = forwardRef<OmhMapViewRef, OmhMapViewProps>(
       [getViewRefHandle]
     );
 
+    const tweakCompass = useCallback(() => {
+      try {
+        const viewRef = getViewRefHandle(true);
+        const providerName = NativeOmhMapsCoreModule.getProviderName(viewRef);
+
+        if (providerName === 'Mapbox') {
+          const mapboxPlugin = require('@omh/react-native-maps-plugin-mapbox');
+          mapboxPlugin.OmhMapsPluginMapboxModule.tweakCompass(viewRef);
+        }
+      } catch (error) {
+        console.error(error);
+      }
+    }, [getViewRefHandle]);
+
     const handleMapReady = useCallback(() => {
+      tweakCompass();
       setIsMapReady(true);
 
       onMapReady?.();
-    }, [onMapReady]);
+    }, [onMapReady, tweakCompass]);
 
     const onCameraMoveStartedMapped = (
       event: NativeSyntheticEvent<{ reason: number }>
