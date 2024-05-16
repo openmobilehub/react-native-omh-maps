@@ -1,9 +1,7 @@
-import React, { memo, useEffect, useMemo, useRef, useState } from 'react';
-import { AppState, NativeEventSubscription } from 'react-native';
+import React, { memo, useMemo } from 'react';
 
-import { useOmhMapContext } from '../../hooks/useOmhMapContext';
+import useOmhMarkerOSMFix from '../../hooks/useOmhMarkerOSMFix';
 import { resolveResource } from '../../utils/RNResourceTranscoder';
-import { OmhInfoWindowConstants } from '../infoWindow/OmhInfoWindowConstants';
 import { OmhMarkerProps } from './OmhMarker.types';
 import RNOmhMapsMarkerNativeComponent from './RNOmhMapsMarkerNativeComponent';
 
@@ -18,7 +16,7 @@ export const OmhMarker = memo(
     infoWindowAnchor: _infoWindowAnchor,
     ...props
   }: OmhMarkerProps) => {
-    const { providerName: mapProviderName } = useOmhMapContext();
+    const infoWindowAnchor = useOmhMarkerOSMFix(_infoWindowAnchor);
 
     const resolvedIcon = useMemo(
       () =>
@@ -30,56 +28,9 @@ export const OmhMarker = memo(
       [icon]
     );
 
-    const [backFromBackground, setBackFromBackground] = useState(false);
-    const [appState, setAppState] = useState(AppState.currentState);
-    const appStateSubRef = useRef<NativeEventSubscription | null>(null);
-
     const nativeComponentRef = React.useRef<
       typeof RNOmhMapsMarkerNativeComponent | null
     >(null);
-
-    // AzureMaps invalid lay out fix effect
-    // since AzureMaps SDK for Android is obfuscated, then there is no way to look "inside" why
-    // the info windows (popups) are not rendered in the proper position on the screen. To overcome this
-    // issue, for this provider a negative 50% vertical offset is applied; what's more, when the app is paused,
-    // somehow the views are laid out properly and this fix is unnecessary. For this reason, the fix is only
-    // applied until when the app has not been paused.
-    useEffect(() => {
-      appStateSubRef.current = AppState.addEventListener(
-        'change',
-        newAppState => {
-          if (
-            (appState === 'inactive' || appState === 'background') &&
-            newAppState === 'active'
-          ) {
-            setBackFromBackground(true);
-          }
-
-          setAppState(newAppState);
-        }
-      );
-
-      // cleanup effect
-      return () => {
-        appStateSubRef.current?.remove();
-      };
-    }, [appState]);
-
-    const infoWindowAnchor = useMemo(
-      () =>
-        mapProviderName === 'AzureMaps' && !backFromBackground
-          ? {
-              ...(_infoWindowAnchor ??
-                OmhInfoWindowConstants.IW_ANCHOR_CENTER_ABOVE),
-              v:
-                (
-                  _infoWindowAnchor ??
-                  OmhInfoWindowConstants.IW_ANCHOR_CENTER_ABOVE
-                ).v - 0.5,
-            }
-          : _infoWindowAnchor,
-      [_infoWindowAnchor, mapProviderName, backFromBackground]
-    );
 
     return (
       <RNOmhMapsMarkerNativeComponent
