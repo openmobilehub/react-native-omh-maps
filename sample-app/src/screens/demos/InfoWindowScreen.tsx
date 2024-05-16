@@ -1,8 +1,11 @@
-import React, { useRef, useState } from 'react';
+import React, { useCallback, useRef, useState } from 'react';
 import { ScrollView, StyleSheet, View } from 'react-native';
 import { Button, Subheading } from 'react-native-paper';
 
 import {
+  MarkerDragEndEvent,
+  MarkerDragEvent,
+  MarkerDragStartEvent,
   OmhInfoWindowConstants,
   OmhMapView,
   OmhMapViewRef,
@@ -17,6 +20,7 @@ import useLogger from '../../hooks/useLogger';
 import useSnackbar from '../../hooks/useSnackbar';
 import { demoStyles } from '../../styles/demoStyles';
 import { Constants } from '../../utils/Constants';
+import { formatPosition } from '../../utils/converters';
 import { MarkerIWTitles } from './MarkerMapScreen';
 
 export const InfoWindowScreen = () => {
@@ -30,6 +34,10 @@ export const InfoWindowScreen = () => {
   const [IWAnchor, setIWAnchor] = useState<Anchor>({
     u: OmhInfoWindowConstants.IW_ANCHOR_CENTER_ABOVE.u,
     v: OmhInfoWindowConstants.IW_ANCHOR_CENTER_ABOVE.v,
+  });
+  const [markerPosition, setMarkerPosition] = useState({
+    latitude: Constants.Maps.GREENWICH_COORDINATE.latitude,
+    longitude: Constants.Maps.GREENWICH_COORDINATE.longitude,
   });
 
   // demo behaviour
@@ -45,6 +53,49 @@ export const InfoWindowScreen = () => {
     u: OmhMarkerConstants.ANCHOR_CENTER.u,
     v: OmhMarkerConstants.ANCHOR_CENTER.v,
   });
+
+  const onCustomizableMarkerDragStart = useCallback(
+    (event: MarkerDragStartEvent) => {
+      const {
+          position: { latitude, longitude },
+        } = event.nativeEvent,
+        message = `Marker has started being dragged from: ${formatPosition({ latitude, longitude })}`;
+
+      logger.log(message);
+
+      showSnackbar(message);
+    },
+    [logger, showSnackbar]
+  );
+
+  const onCustomizableMarkerDrag = useCallback(
+    (event: MarkerDragEvent) => {
+      const {
+        position: { latitude, longitude },
+      } = event.nativeEvent;
+
+      logger.log(
+        `Marker has been dragged to: ${formatPosition({ latitude, longitude })}`
+      );
+    },
+    [logger]
+  );
+
+  const onCustomizableMarkerDragEnd = useCallback(
+    (event: MarkerDragEndEvent) => {
+      const {
+          position: { latitude, longitude },
+        } = event.nativeEvent,
+        message = `Customizable has finished being dragged at: ${formatPosition({ latitude, longitude })}`;
+
+      logger.log(message);
+
+      showSnackbar(message);
+
+      setMarkerPosition({ latitude, longitude });
+    },
+    [logger, showSnackbar]
+  );
 
   return (
     <View style={demoStyles.rootContainer}>
@@ -64,12 +115,16 @@ export const InfoWindowScreen = () => {
           }}>
           <OmhMarker
             title={MarkerIWTitles.CONFIGURABLE_TEST_MARKER}
-            position={Constants.Maps.GREENWICH_COORDINATE}
+            position={markerPosition}
             snippet={
               snippetVisible
                 ? 'A sample snippet with long description'
                 : undefined
             }
+            draggable
+            onDragStart={onCustomizableMarkerDragStart}
+            onDrag={onCustomizableMarkerDrag}
+            onDragEnd={onCustomizableMarkerDragEnd}
             isVisible={markerVisible}
             clickable={markerClickable}
             rotation={markerRotation}
