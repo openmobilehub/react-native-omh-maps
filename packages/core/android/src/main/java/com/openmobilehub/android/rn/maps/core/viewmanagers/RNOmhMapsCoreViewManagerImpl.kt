@@ -34,7 +34,7 @@ import com.openmobilehub.android.rn.maps.core.events.OmhOnMapReadyEvent
 import com.openmobilehub.android.rn.maps.core.fragments.FragmentUtils
 import com.openmobilehub.android.rn.maps.core.fragments.OmhMapViewFragment
 import com.openmobilehub.android.rn.maps.core.utils.RNComponentUtils.dispatchEvent
-import com.openmobilehub.android.rn.maps.core.utils.ViewUtils
+import com.openmobilehub.android.rn.maps.core.utils.manuallyLayoutView
 
 
 @Suppress("TooManyFunctions")
@@ -260,10 +260,7 @@ class RNOmhMapsCoreViewManagerImpl(private val reactContext: ReactContext) {
                     marker
                 )
 
-                try {
-                    ViewUtils.manuallyLayoutView(omhMap.mapView as View)
-                } catch (_: Exception) {
-                }
+                (omhMap.mapView as? View)?.manuallyLayoutView()
             }
 
             override fun onMarkerDrag(marker: OmhMarker) {
@@ -271,10 +268,7 @@ class RNOmhMapsCoreViewManagerImpl(private val reactContext: ReactContext) {
                     marker
                 )
 
-                try {
-                    ViewUtils.manuallyLayoutView(omhMap.mapView as View)
-                } catch (_: Exception) {
-                }
+                (omhMap.mapView as? View)?.manuallyLayoutView()
             }
 
             override fun onMarkerDragEnd(marker: OmhMarker) {
@@ -282,10 +276,7 @@ class RNOmhMapsCoreViewManagerImpl(private val reactContext: ReactContext) {
                     marker
                 )
 
-                try {
-                    ViewUtils.manuallyLayoutView(omhMap.mapView as View)
-                } catch (_: Exception) {
-                }
+                (omhMap.mapView as? View)?.manuallyLayoutView()
             }
         })
 

@@ -18,7 +18,7 @@ import com.openmobilehub.android.rn.maps.core.extensions.toAnchor
 import com.openmobilehub.android.rn.maps.core.extensions.toOmhCoordinate
 import com.openmobilehub.android.rn.maps.core.utils.DrawableLoader
 import com.openmobilehub.android.rn.maps.core.utils.RNComponentUtils.requirePropertyNotNull
-import com.openmobilehub.android.rn.maps.core.utils.ViewUtils
+import com.openmobilehub.android.rn.maps.core.utils.manuallyLayoutView
 import com.openmobilehub.android.maps.core.presentation.models.Constants as OmhConstants
 
 internal object Constants {
@@ -92,7 +92,7 @@ class RNOmhMapsMarkerViewManagerImpl {
                 UiThreadUtil.runOnUiThread {
                     entity.getEntity()!!.setInfoWindowAnchor(anchor.first, anchor.second)
 
-                    omhMapView?.getView()?.let { ViewUtils.manuallyLayoutView(it) }
+                    omhMapView?.getView()?.manuallyLayoutView()
                 }
             }
         } else {
@@ -115,7 +115,7 @@ class RNOmhMapsMarkerViewManagerImpl {
                 UiThreadUtil.runOnUiThread {
                     entity.getEntity()!!.setSnippet(value)
 
-                    omhMapView?.getView()?.let { ViewUtils.manuallyLayoutView(it) }
+                    omhMapView?.getView()?.manuallyLayoutView()
                 }
             }
         } else {
@@ -200,7 +200,7 @@ class RNOmhMapsMarkerViewManagerImpl {
                     marker?.hideInfoWindow()
                 }
 
-                omhMapView?.getView()?.let { ViewUtils.manuallyLayoutView(it) }
+                omhMapView?.getView()?.manuallyLayoutView()
             }
         }
     }
@@ -252,7 +252,7 @@ class RNOmhMapsMarkerViewManagerImpl {
         entity.queueOnMapReadyAction { omhMarker, _, omhMapView ->
             UiThreadUtil.runOnUiThread {
                 if (omhMarker?.getIsInfoWindowShown() == true) {
-                    omhMapView?.getView()?.let { ViewUtils.manuallyLayoutView(it) }
+                    omhMapView?.getView()?.manuallyLayoutView()
                 }
             }
         }
