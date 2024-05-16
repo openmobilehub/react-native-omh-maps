@@ -3,6 +3,7 @@ import { AppState, NativeEventSubscription } from 'react-native';
 
 import { useOmhMapContext } from '../../hooks/useOmhMapContext';
 import { resolveResource } from '../../utils/RNResourceTranscoder';
+import { OmhInfoWindowConstants } from '../infoWindow/OmhInfoWindowConstants';
 import { OmhMarkerProps } from './OmhMarker.types';
 import RNOmhMapsMarkerNativeComponent from './RNOmhMapsMarkerNativeComponent';
 
@@ -10,7 +11,13 @@ import RNOmhMapsMarkerNativeComponent from './RNOmhMapsMarkerNativeComponent';
  * The OMH Marker component.
  */
 export const OmhMarker = memo(
-  ({ icon, position, onPress, infoWindowAnchor, ...props }: OmhMarkerProps) => {
+  ({
+    icon,
+    position,
+    onPress,
+    infoWindowAnchor: _infoWindowAnchor,
+    ...props
+  }: OmhMarkerProps) => {
     const { providerName: mapProviderName } = useOmhMapContext();
 
     const resolvedIcon = useMemo(
@@ -58,6 +65,22 @@ export const OmhMarker = memo(
       };
     }, [appState]);
 
+    const infoWindowAnchor = useMemo(
+      () =>
+        mapProviderName === 'AzureMaps' && !backFromBackground
+          ? {
+              ...(_infoWindowAnchor ??
+                OmhInfoWindowConstants.IW_ANCHOR_CENTER_ABOVE),
+              v:
+                (
+                  _infoWindowAnchor ??
+                  OmhInfoWindowConstants.IW_ANCHOR_CENTER_ABOVE
+                ).v - 0.5,
+            }
+          : _infoWindowAnchor,
+      [_infoWindowAnchor, mapProviderName, backFromBackground]
+    );
+
     return (
       <RNOmhMapsMarkerNativeComponent
         {...props}
@@ -73,16 +96,7 @@ export const OmhMarker = memo(
               }
             : undefined
         }
-        infoWindowAnchor={
-          mapProviderName === 'AzureMaps' && !backFromBackground
-            ? infoWindowAnchor
-              ? {
-                  ...infoWindowAnchor,
-                  v: infoWindowAnchor.v - 0.5,
-                }
-              : infoWindowAnchor
-            : infoWindowAnchor
-        }
+        infoWindowAnchor={infoWindowAnchor}
         markerPosition={position}
         onMarkerPress={onPress}
         // @ts-ignore next line: missing typing for 'ref' prop on HostComponent
