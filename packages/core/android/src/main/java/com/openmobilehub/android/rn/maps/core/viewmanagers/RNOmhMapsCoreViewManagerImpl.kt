@@ -255,21 +255,33 @@ class RNOmhMapsCoreViewManagerImpl(private val reactContext: ReactContext) {
                 findChildOfType<OmhMarkerEntity, OmhMarker>(marker)?.onMarkerDragListener?.onMarkerDragStart(
                     marker
                 )
-                ViewUtils.manuallyLayoutView(omhMap.mapView as View)
+
+                try {
+                    ViewUtils.manuallyLayoutView(omhMap.mapView as View)
+                } catch (_: Exception) {
+                }
             }
 
             override fun onMarkerDrag(marker: OmhMarker) {
                 findChildOfType<OmhMarkerEntity, OmhMarker>(marker)?.onMarkerDragListener?.onMarkerDrag(
                     marker
                 )
-                ViewUtils.manuallyLayoutView(omhMap.mapView as View)
+
+                try {
+                    ViewUtils.manuallyLayoutView(omhMap.mapView as View)
+                } catch (_: Exception) {
+                }
             }
 
             override fun onMarkerDragEnd(marker: OmhMarker) {
                 findChildOfType<OmhMarkerEntity, OmhMarker>(marker)?.onMarkerDragListener?.onMarkerDragEnd(
                     marker
                 )
-                ViewUtils.manuallyLayoutView(omhMap.mapView as View)
+
+                try {
+                    ViewUtils.manuallyLayoutView(omhMap.mapView as View)
+                } catch (_: Exception) {
+                }
             }
         })
 

@@ -1,6 +1,6 @@
 import React, { useRef, useState } from 'react';
 import { ScrollView, StyleSheet, View } from 'react-native';
-import { Button, Checkbox, Subheading } from 'react-native-paper';
+import { Button, Subheading } from 'react-native-paper';
 
 import {
   OmhInfoWindowConstants,
@@ -11,6 +11,7 @@ import {
 } from '@omh/react-native-maps-core';
 
 import { Anchor } from '../../../../packages/core/src/components/marker/RNOmhMapsMarkerNativeComponent';
+import { PanelCheckbox } from '../../components/controls/PanelCheckbox';
 import Slider from '../../components/controls/Slider';
 import useLogger from '../../hooks/useLogger';
 import useSnackbar from '../../hooks/useSnackbar';
@@ -112,12 +113,10 @@ export const InfoWindowScreen = () => {
             Info window properties
           </Subheading>
 
-          <Checkbox.Item
+          <PanelCheckbox
             label="Snippet"
-            status={snippetVisible ? 'checked' : 'unchecked'}
-            onPress={() => {
-              setSnippetVisible(!snippetVisible);
-            }}
+            value={snippetVisible}
+            onValueChange={setSnippetVisible}
           />
 
           <Slider
@@ -152,20 +151,16 @@ export const InfoWindowScreen = () => {
             Demo behaviour
           </Subheading>
 
-          <Checkbox.Item
+          <PanelCheckbox
             label="Info win. toggles on marker click"
-            status={toggleIWOnMarkerClick ? 'checked' : 'unchecked'}
-            onPress={() => {
-              setToggleIWOnMarkerClick(!toggleIWOnMarkerClick);
-            }}
+            value={toggleIWOnMarkerClick}
+            onValueChange={setToggleIWOnMarkerClick}
           />
 
-          <Checkbox.Item
+          <PanelCheckbox
             label="Info win. hides on click"
-            status={hideIWOnClick ? 'checked' : 'unchecked'}
-            onPress={() => {
-              setHideIWOnClick(!hideIWOnClick);
-            }}
+            value={hideIWOnClick}
+            onValueChange={setHideIWOnClick}
           />
 
           <Subheading style={demoStyles.centeredHeading}>
@@ -196,20 +191,16 @@ export const InfoWindowScreen = () => {
             Marker properties
           </Subheading>
 
-          <Checkbox.Item
+          <PanelCheckbox
             label="Visible"
-            status={markerVisible ? 'checked' : 'unchecked'}
-            onPress={() => {
-              setMarkerVisible(!markerVisible);
-            }}
+            value={markerVisible}
+            onValueChange={setMarkerVisible}
           />
 
-          <Checkbox.Item
+          <PanelCheckbox
             label="Clickable"
-            status={markerClickable ? 'checked' : 'unchecked'}
-            onPress={() => {
-              setMarkerClickable(!markerClickable);
-            }}
+            value={markerClickable}
+            onValueChange={setMarkerClickable}
           />
 
           <Slider

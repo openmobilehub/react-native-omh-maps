@@ -8,7 +8,7 @@ import React, {
   useState,
 } from 'react';
 import { PixelRatio, ScrollView, View } from 'react-native';
-import { Checkbox, Subheading } from 'react-native-paper';
+import { Subheading } from 'react-native-paper';
 
 import {
   MarkerDragEndEvent,
@@ -25,6 +25,7 @@ import { OmhMapsOpenStreetMapProvider } from '@omh/react-native-maps-plugin-open
 
 import { Anchor } from '../../../../packages/core/src/components/marker/RNOmhMapsMarkerNativeComponent';
 import soccerBallIcon from '../../assets/img/soccer_ball.bmp';
+import { PanelCheckbox } from '../../components/controls/PanelCheckbox';
 import Picker from '../../components/controls/Picker';
 import Slider from '../../components/controls/Slider';
 import useChosenMapProvider from '../../hooks/useChosenMapProvider';
@@ -306,45 +307,35 @@ export const MarkerMapScreen = () => {
             Marker properties
           </Subheading>
 
-          <Checkbox.Item
+          <PanelCheckbox
             label="Visible"
-            status={customizableMarkerVisible ? 'checked' : 'unchecked'}
-            onPress={() => {
-              setCustomizableMarkerVisible(!customizableMarkerVisible);
-            }}
+            value={customizableMarkerVisible}
+            onValueChange={setCustomizableMarkerVisible}
           />
 
-          <Checkbox.Item
+          <PanelCheckbox
             label="Flat"
-            status={customizableMarkerFlat ? 'checked' : 'unchecked'}
-            onPress={() => {
-              setCustomizableMarkerFlat(!customizableMarkerFlat);
-            }}
+            value={customizableMarkerFlat}
+            onValueChange={setCustomizableMarkerFlat}
           />
 
-          <Checkbox.Item
+          <PanelCheckbox
             label="Clickable"
-            status={customizableMarkerClickable ? 'checked' : 'unchecked'}
-            onPress={() => {
-              setCustomizableMarkerClickable(!customizableMarkerClickable);
-            }}
+            value={customizableMarkerClickable}
+            onValueChange={setCustomizableMarkerClickable}
           />
 
-          <Checkbox.Item
-            disabled={mapProvider.path === OmhMapsAzureMapsProvider.path}
+          <PanelCheckbox
+            enabled={mapProvider.path !== OmhMapsAzureMapsProvider.path}
             label="Draggable"
-            status={customizableMarkerDraggable ? 'checked' : 'unchecked'}
-            onPress={() => {
-              setCustomizableMarkerDraggable(!customizableMarkerDraggable);
-            }}
+            value={customizableMarkerDraggable}
+            onValueChange={setCustomizableMarkerDraggable}
           />
 
-          <Checkbox.Item
+          <PanelCheckbox
             label="Snippet"
-            status={customizableMarkerSnippet ? 'checked' : 'unchecked'}
-            onPress={() => {
-              setCustomizableMarkerSnippet(!customizableMarkerSnippet);
-            }}
+            value={customizableMarkerSnippet}
+            onValueChange={setCustomizableMarkerSnippet}
           />
 
           <Slider
@@ -434,12 +425,10 @@ export const MarkerMapScreen = () => {
             Demo behaviour
           </Subheading>
 
-          <Checkbox.Item
+          <PanelCheckbox
             label="Mount customizable <OmhMarker/>"
-            status={mountCustomizableMarker ? 'checked' : 'unchecked'}
-            onPress={() => {
-              setMountCustomizableMarker(!mountCustomizableMarker);
-            }}
+            value={mountCustomizableMarker}
+            onValueChange={setMountCustomizableMarker}
           />
         </ScrollView>
       </View>
