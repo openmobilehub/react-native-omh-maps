@@ -25,6 +25,7 @@ internal object Constants {
 class RNOmhMapsMarkerViewManagerImpl {
 
     private var lastBackgroundColor: MutableMap<OmhMarkerEntity, Double> = mutableMapOf()
+    private var cachedBackgroundColor: MutableMap<OmhMarkerEntity, Double> = mutableMapOf()
     private var lastIconURI: MutableMap<OmhMarkerEntity, String?> = mutableMapOf()
 
     fun createViewInstance(reactContext: ReactContext): OmhMarkerEntity {
@@ -127,18 +128,26 @@ class RNOmhMapsMarkerViewManagerImpl {
 
     fun setBackgroundColor(entity: OmhMarkerEntity, value: Double) {
         // since setBackgroundColor & setIcon are mutually exclusive
-        // (overwrite each other) in the OMH SDK, we are caching the values
+        // (overwrite each other) in the OMH SDK, the last color value is cached
         if (lastBackgroundColor[entity] != value) {
-            val color =
-                (0xFF000000L or value.toLong()).toInt() // impute possibly missing bits (RGB instead of ARGB)
+            // if the currently selected icon is not the default one - the setting of
+            // the background color is delayed until the icon is set to null (default) again
+            if (lastIconURI[entity] == null) {
+                // currently, the default (colorable) icon is selected
+                val color =
+                    (0xFF000000L or value.toLong()).toInt() // impute possibly missing bits (RGB instead of ARGB)
 
-            if (entity.isMounted()) {
-                entity.getEntity()!!.setBackgroundColor(color)
+                if (entity.isMounted()) {
+                    entity.getEntity()!!.setBackgroundColor(color)
+                } else {
+                    entity.initialOptions.backgroundColor = color
+                }
+
+                lastBackgroundColor[entity] = value
             } else {
-                entity.initialOptions.backgroundColor = color
+                // currently, some custom icon is selected
+                cachedBackgroundColor[entity] = value
             }
-
-            lastBackgroundColor[entity] = value
         }
     }
 
@@ -178,6 +187,11 @@ class RNOmhMapsMarkerViewManagerImpl {
         if (lastIconURI[entity] != uri) {
             if (uri == null) {
                 setIconDrawable(entity, null)
+                cachedBackgroundColor.getOrDefault(entity, null)?.let {
+                    setBackgroundColor(entity, it)
+                    cachedBackgroundColor.remove(entity)
+                }
+                lastIconURI[entity] = null
             } else {
                 var dimensions: Pair<Int, Int>? = null
                 if (value.hasKey("width") && value.hasKey("height")) {
@@ -187,12 +201,13 @@ class RNOmhMapsMarkerViewManagerImpl {
                 DrawableLoader.loadDrawable(
                     entity,
                     uri,
-                    { drawable -> setIconDrawable(entity, drawable) },
+                    { drawable ->
+                        setIconDrawable(entity, drawable)
+                        lastIconURI[entity] = uri
+                    },
                     dimensions
                 )
             }
-
-            lastIconURI[entity] = uri
         }
     }
 
