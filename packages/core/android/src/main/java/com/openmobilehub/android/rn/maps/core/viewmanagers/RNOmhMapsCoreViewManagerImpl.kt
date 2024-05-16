@@ -130,6 +130,10 @@ class RNOmhMapsCoreViewManagerImpl(private val reactContext: ReactContext) {
         val child = mountedChildren[index]
             ?: (if (BuildConfig.IS_NEW_ARCHITECTURE_ENABLED) error(ERRORS.REMOVE_VIEW_AT_CHILD_NOT_FOUND) else null)
 
+        if (child is OmhMarkerEntity) {
+            RNOmhMapsMarkerViewManagerImpl.handleMarkerRemoved(child)
+        }
+
         child?.unmountEntity()
 
         mountedChildren.remove(index)

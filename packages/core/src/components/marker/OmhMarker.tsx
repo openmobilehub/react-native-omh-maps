@@ -14,6 +14,7 @@ export const OmhMarker = memo(
     position,
     onPress,
     infoWindowAnchor: _infoWindowAnchor,
+    backgroundColor: _backgroundColor,
     ...props
   }: OmhMarkerProps) => {
     const infoWindowAnchor = useOmhMarkerOSMFix(_infoWindowAnchor);
@@ -26,6 +27,11 @@ export const OmhMarker = memo(
             ? resolveResource(icon)
             : icon,
       [icon]
+    );
+
+    const backgroundColor = useMemo(
+      () => (_backgroundColor === undefined ? -1 : _backgroundColor),
+      [_backgroundColor]
     );
 
     const nativeComponentRef = React.useRef<
@@ -48,6 +54,7 @@ export const OmhMarker = memo(
             : undefined
         }
         infoWindowAnchor={infoWindowAnchor}
+        backgroundColor={backgroundColor}
         markerPosition={position}
         onMarkerPress={onPress}
         // @ts-ignore next line: missing typing for 'ref' prop on HostComponent

@@ -157,14 +157,21 @@ class RNOmhMapsMarkerViewManagerImpl {
             // the background color is delayed until the icon is set to null (default) again
             if (lastIconURI[entity] == null) {
                 // currently, the default (colorable) icon is selected
-                val color =
-                    (0xFF000000L or value.toLong()).toInt() // impute possibly missing bits (RGB instead of ARGB)
 
-                if (entity.isMounted()) {
-                    entity.getEntity()!!.setBackgroundColor(color)
-                    layoutInfoWindowIfOpen(entity)
+                if (value < 0) {
+                    // color property is unspecified - reset to default icon
+                    setIcon(entity, null)
                 } else {
-                    entity.initialOptions.backgroundColor = color
+                    // color property is specified
+                    val color =
+                        (0xFF000000L or value.toLong()).toInt() // impute possibly missing bits (RGB instead of ARGB)
+
+                    if (entity.isMounted()) {
+                        entity.getEntity()!!.setBackgroundColor(color)
+                        layoutInfoWindowIfOpen(entity)
+                    } else {
+                        entity.initialOptions.backgroundColor = color
+                    }
                 }
             } else {
                 // currently, some custom icon is selected
@@ -214,7 +221,7 @@ class RNOmhMapsMarkerViewManagerImpl {
     fun setIcon(entity: OmhMarkerEntity, value: ReadableMap?) {
         val uri = value?.getString("uri")
 
-        if (lastIconURI[entity] != uri) {
+        if (lastIconURI[entity] != uri || uri == null) {
             if (uri == null) {
                 setIconDrawable(entity, null)
                 cachedBackgroundColor.getOrDefault(entity, null)?.let {
@@ -253,6 +260,16 @@ class RNOmhMapsMarkerViewManagerImpl {
 
     companion object {
         const val NAME = "RNOmhMapsMarkerView"
+
+        private var lastBackgroundColor: MutableMap<OmhMarkerEntity, Double> = mutableMapOf()
+        private var cachedBackgroundColor: MutableMap<OmhMarkerEntity, Double> = mutableMapOf()
+        private var lastIconURI: MutableMap<OmhMarkerEntity, String?> = mutableMapOf()
+
+        fun handleMarkerRemoved(omhMarkerEntity: OmhMarkerEntity) {
+            lastBackgroundColor.remove(omhMarkerEntity)
+            cachedBackgroundColor.remove(omhMarkerEntity)
+            lastIconURI.remove(omhMarkerEntity)
+        }
 
         val EVENTS: Map<String, Any> =
             listOf(
