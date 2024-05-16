@@ -20,7 +20,7 @@ import { Constants } from '../../utils/Constants';
 import { MarkerIWTitles } from './MarkerMapScreen';
 
 export const InfoWindowScreen = () => {
-  const logger = useLogger('MarkerMapScreen');
+  const logger = useLogger('InfoWindowScreen');
   const { showSnackbar } = useSnackbar();
 
   const omhMapRef = useRef<OmhMapViewRef | null>(null);
