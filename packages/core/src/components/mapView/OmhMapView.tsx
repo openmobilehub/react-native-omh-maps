@@ -1,4 +1,10 @@
-import React, { forwardRef, useCallback, useState } from 'react';
+import React, {
+  forwardRef,
+  useCallback,
+  useEffect,
+  useRef,
+  useState,
+} from 'react';
 import {
   NativeSyntheticEvent,
   PixelRatio,
@@ -22,8 +28,18 @@ import {
   notReadyPromiseHandler,
   tweakCompass,
   useMyLocationIconFix,
+  useOSMMapViewRelayout,
 } from './OmhMapViewHelpers';
 import RNOmhMapsCoreViewNativeComponent from './RNOmhMapsCoreViewNativeComponent';
+
+function maybeResetInterval(
+  intervalRef: React.MutableRefObject<NodeJS.Timeout | null>
+) {
+  if (intervalRef.current !== null) {
+    clearInterval(intervalRef.current);
+    intervalRef.current = null;
+  }
+}
 
 /**
  * The OMH Map View component. Actual implementation is picked based on the platform capabilities (GMS or non-GMS)
@@ -37,7 +53,7 @@ export const OmhMapView = forwardRef<OmhMapViewRef, OmhMapViewProps>(
       children,
       zoomEnabled,
       rotateEnabled,
-      onCameraIdle,
+      onCameraIdle: _onCameraIdle,
       onCameraMoveStarted,
       mapStyle,
       onMapReady,
@@ -58,6 +74,20 @@ export const OmhMapView = forwardRef<OmhMapViewRef, OmhMapViewProps>(
     const nativeComponentRef = React.useRef<
       typeof RNOmhMapsCoreViewNativeComponent | null
     >(null);
+
+    const relayoutWhenDraggingInterval = useRef<NodeJS.Timeout | null>(null);
+
+    const relayoutMapView = useOSMMapViewRelayout(
+      nativeComponentRef,
+      providerName
+    );
+
+    const onCameraIdle = () => {
+      maybeResetInterval(relayoutWhenDraggingInterval);
+      relayoutMapView();
+
+      _onCameraIdle?.();
+    };
 
     useMyLocationIconFix(nativeComponentRef, isMapReady, myLocationEnabled);
 
@@ -112,6 +142,11 @@ export const OmhMapView = forwardRef<OmhMapViewRef, OmhMapViewProps>(
           break;
       }
 
+      maybeResetInterval(relayoutWhenDraggingInterval);
+      relayoutWhenDraggingInterval.current = setInterval(() => {
+        relayoutMapView();
+      }, 1000 / 45);
+
       onCameraMoveStarted?.(reason);
     };
 
@@ -125,10 +160,19 @@ export const OmhMapView = forwardRef<OmhMapViewRef, OmhMapViewProps>(
         }
       : {};
 
+    // on mount effect
+    useEffect(() => {
+      return () => {
+        // on unmount effect
+        maybeResetInterval(relayoutWhenDraggingInterval);
+      };
+    }, []);
+
     return (
       <OmhMapContext.Provider
         value={{
           providerName,
+          nativeComponentRef,
         }}>
         <View
           onLayout={event => {

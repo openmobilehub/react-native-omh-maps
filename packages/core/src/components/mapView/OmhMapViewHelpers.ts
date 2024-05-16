@@ -1,7 +1,8 @@
+import React, { useEffect } from 'react';
 import { findNodeHandle } from 'react-native';
 import { MapStyleElement } from 'react-native-maps';
+
 import NativeOmhMapsCoreModule from '../../modules/core/NativeOmhMapsCoreModule';
-import React, { useEffect } from 'react';
 import { NativeOmhMapViewComponent } from './RNOmhMapsCoreViewNativeComponent';
 
 // As zoom level is not supported by Apple Maps, we need to calculate the latitudeDelta and longitudeDelta based on the zoom level and the map dimensions.
@@ -100,6 +101,11 @@ const relayoutMapView = (
       const azureMapsPlugin = require('@omh/react-native-maps-plugin-azuremaps');
       azureMapsPlugin.OmhMapsPluginAzureMapsModule.relayoutMapView(viewRef);
     }
+
+    if (providerName === 'OpenStreetMap') {
+      const osmPlugin = require('@omh/react-native-maps-plugin-openstreetmap');
+      osmPlugin.OmhMapsPluginOpenstreetmapModule.relayoutMapView(viewRef);
+    }
   } catch (error) {
     console.error(error);
   }
@@ -116,3 +122,16 @@ export const useMyLocationIconFix = (
     }
   }, [isMapReady, myLocationEnabled, nativeComponentRef]);
 };
+
+export const useOSMMapViewRelayout =
+  (
+    nativeComponentRef: React.MutableRefObject<NativeOmhMapViewComponent | null> | null,
+    providerName: string | null
+  ) =>
+  () => {
+    if (!nativeComponentRef) return;
+
+    if (providerName === 'OpenStreetMap') {
+      relayoutMapView(nativeComponentRef);
+    }
+  };

@@ -72,7 +72,7 @@
   },
   "codegenConfig": {
     "name": "RNOmhMapsPluginOpenstreetmap",
-    "type": "modules",
+    "type": "all",
     "jsSrcsDir": "src"
   },
   "devDependencies": {

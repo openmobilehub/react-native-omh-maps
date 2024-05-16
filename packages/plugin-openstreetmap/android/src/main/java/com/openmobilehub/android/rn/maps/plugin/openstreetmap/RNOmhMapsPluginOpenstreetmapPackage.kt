@@ -8,13 +8,20 @@ import com.facebook.react.module.model.ReactModuleInfo
 import com.facebook.react.module.model.ReactModuleInfoProvider
 import com.facebook.react.turbomodule.core.interfaces.TurboModule
 import com.facebook.react.uimanager.ViewManager
+import com.openmobilehub.android.rn.maps.plugin.mapbox.RNOmhMapsPluginOpenstreetmapModule
 
 class OmhMapsPluginOpenstreetmapTurboPackage : TurboReactPackage() {
     /**
      * Initialize and export modules based on the name of the required module
      */
     override fun getModule(name: String, reactContext: ReactApplicationContext): NativeModule? {
-        return null
+        return when (name) {
+            RNOmhMapsPluginOpenstreetmapModule.NAME -> RNOmhMapsPluginOpenstreetmapModule(
+                reactContext
+            )
+
+            else -> null
+        }
     }
 
     /**
@@ -24,7 +31,9 @@ class OmhMapsPluginOpenstreetmapTurboPackage : TurboReactPackage() {
         /**
          * Here declare the array of exported modules
          */
-        val moduleList: Array<Class<out NativeModule?>> = emptyArray()
+        val moduleList: Array<Class<out NativeModule?>> = arrayOf(
+            RNOmhMapsPluginOpenstreetmapModule::class.java
+        )
         val reactModuleInfoMap: MutableMap<String, ReactModuleInfo> = HashMap()
         /**
          * And here just iterate on that array and produce the info provider instance
