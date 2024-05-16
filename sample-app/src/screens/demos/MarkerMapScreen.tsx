@@ -7,7 +7,7 @@ import React, {
   useRef,
   useState,
 } from 'react';
-import { PixelRatio, ScrollView, View } from 'react-native';
+import { ScrollView, View } from 'react-native';
 import { Subheading } from 'react-native-paper';
 
 import {
@@ -249,8 +249,8 @@ export const MarkerMapScreen = () => {
                       DemoMarkerAppearance.NETWORK_ASSET
                     ? {
                         uri: 'https://www.openmobilehub.com/images/logo/omh_logo.png',
-                        width: PixelRatio.getPixelSizeForLayoutSize(24),
-                        height: PixelRatio.getPixelSizeForLayoutSize(24),
+                        width: 75,
+                        height: 75,
                       }
                     : undefined
               }

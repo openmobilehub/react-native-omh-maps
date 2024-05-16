@@ -1,4 +1,5 @@
 import React, { memo, useMemo } from 'react';
+import { PixelRatio } from 'react-native';
 
 import useOmhMarkerOSMFix from '../../hooks/useOmhMarkerOSMFix';
 import { resolveResource } from '../../utils/RNResourceTranscoder';
@@ -46,9 +47,11 @@ export const OmhMarker = memo(
             ? {
                 ...resolvedIcon,
                 // compensate for image resizing occurring in the native library that properly sizes Drawables
-                width: resolvedIcon.width ? resolvedIcon.width * 3 : undefined,
+                width: resolvedIcon.width
+                  ? PixelRatio.getPixelSizeForLayoutSize(resolvedIcon.width)
+                  : undefined,
                 height: resolvedIcon.height
-                  ? resolvedIcon.height * 3
+                  ? PixelRatio.getPixelSizeForLayoutSize(resolvedIcon.height)
                   : undefined,
               }
             : undefined
