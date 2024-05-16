@@ -11,7 +11,7 @@ export interface NativeOmhMapViewProps extends ViewProps {
   mapStyle?: string;
   myLocationEnabled?: boolean;
   onMapReady?: DirectEventHandler<null>;
-  onMapLoaded?: DirectEventHandler<null>;
+  onMapLoaded?: DirectEventHandler<{ providerName: string }>;
   onCameraMoveStarted?: DirectEventHandler<{ reason: Int32 }>;
   onCameraIdle?: DirectEventHandler<null>;
   onMyLocationClicked?: DirectEventHandler<null>;

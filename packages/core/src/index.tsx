@@ -10,6 +10,8 @@ export * from './components/marker/OmhMarker';
 export * from './components/marker/OmhMarker.types';
 export * from './components/marker/OmhMarkerConstants';
 
+export * from './components/infoWindow/OmhInfoWindowConstants';
+
 export * from './components/polyline/OmhPolyline';
 export * from './components/polyline/OmhPolyline.types';
 

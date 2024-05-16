@@ -12,14 +12,15 @@ import useCreateAdaptiveTheme from './hooks/useCreateAdaptiveTheme';
 import AboutScreen from './screens/AboutScreen';
 import MenuScreen from './screens/MenuScreen';
 import CameraMapScreen from './screens/demos/CameraMapScreen';
+import { InfoWindowScreen } from './screens/demos/InfoWindowScreen';
+import LocationResultScreen from './screens/demos/LocationResultScreen';
+import LocationSharingScreen from './screens/demos/LocationSharingScreen';
 import MarkerMapScreen from './screens/demos/MarkerMapScreen';
 import PlainMapScreen from './screens/demos/PlainMapScreen';
-import PolylineMapScreen from './screens/demos/PolylineMapScreen';
-import StylesMapScreen from './screens/demos/StylesMapScreen';
-import LocationSharingScreen from './screens/demos/LocationSharingScreen';
-import LocationResultScreen from './screens/demos/LocationResultScreen';
-import { SharedLocationMapScreen } from './screens/demos/SharedLocationMapScreen';
 import PolygonMapScreen from './screens/demos/PolygonMapScreen';
+import PolylineMapScreen from './screens/demos/PolylineMapScreen';
+import { SharedLocationMapScreen } from './screens/demos/SharedLocationMapScreen';
+import StylesMapScreen from './screens/demos/StylesMapScreen';
 
 export type RootStackParamList = {
   [Route.menu]: undefined;
@@ -96,6 +97,12 @@ export default function App() {
               <Stack.Screen
                 name={Route.markerMap}
                 component={MarkerMapScreen}
+                options={screenOptions}
+              />
+
+              <Stack.Screen
+                name={Route.infoWindowMap}
+                component={InfoWindowScreen}
                 options={screenOptions}
               />
 

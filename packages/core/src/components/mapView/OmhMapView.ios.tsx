@@ -5,15 +5,17 @@ import React, {
   useMemo,
   useRef,
 } from 'react';
+import { LayoutChangeEvent } from 'react-native';
 import MapView, { Details, Region, SnapshotOptions } from 'react-native-maps';
+
+import { OmhMapsModule } from '../../modules/core/OmhMapsModule.ios';
+import { OmhCoordinate } from '../../types/common';
+import { mergeStyles } from '../../utils/styleHelpers';
 import {
   OmhMapViewProps,
   OmhMapViewRef,
   OmhSnapshotFormat,
 } from './OmhMapView.types';
-import { mergeStyles } from '../../utils/styleHelpers';
-import { OmhMapsModule } from '../../modules/core/OmhMapsModule.ios';
-import { OmhCoordinate } from '../../types/common';
 import {
   getLatitudeDelta,
   getLongitudeDelta,
@@ -21,7 +23,6 @@ import {
   notReadyHandler,
   notReadyPromiseHandler,
 } from './OmhMapViewHelpers';
-import { LayoutChangeEvent } from 'react-native';
 
 export const OmhMapView = forwardRef<OmhMapViewRef, OmhMapViewProps>(
   (
@@ -190,7 +191,9 @@ export const OmhMapView = forwardRef<OmhMapViewRef, OmhMapViewProps>(
         onRegionChangeComplete={handleCameraIdle}
         onRegionChange={handleRegionChange}
         onMapReady={onMapReady}
-        onMapLoaded={onMapLoaded}
+        onMapLoaded={() => {
+          onMapLoaded?.(provider.name);
+        }}
         showsUserLocation={myLocationEnabled}
         showsMyLocationButton={myLocationEnabled}
         customMapStyle={customMapStyle}
