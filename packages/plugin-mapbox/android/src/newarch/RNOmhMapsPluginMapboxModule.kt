@@ -7,17 +7,21 @@ import com.facebook.react.module.annotations.ReactModule
 class RNOmhMapsPluginMapboxModule(
   private val reactContext: ReactApplicationContext
 ) : NativeOmhMapsPluginMapboxModuleSpec(reactContext) {
-    override fun setPublicToken(publicToken: String) {
-        RNOmhMapsPluginMapboxModuleImpl.setPublicToken(publicToken)
-    }
+  override fun setPublicToken(publicToken: String) {
+    RNOmhMapsPluginMapboxModuleImpl.setPublicToken(publicToken)
+  }
 
-    override fun tweakCompass(viewRef: Double) {
-      RNOmhMapsPluginMapboxModuleImpl.tweakCompass(viewRef, reactContext)
-    }
+  override fun tweakCompass(viewRef: Double) {
+    RNOmhMapsPluginMapboxModuleImpl.tweakCompass(viewRef, reactContext)
+  }
 
-    override fun getName() = NAME
+  override fun relayoutMapView(viewRef: Double) {
+    RNOmhMapsPluginMapboxModuleImpl.relayoutMapView(viewRef, reactContext)
+  }
 
-    companion object {
-        const val NAME = RNOmhMapsPluginMapboxModuleImpl.NAME
-    }
+  override fun getName() = NAME
+
+  companion object {
+    const val NAME = RNOmhMapsPluginMapboxModuleImpl.NAME
+  }
 }

@@ -19,6 +19,11 @@ class RNOmhMapsPluginMapboxModule(
       RNOmhMapsPluginMapboxModuleImpl.tweakCompass(viewRef, reactContext)
     }
 
+    @ReactMethod
+    fun relayoutMapView(viewRef: Double) {
+      RNOmhMapsPluginMapboxModuleImpl.relayoutMapView(viewRef, reactContext)
+    }
+
     override fun getName() = NAME
 
     companion object {
