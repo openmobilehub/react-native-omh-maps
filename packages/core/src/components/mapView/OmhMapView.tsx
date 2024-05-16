@@ -1,10 +1,9 @@
-import React, { forwardRef, useCallback, useMemo, useState } from 'react';
+import React, { forwardRef, useCallback, useState } from 'react';
 import {
   NativeSyntheticEvent,
   PixelRatio,
   StyleSheet,
   View,
-  findNodeHandle,
 } from 'react-native';
 
 import { OmhMapContext } from '../../context/OmhMapContext';
@@ -18,9 +17,11 @@ import {
   OmhSnapshotFormat,
 } from './OmhMapView.types';
 import {
-  MapErrors,
+  getViewRefHandle,
   notReadyHandler,
   notReadyPromiseHandler,
+  tweakCompass,
+  useMyLocationIconFix,
 } from './OmhMapViewHelpers';
 import RNOmhMapsCoreViewNativeComponent from './RNOmhMapsCoreViewNativeComponent';
 
@@ -58,25 +59,12 @@ export const OmhMapView = forwardRef<OmhMapViewRef, OmhMapViewProps>(
       typeof RNOmhMapsCoreViewNativeComponent | null
     >(null);
 
-    const getViewRefHandle = useMemo(
-      () =>
-        <BAsserted extends boolean>(
-          bThrowErrorIfNotInTree: BAsserted = false as any
-        ): BAsserted extends true ? number : number | null => {
-          const handle = findNodeHandle(nativeComponentRef.current);
-
-          if (bThrowErrorIfNotInTree && handle === null)
-            throw new Error(MapErrors.MAP_NOT_IN_TREE_YET);
-
-          return handle!;
-        },
-      []
-    );
+    useMyLocationIconFix(nativeComponentRef, isMapReady, myLocationEnabled);
 
     React.useImperativeHandle(
       forwardedRef,
       () => {
-        const nodeHandle = getViewRefHandle();
+        const nodeHandle = getViewRefHandle(nativeComponentRef);
 
         if (nodeHandle === null) {
           return {
@@ -98,28 +86,15 @@ export const OmhMapView = forwardRef<OmhMapViewRef, OmhMapViewProps>(
             NativeOmhMapsCoreModule.takeSnapshot(nodeHandle, format),
         };
       },
-      [getViewRefHandle]
+      []
     );
 
-    const tweakCompass = useCallback(() => {
-      try {
-        const viewRef = getViewRefHandle(true);
-
-        if (NativeOmhMapsCoreModule.getProviderName(viewRef) === 'Mapbox') {
-          const mapboxPlugin = require('@omh/react-native-maps-plugin-mapbox');
-          mapboxPlugin.OmhMapsPluginMapboxModule.tweakCompass(viewRef);
-        }
-      } catch (error) {
-        console.error(error);
-      }
-    }, [getViewRefHandle]);
-
     const handleMapReady = useCallback(() => {
-      tweakCompass();
+      tweakCompass(nativeComponentRef);
       setIsMapReady(true);
 
       onMapReady?.();
-    }, [onMapReady, tweakCompass]);
+    }, [onMapReady]);
 
     const onCameraMoveStartedMapped = (
       event: NativeSyntheticEvent<{ reason: number }>

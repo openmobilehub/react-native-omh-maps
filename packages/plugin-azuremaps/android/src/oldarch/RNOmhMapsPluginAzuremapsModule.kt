@@ -7,16 +7,21 @@ import com.facebook.react.module.annotations.ReactModule
 
 @ReactModule(name = RNOmhMapsPluginAzuremapsModule.NAME)
 class RNOmhMapsPluginAzuremapsModule(
-    reactContext: ReactApplicationContext
+  private val reactContext: ReactApplicationContext
 ) : ReactContextBaseJavaModule(reactContext) {
-    @ReactMethod
-    fun setSubscriptionKey(subscriptionKey: String) {
-        RNOmhMapsPluginAzuremapsModuleImpl.setSubscriptionKey(subscriptionKey)
-    }
+  @ReactMethod
+  fun setSubscriptionKey(subscriptionKey: String) {
+    RNOmhMapsPluginAzuremapsModuleImpl.setSubscriptionKey(subscriptionKey)
+  }
 
-    override fun getName() = NAME
+  @ReactMethod
+  fun relayoutMapView(viewRef: Double) {
+    RNOmhMapsPluginAzuremapsModuleImpl.relayoutMapView(viewRef, reactContext)
+  }
 
-    companion object {
-        const val NAME = RNOmhMapsPluginAzuremapsModuleImpl.NAME
-    }
+  override fun getName() = NAME
+
+  companion object {
+    const val NAME = RNOmhMapsPluginAzuremapsModuleImpl.NAME
+  }
 }

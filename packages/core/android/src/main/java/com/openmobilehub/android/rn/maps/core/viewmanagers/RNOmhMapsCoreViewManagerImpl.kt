@@ -418,6 +418,7 @@ class RNOmhMapsCoreViewManagerImpl(private val reactContext: ReactContext) {
                 OmhOnMapLoadedEvent,
                 OmhOnCameraIdleEvent,
                 OmhOnCameraMoveStartedEvent,
+                OmhMyLocationButtonPressEvent
             ).associateBy(
                 { it.NAME },
                 { MapBuilder.of("registrationName", it.REGISTRATION_NAME) }
