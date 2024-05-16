@@ -332,7 +332,8 @@ class RNOmhMapsCoreViewManagerImpl(private val reactContext: ReactContext) {
                 view.id,
                 OmhOnMapLoadedEvent(
                     UIManagerHelper.getSurfaceId(reactContext),
-                    view.id
+                    view.id,
+                    omhMap.providerName
                 )
             )
         }

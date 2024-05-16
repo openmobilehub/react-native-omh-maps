@@ -33,7 +33,7 @@ export type OmhMapViewProps = ViewProps & {
   /** Internal map ready callback, invoked when the map view is ready, but the map is not loaded yet */
   onMapReady?: () => void;
   /** Callback invoked when the map is loaded */
-  onMapLoaded?: () => void;
+  onMapLoaded?: (providerName: string) => void;
   /** Callback invoked when the map camera is idle */
   onCameraIdle?: () => void;
   /** Callback invoked when the location button was clicked on map*/
