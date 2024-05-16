@@ -141,6 +141,8 @@ export const PolylineMapScreen = () => {
   const { showSnackbar } = useSnackbar();
 
   const omhMapRef = useRef<OmhMapViewRef | null>(null);
+  const [isReferencePolylineVisible, setIsReferencePolylineVisible] =
+    useState(false);
   const [points, setPoints] = useState(customizablePolylinePoints);
   const [isClickable, setIsClickable] = useState(false);
   const [width, setWidth] = useState(defaultWidth);
@@ -313,6 +315,7 @@ export const PolylineMapScreen = () => {
             {...capProps}
           />
           <OmhPolyline
+            isVisible={isReferencePolylineVisible}
             points={referencePolylinePoints}
             zIndex={2}
             clickable={true}
@@ -333,6 +336,11 @@ export const PolylineMapScreen = () => {
           <PanelButton
             onPress={handleRandomizePointsButtonPress}
             label="Randomize Points"
+          />
+          <PanelCheckbox
+            label="Show Reference Polyline (Add/Remove)"
+            value={isReferencePolylineVisible}
+            onValueChange={setIsReferencePolylineVisible}
           />
           <PanelCheckbox
             label="Visible"
