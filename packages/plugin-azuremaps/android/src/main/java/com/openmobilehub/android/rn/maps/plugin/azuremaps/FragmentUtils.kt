@@ -1,4 +1,4 @@
-package com.openmobilehub.android.rn.maps.plugin.mapbox
+package com.openmobilehub.android.rn.maps.plugin.azuremaps
 
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
