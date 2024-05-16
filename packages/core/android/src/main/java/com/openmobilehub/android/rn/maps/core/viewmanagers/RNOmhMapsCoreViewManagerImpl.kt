@@ -34,6 +34,7 @@ import com.openmobilehub.android.rn.maps.core.events.OmhOnMapReadyEvent
 import com.openmobilehub.android.rn.maps.core.fragments.FragmentUtils
 import com.openmobilehub.android.rn.maps.core.fragments.OmhMapViewFragment
 import com.openmobilehub.android.rn.maps.core.utils.RNComponentUtils.dispatchEvent
+import com.openmobilehub.android.rn.maps.core.utils.ViewUtils
 
 
 @Suppress("TooManyFunctions")
@@ -254,18 +255,21 @@ class RNOmhMapsCoreViewManagerImpl(private val reactContext: ReactContext) {
                 findChildOfType<OmhMarkerEntity, OmhMarker>(marker)?.onMarkerDragListener?.onMarkerDragStart(
                     marker
                 )
+                ViewUtils.manuallyLayoutView(omhMap.mapView as View)
             }
 
             override fun onMarkerDrag(marker: OmhMarker) {
                 findChildOfType<OmhMarkerEntity, OmhMarker>(marker)?.onMarkerDragListener?.onMarkerDrag(
                     marker
                 )
+                ViewUtils.manuallyLayoutView(omhMap.mapView as View)
             }
 
             override fun onMarkerDragEnd(marker: OmhMarker) {
                 findChildOfType<OmhMarkerEntity, OmhMarker>(marker)?.onMarkerDragListener?.onMarkerDragEnd(
                     marker
                 )
+                ViewUtils.manuallyLayoutView(omhMap.mapView as View)
             }
         })
 

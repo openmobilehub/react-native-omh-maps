@@ -41,6 +41,7 @@ class RNOmhMapsMarkerViewManagerImpl {
 
         if (entity.isMounted()) {
             entity.getEntity()!!.setPosition(value!!.toOmhCoordinate())
+            layoutIfIWOpen(entity)
         } else {
             entity.initialOptions.position = value!!.toOmhCoordinate()
         }
@@ -49,6 +50,7 @@ class RNOmhMapsMarkerViewManagerImpl {
     fun setTitle(entity: OmhMarkerEntity, value: String?) {
         if (entity.isMounted()) {
             entity.getEntity()!!.setTitle(value)
+            layoutIfIWOpen(entity)
         } else {
             entity.initialOptions.title = value
         }
@@ -75,6 +77,7 @@ class RNOmhMapsMarkerViewManagerImpl {
 
         if (entity.isMounted()) {
             entity.getEntity()!!.setAnchor(anchor.first, anchor.second)
+            layoutIfIWOpen(entity)
         } else {
             entity.initialOptions.anchor = anchor
         }
@@ -99,6 +102,7 @@ class RNOmhMapsMarkerViewManagerImpl {
     fun setAlpha(entity: OmhMarkerEntity, value: Float) {
         if (entity.isMounted()) {
             entity.getEntity()!!.setAlpha(value)
+            layoutIfIWOpen(entity)
         } else {
             entity.initialOptions.alpha = value
         }
@@ -106,7 +110,13 @@ class RNOmhMapsMarkerViewManagerImpl {
 
     fun setSnippet(entity: OmhMarkerEntity, value: String?) {
         if (entity.isMounted()) {
-            entity.getEntity()!!.setSnippet(value)
+            entity.queueOnMapReadyAction { _, _, omhMapView ->
+                UiThreadUtil.runOnUiThread {
+                    entity.getEntity()!!.setSnippet(value)
+
+                    omhMapView?.getView()?.let { ViewUtils.manuallyLayoutView(it) }
+                }
+            }
         } else {
             entity.initialOptions.snippet = value
         }
@@ -123,6 +133,7 @@ class RNOmhMapsMarkerViewManagerImpl {
     fun setIsFlat(entity: OmhMarkerEntity, value: Boolean) {
         if (entity.isMounted()) {
             entity.getEntity()!!.setIsFlat(value)
+            layoutIfIWOpen(entity)
         } else {
             entity.initialOptions.isFlat = value
         }
@@ -131,6 +142,7 @@ class RNOmhMapsMarkerViewManagerImpl {
     fun setRotation(entity: OmhMarkerEntity, value: Float) {
         if (entity.isMounted()) {
             entity.getEntity()!!.setRotation(value)
+            layoutIfIWOpen(entity)
         } else {
             entity.initialOptions.rotation = value
         }
@@ -145,6 +157,7 @@ class RNOmhMapsMarkerViewManagerImpl {
 
             if (entity.isMounted()) {
                 entity.getEntity()!!.setBackgroundColor(color)
+                layoutIfIWOpen(entity)
             } else {
                 entity.initialOptions.backgroundColor = color
             }
@@ -156,6 +169,7 @@ class RNOmhMapsMarkerViewManagerImpl {
     fun setZIndex(entity: OmhMarkerEntity, value: Float) {
         if (entity.isMounted()) {
             entity.getEntity()!!.setZIndex(value)
+            layoutIfIWOpen(entity)
         } else {
             entity.initialOptions.zIndex = value
         }
@@ -182,6 +196,7 @@ class RNOmhMapsMarkerViewManagerImpl {
     private fun setIconDrawable(entity: OmhMarkerEntity, drawable: Drawable?) {
         if (entity.isMounted()) {
             entity.getEntity()!!.setIcon(drawable)
+            layoutIfIWOpen(entity)
         } else {
             entity.initialOptions.icon = drawable
         }
@@ -208,6 +223,16 @@ class RNOmhMapsMarkerViewManagerImpl {
             }
 
             lastIconURI[entity] = uri
+        }
+    }
+
+    private fun layoutIfIWOpen(entity: OmhMarkerEntity) {
+        entity.queueOnMapReadyAction { omhMarker, _, omhMapView ->
+            UiThreadUtil.runOnUiThread {
+                if (omhMarker?.getIsInfoWindowShown() == true) {
+                    omhMapView?.getView()?.let { ViewUtils.manuallyLayoutView(it) }
+                }
+            }
         }
     }
 

@@ -34,11 +34,11 @@ import { demoStyles } from '../../styles/demoStyles';
 import { Constants } from '../../utils/Constants';
 import { formatPosition, rgbToInt } from '../../utils/converters';
 
-export const MarkerIWTitles = {
-  CONFIGURABLE_TEST_MARKER: 'Configurable test marker',
-  STATIC_ICON_MARKER_NON_DRAGGABLE: 'Static icon marker (non-draggable)',
-  STATIC_COLORED_MARKER_DRAGGABLE: 'Static colored marker (draggable)',
-};
+export enum MarkerIWTitles {
+  CONFIGURABLE_TEST_MARKER = 'Configurable test marker',
+  STATIC_ICON_MARKER_NON_DRAGGABLE = 'Static icon marker (non-draggable)',
+  STATIC_COLORED_MARKER_DRAGGABLE = 'Static colored marker (draggable)',
+}
 
 enum DemoMarkerAppearance {
   DEFAULT = 'Default',
@@ -80,15 +80,40 @@ export const MarkerMapScreen = () => {
     useState(0);
   const [customizableMarkerAppearance, setCustomizableMarkerAppearance] =
     useState(DemoMarkerAppearance.DEFAULT);
+  const [showInfoWindow, setShowInfoWindow] = useState({
+    [MarkerIWTitles.CONFIGURABLE_TEST_MARKER]: false,
+    [MarkerIWTitles.STATIC_ICON_MARKER_NON_DRAGGABLE]: false,
+    [MarkerIWTitles.STATIC_COLORED_MARKER_DRAGGABLE]: false,
+  } as Record<MarkerIWTitles, boolean>);
 
   const genMarkerOnPressHandler = useCallback(
-    (title: string) => () => {
+    (title: MarkerIWTitles) => () => {
       const message = `${_.capitalize(title)} clicked`;
       logger.log(message);
 
       showSnackbar(message);
+
+      setShowInfoWindow({
+        ...showInfoWindow,
+        [title]: !showInfoWindow[title],
+      });
     },
-    [showSnackbar, logger]
+    [showSnackbar, logger, showInfoWindow]
+  );
+
+  const genMarkerOnIWPressHandler = useCallback(
+    (title: MarkerIWTitles) => () => {
+      const message = `${_.capitalize(title)} info window clicked`;
+      logger.log(message);
+
+      showSnackbar(message);
+
+      setShowInfoWindow({
+        ...showInfoWindow,
+        [title]: !showInfoWindow[title],
+      });
+    },
+    [showSnackbar, logger, showInfoWindow]
   );
 
   const onCustomizableMarkerDragStart = useCallback(
@@ -182,6 +207,9 @@ export const MarkerMapScreen = () => {
           }}>
           {mountCustomizableMarker && (
             <OmhMarker
+              showInfoWindow={
+                showInfoWindow[MarkerIWTitles.CONFIGURABLE_TEST_MARKER]
+              }
               title={MarkerIWTitles.CONFIGURABLE_TEST_MARKER}
               position={customizableMarkerPosition}
               draggable={customizableMarkerDraggable}
@@ -194,6 +222,9 @@ export const MarkerMapScreen = () => {
                   : undefined
               }
               onPress={genMarkerOnPressHandler(
+                MarkerIWTitles.CONFIGURABLE_TEST_MARKER
+              )}
+              onInfoWindowPress={genMarkerOnIWPressHandler(
                 MarkerIWTitles.CONFIGURABLE_TEST_MARKER
               )}
               onDragStart={onCustomizableMarkerDragStart}
@@ -226,6 +257,9 @@ export const MarkerMapScreen = () => {
           )}
 
           <OmhMarker
+            showInfoWindow={
+              showInfoWindow[MarkerIWTitles.STATIC_ICON_MARKER_NON_DRAGGABLE]
+            }
             title={MarkerIWTitles.STATIC_ICON_MARKER_NON_DRAGGABLE}
             position={{
               latitude: Constants.Maps.GREENWICH_COORDINATE.latitude + 0.0016,
@@ -234,11 +268,17 @@ export const MarkerMapScreen = () => {
             onPress={genMarkerOnPressHandler(
               MarkerIWTitles.STATIC_ICON_MARKER_NON_DRAGGABLE
             )}
+            onInfoWindowPress={genMarkerOnIWPressHandler(
+              MarkerIWTitles.STATIC_ICON_MARKER_NON_DRAGGABLE
+            )}
             markerZIndex={1.9}
             icon={soccerBallIcon}
           />
 
           <OmhMarker
+            showInfoWindow={
+              showInfoWindow[MarkerIWTitles.STATIC_COLORED_MARKER_DRAGGABLE]
+            }
             title={MarkerIWTitles.STATIC_COLORED_MARKER_DRAGGABLE}
             position={{
               latitude: Constants.Maps.GREENWICH_COORDINATE.latitude + 0.0016,
@@ -247,6 +287,9 @@ export const MarkerMapScreen = () => {
             backgroundColor={0x005918}
             draggable={true}
             onPress={genMarkerOnPressHandler(
+              MarkerIWTitles.STATIC_COLORED_MARKER_DRAGGABLE
+            )}
+            onInfoWindowPress={genMarkerOnIWPressHandler(
               MarkerIWTitles.STATIC_COLORED_MARKER_DRAGGABLE
             )}
             markerZIndex={2.9}
