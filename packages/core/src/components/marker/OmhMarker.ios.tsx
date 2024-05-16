@@ -1,12 +1,12 @@
-import React, { useMemo } from 'react';
-import { Marker, MarkerPressEvent, Point } from 'react-native-maps';
+import React, { useCallback, useMemo } from 'react';
+import { Marker, MarkerPressEvent } from 'react-native-maps';
 import { OmhMarkerProps } from './OmhMarker.types';
-import { OmhAnchor } from '@omh/react-native-maps-core';
 import { omhColorToString } from '../../utils/colorHelper';
 import {
   MarkerDragEvent,
   MarkerDragStartEndEvent,
 } from 'react-native-maps/lib/sharedTypes';
+import { anchorToPoint } from '../../utils/anchorHelpers';
 
 /**
  * The OMH Marker component.
@@ -32,13 +32,6 @@ export const OmhMarker = ({
   onDrag,
   onDragEnd,
 }: OmhMarkerProps) => {
-  const anchorToPoint = (
-    omhAnchor: OmhAnchor | undefined
-  ): Point | undefined => {
-    if (!omhAnchor) return undefined;
-    return { x: omhAnchor.u, y: omhAnchor.v };
-  };
-
   const anchorPoint = useMemo(() => {
     return anchorToPoint(anchor);
   }, [anchor]);
@@ -52,45 +45,57 @@ export const OmhMarker = ({
     return omhColorToString(backgroundColor);
   }, [backgroundColor]);
 
-  const handleOnPress = (event: MarkerPressEvent) => {
-    onPress?.({
-      ...event,
-      nativeEvent: {
-        ...event.nativeEvent,
-        position: event.nativeEvent.coordinate,
-      },
-    });
-  };
+  const handleOnPress = useCallback(
+    (event: MarkerPressEvent) => {
+      onPress?.({
+        ...event,
+        nativeEvent: {
+          ...event.nativeEvent,
+          position: event.nativeEvent.coordinate,
+        },
+      });
+    },
+    [onPress]
+  );
 
-  const handleOnDragStart = (event: MarkerDragStartEndEvent) => {
-    onDragStart?.({
-      ...event,
-      nativeEvent: {
-        ...event.nativeEvent,
-        position: event.nativeEvent.coordinate,
-      },
-    });
-  };
+  const handleOnDragStart = useCallback(
+    (event: MarkerDragStartEndEvent) => {
+      onDragStart?.({
+        ...event,
+        nativeEvent: {
+          ...event.nativeEvent,
+          position: event.nativeEvent.coordinate,
+        },
+      });
+    },
+    [onDragStart]
+  );
 
-  const handleOnDragEnd = (event: MarkerDragStartEndEvent) => {
-    onDragEnd?.({
-      ...event,
-      nativeEvent: {
-        ...event.nativeEvent,
-        position: event.nativeEvent.coordinate,
-      },
-    });
-  };
+  const handleOnDragEnd = useCallback(
+    (event: MarkerDragStartEndEvent) => {
+      onDragEnd?.({
+        ...event,
+        nativeEvent: {
+          ...event.nativeEvent,
+          position: event.nativeEvent.coordinate,
+        },
+      });
+    },
+    [onDragEnd]
+  );
 
-  const handleOnDrag = (event: MarkerDragEvent) => {
-    onDrag?.({
-      ...event,
-      nativeEvent: {
-        ...event.nativeEvent,
-        position: event.nativeEvent.coordinate,
-      },
-    });
-  };
+  const handleOnDrag = useCallback(
+    (event: MarkerDragEvent) => {
+      onDrag?.({
+        ...event,
+        nativeEvent: {
+          ...event.nativeEvent,
+          position: event.nativeEvent.coordinate,
+        },
+      });
+    },
+    [onDrag]
+  );
 
   return (
     isVisible && (
