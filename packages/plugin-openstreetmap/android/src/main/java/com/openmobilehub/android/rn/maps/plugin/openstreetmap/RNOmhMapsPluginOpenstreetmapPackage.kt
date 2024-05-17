@@ -8,7 +8,7 @@ import com.facebook.react.module.model.ReactModuleInfo
 import com.facebook.react.module.model.ReactModuleInfoProvider
 import com.facebook.react.turbomodule.core.interfaces.TurboModule
 import com.facebook.react.uimanager.ViewManager
-import com.openmobilehub.android.rn.maps.plugin.mapbox.RNOmhMapsPluginOpenstreetmapModule
+import com.openmobilehub.android.rn.maps.plugin.openstreetmap.RNOmhMapsPluginOpenstreetmapModule
 
 class OmhMapsPluginOpenstreetmapTurboPackage : TurboReactPackage() {
     /**

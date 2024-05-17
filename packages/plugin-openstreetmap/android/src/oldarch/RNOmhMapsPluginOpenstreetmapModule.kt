@@ -1,4 +1,4 @@
-package com.openmobilehub.android.rn.maps.plugin.mapbox
+package com.openmobilehub.android.rn.maps.plugin.openstreetmap
 
 import com.facebook.react.bridge.ReactApplicationContext
 import com.facebook.react.bridge.ReactContextBaseJavaModule
