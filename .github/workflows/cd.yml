@@ -13,8 +13,6 @@ permissions:
 
 jobs:
   build-documentation:
-    # TODO: Fix in https://callstackio.atlassian.net/browse/OMHD-277
-    if: false
     name: Build documentation
     runs-on: ubuntu-latest
 
@@ -44,7 +42,6 @@ jobs:
 
   deploy-documentation:
     needs: build-documentation
-    # TODO: Fix in https://callstackio.atlassian.net/browse/OMHD-277
     name: Deploy documentation to GitHub Pages
     runs-on: ubuntu-latest
 
