@@ -15,6 +15,7 @@ import {
 import { OmhMapContext } from '../../context/OmhMapContext';
 import NativeOmhMapsCoreModule from '../../modules/core/NativeOmhMapsCoreModule';
 import { OmhMapProviderName } from '../../types/common';
+import { maybeResetInterval } from '../../utils/miscHelpers';
 import { mergeStyles } from '../../utils/styleHelpers';
 import {
   OmhCameraMoveStartedReason,
@@ -31,15 +32,6 @@ import {
   useOSMMapViewRelayout,
 } from './OmhMapViewHelpers';
 import RNOmhMapsCoreViewNativeComponent from './RNOmhMapsCoreViewNativeComponent';
-
-function maybeResetInterval(
-  intervalRef: React.MutableRefObject<NodeJS.Timeout | null>
-) {
-  if (intervalRef.current !== null) {
-    clearInterval(intervalRef.current);
-    intervalRef.current = null;
-  }
-}
 
 /**
  * The OMH Map View component. Actual implementation is picked based on the platform capabilities (GMS or non-GMS)
