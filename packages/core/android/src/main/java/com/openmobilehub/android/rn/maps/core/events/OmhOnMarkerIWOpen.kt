@@ -4,21 +4,18 @@ import com.facebook.react.bridge.Arguments
 import com.facebook.react.bridge.WritableMap
 import com.facebook.react.uimanager.events.Event
 
-class OmhOnMapLoadedEvent(
+class OmhOnMarkerIWOpen(
     surfaceId: Int,
-    viewId: Int,
-    val providerName: String
-) : Event<OmhOnMapLoadedEvent>(surfaceId, viewId) {
+    viewId: Int
+) : Event<OmhOnMarkerIWOpen>(surfaceId, viewId) {
     override fun getEventName() = NAME
 
     override fun getEventData(): WritableMap {
-        return Arguments.makeNativeMap(
-            mapOf("providerName" to providerName)
-        )
+        return Arguments.createMap()
     }
 
     companion object : OmhBaseEventCompanion {
-        override val NAME = "topMapLoaded"
-        override val REGISTRATION_NAME = "onMapLoaded"
+        override val NAME = "topInfoWindowOpen"
+        override val REGISTRATION_NAME = "onInfoWindowOpen"
     }
 }

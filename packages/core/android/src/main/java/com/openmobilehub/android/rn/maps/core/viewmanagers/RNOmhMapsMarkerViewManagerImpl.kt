@@ -3,18 +3,23 @@ package com.openmobilehub.android.rn.maps.core.viewmanagers
 import android.graphics.drawable.Drawable
 import com.facebook.react.bridge.ReactContext
 import com.facebook.react.bridge.ReadableMap
+import com.facebook.react.bridge.UiThreadUtil
 import com.facebook.react.common.MapBuilder
 import com.openmobilehub.android.rn.maps.core.entities.OmhMarkerEntity
 import com.openmobilehub.android.rn.maps.core.events.OmhOnMarkerDragEndEvent
 import com.openmobilehub.android.rn.maps.core.events.OmhOnMarkerDragEvent
 import com.openmobilehub.android.rn.maps.core.events.OmhOnMarkerDragStartEvent
+import com.openmobilehub.android.rn.maps.core.events.OmhOnMarkerIWClose
+import com.openmobilehub.android.rn.maps.core.events.OmhOnMarkerIWLongPressEvent
+import com.openmobilehub.android.rn.maps.core.events.OmhOnMarkerIWOpen
+import com.openmobilehub.android.rn.maps.core.events.OmhOnMarkerIWPressEvent
 import com.openmobilehub.android.rn.maps.core.events.OmhOnMarkerPressEvent
 import com.openmobilehub.android.rn.maps.core.extensions.toAnchor
 import com.openmobilehub.android.rn.maps.core.extensions.toOmhCoordinate
 import com.openmobilehub.android.rn.maps.core.utils.DrawableLoader
 import com.openmobilehub.android.rn.maps.core.utils.RNComponentUtils.requirePropertyNotNull
+import com.openmobilehub.android.rn.maps.core.utils.manuallyLayoutView
 import com.openmobilehub.android.maps.core.presentation.models.Constants as OmhConstants
-
 
 internal object Constants {
     val DEFAULT_ANCHOR = OmhConstants.ANCHOR_CENTER to OmhConstants.ANCHOR_CENTER
@@ -25,6 +30,7 @@ internal object Constants {
 class RNOmhMapsMarkerViewManagerImpl {
 
     private var lastBackgroundColor: MutableMap<OmhMarkerEntity, Double> = mutableMapOf()
+    private var cachedBackgroundColor: MutableMap<OmhMarkerEntity, Double> = mutableMapOf()
     private var lastIconURI: MutableMap<OmhMarkerEntity, String?> = mutableMapOf()
 
     fun createViewInstance(reactContext: ReactContext): OmhMarkerEntity {
@@ -36,6 +42,7 @@ class RNOmhMapsMarkerViewManagerImpl {
 
         if (entity.isMounted()) {
             entity.getEntity()!!.setPosition(value!!.toOmhCoordinate())
+            layoutInfoWindowIfOpen(entity)
         } else {
             entity.initialOptions.position = value!!.toOmhCoordinate()
         }
@@ -44,6 +51,7 @@ class RNOmhMapsMarkerViewManagerImpl {
     fun setTitle(entity: OmhMarkerEntity, value: String?) {
         if (entity.isMounted()) {
             entity.getEntity()!!.setTitle(value)
+            layoutInfoWindowIfOpen(entity)
         } else {
             entity.initialOptions.title = value
         }
@@ -70,6 +78,7 @@ class RNOmhMapsMarkerViewManagerImpl {
 
         if (entity.isMounted()) {
             entity.getEntity()!!.setAnchor(anchor.first, anchor.second)
+            layoutInfoWindowIfOpen(entity)
         } else {
             entity.initialOptions.anchor = anchor
         }
@@ -79,7 +88,13 @@ class RNOmhMapsMarkerViewManagerImpl {
         val anchor = value?.toAnchor() ?: Constants.DEFAULT_IW_ANCHOR
 
         if (entity.isMounted()) {
-            entity.getEntity()!!.setInfoWindowAnchor(anchor.first, anchor.second)
+            entity.queueOnMapReadyAction { _, _, omhMapView ->
+                UiThreadUtil.runOnUiThread {
+                    entity.getEntity()!!.setInfoWindowAnchor(anchor.first, anchor.second)
+
+                    omhMapView?.getView()?.manuallyLayoutView()
+                }
+            }
         } else {
             entity.initialOptions.infoWindowAnchor = anchor
         }
@@ -88,6 +103,7 @@ class RNOmhMapsMarkerViewManagerImpl {
     fun setAlpha(entity: OmhMarkerEntity, value: Float) {
         if (entity.isMounted()) {
             entity.getEntity()!!.setAlpha(value)
+            layoutInfoWindowIfOpen(entity)
         } else {
             entity.initialOptions.alpha = value
         }
@@ -95,7 +111,13 @@ class RNOmhMapsMarkerViewManagerImpl {
 
     fun setSnippet(entity: OmhMarkerEntity, value: String?) {
         if (entity.isMounted()) {
-            entity.getEntity()!!.setSnippet(value)
+            entity.queueOnMapReadyAction { _, _, omhMapView ->
+                UiThreadUtil.runOnUiThread {
+                    entity.getEntity()!!.setSnippet(value)
+
+                    omhMapView?.getView()?.manuallyLayoutView()
+                }
+            }
         } else {
             entity.initialOptions.snippet = value
         }
@@ -112,6 +134,7 @@ class RNOmhMapsMarkerViewManagerImpl {
     fun setIsFlat(entity: OmhMarkerEntity, value: Boolean) {
         if (entity.isMounted()) {
             entity.getEntity()!!.setIsFlat(value)
+            layoutInfoWindowIfOpen(entity)
         } else {
             entity.initialOptions.isFlat = value
         }
@@ -120,6 +143,7 @@ class RNOmhMapsMarkerViewManagerImpl {
     fun setRotation(entity: OmhMarkerEntity, value: Float) {
         if (entity.isMounted()) {
             entity.getEntity()!!.setRotation(value)
+            layoutInfoWindowIfOpen(entity)
         } else {
             entity.initialOptions.rotation = value
         }
@@ -127,15 +151,31 @@ class RNOmhMapsMarkerViewManagerImpl {
 
     fun setBackgroundColor(entity: OmhMarkerEntity, value: Double) {
         // since setBackgroundColor & setIcon are mutually exclusive
-        // (overwrite each other) in the OMH SDK, we are caching the values
+        // (overwrite each other) in the OMH SDK, the last color value is cached
         if (lastBackgroundColor[entity] != value) {
-            val color =
-                (0xFF000000L or value.toLong()).toInt() // impute possibly missing bits (RGB instead of ARGB)
+            // if the currently selected icon is not the default one - the setting of
+            // the background color is delayed until the icon is set to null (default) again
+            if (lastIconURI[entity] == null) {
+                // currently, the default (colorable) icon is selected
 
-            if (entity.isMounted()) {
-                entity.getEntity()!!.setBackgroundColor(color)
+                if (value < 0) {
+                    // color property is unspecified - reset to default icon
+                    setIcon(entity, null)
+                } else {
+                    // color property is specified
+                    val color =
+                        (0xFF000000L or value.toLong()).toInt() // impute possibly missing bits (RGB instead of ARGB)
+
+                    if (entity.isMounted()) {
+                        entity.getEntity()!!.setBackgroundColor(color)
+                        layoutInfoWindowIfOpen(entity)
+                    } else {
+                        entity.initialOptions.backgroundColor = color
+                    }
+                }
             } else {
-                entity.initialOptions.backgroundColor = color
+                // currently, some custom icon is selected
+                cachedBackgroundColor[entity] = value
             }
 
             lastBackgroundColor[entity] = value
@@ -145,17 +185,22 @@ class RNOmhMapsMarkerViewManagerImpl {
     fun setZIndex(entity: OmhMarkerEntity, value: Float) {
         if (entity.isMounted()) {
             entity.getEntity()!!.setZIndex(value)
+            layoutInfoWindowIfOpen(entity)
         } else {
             entity.initialOptions.zIndex = value
         }
     }
 
-    fun setIsInfoWindowShown(entity: OmhMarkerEntity, value: Boolean) {
-        entity.queueOnMountAction {
-            if (value) {
-                it.showInfoWindow()
-            } else {
-                it.hideInfoWindow()
+    fun setShowInfoWindow(entity: OmhMarkerEntity, value: Boolean) {
+        entity.queueOnMapReadyAction { marker, _, omhMapView ->
+            UiThreadUtil.runOnUiThread {
+                if (value) {
+                    marker?.showInfoWindow()
+                } else {
+                    marker?.hideInfoWindow()
+                }
+
+                omhMapView?.getView()?.manuallyLayoutView()
             }
         }
     }
@@ -167,6 +212,7 @@ class RNOmhMapsMarkerViewManagerImpl {
     private fun setIconDrawable(entity: OmhMarkerEntity, drawable: Drawable?) {
         if (entity.isMounted()) {
             entity.getEntity()!!.setIcon(drawable)
+            layoutInfoWindowIfOpen(entity)
         } else {
             entity.initialOptions.icon = drawable
         }
@@ -175,9 +221,14 @@ class RNOmhMapsMarkerViewManagerImpl {
     fun setIcon(entity: OmhMarkerEntity, value: ReadableMap?) {
         val uri = value?.getString("uri")
 
-        if (lastIconURI[entity] != uri) {
+        if (lastIconURI[entity] != uri || uri == null) {
             if (uri == null) {
                 setIconDrawable(entity, null)
+                cachedBackgroundColor.getOrDefault(entity, null)?.let {
+                    setBackgroundColor(entity, it)
+                    cachedBackgroundColor.remove(entity)
+                }
+                lastIconURI[entity] = null
             } else {
                 var dimensions: Pair<Int, Int>? = null
                 if (value.hasKey("width") && value.hasKey("height")) {
@@ -187,24 +238,49 @@ class RNOmhMapsMarkerViewManagerImpl {
                 DrawableLoader.loadDrawable(
                     entity,
                     uri,
-                    { drawable -> setIconDrawable(entity, drawable) },
+                    { drawable ->
+                        setIconDrawable(entity, drawable)
+                        lastIconURI[entity] = uri
+                    },
                     dimensions
                 )
             }
+        }
+    }
 
-            lastIconURI[entity] = uri
+    private fun layoutInfoWindowIfOpen(entity: OmhMarkerEntity) {
+        entity.queueOnMapReadyAction { omhMarker, _, omhMapView ->
+            UiThreadUtil.runOnUiThread {
+                if (omhMarker?.getIsInfoWindowShown() == true) {
+                    omhMapView?.getView()?.manuallyLayoutView()
+                }
+            }
         }
     }
 
     companion object {
         const val NAME = "RNOmhMapsMarkerView"
 
+        private var lastBackgroundColor: MutableMap<OmhMarkerEntity, Double> = mutableMapOf()
+        private var cachedBackgroundColor: MutableMap<OmhMarkerEntity, Double> = mutableMapOf()
+        private var lastIconURI: MutableMap<OmhMarkerEntity, String?> = mutableMapOf()
+
+        fun handleMarkerRemoved(omhMarkerEntity: OmhMarkerEntity) {
+            lastBackgroundColor.remove(omhMarkerEntity)
+            cachedBackgroundColor.remove(omhMarkerEntity)
+            lastIconURI.remove(omhMarkerEntity)
+        }
+
         val EVENTS: Map<String, Any> =
             listOf(
                 OmhOnMarkerDragStartEvent,
                 OmhOnMarkerDragEvent,
                 OmhOnMarkerDragEndEvent,
-                OmhOnMarkerPressEvent
+                OmhOnMarkerPressEvent,
+                OmhOnMarkerIWPressEvent,
+                OmhOnMarkerIWLongPressEvent,
+                OmhOnMarkerIWOpen,
+                OmhOnMarkerIWClose
             ).associateBy(
                 { it.NAME },
                 { MapBuilder.of("registrationName", it.REGISTRATION_NAME) }

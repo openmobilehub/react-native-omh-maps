@@ -15,7 +15,7 @@
     "typecheck": "tsc --noEmit"
   },
   "devDependencies": {
-    "@docusaurus/core": "*",
+    "@docusaurus/core": "3.1.1",
     "typescript": "*"
   },
   "peerDependencies": {

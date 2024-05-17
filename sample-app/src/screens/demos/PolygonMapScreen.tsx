@@ -108,6 +108,8 @@ export const PolygonMapScreen = () => {
   const { showSnackbar } = useSnackbar();
 
   const omhMapRef = useRef<OmhMapViewRef | null>(null);
+  const [isReferencePolygonVisible, setIsReferencePolygonVisible] =
+    useState(false);
   const [outline, setOutline] = useState(customizablePolygonOutline);
   const [isClickable, setIsClickable] = useState(false);
   const [withHoles, setWithHoles] = useState(false);
@@ -246,6 +248,7 @@ export const PolygonMapScreen = () => {
             )}
           />
           <OmhPolygon
+            isVisible={isReferencePolygonVisible}
             outline={referencePolygonOutline}
             zIndex={2}
             clickable={true}
@@ -266,6 +269,11 @@ export const PolygonMapScreen = () => {
           <PanelButton
             onPress={handleRandomizeOutlineButtonPress}
             label="Randomize Outline"
+          />
+          <PanelCheckbox
+            label="Show Reference Polygon (Add/Remove)"
+            value={isReferencePolygonVisible}
+            onValueChange={setIsReferencePolygonVisible}
           />
           <PanelCheckbox
             label="Visible"

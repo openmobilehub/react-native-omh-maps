@@ -29,7 +29,7 @@ export const Slider = ({
 
   return (
     <View style={styles.wrapper}>
-      <Text style={styles.label}>{label}</Text>
+      <Text style={[styles.label, disabled && styles.disabled]}>{label}</Text>
 
       <RNCSlider
         // this is not a controlled component, value is just initial value - as per the docs
@@ -38,7 +38,7 @@ export const Slider = ({
         minimumValue={minimumValue}
         maximumValue={maximumValue}
         onValueChange={onChange}
-        style={[styles.slider, style]}
+        style={[styles.slider, style, disabled && styles.disabled]}
         thumbTintColor={theme.colors.primary}
         minimumTrackTintColor={theme.colors.primary}
         disabled={disabled}
@@ -59,6 +59,9 @@ const styles = StyleSheet.create({
   },
   slider: {
     flex: 3,
+  },
+  disabled: {
+    opacity: 0.5,
   },
 });
 

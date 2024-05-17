@@ -1,3 +1,4 @@
+import convert from 'color-convert';
 import React, { useCallback, useMemo, useRef, useState } from 'react';
 import { Platform, ScrollView, View } from 'react-native';
 
@@ -10,20 +11,20 @@ import {
   OmhPolyline,
 } from '@omh/react-native-maps-core';
 
+import soccerBallIcon from '../../assets/img/soccer_ball.bmp';
+import { PanelButton } from '../../components/controls/PanelButton';
+import { PanelCheckbox } from '../../components/controls/PanelCheckbox';
 import Picker from '../../components/controls/Picker';
 import Slider from '../../components/controls/Slider';
-import { getRandomArbitrary } from '../../utils/mathHelpers';
-import { demoStyles } from '../../styles/demoStyles';
-import { rgbToInt } from '../../utils/converters';
-import convert from 'color-convert';
-import { PanelButton } from '../../components/controls/PanelButton';
-import useSnackbar from '../../hooks/useSnackbar';
 import useLogger from '../../hooks/useLogger';
-import { Constants } from '../../utils/Constants';
-import soccerBallIcon from '../../assets/img/soccer_ball.bmp';
-import { PanelCheckbox } from '../../components/controls/PanelCheckbox';
-import { isFeatureSupported } from '../../utils/SupportUtils';
+import useSnackbar from '../../hooks/useSnackbar';
+import { demoStyles } from '../../styles/demoStyles';
 import { PatternOption } from '../../types/common';
+import { Constants } from '../../utils/Constants';
+import { isFeatureSupported } from '../../utils/SupportUtils';
+import { rgbToInt } from '../../utils/converters';
+import { getRandomArbitrary } from '../../utils/mathHelpers';
+
 import jointTypeItems = Constants.JointType.jointTypeItems;
 import patterns = Constants.Pattern.patterns;
 
@@ -140,6 +141,8 @@ export const PolylineMapScreen = () => {
   const { showSnackbar } = useSnackbar();
 
   const omhMapRef = useRef<OmhMapViewRef | null>(null);
+  const [isReferencePolylineVisible, setIsReferencePolylineVisible] =
+    useState(false);
   const [points, setPoints] = useState(customizablePolylinePoints);
   const [isClickable, setIsClickable] = useState(false);
   const [width, setWidth] = useState(defaultWidth);
@@ -312,6 +315,7 @@ export const PolylineMapScreen = () => {
             {...capProps}
           />
           <OmhPolyline
+            isVisible={isReferencePolylineVisible}
             points={referencePolylinePoints}
             zIndex={2}
             clickable={true}
@@ -334,6 +338,11 @@ export const PolylineMapScreen = () => {
             label="Randomize Points"
           />
           <PanelCheckbox
+            label="Show Reference Polyline (Add/Remove)"
+            value={isReferencePolylineVisible}
+            onValueChange={setIsReferencePolylineVisible}
+          />
+          <PanelCheckbox
             label="Visible"
             value={isVisible}
             onValueChange={setIsVisible}
@@ -348,7 +357,7 @@ export const PolylineMapScreen = () => {
             onChange={setWidth}
             defaultValue={defaultWidth}
             step={1}
-            minimumValue={0}
+            minimumValue={1}
             maximumValue={100}
           />
           <Slider

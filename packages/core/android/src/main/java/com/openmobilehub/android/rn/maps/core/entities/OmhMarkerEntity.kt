@@ -5,12 +5,19 @@ import com.facebook.react.bridge.ReactContext
 import com.facebook.react.uimanager.UIManagerHelper
 import com.openmobilehub.android.maps.core.presentation.interfaces.maps.OmhMap
 import com.openmobilehub.android.maps.core.presentation.interfaces.maps.OmhMarker
+import com.openmobilehub.android.maps.core.presentation.interfaces.maps.OmhOnInfoWindowClickListener
+import com.openmobilehub.android.maps.core.presentation.interfaces.maps.OmhOnInfoWindowLongClickListener
+import com.openmobilehub.android.maps.core.presentation.interfaces.maps.OmhOnInfoWindowOpenStatusChangeListener
 import com.openmobilehub.android.maps.core.presentation.interfaces.maps.OmhOnMarkerClickListener
 import com.openmobilehub.android.maps.core.presentation.interfaces.maps.OmhOnMarkerDragListener
 import com.openmobilehub.android.maps.core.presentation.models.OmhMarkerOptions
 import com.openmobilehub.android.rn.maps.core.events.OmhOnMarkerDragEndEvent
 import com.openmobilehub.android.rn.maps.core.events.OmhOnMarkerDragEvent
 import com.openmobilehub.android.rn.maps.core.events.OmhOnMarkerDragStartEvent
+import com.openmobilehub.android.rn.maps.core.events.OmhOnMarkerIWClose
+import com.openmobilehub.android.rn.maps.core.events.OmhOnMarkerIWLongPressEvent
+import com.openmobilehub.android.rn.maps.core.events.OmhOnMarkerIWOpen
+import com.openmobilehub.android.rn.maps.core.events.OmhOnMarkerIWPressEvent
 import com.openmobilehub.android.rn.maps.core.events.OmhOnMarkerPressEvent
 import com.openmobilehub.android.rn.maps.core.utils.RNComponentUtils
 
@@ -21,7 +28,7 @@ class OmhMarkerEntity(private val context: ReactContext) :
     val initialOptions = OmhMarkerOptions()
     var consumeMarkerClicks = false
 
-    var onClickListener = OmhOnMarkerClickListener {
+    val onClickListener = OmhOnMarkerClickListener {
         RNComponentUtils.dispatchEvent(
             context,
             viewId,
@@ -30,7 +37,7 @@ class OmhMarkerEntity(private val context: ReactContext) :
         consumeMarkerClicks
     }
 
-    var onMarkerDragListener = object : OmhOnMarkerDragListener {
+    val onMarkerDragListener = object : OmhOnMarkerDragListener {
         override fun onMarkerDrag(marker: OmhMarker) {
             RNComponentUtils.dispatchEvent(
                 context,
@@ -48,7 +55,8 @@ class OmhMarkerEntity(private val context: ReactContext) :
                 context,
                 viewId,
                 OmhOnMarkerDragEndEvent(
-                    UIManagerHelper.getSurfaceId(context), viewId,
+                    UIManagerHelper.getSurfaceId(context),
+                    viewId,
                     marker.getPosition()
                 )
             )
@@ -59,8 +67,59 @@ class OmhMarkerEntity(private val context: ReactContext) :
                 context,
                 viewId,
                 OmhOnMarkerDragStartEvent(
-                    UIManagerHelper.getSurfaceId(context), viewId,
+                    UIManagerHelper.getSurfaceId(context),
+                    viewId,
                     marker.getPosition()
+                )
+            )
+        }
+    }
+
+    val onInfoWindowClickListener =
+        OmhOnInfoWindowClickListener { marker ->
+            RNComponentUtils.dispatchEvent(
+                context,
+                viewId,
+                OmhOnMarkerIWPressEvent(
+                    UIManagerHelper.getSurfaceId(context),
+                    viewId,
+                    marker.getPosition()
+                )
+            )
+        }
+
+    val onInfoWindowLongClickListener =
+        OmhOnInfoWindowLongClickListener { marker ->
+            RNComponentUtils.dispatchEvent(
+                context,
+                viewId,
+                OmhOnMarkerIWLongPressEvent(
+                    UIManagerHelper.getSurfaceId(context),
+                    viewId,
+                    marker.getPosition()
+                )
+            )
+        }
+
+    val onInfoWindowOpenStatusChangeListener = object : OmhOnInfoWindowOpenStatusChangeListener {
+        override fun onInfoWindowClose(marker: OmhMarker) {
+            RNComponentUtils.dispatchEvent(
+                context,
+                viewId,
+                OmhOnMarkerIWClose(
+                    UIManagerHelper.getSurfaceId(context),
+                    viewId
+                )
+            )
+        }
+
+        override fun onInfoWindowOpen(marker: OmhMarker) {
+            RNComponentUtils.dispatchEvent(
+                context,
+                viewId,
+                OmhOnMarkerIWOpen(
+                    UIManagerHelper.getSurfaceId(context),
+                    viewId
                 )
             )
         }

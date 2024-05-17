@@ -27,7 +27,7 @@ export default function Picker<T>({
 
   return (
     <View style={[styles.wrapper, style]}>
-      <Text style={styles.label}>{label}</Text>
+      <Text style={[styles.label, disabled && styles.disabled]}>{label}</Text>
 
       <RNPickerSelect
         onValueChange={(newValue: T) => {
@@ -58,6 +58,8 @@ export default function Picker<T>({
           viewContainer: {
             flex: 3,
           },
+          inputAndroid: disabled ? styles.disabled : undefined,
+          inputIOS: disabled ? styles.disabled : undefined,
         }}
       />
     </View>
@@ -76,5 +78,8 @@ const styles = StyleSheet.create({
   },
   label: {
     flex: 1,
+  },
+  disabled: {
+    opacity: 0.5,
   },
 });

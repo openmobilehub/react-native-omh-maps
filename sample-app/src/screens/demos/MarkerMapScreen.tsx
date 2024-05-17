@@ -7,20 +7,21 @@ import React, {
   useRef,
   useState,
 } from 'react';
-import { PixelRatio, Platform, ScrollView, View } from 'react-native';
-import { Checkbox, Subheading } from 'react-native-paper';
+import { Platform, ScrollView, View } from 'react-native';
+import { Subheading } from 'react-native-paper';
 
 import {
-  OmhMapView,
-  OmhMapViewRef,
-  OmhMarkerConstants,
-  OmhMarker,
   MarkerDragEndEvent,
   MarkerDragEvent,
   MarkerDragStartEvent,
+  OmhMapView,
+  OmhMapViewRef,
+  OmhMarker,
+  OmhMarkerConstants,
 } from '@omh/react-native-maps-core';
 import { Anchor } from '../../../../packages/core/src/components/marker/RNOmhMapsMarkerNativeComponent';
 import soccerBallIcon from '../../assets/img/soccer_ball.bmp';
+import { PanelCheckbox } from '../../components/controls/PanelCheckbox';
 import Picker from '../../components/controls/Picker';
 import Slider from '../../components/controls/Slider';
 import useLogger from '../../hooks/useLogger';
@@ -30,12 +31,12 @@ import { Constants } from '../../utils/Constants';
 import { formatPosition, rgbToInt } from '../../utils/converters';
 import { isFeatureSupported } from '../../utils/SupportUtils';
 
-const MarkerIWTitles = {
-  CONFIGURABLE_TEST_MARKER: 'Configurable test marker',
-  STATIC_ICON_MARKER_NON_DRAGGABLE: 'Static icon marker (non-draggable)',
-  STATIC_COLORED_MARKER_DRAGGABLE: 'Static colored marker (draggable)',
-  STATIC_COLORED_MARKER_NON_DRAGGABLE: 'Static colored marker (non-draggable)',
-};
+export enum MarkerIWTitles {
+  CONFIGURABLE_TEST_MARKER = 'Configurable test marker',
+  STATIC_ICON_MARKER_NON_DRAGGABLE = 'Static icon marker (non-draggable)',
+  STATIC_COLORED_MARKER_DRAGGABLE = 'Static colored marker (draggable)',
+  STATIC_COLORED_MARKER_NON_DRAGGABLE = 'Static colored marker (non-draggable)',
+}
 
 enum DemoMarkerAppearance {
   DEFAULT = 'Default',
@@ -151,15 +152,41 @@ export const MarkerMapScreen = () => {
     useState(0);
   const [customizableMarkerAppearance, setCustomizableMarkerAppearance] =
     useState(DemoMarkerAppearance.DEFAULT);
+  const [showInfoWindow, setShowInfoWindow] = useState({
+    [MarkerIWTitles.CONFIGURABLE_TEST_MARKER]: false,
+    [MarkerIWTitles.STATIC_ICON_MARKER_NON_DRAGGABLE]: false,
+    [MarkerIWTitles.STATIC_COLORED_MARKER_DRAGGABLE]: false,
+    [MarkerIWTitles.STATIC_COLORED_MARKER_NON_DRAGGABLE]: false,
+  } as Record<MarkerIWTitles, boolean>);
 
   const genMarkerOnPressHandler = useCallback(
-    (title: string) => () => {
+    (title: MarkerIWTitles) => () => {
       const message = `${_.capitalize(title)} clicked`;
       logger.log(message);
 
       showSnackbar(message);
+
+      setShowInfoWindow({
+        ...showInfoWindow,
+        [title]: !showInfoWindow[title],
+      });
     },
-    [showSnackbar, logger]
+    [showSnackbar, logger, showInfoWindow]
+  );
+
+  const genMarkerOnIWPressHandler = useCallback(
+    (title: MarkerIWTitles) => () => {
+      const message = `${_.capitalize(title)} info window clicked`;
+      logger.log(message);
+
+      showSnackbar(message);
+
+      setShowInfoWindow({
+        ...showInfoWindow,
+        [title]: !showInfoWindow[title],
+      });
+    },
+    [showSnackbar, logger, showInfoWindow]
   );
 
   const onCustomizableMarkerDragStart = useCallback(
@@ -255,6 +282,9 @@ export const MarkerMapScreen = () => {
           }}>
           {mountCustomizableMarker && (
             <OmhMarker
+              showInfoWindow={
+                showInfoWindow[MarkerIWTitles.CONFIGURABLE_TEST_MARKER]
+              }
               title={MarkerIWTitles.CONFIGURABLE_TEST_MARKER}
               position={customizableMarkerPosition}
               draggable={customizableMarkerDraggable}
@@ -267,6 +297,9 @@ export const MarkerMapScreen = () => {
                   : undefined
               }
               onPress={genMarkerOnPressHandler(
+                MarkerIWTitles.CONFIGURABLE_TEST_MARKER
+              )}
+              onInfoWindowPress={genMarkerOnIWPressHandler(
                 MarkerIWTitles.CONFIGURABLE_TEST_MARKER
               )}
               onDragStart={onCustomizableMarkerDragStart}
@@ -290,31 +323,36 @@ export const MarkerMapScreen = () => {
                       DemoMarkerAppearance.NETWORK_ASSET
                     ? {
                         uri: 'https://www.openmobilehub.com/images/logo/omh_logo.png',
-                        width: PixelRatio.getPixelSizeForLayoutSize(38),
-                        height: PixelRatio.getPixelSizeForLayoutSize(38),
+                        width: 75,
+                        height: 75,
                       }
                     : undefined
               }
             />
           )}
 
-          {showStaticIconMarker && (
-            <OmhMarker
-              title={MarkerIWTitles.STATIC_ICON_MARKER_NON_DRAGGABLE}
-              position={{
-                latitude: Constants.Maps.GREENWICH_COORDINATE.latitude + 0.0016,
-                longitude:
-                  Constants.Maps.GREENWICH_COORDINATE.longitude + 0.002,
-              }}
-              onPress={genMarkerOnPressHandler(
-                MarkerIWTitles.STATIC_ICON_MARKER_NON_DRAGGABLE
-              )}
-              markerZIndex={1.9}
-              icon={soccerBallIcon}
-            />
-          )}
+          <OmhMarker
+            isVisible={showStaticIconMarker}
+            showInfoWindow={
+              showInfoWindow[MarkerIWTitles.STATIC_ICON_MARKER_NON_DRAGGABLE]
+            }
+            title={MarkerIWTitles.STATIC_ICON_MARKER_NON_DRAGGABLE}
+            position={{
+              latitude: Constants.Maps.GREENWICH_COORDINATE.latitude + 0.0016,
+              longitude: Constants.Maps.GREENWICH_COORDINATE.longitude + 0.002,
+            }}
+            onPress={genMarkerOnPressHandler(
+              MarkerIWTitles.STATIC_ICON_MARKER_NON_DRAGGABLE
+            )}
+            onInfoWindowPress={genMarkerOnIWPressHandler(
+              MarkerIWTitles.STATIC_ICON_MARKER_NON_DRAGGABLE
+            )}
+            markerZIndex={1.9}
+            icon={soccerBallIcon}
+          />
 
           <OmhMarker
+            showInfoWindow={showInfoWindow[staticColoredMarkerTitle]}
             title={staticColoredMarkerTitle}
             position={{
               latitude: Constants.Maps.GREENWICH_COORDINATE.latitude + 0.0016,
@@ -323,6 +361,9 @@ export const MarkerMapScreen = () => {
             backgroundColor={0x005918}
             draggable={true}
             onPress={genMarkerOnPressHandler(staticColoredMarkerTitle)}
+            onInfoWindowPress={genMarkerOnIWPressHandler(
+              staticColoredMarkerTitle
+            )}
             markerZIndex={2.9}
           />
         </OmhMapView>
@@ -337,47 +378,37 @@ export const MarkerMapScreen = () => {
             Marker properties
           </Subheading>
 
-          <Checkbox.Item
+          <PanelCheckbox
             label="Visible"
-            status={customizableMarkerVisible ? 'checked' : 'unchecked'}
-            onPress={() => {
-              setCustomizableMarkerVisible(!customizableMarkerVisible);
-            }}
+            value={customizableMarkerVisible}
+            onValueChange={setCustomizableMarkerVisible}
           />
 
-          <Checkbox.Item
-            disabled={!supportedFeatures.flat}
+          <PanelCheckbox
+            enabled={supportedFeatures.flat}
             label="Flat"
-            status={customizableMarkerFlat ? 'checked' : 'unchecked'}
-            onPress={() => {
-              setCustomizableMarkerFlat(!customizableMarkerFlat);
-            }}
+            value={customizableMarkerFlat}
+            onValueChange={setCustomizableMarkerFlat}
           />
 
-          <Checkbox.Item
-            disabled={!supportedFeatures.clickable}
+          <PanelCheckbox
+            enabled={supportedFeatures.clickable}
             label="Clickable"
-            status={customizableMarkerClickable ? 'checked' : 'unchecked'}
-            onPress={() => {
-              setCustomizableMarkerClickable(!customizableMarkerClickable);
-            }}
+            value={customizableMarkerClickable}
+            onValueChange={setCustomizableMarkerClickable}
           />
 
-          <Checkbox.Item
-            disabled={!supportedFeatures.draggable}
+          <PanelCheckbox
+            enabled={supportedFeatures.draggable}
             label="Draggable"
-            status={customizableMarkerDraggable ? 'checked' : 'unchecked'}
-            onPress={() => {
-              setCustomizableMarkerDraggable(!customizableMarkerDraggable);
-            }}
+            value={customizableMarkerDraggable}
+            onValueChange={setCustomizableMarkerDraggable}
           />
 
-          <Checkbox.Item
+          <PanelCheckbox
             label="Snippet"
-            status={customizableMarkerSnippet ? 'checked' : 'unchecked'}
-            onPress={() => {
-              setCustomizableMarkerSnippet(!customizableMarkerSnippet);
-            }}
+            value={customizableMarkerSnippet}
+            onValueChange={setCustomizableMarkerSnippet}
           />
 
           <Slider
@@ -474,12 +505,10 @@ export const MarkerMapScreen = () => {
             Demo behaviour
           </Subheading>
 
-          <Checkbox.Item
+          <PanelCheckbox
             label="Mount customizable <OmhMarker/>"
-            status={mountCustomizableMarker ? 'checked' : 'unchecked'}
-            onPress={() => {
-              setMountCustomizableMarker(!mountCustomizableMarker);
-            }}
+            value={mountCustomizableMarker}
+            onValueChange={setMountCustomizableMarker}
           />
         </ScrollView>
       </View>

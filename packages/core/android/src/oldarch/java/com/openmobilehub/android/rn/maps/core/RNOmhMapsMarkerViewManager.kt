@@ -1,9 +1,10 @@
 package com.openmobilehub.android.rn.maps.core
 
+import android.view.View
 import com.facebook.react.bridge.ReadableMap
 import com.facebook.react.module.annotations.ReactModule
-import com.facebook.react.uimanager.SimpleViewManager
 import com.facebook.react.uimanager.ThemedReactContext
+import com.facebook.react.uimanager.ViewGroupManager
 import com.facebook.react.uimanager.annotations.ReactProp
 import com.openmobilehub.android.rn.maps.core.entities.OmhMarkerEntity
 import com.openmobilehub.android.rn.maps.core.viewmanagers.RNOmhMapsMarkerViewManagerImpl
@@ -11,7 +12,7 @@ import com.openmobilehub.android.rn.maps.core.viewmanagers.RNOmhMapsMarkerViewMa
 @ReactModule(name = RNOmhMapsMarkerViewManagerImpl.NAME)
 @Suppress("TooManyFunctions")
 class RNOmhMapsMarkerViewManager :
-    SimpleViewManager<OmhMarkerEntity>() {
+    ViewGroupManager<OmhMarkerEntity>() {
     private val omhMapMarkerComponentManagerImpl = RNOmhMapsMarkerViewManagerImpl()
 
     override fun createViewInstance(reactContext: ThemedReactContext): OmhMarkerEntity {
@@ -19,7 +20,7 @@ class RNOmhMapsMarkerViewManager :
     }
 
     @ReactProp(name = "markerPosition")
-    fun setPosition(entity: OmhMarkerEntity, value: ReadableMap?) {
+    fun setMarkerPosition(entity: OmhMarkerEntity, value: ReadableMap?) {
         omhMapMarkerComponentManagerImpl.setPosition(entity, value)
     }
 
@@ -83,9 +84,9 @@ class RNOmhMapsMarkerViewManager :
         omhMapMarkerComponentManagerImpl.setZIndex(entity, value)
     }
 
-    @ReactProp(name = "isInfoWindowShown")
-    fun setIsInfoWindowShown(entity: OmhMarkerEntity, value: Boolean) {
-        omhMapMarkerComponentManagerImpl.setIsInfoWindowShown(entity, value)
+    @ReactProp(name = "showInfoWindow")
+    fun setShowInfoWindow(entity: OmhMarkerEntity, value: Boolean) {
+        omhMapMarkerComponentManagerImpl.setShowInfoWindow(entity, value)
     }
 
     @ReactProp(name = "consumeMarkerClicks")

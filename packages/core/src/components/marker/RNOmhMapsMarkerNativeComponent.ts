@@ -40,7 +40,7 @@ export interface NativeOmhMarkerProps extends ViewProps {
   isFlat?: boolean;
   rotation?: Float;
   backgroundColor?: Double; // note: Int32 is too small, there is no Int64, so Double is used
-  isInfoWindowShown?: boolean;
+  showInfoWindow?: boolean;
   markerZIndex?: Float; // note: the name is not just zIndex, since this somehow collides with RN's property and fails to compile
   icon?: {
     uri?: string;
@@ -52,6 +52,10 @@ export interface NativeOmhMarkerProps extends ViewProps {
   onDragStart?: DirectEventHandler<NativePositionEventData>;
   onDrag?: DirectEventHandler<NativePositionEventData>;
   onDragEnd?: DirectEventHandler<NativePositionEventData>;
+  onInfoWindowPress: DirectEventHandler<NativePositionEventData>;
+  onInfoWindowLongPress: DirectEventHandler<NativePositionEventData>;
+  onInfoWindowClose: DirectEventHandler<{}>;
+  onInfoWindowOpen: DirectEventHandler<{}>;
 }
 
 export type RNOmhMapsMarkerNativeComponent =

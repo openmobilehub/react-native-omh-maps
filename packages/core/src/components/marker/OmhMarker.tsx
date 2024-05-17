@@ -1,18 +1,26 @@
 import React, { memo, useMemo } from 'react';
+import { PixelRatio } from 'react-native';
+
+import useOmhMarkerOSMFix from '../../hooks/useOmhMarkerOSMFix';
 import { resolveResource } from '../../utils/RNResourceTranscoder';
-import RNOmhMapsMarkerNativeComponent from './RNOmhMapsMarkerNativeComponent';
 import { OmhMarkerProps } from './OmhMarker.types';
+import RNOmhMapsMarkerNativeComponent from './RNOmhMapsMarkerNativeComponent';
 
 /**
  * The OMH Marker component.
  */
 export const OmhMarker = memo(
-  ({ icon, position, onPress, ...props }: OmhMarkerProps) => {
-    const nativeComponentRef = React.useRef<
-      typeof RNOmhMapsMarkerNativeComponent | null
-    >(null);
+  ({
+    icon,
+    position,
+    onPress,
+    infoWindowAnchor: _infoWindowAnchor,
+    backgroundColor: _backgroundColor,
+    ...props
+  }: OmhMarkerProps) => {
+    const infoWindowAnchor = useOmhMarkerOSMFix(_infoWindowAnchor);
 
-    const iconURI = useMemo(
+    const resolvedIcon = useMemo(
       () =>
         icon === null || icon === undefined
           ? undefined
@@ -22,10 +30,34 @@ export const OmhMarker = memo(
       [icon]
     );
 
+    const backgroundColor = useMemo(
+      () => (_backgroundColor === undefined ? -1 : _backgroundColor),
+      [_backgroundColor]
+    );
+
+    const nativeComponentRef = React.useRef<
+      typeof RNOmhMapsMarkerNativeComponent | null
+    >(null);
+
     return (
       <RNOmhMapsMarkerNativeComponent
         {...props}
-        icon={iconURI}
+        icon={
+          resolvedIcon
+            ? {
+                ...resolvedIcon,
+                // compensate for image resizing occurring in the native library that properly sizes Drawables
+                width: resolvedIcon.width
+                  ? PixelRatio.getPixelSizeForLayoutSize(resolvedIcon.width)
+                  : undefined,
+                height: resolvedIcon.height
+                  ? PixelRatio.getPixelSizeForLayoutSize(resolvedIcon.height)
+                  : undefined,
+              }
+            : undefined
+        }
+        infoWindowAnchor={infoWindowAnchor}
+        backgroundColor={backgroundColor}
         markerPosition={position}
         onMarkerPress={onPress}
         // @ts-ignore next line: missing typing for 'ref' prop on HostComponent
