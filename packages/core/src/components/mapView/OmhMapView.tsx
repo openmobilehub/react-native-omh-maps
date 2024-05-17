@@ -1,10 +1,4 @@
-import React, {
-  forwardRef,
-  useCallback,
-  useEffect,
-  useRef,
-  useState,
-} from 'react';
+import React, { forwardRef, useCallback, useEffect, useState } from 'react';
 import {
   NativeSyntheticEvent,
   PixelRatio,
@@ -13,9 +7,9 @@ import {
 } from 'react-native';
 
 import { OmhMapContext } from '../../context/OmhMapContext';
+import { useOsmInfoWindowFix } from '../../hooks/useOsmInfoWindowFix';
 import NativeOmhMapsCoreModule from '../../modules/core/NativeOmhMapsCoreModule';
 import { OmhMapProviderName } from '../../types/common';
-import { maybeResetInterval } from '../../utils/miscHelpers';
 import { mergeStyles } from '../../utils/styleHelpers';
 import {
   OmhCameraMoveStartedReason,
@@ -29,7 +23,6 @@ import {
   notReadyPromiseHandler,
   tweakCompass,
   useMyLocationIconFix,
-  useOSMMapViewRelayout,
 } from './OmhMapViewHelpers';
 import RNOmhMapsCoreViewNativeComponent from './RNOmhMapsCoreViewNativeComponent';
 
@@ -67,16 +60,13 @@ export const OmhMapView = forwardRef<OmhMapViewRef, OmhMapViewProps>(
       typeof RNOmhMapsCoreViewNativeComponent | null
     >(null);
 
-    const relayoutWhenDraggingInterval = useRef<NodeJS.Timeout | null>(null);
-
-    const relayoutMapView = useOSMMapViewRelayout(
+    const osmInfoWindowFix = useOsmInfoWindowFix(
       nativeComponentRef,
       providerName
     );
 
     const onCameraIdle = () => {
-      maybeResetInterval(relayoutWhenDraggingInterval);
-      relayoutMapView();
+      osmInfoWindowFix.onCameraIdle();
 
       _onCameraIdle?.();
     };
@@ -134,10 +124,7 @@ export const OmhMapView = forwardRef<OmhMapViewRef, OmhMapViewProps>(
           break;
       }
 
-      maybeResetInterval(relayoutWhenDraggingInterval);
-      relayoutWhenDraggingInterval.current = setInterval(() => {
-        relayoutMapView();
-      }, 1000 / 45);
+      osmInfoWindowFix.onCameraMoveStarted();
 
       onCameraMoveStarted?.(reason);
     };
@@ -156,9 +143,9 @@ export const OmhMapView = forwardRef<OmhMapViewRef, OmhMapViewProps>(
     useEffect(() => {
       return () => {
         // on unmount effect
-        maybeResetInterval(relayoutWhenDraggingInterval);
+        osmInfoWindowFix.onUnmount();
       };
-    }, []);
+    }, [osmInfoWindowFix]);
 
     return (
       <OmhMapContext.Provider
