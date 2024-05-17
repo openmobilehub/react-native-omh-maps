@@ -1,5 +1,5 @@
-import React, { useCallback, useRef, useState } from 'react';
-import { ScrollView, StyleSheet, View } from 'react-native';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
+import { Platform, ScrollView, StyleSheet, View } from 'react-native';
 import { Button, Subheading } from 'react-native-paper';
 
 import {
@@ -22,13 +22,55 @@ import { demoStyles } from '../../styles/demoStyles';
 import { Constants } from '../../utils/Constants';
 import { formatPosition } from '../../utils/converters';
 import { MarkerIWTitles } from './MarkerMapScreen';
+import {
+  iOSProvidersWithout,
+  isFeatureSupported,
+} from '../../utils/SupportUtils';
+import ANDROID_SUPPORTED_PROVIDERS = Constants.Demo.ANDROID_SUPPORTED_PROVIDERS;
+
+const getSupportedFeatures = (currentMapProvider?: string) => {
+  return {
+    infoWindowAnchor: isFeatureSupported(
+      currentMapProvider,
+      Platform.OS === 'ios'
+        ? iOSProvidersWithout(['Apple'])
+        : ANDROID_SUPPORTED_PROVIDERS
+    ),
+    clickable: isFeatureSupported(
+      currentMapProvider,
+      Platform.OS === 'ios'
+        ? iOSProvidersWithout(['Apple'])
+        : ANDROID_SUPPORTED_PROVIDERS
+    ),
+    rotation: isFeatureSupported(
+      currentMapProvider,
+      Platform.OS === 'ios'
+        ? iOSProvidersWithout(['Apple'])
+        : ANDROID_SUPPORTED_PROVIDERS
+    ),
+    anchor: isFeatureSupported(
+      currentMapProvider,
+      Platform.OS === 'ios'
+        ? iOSProvidersWithout(['Apple'])
+        : ANDROID_SUPPORTED_PROVIDERS
+    ),
+    calloutCallbacks: isFeatureSupported(
+      currentMapProvider,
+      Platform.OS === 'ios'
+        ? iOSProvidersWithout(['Google', 'Apple'])
+        : ANDROID_SUPPORTED_PROVIDERS
+    ),
+  };
+};
 
 export const InfoWindowScreen = () => {
   const logger = useLogger('InfoWindowScreen');
   const { showSnackbar } = useSnackbar();
 
   const omhMapRef = useRef<OmhMapViewRef | null>(null);
-
+  const [supportedFeatures, setSupportedFeatures] = useState(
+    getSupportedFeatures()
+  );
   // IW properties
   const [snippetVisible, setSnippetVisible] = useState(false);
   const [IWAnchor, setIWAnchor] = useState<Anchor>({
@@ -42,7 +84,9 @@ export const InfoWindowScreen = () => {
 
   // demo behaviour
   const [toggleIWOnMarkerClick, setToggleIWOnMarkerClick] = useState(true);
-  const [hideIWOnClick, setHideIWOnClick] = useState(true);
+  const [hideIWOnClick, setHideIWOnClick] = useState(
+    supportedFeatures.calloutCallbacks
+  );
   const [showInfoWindow, setShowInfoWindow] = useState(false);
 
   // marker properties
@@ -97,6 +141,10 @@ export const InfoWindowScreen = () => {
     [logger, showSnackbar]
   );
 
+  useEffect(() => {
+    setHideIWOnClick(supportedFeatures.calloutCallbacks);
+  }, [supportedFeatures.calloutCallbacks]);
+
   return (
     <View style={demoStyles.rootContainer}>
       <View style={demoStyles.mapContainer}>
@@ -107,6 +155,10 @@ export const InfoWindowScreen = () => {
           }}
           onMapReady={() => {
             logger.log("OmhMapView's OmhMap has become ready");
+
+            const providerName = omhMapRef.current?.getProviderName();
+
+            setSupportedFeatures(getSupportedFeatures(providerName));
 
             omhMapRef.current?.setCameraCoordinate(
               Constants.Maps.GREENWICH_COORDINATE,
@@ -175,6 +227,7 @@ export const InfoWindowScreen = () => {
           />
 
           <Slider
+            disabled={!supportedFeatures.infoWindowAnchor}
             label={`Info window anchor U: ${(IWAnchor.u * 100).toFixed(0)}%`}
             onChange={u =>
               setIWAnchor({
@@ -189,6 +242,7 @@ export const InfoWindowScreen = () => {
           />
 
           <Slider
+            disabled={!supportedFeatures.infoWindowAnchor}
             label={`Info window anchor V: ${(IWAnchor.v * 100).toFixed(0)}%`}
             onChange={v =>
               setIWAnchor({
@@ -207,12 +261,14 @@ export const InfoWindowScreen = () => {
           </Subheading>
 
           <PanelCheckbox
+            enabled={supportedFeatures.calloutCallbacks}
             label="Info win. toggles on marker click"
             value={toggleIWOnMarkerClick}
             onValueChange={setToggleIWOnMarkerClick}
           />
 
           <PanelCheckbox
+            enabled={supportedFeatures.calloutCallbacks}
             label="Info win. hides on click"
             value={hideIWOnClick}
             onValueChange={setHideIWOnClick}
@@ -225,7 +281,7 @@ export const InfoWindowScreen = () => {
           <Button
             mode="contained"
             style={styles.button}
-            disabled={showInfoWindow}
+            disabled={!(!showInfoWindow || !supportedFeatures.calloutCallbacks)}
             onPress={() => {
               setShowInfoWindow(true);
             }}>
@@ -235,7 +291,7 @@ export const InfoWindowScreen = () => {
           <Button
             mode="contained"
             style={styles.button}
-            disabled={!showInfoWindow}
+            disabled={!(showInfoWindow || !supportedFeatures.calloutCallbacks)}
             onPress={() => {
               setShowInfoWindow(false);
             }}>
@@ -253,12 +309,14 @@ export const InfoWindowScreen = () => {
           />
 
           <PanelCheckbox
+            enabled={supportedFeatures.clickable}
             label="Clickable"
             value={markerClickable}
             onValueChange={setMarkerClickable}
           />
 
           <Slider
+            disabled={!supportedFeatures.rotation}
             label={`Rotation: ${markerRotation.toFixed(0)}°`}
             onChange={zIndex => setMarkerRotation(zIndex)}
             defaultValue={0}
@@ -268,6 +326,7 @@ export const InfoWindowScreen = () => {
           />
 
           <Slider
+            disabled={!supportedFeatures.anchor}
             label={`Anchor U: ${(markerAnchor.u * 100).toFixed(0)}%`}
             onChange={u =>
               setMarkerAnchor({
@@ -282,6 +341,7 @@ export const InfoWindowScreen = () => {
           />
 
           <Slider
+            disabled={!supportedFeatures.anchor}
             label={`Anchor V: ${(markerAnchor.v * 100).toFixed(0)}%`}
             onChange={v =>
               setMarkerAnchor({
