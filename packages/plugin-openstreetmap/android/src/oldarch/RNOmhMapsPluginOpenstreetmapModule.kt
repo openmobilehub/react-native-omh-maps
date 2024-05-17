@@ -4,7 +4,6 @@ import com.facebook.react.bridge.ReactApplicationContext
 import com.facebook.react.bridge.ReactContextBaseJavaModule
 import com.facebook.react.bridge.ReactMethod
 import com.facebook.react.module.annotations.ReactModule
-import com.openmobilehub.android.rn.maps.plugin.openstreetmap.RNOmhMapsPluginOpenstreetmapModuleImpl
 
 @ReactModule(name = RNOmhMapsPluginOpenstreetmapModuleImpl.NAME)
 class RNOmhMapsPluginOpenstreetmapModule(
