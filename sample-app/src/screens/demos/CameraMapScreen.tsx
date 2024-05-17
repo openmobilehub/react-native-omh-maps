@@ -135,7 +135,6 @@ export const CameraMapScreen = () => {
             zoomEnabled={zoomGesturesEnabled}
             rotateEnabled={rotateGesturesEnabled}
             onMapLoaded={handleMapLoaded}
-            onMapReady={handleMapLoaded}
             onCameraIdle={handleCameraIdle}
             onCameraMoveStarted={handleCameraMoveStarted}
           />
