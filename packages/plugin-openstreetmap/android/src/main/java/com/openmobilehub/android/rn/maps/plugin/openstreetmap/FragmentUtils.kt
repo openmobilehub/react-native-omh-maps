@@ -16,9 +16,7 @@ object FragmentUtils {
     }
 
     private fun getFragmentManager(context: ReactContext): FragmentManager? {
-        val activity = context.currentActivity as? FragmentActivity ?: return null
-
-        return activity.supportFragmentManager
+        return (context.currentActivity as? FragmentActivity)?.supportFragmentManager
     }
 
     private fun getFragmentTag(viewId: Int): String {

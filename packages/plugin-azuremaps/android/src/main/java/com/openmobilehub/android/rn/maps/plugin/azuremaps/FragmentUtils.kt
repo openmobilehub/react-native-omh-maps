@@ -6,22 +6,20 @@ import androidx.fragment.app.FragmentManager
 import com.facebook.react.bridge.ReactContext
 
 object FragmentUtils {
-  private fun findFragment(context: ReactContext, viewId: Int): Fragment? {
-    val fragmentManager = getFragmentManager(context)
-    return fragmentManager?.findFragmentByTag(getFragmentTag(viewId))
-  }
+    private fun findFragment(context: ReactContext, viewId: Int): Fragment? {
+        val fragmentManager = getFragmentManager(context)
+        return fragmentManager?.findFragmentByTag(getFragmentTag(viewId))
+    }
 
-  fun requireFragment(context: ReactContext, viewId: Int): Fragment {
-    return findFragment(context, viewId) ?: error("Fragment not found")
-  }
+    fun requireFragment(context: ReactContext, viewId: Int): Fragment {
+        return findFragment(context, viewId) ?: error("Fragment not found")
+    }
 
-  private fun getFragmentManager(context: ReactContext): FragmentManager? {
-    val activity = context.currentActivity as? FragmentActivity ?: return null
+    private fun getFragmentManager(context: ReactContext): FragmentManager? {
+        return (context.currentActivity as? FragmentActivity)?.supportFragmentManager
+    }
 
-    return activity.supportFragmentManager
-  }
-
-  private fun getFragmentTag(viewId: Int): String {
-    return "OmhMapViewFragment-$viewId"
-  }
+    private fun getFragmentTag(viewId: Int): String {
+        return "OmhMapViewFragment-$viewId"
+    }
 }
