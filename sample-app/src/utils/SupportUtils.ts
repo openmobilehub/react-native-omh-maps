@@ -1,4 +1,4 @@
-import { OmhMapProviderVariant } from '@omh/react-native-maps-core';
+import { OmhMapProviderName } from '@omh/react-native-maps-core';
 
 /**
  * Checks whether the mapProvider is in availableProviders.
@@ -7,8 +7,8 @@ import { OmhMapProviderVariant } from '@omh/react-native-maps-core';
  * @returns whether the mapProvider is in availableProviders.
  */
 export const isFeatureSupported = (
-  mapProvider: OmhMapProviderVariant | undefined,
-  availableProviders: OmhMapProviderVariant[] | '*'
+  mapProvider: OmhMapProviderName | undefined,
+  availableProviders: OmhMapProviderName[] | '*'
 ) => {
   if (!mapProvider) return false;
 
