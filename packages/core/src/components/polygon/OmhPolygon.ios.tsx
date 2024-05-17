@@ -1,4 +1,4 @@
-import React, { useMemo } from 'react';
+import React, { useCallback, useMemo } from 'react';
 import { OmhPolygonProps } from './OmhPolygon.types';
 import { Polygon } from 'react-native-maps';
 import { omhColorToString } from '../../utils/colorHelper';
@@ -33,10 +33,10 @@ export const OmhPolygon = ({
     return convertToPattern(strokePattern);
   }, [strokePattern]);
 
-  const handleOnPress = () => {
+  const handleOnPress = useCallback(() => {
     // tappable is supported on Google Maps only
     if (clickable) onPolygonClick?.(consumePolygonClicks);
-  };
+  }, [clickable, consumePolygonClicks, onPolygonClick]);
 
   return (
     isVisible && (

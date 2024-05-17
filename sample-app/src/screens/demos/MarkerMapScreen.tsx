@@ -29,7 +29,13 @@ import useSnackbar from '../../hooks/useSnackbar';
 import { demoStyles } from '../../styles/demoStyles';
 import { Constants } from '../../utils/Constants';
 import { formatPosition, rgbToInt } from '../../utils/converters';
-import { isFeatureSupported } from '../../utils/SupportUtils';
+import {
+  androidProvidersWithout,
+  iOSProvidersWithout,
+  isFeatureSupported,
+} from '../../utils/SupportUtils';
+import IOS_SUPPORTED_PROVIDERS = Constants.Demo.IOS_SUPPORTED_PROVIDERS;
+import ANDROID_SUPPORTED_PROVIDERS = Constants.Demo.ANDROID_SUPPORTED_PROVIDERS;
 
 export enum MarkerIWTitles {
   CONFIGURABLE_TEST_MARKER = 'Configurable test marker',
@@ -49,43 +55,45 @@ const getSupportedFeatures = (currentMapProvider?: string) => {
   return {
     zIndex: isFeatureSupported(
       currentMapProvider,
-      Platform.OS === 'ios' ? ['Google', 'Apple'] : ['GoogleMaps']
+      Platform.OS === 'ios'
+        ? IOS_SUPPORTED_PROVIDERS
+        : androidProvidersWithout(['OpenStreetMap', 'Mapbox', 'AzureMaps'])
     ),
     draggable: isFeatureSupported(
       currentMapProvider,
       Platform.OS === 'ios'
-        ? ['Google']
-        : ['GoogleMaps', 'OpenStreetMap', 'Mapbox']
+        ? iOSProvidersWithout(['Apple'])
+        : androidProvidersWithout(['AzureMaps'])
     ),
     alpha: isFeatureSupported(
       currentMapProvider,
       Platform.OS === 'ios'
-        ? ['Google']
-        : ['GoogleMaps', 'OpenStreetMap', 'Mapbox', 'AzureMaps']
+        ? iOSProvidersWithout(['Apple'])
+        : ANDROID_SUPPORTED_PROVIDERS
     ),
     clickable: isFeatureSupported(
       currentMapProvider,
       Platform.OS === 'ios'
-        ? ['Google']
-        : ['GoogleMaps', 'OpenStreetMap', 'Mapbox', 'AzureMaps']
+        ? iOSProvidersWithout(['Apple'])
+        : ANDROID_SUPPORTED_PROVIDERS
     ),
     flat: isFeatureSupported(
       currentMapProvider,
       Platform.OS === 'ios'
-        ? ['Google']
-        : ['GoogleMaps', 'OpenStreetMap', 'Mapbox', 'AzureMaps']
+        ? iOSProvidersWithout(['Apple'])
+        : ANDROID_SUPPORTED_PROVIDERS
     ),
     rotation: isFeatureSupported(
       currentMapProvider,
       Platform.OS === 'ios'
-        ? ['Google']
-        : ['GoogleMaps', 'OpenStreetMap', 'Mapbox', 'AzureMaps']
+        ? iOSProvidersWithout(['Apple'])
+        : ANDROID_SUPPORTED_PROVIDERS
     ),
     anchor: isFeatureSupported(
       currentMapProvider,
       Platform.OS === 'ios'
-        ? ['Google']
-        : ['GoogleMaps', 'OpenStreetMap', 'Mapbox', 'AzureMaps']
+        ? iOSProvidersWithout(['Apple'])
+        : ANDROID_SUPPORTED_PROVIDERS
     ),
   };
 };
