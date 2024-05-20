@@ -5,6 +5,7 @@ import {
   Float,
   Int32,
 } from 'react-native/Libraries/Types/CodegenTypes';
+import codegenNativeCommands from 'react-native/Libraries/Utilities/codegenNativeCommands';
 import codegenNativeComponent from 'react-native/Libraries/Utilities/codegenNativeComponent';
 
 export type NativeOmhCoordinate = {
@@ -60,6 +61,19 @@ export interface NativeOmhMarkerProps extends ViewProps {
 
 export type RNOmhMapsMarkerNativeComponent =
   HostComponent<NativeOmhMarkerProps>;
+
+export interface NativeCommands {
+  showInfoWindow: (
+    viewRef: React.ElementRef<RNOmhMapsMarkerNativeComponent>
+  ) => void;
+  hideInfoWindow: (
+    viewRef: React.ElementRef<RNOmhMapsMarkerNativeComponent>
+  ) => void;
+}
+
+export const Commands: NativeCommands = codegenNativeCommands<NativeCommands>({
+  supportedCommands: ['showInfoWindow', 'hideInfoWindow'],
+});
 
 export default codegenNativeComponent<NativeOmhMarkerProps>(
   'RNOmhMapsMarkerView',

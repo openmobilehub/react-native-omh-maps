@@ -35,6 +35,11 @@ const relayoutMapView = (
       const azureMapsPlugin = require('@omh/react-native-maps-plugin-azuremaps');
       azureMapsPlugin.OmhMapsPluginAzureMapsModule.relayoutMapView(viewRef);
     }
+
+    if (providerName === 'OpenStreetMap') {
+      const osmPlugin = require('@omh/react-native-maps-plugin-openstreetmap');
+      osmPlugin.OmhMapsPluginOpenstreetmapModule.relayoutMapView(viewRef);
+    }
   } catch (error) {
     console.error(error);
   }
@@ -51,3 +56,16 @@ export const useMyLocationIconFix = (
     }
   }, [isMapReady, myLocationEnabled, nativeComponentRef]);
 };
+
+export const useOSMMapViewRelayout =
+  (
+    nativeComponentRef: React.MutableRefObject<NativeOmhMapViewComponent | null> | null,
+    providerName: string | null
+  ) =>
+  () => {
+    if (!nativeComponentRef) return;
+
+    if (providerName === 'OpenStreetMap') {
+      relayoutMapView(nativeComponentRef);
+    }
+  };

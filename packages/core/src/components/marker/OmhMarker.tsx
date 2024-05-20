@@ -1,23 +1,44 @@
-import React, { memo, useMemo } from 'react';
+import React, { forwardRef, useImperativeHandle, useMemo } from 'react';
 import { PixelRatio } from 'react-native';
 
 import useOmhMarkerOSMFix from '../../hooks/useOmhMarkerOSMFix';
 import { resolveResource } from '../../utils/RNResourceTranscoder';
-import { OmhMarkerProps } from './OmhMarker.types';
-import RNOmhMapsMarkerNativeComponent from './RNOmhMapsMarkerNativeComponent';
+import { OmhMarkerProps, OmhMarkerRef } from './OmhMarker.types';
+import RNOmhMapsMarkerNativeComponent, {
+  Commands,
+  RNOmhMapsMarkerNativeComponent as RefType,
+} from './RNOmhMapsMarkerNativeComponent';
 
 /**
  * The OMH Marker component.
  */
-export const OmhMarker = memo(
-  ({
-    icon,
-    position,
-    onPress,
-    infoWindowAnchor: _infoWindowAnchor,
-    backgroundColor: _backgroundColor,
-    ...props
-  }: OmhMarkerProps) => {
+export const OmhMarker = forwardRef<OmhMarkerRef, OmhMarkerProps>(
+  (
+    {
+      icon,
+      position,
+      onPress,
+      infoWindowAnchor: _infoWindowAnchor,
+      backgroundColor: _backgroundColor,
+      ...props
+    },
+    forwardedRef
+  ) => {
+    const nativeComponentRef = React.useRef<React.ElementRef<RefType>>();
+
+    useImperativeHandle(forwardedRef, () => ({
+      showInfoWindow: () => {
+        if (nativeComponentRef.current) {
+          Commands.showInfoWindow(nativeComponentRef.current);
+        }
+      },
+      hideInfoWindow: () => {
+        if (nativeComponentRef.current) {
+          Commands.hideInfoWindow(nativeComponentRef.current);
+        }
+      },
+    }));
+
     const infoWindowAnchor = useOmhMarkerOSMFix(_infoWindowAnchor);
 
     const resolvedIcon = useMemo(
@@ -34,10 +55,6 @@ export const OmhMarker = memo(
       () => (_backgroundColor === undefined ? -1 : _backgroundColor),
       [_backgroundColor]
     );
-
-    const nativeComponentRef = React.useRef<
-      typeof RNOmhMapsMarkerNativeComponent | null
-    >(null);
 
     return (
       <RNOmhMapsMarkerNativeComponent
