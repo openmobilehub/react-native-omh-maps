@@ -3,6 +3,7 @@ import { Marker, MarkerPressEvent } from 'react-native-maps';
 import { OmhMarkerProps } from './OmhMarker.types';
 import { omhColorToString } from '../../utils/colorHelper';
 import {
+  CalloutPressEvent,
   MarkerDragEvent,
   MarkerDragStartEndEvent,
 } from 'react-native-maps/lib/sharedTypes';
@@ -30,6 +31,7 @@ export const OmhMarker = ({
   onDragStart,
   onDrag,
   onDragEnd,
+  onInfoWindowPress,
 }: OmhMarkerProps) => {
   const anchorPoint = useMemo(() => {
     return anchorToPoint(anchor);
@@ -96,6 +98,24 @@ export const OmhMarker = ({
     [onDrag]
   );
 
+  const handleOnCalloutPress = useCallback(
+    (event: CalloutPressEvent) => {
+      const coordinate = event.nativeEvent.coordinate;
+      if (!coordinate) {
+        return;
+      }
+
+      onInfoWindowPress?.({
+        ...event,
+        nativeEvent: {
+          ...event.nativeEvent,
+          position: coordinate,
+        },
+      });
+    },
+    [onInfoWindowPress]
+  );
+
   return (
     isVisible && (
       <Marker
@@ -116,6 +136,7 @@ export const OmhMarker = ({
         onDragStart={handleOnDragStart}
         onDragEnd={handleOnDragEnd}
         onDrag={handleOnDrag}
+        onCalloutPress={handleOnCalloutPress}
       />
     )
   );
