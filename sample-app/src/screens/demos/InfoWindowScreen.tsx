@@ -24,6 +24,7 @@ import { Constants } from '../../utils/Constants';
 import { formatPosition } from '../../utils/converters';
 import { MarkerIWTitles } from './MarkerMapScreen';
 import {
+  androidProvidersWithout,
   iOSProvidersWithout,
   isFeatureSupported,
 } from '../../utils/SupportUtils';
@@ -55,10 +56,30 @@ const getSupportedFeatures = (currentMapProvider?: string) => {
         ? iOSProvidersWithout(['Apple'])
         : ANDROID_SUPPORTED_PROVIDERS
     ),
-    infoWindowOpenCloseCallbacks: isFeatureSupported(
+    onInfoWindowOpen: isFeatureSupported(
       currentMapProvider,
       Platform.OS === 'ios'
         ? iOSProvidersWithout(['Google', 'Apple'])
+        : androidProvidersWithout(['GoogleMaps'])
+    ),
+    onInfoWindowClose: isFeatureSupported(
+      currentMapProvider,
+      Platform.OS === 'ios'
+        ? iOSProvidersWithout(['Google', 'Apple'])
+        : ANDROID_SUPPORTED_PROVIDERS
+    ),
+    onInfoWindowPress: isFeatureSupported(
+      currentMapProvider,
+      Platform.OS === 'ios'
+        ? iOSProvidersWithout(['Google'])
+        : ANDROID_SUPPORTED_PROVIDERS
+    ),
+    toggling: isFeatureSupported(
+      currentMapProvider,
+      Platform.OS === 'ios'
+        ? // On iOS, by default, the info window is always open on press and
+          // this behaviour cannot be changed
+          iOSProvidersWithout(['Google', 'Apple'])
         : ANDROID_SUPPORTED_PROVIDERS
     ),
   };
@@ -86,9 +107,11 @@ export const InfoWindowScreen = () => {
   });
 
   // demo behaviour
+  const hasNecessaryCallbacksToSyncIsInfoWindowVisible =
+    supportedFeatures.onInfoWindowClose;
   const [toggleIWOnMarkerClick, setToggleIWOnMarkerClick] = useState(true);
   const [hideIWOnClick, setHideIWOnClick] = useState(
-    supportedFeatures.infoWindowOpenCloseCallbacks
+    supportedFeatures.onInfoWindowPress
   );
   const [isInfoWindowVisible, setIsInfoWindowVisible] = useState(false);
 
@@ -145,8 +168,26 @@ export const InfoWindowScreen = () => {
   );
 
   useEffect(() => {
-    setHideIWOnClick(supportedFeatures.infoWindowOpenCloseCallbacks);
-  }, [supportedFeatures.infoWindowOpenCloseCallbacks]);
+    setHideIWOnClick(supportedFeatures.onInfoWindowPress);
+  }, [supportedFeatures.onInfoWindowPress]);
+
+  const hideInfoWindow = useCallback(() => {
+    omhMarkerRef.current?.hideInfoWindow();
+    if (!supportedFeatures.onInfoWindowClose) {
+      // this handles synchronizing the state variable with actual IW state even when onInfoWindowClose is not support
+      // e.g. iOS Apple and Google
+      setIsInfoWindowVisible(false);
+    }
+  }, [omhMarkerRef, supportedFeatures]);
+
+  const showInfoWindow = useCallback(() => {
+    omhMarkerRef.current?.showInfoWindow();
+    if (!supportedFeatures.onInfoWindowOpen) {
+      // this handles synchronizing the state variable with actual IW state even when onInfoWindowOpen is not support
+      // e.g. Android Google Maps
+      setIsInfoWindowVisible(true);
+    }
+  }, [omhMarkerRef, supportedFeatures]);
 
   return (
     <View style={demoStyles.rootContainer}>
@@ -187,7 +228,7 @@ export const InfoWindowScreen = () => {
             anchor={markerAnchor}
             onInfoWindowPress={() => {
               if (hideIWOnClick) {
-                omhMarkerRef.current?.hideInfoWindow();
+                hideInfoWindow();
               } else {
                 showSnackbar('Info window pressed');
               }
@@ -204,12 +245,19 @@ export const InfoWindowScreen = () => {
               setIsInfoWindowVisible(false); // this handles synchronizing the state variable with actual IW state
             }}
             onPress={() => {
-              if (toggleIWOnMarkerClick) {
-                if (isInfoWindowVisible) {
-                  omhMarkerRef.current?.hideInfoWindow();
-                } else {
-                  omhMarkerRef.current?.showInfoWindow();
-                }
+              if (!supportedFeatures.toggling) {
+                // Opening is handled by component, we only update the state
+                setIsInfoWindowVisible(true);
+                return;
+              }
+              if (!toggleIWOnMarkerClick) {
+                return;
+              }
+
+              if (isInfoWindowVisible) {
+                hideInfoWindow();
+              } else {
+                showInfoWindow();
               }
             }}
             infoWindowAnchor={IWAnchor}
@@ -268,14 +316,14 @@ export const InfoWindowScreen = () => {
           </Subheading>
 
           <PanelCheckbox
-            enabled={supportedFeatures.infoWindowOpenCloseCallbacks}
-            label="Info win. toggles on marker click"
+            enabled={supportedFeatures.toggling}
+            label={`Info win. ${supportedFeatures.toggling ? 'toggles' : 'opens'} on marker click`}
             value={toggleIWOnMarkerClick}
             onValueChange={setToggleIWOnMarkerClick}
           />
 
           <PanelCheckbox
-            enabled={supportedFeatures.infoWindowOpenCloseCallbacks}
+            enabled={supportedFeatures.onInfoWindowPress}
             label="Info win. hides on click"
             value={hideIWOnClick}
             onValueChange={setHideIWOnClick}
@@ -291,11 +339,11 @@ export const InfoWindowScreen = () => {
             disabled={
               !(
                 !isInfoWindowVisible ||
-                !supportedFeatures.infoWindowOpenCloseCallbacks
+                !hasNecessaryCallbacksToSyncIsInfoWindowVisible
               )
             }
             onPress={() => {
-              omhMarkerRef.current?.showInfoWindow();
+              showInfoWindow();
             }}>
             Open info window
           </Button>
@@ -306,11 +354,11 @@ export const InfoWindowScreen = () => {
             disabled={
               !(
                 isInfoWindowVisible ||
-                !supportedFeatures.infoWindowOpenCloseCallbacks
+                !hasNecessaryCallbacksToSyncIsInfoWindowVisible
               )
             }
             onPress={() => {
-              omhMarkerRef.current?.hideInfoWindow();
+              hideInfoWindow();
             }}>
             Close info window
           </Button>

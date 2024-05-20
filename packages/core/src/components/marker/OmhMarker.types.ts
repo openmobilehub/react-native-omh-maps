@@ -130,7 +130,7 @@ export type MarkerDragEndEvent = MarkerPositionCarryingOmhEvent;
 /**
  * Event triggered when an info window is pressed.
  */
-export type InfoWindowPressEvent = MarkerPositionCarryingOmhEvent;
+export type InfoWindowPressEvent = OmhEvent<{ position?: OmhCoordinate }>;
 
 /**
  * Event triggered when an info window is long pressed.

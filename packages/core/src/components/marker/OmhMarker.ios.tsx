@@ -121,16 +121,11 @@ export const OmhMarker = forwardRef<OmhMarkerRef, OmhMarkerProps>(
 
     const handleOnCalloutPress = useCallback(
       (event: CalloutPressEvent) => {
-        const coordinate = event.nativeEvent.coordinate;
-        if (!coordinate) {
-          return;
-        }
-
         onInfoWindowPress?.({
           ...event,
           nativeEvent: {
             ...event.nativeEvent,
-            position: coordinate,
+            position: event.nativeEvent.coordinate,
           },
         });
       },
