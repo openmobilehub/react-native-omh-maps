@@ -118,8 +118,11 @@ export const CameraMapScreen = () => {
     setSupportedFeatures(getSupportedFeatures(omhMapRef.current));
 
     omhMapRef.current?.setCameraCoordinate(
-      Constants.Maps.GREENWICH_COORDINATE,
-      15.0
+      {
+        latitude: 0,
+        longitude: 0,
+      },
+      0
     );
   };
 
