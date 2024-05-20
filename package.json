@@ -8,7 +8,7 @@
     "@babel/preset-env": "^7.24.3",
     "@babel/runtime": "^7.24.1",
     "@commitlint/config-conventional": "^19.1.0",
-    "@docusaurus/eslint-plugin": "^3.1.1",
+    "@docusaurus/eslint-plugin": "3.1.1",
     "@docusaurus/module-type-aliases": "3.1.1",
     "@docusaurus/tsconfig": "3.1.1",
     "@docusaurus/types": "3.1.1",
@@ -80,7 +80,7 @@
     "release": "cross-env FORCE_COLOR=1 yarn workspaces foreach -A -p --exclude @omh/react-native-maps-sample-app run release",
     "postinstall": "npx lefthook install",
     "codegen:android": "./sample-app/android/gradlew -p sample-app/android generateCodegenArtifactsFromSchema -t android",
-    "codegen:ios": "node node_modules/react-native/scripts/generate-codegen-artifacts.js --path . --outputPath ./sample-app/ios"
+    "codegen:ios": "node node_modules/react-native/scripts/generate-codegen-artifacts.js --path . --outputPath ./sample-app/ios -t ios"
   },
   "workspaces": [
     "sample-app",

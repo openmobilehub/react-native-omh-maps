@@ -1,4 +1,4 @@
-import React, { useMemo } from 'react';
+import React, { useCallback, useMemo } from 'react';
 import { OmhPolylineProps } from './OmhPolyline.types';
 import { Polyline } from 'react-native-maps';
 import { omhColorToString } from '../../utils/colorHelper';
@@ -17,11 +17,11 @@ export const OmhPolyline = ({
   consumePolylineClicks,
   cap,
 }: OmhPolylineProps) => {
-  const onPress = () => {
+  const onPress = useCallback(() => {
     if (clickable) {
       onPolylineClick?.(consumePolylineClicks || true);
     }
-  };
+  }, [clickable, consumePolylineClicks, onPolylineClick]);
 
   const linePattern = useMemo(() => {
     return convertToPattern(pattern);

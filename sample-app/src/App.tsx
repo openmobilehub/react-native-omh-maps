@@ -34,6 +34,7 @@ export type RootStackParamList = {
   [Route.stylesMap]: undefined;
   [Route.locationResult]: { lat: number; lng: number };
   [Route.sharedLocationMap]: { lat: number; lng: number };
+  [Route.infoWindowMap]: undefined;
 };
 
 const Stack = createNativeStackNavigator<RootStackParamList>();

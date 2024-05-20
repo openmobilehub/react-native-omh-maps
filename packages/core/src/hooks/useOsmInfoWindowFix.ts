@@ -1,8 +1,8 @@
 import { useRef } from 'react';
 
-import { useOSMMapViewRelayout } from '../components/mapView/OmhMapViewHelpers';
 import { NativeOmhMapViewComponent } from '../components/mapView/RNOmhMapsCoreViewNativeComponent';
 import { maybeResetInterval } from '../utils/miscHelpers';
+import { useOSMMapViewRelayout } from '../components/mapView/OmhMapViewNativeHelpers';
 
 const RELAYOUT_MAP_WHEN_MOVING_CAMERA_INTERVAL_MS = 1000 / 45; // desired 45 Hz
 

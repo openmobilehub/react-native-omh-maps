@@ -1,4 +1,8 @@
-import { OmhCoordinate, OmhPatternItem } from '@omh/react-native-maps-core';
+import {
+  OmhCoordinate,
+  OmhMapProviderName,
+  OmhPatternItem,
+} from '@omh/react-native-maps-core';
 import { JointTypeItem, PatternOption } from '../types/common';
 
 export namespace Constants {
@@ -105,6 +109,20 @@ export namespace Constants {
         label: 'Bevel',
         value: 'bevel',
       },
+    ];
+  }
+
+  export namespace Demo {
+    export const ANDROID_SUPPORTED_PROVIDERS: OmhMapProviderName[] = [
+      'GoogleMaps',
+      'OpenStreetMap',
+      'Mapbox',
+      'AzureMaps',
+    ];
+
+    export const IOS_SUPPORTED_PROVIDERS: OmhMapProviderName[] = [
+      'Google',
+      'Apple',
     ];
   }
 }

@@ -169,7 +169,7 @@ export const LocationSharingScreen = ({ navigation }: Props) => {
           style={styles.fab}
         />
         <View style={styles.markerContainer}>
-          <Image source={shadow} style={styles.shadow} />
+          <Image source={shadow} style={styles.shadow} testID="drop_pin" />
           <TouchableOpacity
             activeOpacity={70}
             onPress={() => {
