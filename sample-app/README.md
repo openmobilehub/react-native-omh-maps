@@ -1,6 +1,8 @@
-This is a new [**React Native**](https://reactnative.dev) project, bootstrapped using [`@react-native-community/cli`](https://github.com/react-native-community/cli).
+# OMH Maps Sample Application
 
-# Getting Started
+The Sample App showcases the capabilities of the OMH Maps plugins, featuring all available providers for the specific operating system.
+
+## Getting Started
 
 > **Note**: Make sure you have completed the [React Native - Environment Setup](https://reactnative.dev/docs/environment-setup) instructions till "Creating a new application" step, before proceeding.
 
