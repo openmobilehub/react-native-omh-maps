@@ -11,6 +11,7 @@ import {
   OmhMapViewRef,
   OmhMarker,
   OmhMarkerConstants,
+  OmhMarkerRef,
 } from '@omh/react-native-maps-core';
 
 import { Anchor } from '../../../../packages/core/src/components/marker/RNOmhMapsMarkerNativeComponent';
@@ -28,6 +29,10 @@ export const InfoWindowScreen = () => {
   const { showSnackbar } = useSnackbar();
 
   const omhMapRef = useRef<OmhMapViewRef | null>(null);
+
+  const omhMarkerRef = useRef<OmhMarkerRef | null>(null);
+
+  // omhMarkerRef.current.
 
   // IW properties
   const [snippetVisible, setSnippetVisible] = useState(false);
@@ -114,6 +119,7 @@ export const InfoWindowScreen = () => {
             );
           }}>
           <OmhMarker
+            ref={omhMarkerRef}
             title={MarkerIWTitles.CONFIGURABLE_TEST_MARKER}
             position={markerPosition}
             snippet={
@@ -225,9 +231,9 @@ export const InfoWindowScreen = () => {
           <Button
             mode="contained"
             style={styles.button}
-            disabled={showInfoWindow}
+            // disabled={showInfoWindow}
             onPress={() => {
-              setShowInfoWindow(true);
+              omhMarkerRef.current?.showInfoWindow();
             }}>
             Open info window
           </Button>
@@ -235,9 +241,9 @@ export const InfoWindowScreen = () => {
           <Button
             mode="contained"
             style={styles.button}
-            disabled={!showInfoWindow}
+            // disabled={!showInfoWindow}
             onPress={() => {
-              setShowInfoWindow(false);
+              omhMarkerRef.current?.hideInfoWindow();
             }}>
             Close info window
           </Button>

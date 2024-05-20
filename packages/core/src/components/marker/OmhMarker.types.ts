@@ -190,3 +190,8 @@ export type OmhMarkerEvents = Partial<{
   /** Called when an info window is opened. */
   onInfoWindowOpen: (event: InfoWindowOpenEvent) => void;
 }>;
+
+export type OmhMarkerRef = {
+  showInfoWindow: () => void;
+  hideInfoWindow: () => void;
+};

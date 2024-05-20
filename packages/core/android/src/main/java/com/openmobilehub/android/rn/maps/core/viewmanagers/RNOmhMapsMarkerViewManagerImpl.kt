@@ -258,6 +258,14 @@ class RNOmhMapsMarkerViewManagerImpl {
         }
     }
 
+    fun showInfoWindow(entity: OmhMarkerEntity) {
+        entity.getEntity()?.showInfoWindow()
+    }
+
+    fun hideInfoWindow(entity: OmhMarkerEntity) {
+        entity.getEntity()?.hideInfoWindow()
+    }
+
     companion object {
         const val NAME = "RNOmhMapsMarkerView"
 
