@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useMemo, useRef } from 'react';
+import React, { useCallback, useMemo } from 'react';
 import { Marker, MarkerPressEvent } from 'react-native-maps';
 import { OmhMarkerProps } from './OmhMarker.types';
 import { omhColorToString } from '../../utils/colorHelper';
@@ -7,7 +7,6 @@ import {
   MarkerDragStartEndEvent,
 } from 'react-native-maps/lib/sharedTypes';
 import { anchorToPoint } from '../../utils/anchorHelpers';
-import { MapMarker } from 'react-native-maps/lib/MapMarker';
 
 /**
  * The OMH Marker component.
@@ -31,21 +30,7 @@ export const OmhMarker = ({
   onDragStart,
   onDrag,
   onDragEnd,
-  showInfoWindow,
 }: OmhMarkerProps) => {
-  const markerRef = useRef<MapMarker | null>(null);
-
-  useEffect(() => {
-    if (showInfoWindow === undefined) {
-      return;
-    }
-    if (showInfoWindow) {
-      markerRef.current?.showCallout();
-    } else {
-      markerRef.current?.hideCallout();
-    }
-  }, [showInfoWindow, markerRef]);
-
   const anchorPoint = useMemo(() => {
     return anchorToPoint(anchor);
   }, [anchor]);
@@ -131,7 +116,6 @@ export const OmhMarker = ({
         onDragStart={handleOnDragStart}
         onDragEnd={handleOnDragEnd}
         onDrag={handleOnDrag}
-        ref={markerRef}
       />
     )
   );

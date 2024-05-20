@@ -60,6 +60,12 @@ const getSupportedFeatures = (currentMapProvider?: string) => {
         ? iOSProvidersWithout(['Google', 'Apple'])
         : ANDROID_SUPPORTED_PROVIDERS
     ),
+    showInfoWindow: isFeatureSupported(
+      currentMapProvider,
+      Platform.OS === 'ios'
+        ? iOSProvidersWithout(['Google', 'Apple'])
+        : ANDROID_SUPPORTED_PROVIDERS
+    ),
   };
 };
 
@@ -281,7 +287,7 @@ export const InfoWindowScreen = () => {
           <Button
             mode="contained"
             style={styles.button}
-            disabled={!(!showInfoWindow || !supportedFeatures.calloutCallbacks)}
+            disabled={showInfoWindow || !supportedFeatures.showInfoWindow}
             onPress={() => {
               setShowInfoWindow(true);
             }}>
@@ -291,7 +297,7 @@ export const InfoWindowScreen = () => {
           <Button
             mode="contained"
             style={styles.button}
-            disabled={!(showInfoWindow || !supportedFeatures.calloutCallbacks)}
+            disabled={!showInfoWindow || !supportedFeatures.showInfoWindow}
             onPress={() => {
               setShowInfoWindow(false);
             }}>
