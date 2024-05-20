@@ -3,7 +3,7 @@ import React, { useEffect } from 'react';
 import { NativeOmhMapViewComponent } from './RNOmhMapsCoreViewNativeComponent';
 import { getViewRefHandle } from './OmhMapViewHelpers';
 
-export const tweakCompass = (
+export const tweakCompass = async (
   nativeComponentRef: React.MutableRefObject<NativeOmhMapViewComponent | null>
 ) => {
   try {
@@ -11,7 +11,7 @@ export const tweakCompass = (
     const providerName = NativeOmhMapsCoreModule.getProviderName(viewRef);
 
     if (providerName === 'Mapbox') {
-      const mapboxPlugin = require('@omh/react-native-maps-plugin-mapbox');
+      const mapboxPlugin = (await import('./optionalMapboxPlugin')).default;
       mapboxPlugin.OmhMapsPluginMapboxModule.tweakCompass(viewRef);
     }
   } catch (error) {
@@ -19,7 +19,7 @@ export const tweakCompass = (
   }
 };
 
-const relayoutMapView = (
+const relayoutMapView = async (
   nativeComponentRef: React.MutableRefObject<NativeOmhMapViewComponent | null>
 ) => {
   try {
@@ -27,12 +27,13 @@ const relayoutMapView = (
     const providerName = NativeOmhMapsCoreModule.getProviderName(viewRef);
 
     if (providerName === 'Mapbox') {
-      const mapboxPlugin = require('@omh/react-native-maps-plugin-mapbox');
+      const mapboxPlugin = (await import('./optionalMapboxPlugin')).default;
       mapboxPlugin.OmhMapsPluginMapboxModule.relayoutMapView(viewRef);
     }
 
     if (providerName === 'AzureMaps') {
-      const azureMapsPlugin = require('@omh/react-native-maps-plugin-azuremaps');
+      const azureMapsPlugin = (await import('./optionalAzureMapsPlugin'))
+        .default;
       azureMapsPlugin.OmhMapsPluginAzureMapsModule.relayoutMapView(viewRef);
     }
   } catch (error) {
