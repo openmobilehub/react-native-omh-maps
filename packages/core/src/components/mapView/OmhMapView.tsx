@@ -1,4 +1,4 @@
-import React, { forwardRef, useCallback, useState } from 'react';
+import React, { forwardRef, useCallback, useEffect, useState } from 'react';
 import {
   NativeSyntheticEvent,
   PixelRatio,
@@ -7,6 +7,7 @@ import {
 } from 'react-native';
 
 import { OmhMapContext } from '../../context/OmhMapContext';
+import { useOsmInfoWindowFix } from '../../hooks/useOsmInfoWindowFix';
 import NativeOmhMapsCoreModule from '../../modules/core/NativeOmhMapsCoreModule';
 import { OmhMapProviderName } from '../../types/common';
 import { mergeStyles } from '../../utils/styleHelpers';
@@ -36,7 +37,7 @@ export const OmhMapView = forwardRef<OmhMapViewRef, OmhMapViewProps>(
       children,
       zoomEnabled,
       rotateEnabled,
-      onCameraIdle,
+      onCameraIdle: _onCameraIdle,
       onCameraMoveStarted,
       mapStyle,
       onMapReady,
@@ -57,6 +58,17 @@ export const OmhMapView = forwardRef<OmhMapViewRef, OmhMapViewProps>(
     const nativeComponentRef = React.useRef<
       typeof RNOmhMapsCoreViewNativeComponent | null
     >(null);
+
+    const osmInfoWindowFix = useOsmInfoWindowFix(
+      nativeComponentRef,
+      providerName
+    );
+
+    const onCameraIdle = () => {
+      osmInfoWindowFix.onCameraIdle();
+
+      _onCameraIdle?.();
+    };
 
     useMyLocationIconFix(nativeComponentRef, isMapReady, myLocationEnabled);
 
@@ -111,6 +123,8 @@ export const OmhMapView = forwardRef<OmhMapViewRef, OmhMapViewProps>(
           break;
       }
 
+      osmInfoWindowFix.onCameraMoveStarted();
+
       onCameraMoveStarted?.(reason);
     };
 
@@ -124,10 +138,19 @@ export const OmhMapView = forwardRef<OmhMapViewRef, OmhMapViewProps>(
         }
       : {};
 
+    // on mount effect
+    useEffect(() => {
+      return () => {
+        // on unmount effect
+        osmInfoWindowFix.onUnmount();
+      };
+    }, [osmInfoWindowFix]);
+
     return (
       <OmhMapContext.Provider
         value={{
           providerName,
+          nativeComponentRef,
         }}>
         <View
           onLayout={event => {

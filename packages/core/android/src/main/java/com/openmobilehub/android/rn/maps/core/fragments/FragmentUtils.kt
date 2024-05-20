@@ -28,11 +28,8 @@ object FragmentUtils {
         return fragmentManager?.findFragmentByTag(getFragmentTag(view.id)) as? OmhMapViewFragment
     }
 
-
     private fun getFragmentManager(context: ReactContext): FragmentManager? {
-        val activity = context.currentActivity as? FragmentActivity ?: return null
-
-        return activity.supportFragmentManager
+        return (context.currentActivity as? FragmentActivity)?.supportFragmentManager
     }
 
     fun getFragmentManager(view: View): FragmentManager? {

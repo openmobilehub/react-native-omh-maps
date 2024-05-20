@@ -3,7 +3,7 @@ import React, { useEffect } from 'react';
 import { NativeOmhMapViewComponent } from './RNOmhMapsCoreViewNativeComponent';
 import { getViewRefHandle } from './OmhMapViewHelpers';
 
-export const tweakCompass = async (
+export const tweakCompass = (
   nativeComponentRef: React.MutableRefObject<NativeOmhMapViewComponent | null>
 ) => {
   try {
@@ -11,7 +11,7 @@ export const tweakCompass = async (
     const providerName = NativeOmhMapsCoreModule.getProviderName(viewRef);
 
     if (providerName === 'Mapbox') {
-      const mapboxPlugin = (await import('./optionalMapboxPlugin')).default;
+      const mapboxPlugin = require('@omh/react-native-maps-plugin-mapbox');
       mapboxPlugin.OmhMapsPluginMapboxModule.tweakCompass(viewRef);
     }
   } catch (error) {
@@ -19,7 +19,7 @@ export const tweakCompass = async (
   }
 };
 
-const relayoutMapView = async (
+const relayoutMapView = (
   nativeComponentRef: React.MutableRefObject<NativeOmhMapViewComponent | null>
 ) => {
   try {
@@ -27,14 +27,18 @@ const relayoutMapView = async (
     const providerName = NativeOmhMapsCoreModule.getProviderName(viewRef);
 
     if (providerName === 'Mapbox') {
-      const mapboxPlugin = (await import('./optionalMapboxPlugin')).default;
+      const mapboxPlugin = require('@omh/react-native-maps-plugin-mapbox');
       mapboxPlugin.OmhMapsPluginMapboxModule.relayoutMapView(viewRef);
     }
 
     if (providerName === 'AzureMaps') {
-      const azureMapsPlugin = (await import('./optionalAzureMapsPlugin'))
-        .default;
+      const azureMapsPlugin = require('@omh/react-native-maps-plugin-azuremaps');
       azureMapsPlugin.OmhMapsPluginAzureMapsModule.relayoutMapView(viewRef);
+    }
+
+    if (providerName === 'OpenStreetMap') {
+      const osmPlugin = require('@omh/react-native-maps-plugin-openstreetmap');
+      osmPlugin.OmhMapsPluginOpenstreetmapModule.relayoutMapView(viewRef);
     }
   } catch (error) {
     console.error(error);
@@ -52,3 +56,16 @@ export const useMyLocationIconFix = (
     }
   }, [isMapReady, myLocationEnabled, nativeComponentRef]);
 };
+
+export const useOSMMapViewRelayout =
+  (
+    nativeComponentRef: React.MutableRefObject<NativeOmhMapViewComponent | null> | null,
+    providerName: string | null
+  ) =>
+  () => {
+    if (!nativeComponentRef) return;
+
+    if (providerName === 'OpenStreetMap') {
+      relayoutMapView(nativeComponentRef);
+    }
+  };
