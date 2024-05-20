@@ -98,11 +98,6 @@ class RNOmhMapsMarkerViewManager :
         omhMapMarkerComponentManagerImpl.setZIndex(entity, value)
     }
 
-    @ReactProp(name = "showInfoWindow")
-    fun setShowInfoWindow(entity: OmhMarkerEntity, value: Boolean) {
-        omhMapMarkerComponentManagerImpl.setShowInfoWindow(entity, value)
-    }
-
     @ReactProp(name = "consumeMarkerClicks")
     fun setConsumeMarkerClicks(entity: OmhMarkerEntity, value: Boolean) {
         omhMapMarkerComponentManagerImpl.setConsumeMarkerClicks(entity, value)

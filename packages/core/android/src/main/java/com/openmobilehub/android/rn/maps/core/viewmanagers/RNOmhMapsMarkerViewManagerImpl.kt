@@ -191,20 +191,6 @@ class RNOmhMapsMarkerViewManagerImpl {
         }
     }
 
-    fun setShowInfoWindow(entity: OmhMarkerEntity, value: Boolean) {
-        entity.queueOnMapReadyAction { marker, _, omhMapView ->
-            UiThreadUtil.runOnUiThread {
-                if (value) {
-                    marker?.showInfoWindow()
-                } else {
-                    marker?.hideInfoWindow()
-                }
-
-                omhMapView?.getView()?.manuallyLayoutView()
-            }
-        }
-    }
-
     fun setConsumeMarkerClicks(entity: OmhMarkerEntity, value: Boolean) {
         entity.consumeMarkerClicks = value
     }
@@ -259,11 +245,25 @@ class RNOmhMapsMarkerViewManagerImpl {
     }
 
     fun showInfoWindow(entity: OmhMarkerEntity) {
-        entity.getEntity()?.showInfoWindow()
+      toggleInfoWindow(entity, true)
     }
 
     fun hideInfoWindow(entity: OmhMarkerEntity) {
-        entity.getEntity()?.hideInfoWindow()
+      toggleInfoWindow(entity, false)
+    }
+
+    private fun toggleInfoWindow(entity: OmhMarkerEntity, visible: Boolean) {
+      entity.queueOnMapReadyAction { marker, _, omhMapView ->
+        UiThreadUtil.runOnUiThread {
+          if (visible) {
+            marker?.showInfoWindow()
+          } else {
+            marker?.hideInfoWindow()
+          }
+
+          omhMapView?.getView()?.manuallyLayoutView()
+        }
+      }
     }
 
     companion object {

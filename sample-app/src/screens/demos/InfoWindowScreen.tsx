@@ -55,13 +55,7 @@ const getSupportedFeatures = (currentMapProvider?: string) => {
         ? iOSProvidersWithout(['Apple'])
         : ANDROID_SUPPORTED_PROVIDERS
     ),
-    calloutCallbacks: isFeatureSupported(
-      currentMapProvider,
-      Platform.OS === 'ios'
-        ? iOSProvidersWithout(['Google', 'Apple'])
-        : ANDROID_SUPPORTED_PROVIDERS
-    ),
-    showInfoWindow: isFeatureSupported(
+    infoWindowOpenCloseCallbacks: isFeatureSupported(
       currentMapProvider,
       Platform.OS === 'ios'
         ? iOSProvidersWithout(['Google', 'Apple'])
@@ -94,9 +88,9 @@ export const InfoWindowScreen = () => {
   // demo behaviour
   const [toggleIWOnMarkerClick, setToggleIWOnMarkerClick] = useState(true);
   const [hideIWOnClick, setHideIWOnClick] = useState(
-    supportedFeatures.calloutCallbacks
+    supportedFeatures.infoWindowOpenCloseCallbacks
   );
-  const [showInfoWindow, setShowInfoWindow] = useState(false);
+  const [isInfoWindowVisible, setIsInfoWindowVisible] = useState(false);
 
   // marker properties
   const [markerVisible, setMarkerVisible] = useState(true);
@@ -151,8 +145,8 @@ export const InfoWindowScreen = () => {
   );
 
   useEffect(() => {
-    setHideIWOnClick(supportedFeatures.calloutCallbacks);
-  }, [supportedFeatures.calloutCallbacks]);
+    setHideIWOnClick(supportedFeatures.infoWindowOpenCloseCallbacks);
+  }, [supportedFeatures.infoWindowOpenCloseCallbacks]);
 
   return (
     <View style={demoStyles.rootContainer}>
@@ -191,10 +185,9 @@ export const InfoWindowScreen = () => {
             clickable={markerClickable}
             rotation={markerRotation}
             anchor={markerAnchor}
-            showInfoWindow={showInfoWindow}
             onInfoWindowPress={() => {
               if (hideIWOnClick) {
-                setShowInfoWindow(false);
+                omhMarkerRef.current?.hideInfoWindow();
               } else {
                 showSnackbar('Info window pressed');
               }
@@ -204,15 +197,19 @@ export const InfoWindowScreen = () => {
             }}
             onInfoWindowOpen={() => {
               showSnackbar('Info window has been opened');
-              setShowInfoWindow(true); // this handles synchronizing the state variable with actual IW state
+              setIsInfoWindowVisible(true); // this handles synchronizing the state variable with actual IW state
             }}
             onInfoWindowClose={() => {
               showSnackbar('Info window has been closed');
-              setShowInfoWindow(false); // this handles synchronizing the state variable with actual IW state
+              setIsInfoWindowVisible(false); // this handles synchronizing the state variable with actual IW state
             }}
             onPress={() => {
               if (toggleIWOnMarkerClick) {
-                setShowInfoWindow(!showInfoWindow);
+                if (isInfoWindowVisible) {
+                  omhMarkerRef.current?.hideInfoWindow();
+                } else {
+                  omhMarkerRef.current?.showInfoWindow();
+                }
               }
             }}
             infoWindowAnchor={IWAnchor}
@@ -271,14 +268,14 @@ export const InfoWindowScreen = () => {
           </Subheading>
 
           <PanelCheckbox
-            enabled={supportedFeatures.calloutCallbacks}
+            enabled={supportedFeatures.infoWindowOpenCloseCallbacks}
             label="Info win. toggles on marker click"
             value={toggleIWOnMarkerClick}
             onValueChange={setToggleIWOnMarkerClick}
           />
 
           <PanelCheckbox
-            enabled={supportedFeatures.calloutCallbacks}
+            enabled={supportedFeatures.infoWindowOpenCloseCallbacks}
             label="Info win. hides on click"
             value={hideIWOnClick}
             onValueChange={setHideIWOnClick}
@@ -291,7 +288,12 @@ export const InfoWindowScreen = () => {
           <Button
             mode="contained"
             style={styles.button}
-            disabled={showInfoWindow || !supportedFeatures.showInfoWindow}
+            disabled={
+              !(
+                !isInfoWindowVisible ||
+                !supportedFeatures.infoWindowOpenCloseCallbacks
+              )
+            }
             onPress={() => {
               omhMarkerRef.current?.showInfoWindow();
             }}>
@@ -301,7 +303,12 @@ export const InfoWindowScreen = () => {
           <Button
             mode="contained"
             style={styles.button}
-            disabled={!showInfoWindow || !supportedFeatures.showInfoWindow}
+            disabled={
+              !(
+                isInfoWindowVisible ||
+                !supportedFeatures.infoWindowOpenCloseCallbacks
+              )
+            }
             onPress={() => {
               omhMarkerRef.current?.hideInfoWindow();
             }}>
