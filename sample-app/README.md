@@ -12,18 +12,29 @@ Create a new file in sample-app/ios called: `Secrets.xcconfig` and add Google Ma
 GOOGLE_MAPS_API_KEY = YOUR_GOOGLE_MAPS_API_KEY
 ```
 
-## Step 1: Start the Metro Server
+Create a new file in sample-app/android called `local.properties` and add API keys for Google Maps, Mapbox, Azure Maps like this:
 
-First, you will need to start **Metro**, the JavaScript _bundler_ that ships _with_ React Native.
+Also in order to run iOS app, [Bundler](`https://bundler.io/`) is required
 
-To start Metro, run the following command from the _root_ of your React Native project:
+```
+MAPS_API_KEY = YOUR_GOOGLE_MAPS_API_KEY
+MAPBOX_PUBLIC_TOKEN = YOUR_MAPBOX_MAPS_API_KEY
+AZURE_MAPS_SUBSCRIPTION_KEY = YOUR_AZURE_MAPS_API_KEY
+```
+
+## Step 1: Install all needed dependencies
 
 ```bash
-# using npm
-npm start
+# using yarn
+yarn install
+```
 
-# OR using Yarn
-yarn start
+If you want to start iOS application, there are two additional steps:
+
+```bash
+cd sample-app/
+bundle install
+bundle exec pod install --project-directory=./ios
 ```
 
 ## Step 2: Start your Application
@@ -65,23 +76,4 @@ Now that you have successfully run the app, let's modify it.
 
 ## Congratulations! :tada:
 
-You've successfully run and modified your React Native App. :partying_face:
-
-### Now what?
-
-- If you want to add this new React Native code to an existing application, check out the [Integration guide](https://reactnative.dev/docs/integration-with-existing-apps).
-- If you're curious to learn more about React Native, check out the [Introduction to React Native](https://reactnative.dev/docs/getting-started).
-
-# Troubleshooting
-
-If you can't get this to work, see the [Troubleshooting](https://reactnative.dev/docs/troubleshooting) page.
-
-# Learn More
-
-To learn more about React Native, take a look at the following resources:
-
-- [React Native Website](https://reactnative.dev) - learn more about React Native.
-- [Getting Started](https://reactnative.dev/docs/environment-setup) - an **overview** of React Native and how setup your environment.
-- [Learn the Basics](https://reactnative.dev/docs/getting-started) - a **guided tour** of the React Native **basics**.
-- [Blog](https://reactnative.dev/blog) - read the latest official React Native **Blog** posts.
-- [`@facebook/react-native`](https://github.com/facebook/react-native) - the Open Source; GitHub **repository** for React Native.
+You've successfully run OMH Maps Sample App. :partying_face:
