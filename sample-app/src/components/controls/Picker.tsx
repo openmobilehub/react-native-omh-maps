@@ -57,9 +57,12 @@ export default function Picker<T>({
         style={{
           viewContainer: {
             flex: 3,
+            justifyContent: 'center',
           },
           inputAndroid: disabled ? styles.disabled : undefined,
           inputIOS: disabled ? styles.disabled : undefined,
+          chevronUp: { display: 'none' },
+          chevronDown: { display: 'none' },
         }}
       />
     </View>
@@ -78,6 +81,7 @@ const styles = StyleSheet.create({
   },
   label: {
     flex: 1,
+    paddingRight: 8,
   },
   disabled: {
     opacity: 0.5,

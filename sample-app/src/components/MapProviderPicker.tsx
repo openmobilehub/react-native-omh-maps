@@ -64,12 +64,8 @@ export default function MapProviderPicker({
           inputIOS: {
             paddingLeft: 16,
           },
-          chevronUp: {
-            opacity: 0, // hide the chevron
-          },
-          chevronDown: {
-            opacity: 0, // hide the chevron
-          },
+          chevronUp: { display: 'none' },
+          chevronDown: { display: 'none' },
         }}
       />
     </View>
