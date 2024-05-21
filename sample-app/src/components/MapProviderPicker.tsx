@@ -1,4 +1,4 @@
-import React, { ReactNode, useMemo } from 'react';
+import React, { useMemo } from 'react';
 import { View, ViewProps } from 'react-native';
 import { useTheme } from 'react-native-paper';
 import RNPickerSelect from 'react-native-picker-select';
@@ -37,7 +37,6 @@ export default function MapProviderPicker({
     <View style={style}>
       <ControlParagraph centered={centeredLabel}>{label}</ControlParagraph>
       <RNPickerSelect
-        InputAccessoryView={(() => null) as unknown as ReactNode}
         onValueChange={(newProviderName: string) => {
           const newProvider = availableProviders.find(
             ({ name }) => name === newProviderName
@@ -64,6 +63,12 @@ export default function MapProviderPicker({
         style={{
           inputIOS: {
             paddingLeft: 16,
+          },
+          chevronUp: {
+            opacity: 0, // hide the chevron
+          },
+          chevronDown: {
+            opacity: 0, // hide the chevron
           },
         }}
       />
