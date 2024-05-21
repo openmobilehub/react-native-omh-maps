@@ -16,10 +16,8 @@ GOOGLE_MAPS_API_KEY = YOUR_GOOGLE_MAPS_API_KEY
 
 Create a new file in sample-app/android called `local.properties` and add API keys for Google Maps, Mapbox, Azure Maps like this:
 
-Also in order to run iOS app, [Bundler](`https://bundler.io/`) is required
-
 ```
-MAPS_API_KEY = YOUR_GOOGLE_MAPS_API_KEY
+GOOGLE_MAPS_API_KEY = YOUR_GOOGLE_MAPS_API_KEY
 MAPBOX_PUBLIC_TOKEN = YOUR_MAPBOX_MAPS_API_KEY
 AZURE_MAPS_SUBSCRIPTION_KEY = YOUR_AZURE_MAPS_API_KEY
 ```
@@ -46,20 +44,14 @@ Let Metro Bundler run in its _own_ terminal. Open a _new_ terminal from the _roo
 ### For Android
 
 ```bash
-# using npm
-npm run android
-
-# OR using Yarn
+# using Yarn
 yarn android
 ```
 
 ### For iOS
 
 ```bash
-# using npm
-npm run ios
-
-# OR using Yarn
+# using Yarn
 yarn ios
 ```
 
