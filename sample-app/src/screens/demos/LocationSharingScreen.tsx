@@ -91,10 +91,6 @@ export const LocationSharingScreen = ({ navigation }: Props) => {
   };
 
   const handleMapLoaded = () => {
-    enableLocation();
-  };
-
-  const enableLocation = () => {
     requestLocationPermission();
   };
 
