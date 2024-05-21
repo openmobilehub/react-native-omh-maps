@@ -14,11 +14,6 @@ class RNOmhMapsPluginAzuremapsModule(
     RNOmhMapsPluginAzuremapsModuleImpl.setSubscriptionKey(subscriptionKey)
   }
 
-  @ReactMethod
-  fun relayoutMapView(viewRef: Double) {
-    RNOmhMapsPluginAzuremapsModuleImpl.relayoutMapView(viewRef, reactContext)
-  }
-
   override fun getName() = NAME
 
   companion object {
