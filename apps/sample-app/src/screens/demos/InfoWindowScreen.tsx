@@ -14,7 +14,7 @@ import {
   OmhMarkerRef,
 } from '@openmobilehub/maps-core';
 
-import { Anchor } from '../../../../packages/core/src/components/marker/RNOmhMapsMarkerNativeComponent';
+import { Anchor } from '@omh/react-native-maps-core/src/components/marker/RNOmhMapsMarkerNativeComponent';
 import { PanelCheckbox } from '../../components/controls/PanelCheckbox';
 import Slider from '../../components/controls/Slider';
 import useLogger from '../../hooks/useLogger';
