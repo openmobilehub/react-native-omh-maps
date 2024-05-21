@@ -1,11 +1,24 @@
 
 ---
 
+## Platforms
+
+|  Platform  |  Supported  |
+|:----------:|:-----------:|
+|  Android   |      ✅      |
+|    iOS     |      ✅      |
+
 ## Installation
+
+### Android
 
 ```bash
 yarn add @openmobilehub/maps-plugin-googlemaps
 ```
+
+### iOS
+
+TODO
 
 ## Configuration
 
@@ -18,6 +31,9 @@ Each plugin requires you to follow the `@openmobilehub/maps-core` setup guide. Y
 ### Credentials
 
 1. Create your API key according to the [official documentation](https://developers.google.com/maps/documentation/android-sdk/get-api-key).
+
+#### Android
+
 2. Add the following metadata tag to your `AndroidManifest.xml` file:
 
 ```xml
@@ -33,7 +49,13 @@ Each plugin requires you to follow the `@openmobilehub/maps-core` setup guide. Y
 
 3. [Optional] You can use Secrets Gradle Plugin to protect your API key. Read more about it [here](https://developers.google.com/maps/documentation/android-sdk/secrets-gradle-plugin).
 
-### [Optional] Permissions 
+#### iOS
+
+TODO
+
+### [Optional] Permissions
+
+#### Android
 
 If you plan to use location services, you need to add the following permissions to your `AndroidManifest.xml` file:
 
@@ -47,6 +69,10 @@ If you plan to use location services, you need to add the following permissions 
 </manifest>
 ```
 
+#### iOS
+
+TODO
+
 ## Usage
 
 Before interacting with any maps plugin, it is necessary to initialize the maps module.
@@ -59,7 +85,7 @@ import {OmhMapsOpenStreetMapProvider} from '@openmobilehub/maps-plugin-openstree
 // You can use different providers for apps with and without Google Play Services.
 // Remember to initialize the module before using any of its components.
 OmhMapsModule.initialize({
-  gmsProvider: OmhMapsGooglemapsProvider, 
+  gmsProvider: OmhMapsGooglemapsProvider,
   nonGmsProvider: OmhMapsOpenStreetMapProvider, // <- Note: Google Maps is not available on devices without Google Play Services.
 });
 
@@ -74,11 +100,115 @@ Interacting with the Google Maps provider follows the same pattern as other prov
 
 ## Parity Matrix
 
-:::info
+The below matrix presents the compatibility matrix, denoting support levels for each of the functionalities across platforms.
 
-TODO
+Legend of support levels:
 
-:::
+| Support level       | Symbol |
+|---------------------|:------:|
+| Fully supported     |   ✅    |
+| Partially supported |   🟨   |
+| Not supported       |   ❌    |
+
+### OmhMapView
+
+| Props               | Android | iOS |
+|---------------------|:-------:|:---:|
+| scaleFactor         |    ✅    |  ✅  |
+| mapStyle            |    ✅    |  ✅  |
+| rotateEnabled       |    ✅    |  ✅  |
+| zoomEnabled         |    ✅    |  ✅  |
+| myLocationEnabled   |    ✅    |  ✅  |
+| onMapReady          |    ✅    |  ✅  |
+| onMapLoaded         |    ✅    |  ✅  |
+| onCameraIdle        |    ✅    |  ✅  |
+| onMyLocationClicked |    ✅    |  ✅  |
+| onCameraMoveStarted |    ✅    |  ✅  |
+
+
+| Ref                 | Android | iOS |
+|---------------------|:-------:|:---:|
+| getCameraCoordinate |    ✅    |  ✅  |
+| setCameraCoordinate |    ✅    |  ✅  |
+| getProviderName     |    ✅    |  ✅  |
+| takeSnapshot        |    ✅    |  ✅  |
+
+### OmhMarker
+
+| Props                 |      Android      |      iOS      |
+|-----------------------|:-----------------:|:-------------:|
+| position              |         ✅         |       ✅       |
+| title                 |         ✅         |       ✅       |
+| clickable             |         ✅         |       ✅       |
+| draggable             |         ✅         |       ✅       |
+| anchor                |         ✅         |       ✅       |
+| infoWindowAnchor      |         ✅         |       ✅       |
+| alpha                 |         ✅         |       ✅       |
+| snippet               |         ✅         |       ✅       |
+| isVisible             |         ✅         |       ✅       |
+| isFlat                |         ✅         |       ✅       |
+| rotation              |         ✅         |       ✅       |
+| backgroundColor       |         ✅         |       ✅       |
+| markerZIndex          |         ✅         |       ✅       |
+| icon                  |         ✅         |       ✅       |
+| consumeMarkerClicks   |         ✅         |       ❌       |
+| onPress               |        🟨         |       ✅       |
+| onDragStart           |         ✅         |       ✅       |
+| onDrag                |         ✅         |       ✅       |
+| onDragEnd             |         ✅         |       ✅       |
+| onInfoWindowPress     |         ✅         |       ❌       |
+| onInfoWindowLongPress |         ✅         |       ❌       |
+| onInfoWindowClose     |        🟨         |       ❌       |
+| onInfoWindowOpen      |        🟨         |       ❌       |
+
+Comments for partially supported properties:
+| Property | Comments |
+| --------------------- | -------- |
+| onPress | Described in the OMH Android SDK [Plugin GoogleMaps documentation](https://www.openmobilehub.com/android-omh-maps/advanced-docs/plugin-googlemaps/README/) for `setOnMarkerClickListener` |
+| onInfoWindowClose, onInfoWindowOpen | Described in the OMH Android SDK [Plugin GoogleMaps documentation](https://www.openmobilehub.com/android-omh-maps/advanced-docs/plugin-googlemaps/README/) for `setOnInfoWindowOpenStatusChangeListener` |
+
+| Ref            |      Android      |      iOS      |
+|----------------|:-----------------:|:-------------:|
+| showInfoWindow |         ✅         |       ✅       |
+| hideInfoWindow |         ✅         |       ✅       |
+
+For advanced usage of `OmhMarker`, see the [Advanced Usage](https://legendary-broccoli-93ze846.pages.github.io/docs/advanced-usage) section.
+
+### OmhPolyline
+
+| Props                 | Android | iOS |
+|-----------------------|:-------:|:---:|
+| points                |    ✅    |  ✅  |
+| clickable             |    ✅    |  ✅  |
+| color                 |    ✅    |  ✅  |
+| width                 |    ✅    |  ✅  |
+| isVisible             |    ✅    |  ✅  |
+| zIndex                |    ✅    |  ✅  |
+| jointType             |    ✅    |  ❌  |
+| pattern               |    ✅    |  ✅  |
+| onPolylineClick       |    ✅    |  ✅  |
+| consumePolylineClicks |    ✅    |  ✅  |
+| spans                 |    ✅    |  ✅  |
+| cap                   |    ✅    |  ❌  |
+| startCap              |    ✅    |  ✅  |
+| endCap                |    ✅    |  ✅  |
+
+### OmhPolygon
+
+| Props                | Android | iOS |
+|----------------------|:-------:|:---:|
+| outline              |    ✅    |  ✅  |
+| clickable            |    ✅    |  ✅  |
+| strokeColor          |    ✅    |  ✅  |
+| fillColor            |    ✅    |  ✅  |
+| holes                |    ✅    |  ✅  |
+| strokeWidth          |    ✅    |  ✅  |
+| isVisible            |    ✅    |  ✅  |
+| zIndex               |    ✅    |  ✅  |
+| strokeJointType      |    ✅    |  ❌  |
+| strokePattern        |    ✅    |  ❌  |
+| onPolygonClick       |    ✅    |  ✅  |
+| consumePolygonClicks |    ✅    |  ✅  |
 
 ## License
 

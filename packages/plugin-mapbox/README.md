@@ -1,6 +1,13 @@
 
 ---
 
+## Platforms
+
+|  Platform  |  Supported  |
+|:----------:|:-----------:|
+|  Android   |      ✅      |
+|    iOS     |      ❌      |
+
 ## Installation
 
 ```bash
@@ -38,12 +45,12 @@ allprojects {
             // Use the secret token stored in gradle.properties as the password
             credentials.password = providers.gradleProperty("MAPBOX_DOWNLOADS_TOKEN").get()
             authentication { basic(BasicAuthentication) }
-        } 
+        }
     }
 }
 ```
 
-### [Optional] Permissions 
+### [Optional] Permissions
 
 If you plan to use location services, you need to add the following permissions to your `AndroidManifest.xml` file:
 
@@ -68,7 +75,7 @@ import {OmhMapsMapboxProvider, OmhMapsPluginMapboxModule} from '@openmobilehub/m
 // You can use different providers for apps with and without Google Play Services.
 // Remember to initialize the module before using any of its components.
 OmhMapsModule.initialize({
-  gmsProvider: OmhMapsMapboxProvider, 
+  gmsProvider: OmhMapsMapboxProvider,
   nonGmsProvider: OmhMapsMapboxProvider,
 });
 

@@ -1,6 +1,13 @@
 
 ---
 
+## Platforms
+
+|  Platform  |  Supported  |
+|:----------:|:-----------:|
+|  Android   |      ✅      |
+|    iOS     |      ❌      |
+
 ## Installation
 
 ```bash
@@ -37,7 +44,7 @@ allprojects {
 }
 ```
 
-### [Optional] Permissions 
+### [Optional] Permissions
 
 If you plan to use location services, you need to add the following permissions to your `AndroidManifest.xml` file:
 
@@ -62,7 +69,7 @@ import {OmhMapsAzureMapsProvider, OmhMapsPluginAzureMapsModule} from '@openmobil
 // You can use different providers for apps with and without Google Play Services.
 // Remember to initialize the module before using any of its components.
 OmhMapsModule.initialize({
-  gmsProvider: OmhMapsAzureMapsProvider, 
+  gmsProvider: OmhMapsAzureMapsProvider,
   nonGmsProvider: OmhMapsAzureMapsProvider,
 });
 

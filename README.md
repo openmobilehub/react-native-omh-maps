@@ -93,30 +93,29 @@ Comments for partially supported properties:
 
 | Props                 | Android GoogleMaps | Android OpenStreetMaps | Android Mapbox | Android AzureMaps | iOS GoogleMaps | iOS AppleMaps |
 | --------------------- | :----------------: | :--------------------: | :------------: | :---------------: | :------------: | :-----------: |
-| position              |         ✅         |           ✅           |       ✅       |        ✅         |       ?        |       ?       |
-| title                 |         ✅         |           ✅           |       ✅       |        ✅         |       ?        |       ?       |
-| clickable             |         ✅         |           ✅           |       ✅       |        ✅         |       ?        |       ?       |
-| draggable             |         ✅         |           ✅           |       ✅       |        ❌         |       ?        |       ?       |
-| anchor                |         ✅         |           ✅           |       🟨       |        🟨         |       ?        |       ?       |
-| infoWindowAnchor      |         ✅         |           ✅           |       ✅       |        ✅         |       ?        |       ?       |
-| alpha                 |         ✅         |           ✅           |       ✅       |        ✅         |       ?        |       ?       |
-| snippet               |         ✅         |           ✅           |       ✅       |        ✅         |       ?        |       ?       |
-| isVisible             |         ✅         |           ✅           |       ✅       |        ✅         |       ?        |       ?       |
-| isFlat                |         ✅         |           ✅           |       ✅       |        ✅         |       ?        |       ?       |
-| rotation              |         ✅         |           ✅           |       ✅       |        ✅         |       ?        |       ?       |
-| backgroundColor       |         ✅         |           ❌           |       ✅       |        ✅         |       ?        |       ?       |
-| isInfoWindowShown     |         ✅         |           ✅           |       ✅       |        ✅         |       ?        |       ?       |
-| markerZIndex          |         ✅         |           ❌           |       ❌       |        ❌         |       ?        |       ?       |
-| icon                  |         ✅         |           ✅           |       ✅       |        ✅         |       ?        |       ?       |
-| consumeMarkerClicks   |         ✅         |           ✅           |       ✅       |        ✅         |       ?        |       ?       |
-| onPress               |         🟨         |           ✅           |       ✅       |        ✅         |       ?        |       ?       |
-| onDragStart           |         ✅         |           ✅           |       ✅       |        ❌         |       ?        |       ?       |
-| onDrag                |         ✅         |           ✅           |       ✅       |        ❌         |       ?        |       ?       |
-| onDragEnd             |         ✅         |           ✅           |       ✅       |        ❌         |       ?        |       ?       |
-| onInfoWindowPress     |         ✅         |           ✅           |       ✅       |        ✅         |       ?        |       ?       |
-| onInfoWindowLongPress |         ✅         |           ✅           |       ✅       |        ✅         |       ?        |       ?       |
-| onInfoWindowClose     |         🟨         |           ✅           |       ✅       |        ✅         |       ?        |       ?       |
-| onInfoWindowOpen      |         🟨         |           ✅           |       ✅       |        ✅         |       ?        |       ?       |
+| position              |         ✅         |           ✅           |       ✅       |        ✅         |       ✅        |       ✅       |
+| title                 |         ✅         |           ✅           |       ✅       |        ✅         |       ✅        |       ✅       |
+| clickable             |         ✅         |           ✅           |       ✅       |        ✅         |       ✅        |       🟨       |
+| draggable             |         ✅         |           ✅           |       ✅       |        ❌         |       ✅        |       ✅       |
+| anchor                |         ✅         |           ✅           |       🟨       |        🟨         |       ✅        |       ❌       |
+| infoWindowAnchor      |         ✅         |           ✅           |       ✅       |        ✅         |       ✅        |       ❌       |
+| alpha                 |         ✅         |           ✅           |       ✅       |        ✅         |       ✅        |       ❌       |
+| snippet               |         ✅         |           ✅           |       ✅       |        ✅         |       ✅        |       ✅       |
+| isVisible             |         ✅         |           ✅           |       ✅       |        ✅         |       ✅        |       ✅       |
+| isFlat                |         ✅         |           ✅           |       ✅       |        ✅         |       ✅        |       ❌       |
+| rotation              |         ✅         |           ✅           |       ✅       |        ✅         |       ✅        |       ❌       |
+| backgroundColor       |         ✅         |           ❌           |       ✅       |        ✅         |       ✅        |       ✅       |
+| markerZIndex          |         ✅         |           ❌           |       ❌       |        ❌         |       ✅        |       ✅       |
+| icon                  |         ✅         |           ✅           |       ✅       |        ✅         |       ✅        |       ❌       |
+| consumeMarkerClicks   |         ✅         |           ✅           |       ✅       |        ✅         |       ❌        |       ❌       |
+| onPress               |         🟨         |           ✅           |       ✅       |        ✅         |       ✅        |       ✅       |
+| onDragStart           |         ✅         |           ✅           |       ✅       |        ❌         |       ✅        |       ✅       |
+| onDrag                |         ✅         |           ✅           |       ✅       |        ❌         |       ✅        |       ✅       |
+| onDragEnd             |         ✅         |           ✅           |       ✅       |        ❌         |       ✅        |       ✅       |
+| onInfoWindowPress     |         ✅         |           ✅           |       ✅       |        ✅         |       ❌        |       ✅       |
+| onInfoWindowLongPress |         ✅         |           ✅           |       ✅       |        ✅         |       ❌        |       ❌       |
+| onInfoWindowClose     |         🟨         |           ✅           |       ✅       |        ✅         |       ❌        |       ❌       |
+| onInfoWindowOpen      |         🟨         |           ✅           |       ✅       |        ✅         |       ❌        |       ❌       |
 
 Comments for partially supported properties:
 | Property | Comments |
@@ -124,6 +123,11 @@ Comments for partially supported properties:
 | anchor | On Mapbox and Azure Maps providers, values are discretized as described in - respectively - the OMH Android SDK [Plugin Mapbox documentation](https://www.openmobilehub.com/android-omh-maps/advanced-docs/plugin-mapbox/README/) and the OMH Android SDK [Plugin AzureMaps documentation](https://www.openmobilehub.com/android-omh-maps/advanced-docs/plugin-azuremaps/README/) for `anchor` |
 | onPress | Described in the OMH Android SDK [Plugin GoogleMaps documentation](https://www.openmobilehub.com/android-omh-maps/advanced-docs/plugin-googlemaps/README/) for `setOnMarkerClickListener` |
 | onInfoWindowClose, onInfoWindowOpen | Described in the OMH Android SDK [Plugin GoogleMaps documentation](https://www.openmobilehub.com/android-omh-maps/advanced-docs/plugin-googlemaps/README/) for `setOnInfoWindowOpenStatusChangeListener` |
+
+| Ref                 | Android GoogleMaps | Android OpenStreetMaps | Android Mapbox | Android AzureMaps | iOS GoogleMaps | iOS AppleMaps |
+| ------------------- | :----------------: | :--------------------: | :------------: | :---------------: | :------------: | :-----------: |
+| showInfoWindow |         ✅         |           ✅           |       ✅       |        ✅         |       ✅       |      ✅       |
+| hideInfoWindow |         ✅         |           ✅           |       ✅       |        ✅         |       ✅       |      ✅       |
 
 For advanced usage of `OmhMarker`, see the [Advanced Usage](https://legendary-broccoli-93ze846.pages.github.io/docs/advanced-usage) section.
 

@@ -1,6 +1,13 @@
 
 ---
 
+## Platforms
+
+|  Platform  |  Supported  |
+|:----------:|:-----------:|
+|  Android   |      ✅      |
+|    iOS     |      ❌      |
+
 ## Installation
 
 ```bash
@@ -15,7 +22,7 @@ Each plugin requires you to follow the `@openmobilehub/maps-core` setup guide. Y
 
 :::
 
-### [Optional] Permissions 
+### [Optional] Permissions
 
 If you plan to use location services, you need to add the following permissions to your `AndroidManifest.xml` file:
 
@@ -40,7 +47,7 @@ import {OmhMapsOpenStreetMapProvider} from '@openmobilehub/maps-plugin-openstree
 // You can use different providers for apps with and without Google Play Services.
 // Remember to initialize the module before using any of its components.
 OmhMapsModule.initialize({
-  gmsProvider: OmhMapsOpenStreetMapProvider, 
+  gmsProvider: OmhMapsOpenStreetMapProvider,
   nonGmsProvider: OmhMapsOpenStreetMapProvider,
 });
 
