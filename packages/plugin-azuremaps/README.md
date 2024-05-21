@@ -89,11 +89,126 @@ Interacting with the Azure Maps provider follows the same pattern as other provi
 
 ## Parity Matrix
 
-:::info
 
-TODO
+The below matrix presents the compatibility matrix, denoting support levels for each of the functionalities.
 
-:::
+Legend of support levels:
+
+| Support level       | Symbol |
+|---------------------|:------:|
+| Fully supported     |   ✅    |
+| Partially supported |   🟨   |
+| Not supported       |   ❌    |
+
+### OmhMapView
+
+| Props               | Supported |
+|---------------------|:---------:|
+| scaleFactor         |     ✅     |
+| mapStyle            |     ❌     |
+| rotateEnabled       |     ❌     |
+| zoomEnabled         |     ✅     |
+| myLocationEnabled   |     ✅     |
+| onMapReady          |     ✅     |
+| onMapLoaded         |     ✅     |
+| onCameraIdle        |     ✅     |
+| onMyLocationClicked |     ✅     |
+| onCameraMoveStarted |     ✅     |
+
+| Ref                 | Supported |
+|---------------------|:---------:|
+| getCameraCoordinate |     ✅     |
+| setCameraCoordinate |     ✅     |
+| getProviderName     |     ✅     |
+| takeSnapshot        |     ❌     |
+
+### OmhMarker
+
+| Props                 | Supported |
+|-----------------------|:---------:|
+| position              |     ✅     |
+| title                 |     ✅     |
+| clickable             |     ✅     |
+| draggable             |     ❌     |
+| anchor                |    🟨     |
+| infoWindowAnchor      |     ✅     |
+| alpha                 |     ✅     |
+| snippet               |     ✅     |
+| isVisible             |     ✅     |
+| isFlat                |     ✅     |
+| rotation              |     ✅     |
+| backgroundColor       |     ✅     |
+| markerZIndex          |     ❌     |
+| icon                  |     ✅     |
+| consumeMarkerClicks   |     ✅     |
+| onPress               |     ✅     |
+| onDragStart           |     ❌     |
+| onDrag                |     ❌     |
+| onDragEnd             |     ❌     |
+| onInfoWindowPress     |     ✅     |
+| onInfoWindowLongPress |     ✅     |
+| onInfoWindowClose     |     ✅     |
+| onInfoWindowOpen      |     ✅     |
+
+Comments for partially supported properties:
+| Property | Comments |
+| --------------------- | -------- |
+| anchor | On Azure Maps provider, values are discretized as described in the OMH Android SDK [Plugin AzureMaps documentation](https://www.openmobilehub.com/android-omh-maps/advanced-docs/plugin-azuremaps/README/) for `anchor` |
+
+| Ref            | Supported |
+|----------------|:---------:|
+| showInfoWindow |     ✅     |
+| hideInfoWindow |     ✅     |
+
+For advanced usage of `OmhMarker`, see the [Advanced Usage](https://legendary-broccoli-93ze846.pages.github.io/docs/advanced-usage) section.
+
+### OmhPolyline
+
+| Props                 | Supported |
+|-----------------------|:---------:|
+| points                |     ✅     |
+| clickable             |     ✅     |
+| color                 |     ✅     |
+| width                 |     ✅     |
+| isVisible             |     ✅     |
+| zIndex                |     ❌     |
+| jointType             |     ✅     |
+| pattern               |    🟨     |
+| onPolylineClick       |     ✅     |
+| consumePolylineClicks |     ✅     |
+| spans                 |     ❌     |
+| cap                   |    🟨     |
+| startCap              |     ❌     |
+| endCap                |     ❌     |
+
+Comments for partially supported properties:
+| Property | Comments |
+| --------------------- | -------- |
+| pattern | Described in the OMH Android SDK [Plugin AzureMaps documentation](https://www.openmobilehub.com/android-omh-maps/advanced-docs/plugin-azuremaps/README/) for `pattern` |
+| cap | Described in the OMH Android SDK [Plugin AzureMaps documentation](https://www.openmobilehub.com/android-omh-maps/advanced-docs/plugin-azuremaps/README/) for `setCap` |
+
+### OmhPolygon
+
+| Props                | Supported |
+|----------------------|:---------:|
+| outline              |     ✅     |
+| clickable            |     ✅     |
+| strokeColor          |     ✅     |
+| fillColor            |     ✅     |
+| holes                |     ✅     |
+| strokeWidth          |     ✅     |
+| isVisible            |     ✅     |
+| zIndex               |     ❌     |
+| strokeJointType      |     ✅     |
+| strokePattern        |    🟨     |
+| onPolygonClick       |     ✅     |
+| consumePolygonClicks |     ✅     |
+
+Comments for partially supported properties:
+| Property | Comments |
+| --------------------- | -------- |
+| strokePattern | Described in the OMH Android SDK [Plugin AzureMaps documentation](https://www.openmobilehub.com/android-omh-maps/advanced-docs/plugin-azuremaps/README/) for `strokePattern` |
+
 
 ## License
 

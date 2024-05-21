@@ -64,11 +64,119 @@ Interacting with the Openstreetmap provider follows the same pattern as other pr
 
 ## Parity Matrix
 
-:::info
+The below matrix presents the compatibility matrix, denoting support levels for each of the functionalities.
 
-TODO
+Legend of support levels:
 
-:::
+| Support level       | Symbol |
+|---------------------|:------:|
+| Fully supported     |   ✅    |
+| Partially supported |   🟨   |
+| Not supported       |   ❌    |
+
+### OmhMapView
+
+| Props               | Supported |
+|---------------------|:---------:|
+| scaleFactor         |     ✅     |
+| mapStyle            |     ❌     |
+| rotateEnabled       |     ✅     |
+| zoomEnabled         |     ✅     |
+| myLocationEnabled   |     ✅     |
+| onMapReady          |     ✅     |
+| onMapLoaded         |     ✅     |
+| onCameraIdle        |     ✅     |
+| onMyLocationClicked |     ✅     |
+| onCameraMoveStarted |    🟨     |
+
+Comments for partially supported properties:
+| Property | Comments |
+| --------------------- | -------- |
+| onCameraMoveStarted | Described in the OMH Android SDK [Plugin OpenStreetMap documentation](https://www.openmobilehub.com/android-omh-maps/advanced-docs/plugin-openstreetmap/README/) for `setOnCameraMoveStartedListener` |
+
+| Ref                 | Supported |
+|---------------------|:---------:|
+| getCameraCoordinate |     ✅     |
+| setCameraCoordinate |     ✅     |
+| getProviderName     |     ✅     |
+| takeSnapshot        |     ✅     |
+
+### OmhMarker
+
+| Props                 | Supported |
+|-----------------------|:---------:|
+| position              |     ✅     |
+| title                 |     ✅     |
+| clickable             |     ✅     |
+| draggable             |     ✅     |
+| anchor                |     ✅     |
+| infoWindowAnchor      |     ✅     |
+| alpha                 |     ✅     |
+| snippet               |     ✅     |
+| isVisible             |     ✅     |
+| isFlat                |     ✅     |
+| rotation              |     ✅     |
+| backgroundColor       |     ❌     |
+| markerZIndex          |     ❌     |
+| icon                  |     ✅     |
+| consumeMarkerClicks   |     ✅     |
+| onPress               |     ✅     |
+| onDragStart           |     ✅     |
+| onDrag                |     ✅     |
+| onDragEnd             |     ✅     |
+| onInfoWindowPress     |     ✅     |
+| onInfoWindowLongPress |     ✅     |
+| onInfoWindowClose     |     ✅     |
+| onInfoWindowOpen      |     ✅     |
+
+| Ref            | Supported |
+|----------------|:---------:|
+| showInfoWindow |     ✅     |
+| hideInfoWindow |     ✅     |
+
+For advanced usage of `OmhMarker`, see the [Advanced Usage](https://legendary-broccoli-93ze846.pages.github.io/docs/advanced-usage) section.
+
+### OmhPolyline
+
+| Props                 | Supported |
+|-----------------------|:---------:|
+| points                |     ✅     |
+| clickable             |     ✅     |
+| color                 |     ✅     |
+| width                 |     ✅     |
+| isVisible             |     ✅     |
+| zIndex                |     ❌     |
+| jointType             |     ❌     |
+| pattern               |     ❌     |
+| onPolylineClick       |     ✅     |
+| consumePolylineClicks |     ✅     |
+| spans                 |     ❌     |
+| cap                   |    🟨     |
+| startCap              |     ❌     |
+| endCap                |     ❌     |
+
+Comments for partially supported properties:
+| Property | Comments |
+| --------------------- | -------- |
+| cap | Described in the OMH Android SDK [Plugin OpenStreetMap documentation](https://www.openmobilehub.com/android-omh-maps/advanced-docs/plugin-openstreetmap/README/) for `setCap` |
+
+### OmhPolygon
+
+| Props                | Supported |
+|----------------------|:---------:|
+| outline              |     ✅     |
+| clickable            |     ✅     |
+| strokeColor          |     ✅     |
+| fillColor            |     ✅     |
+| holes                |     ✅     |
+| strokeWidth          |     ✅     |
+| isVisible            |     ✅     |
+| zIndex               |     ❌     |
+| strokeJointType      |     ❌     |
+| strokePattern        |     ❌     |
+| onPolygonClick       |     ✅     |
+| consumePolygonClicks |     ✅     |
+
 
 ## License
 

@@ -154,7 +154,7 @@ Comments for partially supported properties:
 | Property | Comments |
 | --------------------- | -------- |
 | pattern | Described in the OMH Android SDK [Plugin AzureMaps documentation](https://www.openmobilehub.com/android-omh-maps/advanced-docs/plugin-azuremaps/README/) for `pattern` |
-| cap | Described in the OMH Android SDK [Plugin OpenStreetMap documentation](https://www.openmobilehub.com/android-omh-maps/advanced-docs/plugin-openstreetmap/README/) for `setCap` |
+| cap | Described in the OMH Android SDK [Plugin OpenStreetMap documentation](https://www.openmobilehub.com/android-omh-maps/advanced-docs/plugin-openstreetmap/README/), [Plugin AzureMaps documentation](https://www.openmobilehub.com/android-omh-maps/advanced-docs/plugin-azuremaps/README/) for `setCap` |
 
 ### OmhPolygon
 
