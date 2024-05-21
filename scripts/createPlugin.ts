@@ -223,7 +223,7 @@ const questions: PromptObject[] = [
   };
 
   if (!packageJson.peerDependencies) packageJson.peerDependencies = {};
-  packageJson.peerDependencies['@omh/react-native-maps-core'] =
+  packageJson.peerDependencies['@openmobilehub/maps-core'] =
     realCorePackageJson.version;
 
   fs.writeFileSync(

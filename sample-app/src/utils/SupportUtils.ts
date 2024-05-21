@@ -1,4 +1,4 @@
-import { OmhMapProviderName } from '@omh/react-native-maps-core';
+import { OmhMapProviderName } from '@openmobilehub/maps-core';
 import { Constants } from './Constants';
 import Demo = Constants.Demo;
 

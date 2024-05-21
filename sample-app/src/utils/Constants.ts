@@ -2,7 +2,7 @@ import {
   OmhCoordinate,
   OmhMapProviderName,
   OmhPatternItem,
-} from '@omh/react-native-maps-core';
+} from '@openmobilehub/maps-core';
 import { JointTypeItem, PatternOption } from '../types/common';
 
 export namespace Constants {

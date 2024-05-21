@@ -1,10 +1,6 @@
 import React, { useCallback } from 'react';
 
-import {
-  OmhMapView,
-  OmhMapViewRef,
-  OmhMarker,
-} from '@omh/react-native-maps-core';
+import { OmhMapView, OmhMapViewRef, OmhMarker } from '@openmobilehub/maps-core';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { RootStackParamList } from '../../App';
 import Route from '../../Routes';

@@ -1,6 +1,6 @@
 import React, { PropsWithChildren, createContext } from 'react';
 
-import { OmhMapProvider, OmhMapsModule } from '@omh/react-native-maps-core';
+import { OmhMapProvider, OmhMapsModule } from '@openmobilehub/maps-core';
 
 export type MapProviderContextType = {
   mapProvider: OmhMapProvider;

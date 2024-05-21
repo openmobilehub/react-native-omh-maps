@@ -7,7 +7,7 @@ import {
   OmhMapView,
   OmhMapViewRef,
   OmhPolygon,
-} from '@omh/react-native-maps-core';
+} from '@openmobilehub/maps-core';
 
 import Picker from '../../components/controls/Picker';
 import Slider from '../../components/controls/Slider';

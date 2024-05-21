@@ -1,5 +1,5 @@
 {
-  "name": "@omh/react-native-maps-scripts",
+  "name": "@openmobilehub/maps-scripts",
   "version": "1.0.0",
   "description": "React Native OMH Maps scripts Workspace",
   "private": true,

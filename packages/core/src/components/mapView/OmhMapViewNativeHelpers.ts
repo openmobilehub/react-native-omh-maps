@@ -11,7 +11,7 @@ export const tweakCompass = (
     const providerName = NativeOmhMapsCoreModule.getProviderName(viewRef);
 
     if (providerName === 'Mapbox') {
-      const mapboxPlugin = require('@omh/react-native-maps-plugin-mapbox');
+      const mapboxPlugin = require('@openmobilehub/maps-plugin-mapbox');
       mapboxPlugin.OmhMapsPluginMapboxModule.tweakCompass(viewRef);
     }
   } catch (error) {
@@ -31,7 +31,7 @@ export const useOSMMapViewRelayout =
     if (!viewRef) return;
 
     if (providerName === 'OpenStreetMap') {
-      const osmPlugin = require('@omh/react-native-maps-plugin-openstreetmap');
+      const osmPlugin = require('@openmobilehub/maps-plugin-openstreetmap');
       osmPlugin.OmhMapsPluginOpenstreetmapModule.relayoutMapView(viewRef);
     }
   };

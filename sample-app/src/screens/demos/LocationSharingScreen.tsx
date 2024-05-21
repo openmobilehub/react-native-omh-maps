@@ -25,7 +25,7 @@ import {
   OmhMapView,
   OmhMapViewRef,
   OmhMapsLocationModule,
-} from '@omh/react-native-maps-core';
+} from '@openmobilehub/maps-core';
 
 import useLogger from '../../hooks/useLogger';
 import { demoStyles } from '../../styles/demoStyles';
