@@ -4,7 +4,7 @@
 ## Installation
 
 ```bash
-npm add @openmobilehub/maps-plugin-mapbox
+yarn add @openmobilehub/maps-plugin-mapbox
 ```
 
 ## Configuration
@@ -94,4 +94,4 @@ TODO
 
 ## License
 
-- See [LICENSE](https://github.com/openmobilehub/react-native-omh-auth/blob/main/LICENSE)
+- See [LICENSE](https://todo.add.link)
