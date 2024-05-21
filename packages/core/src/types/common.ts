@@ -94,4 +94,5 @@ export type OmhMapProvider = {
 export type Providers = {
   gmsProvider: OmhMapProvider;
   nonGmsProvider: OmhMapProvider;
+  iosProvider: OmhMapProvider;
 };

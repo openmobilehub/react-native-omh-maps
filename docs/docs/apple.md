@@ -13,14 +13,45 @@ sidebar_label: 'Apple'
 
 ## Installation
 
+```bash
+yarn add react-native-maps
+yarn cd ios && pod install
+```
 
 ## Configuration
 
-### Credentials
+:::info[Prerequisites]
+
+Each plugin requires you to follow the `@openmobilehub/maps-core` setup guide. You can find it [here](https://todo.add.link).
+
+:::
 
 ## Usage
 
+Before interacting with any maps plugin, it is necessary to initialize the maps module.
+
+```typescript
+import {OmhMapsModule, OmhMapsAppleMapsIOSProvider} from '@openmobilehub/maps-core';
+import {OmhMapsOpenStreetMapProvider} from '@openmobilehub/maps-plugin-openstreetmap';
+
+// You can use different providers for iOS and Android.
+// For Android, you can use different providers for devices with and without Google Play Services.
+// Remember to initialize the module before using any of its components.
+OmhMapsModule.initialize({
+  iosProvider: OmhMapsAppleMapsIOSProvider,
+  gmsProvider: OmhMapsOpenStreetMapProvider,
+  nonGmsProvider: OmhMapsOpenStreetMapProvider,
+});
+
+const App = () => {
+  return <OmhMapView />;
+}
+```
+
 ### Usage Guide
+
+Interacting with the Google Maps provider follows the same pattern as other providers, as they all implement the same interface. For a comprehensive list of available modules, components, and props, refer to the [Quick Start](https://todo.add.link) guide.
+
 
 ## Parity Matrix
 

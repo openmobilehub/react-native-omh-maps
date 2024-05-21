@@ -25,6 +25,7 @@ const defaultMapProvider = OmhMapsModule.getDefaultMapProvider();
 OmhMapsModule.initialize({
   gmsProvider: defaultMapProvider,
   nonGmsProvider: defaultMapProvider,
+  iosProvider: defaultMapProvider,
 });
 
 export const MenuScreen = () => {
@@ -37,6 +38,7 @@ export const MenuScreen = () => {
     OmhMapsModule.initialize({
       gmsProvider: newProvider,
       nonGmsProvider: newProvider,
+      iosProvider: newProvider,
     });
   };
 

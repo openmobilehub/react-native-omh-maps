@@ -69,14 +69,16 @@ If you plan to use location services, you need to add the following permissions 
 Before interacting with any maps plugin, it is necessary to initialize the maps module.
 
 ```typescript
-import {OmhMapsModule} from '@openmobilehub/maps-core';
+import {OmhMapsModule, OmhMapsAppleMapsIOSProvider} from '@openmobilehub/maps-core';
 import {OmhMapsMapboxProvider, OmhMapsPluginMapboxModule} from '@openmobilehub/maps-plugin-mapbox';
 
-// You can use different providers for apps with and without Google Play Services.
+// You can use different providers for iOS and Android.
+// For Android, you can use different providers for devices with and without Google Play Services.
 // Remember to initialize the module before using any of its components.
 OmhMapsModule.initialize({
   gmsProvider: OmhMapsMapboxProvider,
   nonGmsProvider: OmhMapsMapboxProvider,
+  iosProvider: OmhMapsAppleMapsIOSProvider,
 });
 
 // Credentials setup must be done before using the map view.
