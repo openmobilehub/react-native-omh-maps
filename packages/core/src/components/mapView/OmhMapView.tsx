@@ -23,7 +23,7 @@ import {
   notReadyPromiseHandler,
 } from './OmhMapViewHelpers';
 import RNOmhMapsCoreViewNativeComponent from './RNOmhMapsCoreViewNativeComponent';
-import { tweakCompass, useMyLocationIconFix } from './OmhMapViewNativeHelpers';
+import { tweakCompass } from './OmhMapViewNativeHelpers';
 
 /**
  * The OMH Map View component. Actual implementation is picked based on the platform capabilities (GMS or non-GMS)
@@ -69,8 +69,6 @@ export const OmhMapView = forwardRef<OmhMapViewRef, OmhMapViewProps>(
 
       _onCameraIdle?.();
     };
-
-    useMyLocationIconFix(nativeComponentRef, isMapReady, myLocationEnabled);
 
     React.useImperativeHandle(
       forwardedRef,

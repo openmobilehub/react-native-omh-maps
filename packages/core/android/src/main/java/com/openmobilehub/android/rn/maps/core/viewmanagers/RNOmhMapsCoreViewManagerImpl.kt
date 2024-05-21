@@ -402,6 +402,9 @@ class RNOmhMapsCoreViewManagerImpl(private val reactContext: ReactContext) {
     fun setMyLocationEnabled(view: FragmentContainerView, value: Boolean) {
         val omhMap = FragmentUtils.findFragment(view)?.omhMap
         omhMap?.setMyLocationEnabled(value)
+        // Enabling my location requires manual layout
+        // as the new native UI control is added to the map
+        view.manuallyLayoutView()
     }
 
     companion object {
