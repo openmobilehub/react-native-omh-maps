@@ -85,11 +85,6 @@ export type OmhMarkerProperties = {
   backgroundColor?: OmhColor;
 
   /**
-   * Whether the info window associated with this marker is currently being shown.
-   */
-  showInfoWindow?: boolean;
-
-  /**
    * The zIndex of the marker, which specifies the order in which the marker is drawn on the map.
    */
   markerZIndex?: number; // note: the name is not just zIndex, since this somehow collides with RN's property and fails to compile
@@ -135,7 +130,7 @@ export type MarkerDragEndEvent = MarkerPositionCarryingOmhEvent;
 /**
  * Event triggered when an info window is pressed.
  */
-export type InfoWindowPressEvent = MarkerPositionCarryingOmhEvent;
+export type InfoWindowPressEvent = OmhEvent<{ position?: OmhCoordinate }>;
 
 /**
  * Event triggered when an info window is long pressed.
@@ -190,3 +185,18 @@ export type OmhMarkerEvents = Partial<{
   /** Called when an info window is opened. */
   onInfoWindowOpen: (event: InfoWindowOpenEvent) => void;
 }>;
+
+/**
+ * The OMH Marker reference.
+ */
+export type OmhMarkerRef = {
+  /**
+   * Shows the info window associated with this marker.
+   */
+  showInfoWindow: () => void;
+  /**
+   * Hides the info window associated with this marker if it is currently being
+   * shown.
+   * */
+  hideInfoWindow: () => void;
+};

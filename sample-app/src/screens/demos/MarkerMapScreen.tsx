@@ -18,6 +18,7 @@ import {
   OmhMapViewRef,
   OmhMarker,
   OmhMarkerConstants,
+  OmhMarkerRef,
 } from '@omh/react-native-maps-core';
 import { Anchor } from '../../../../packages/core/src/components/marker/RNOmhMapsMarkerNativeComponent';
 import soccerBallIcon from '../../assets/img/soccer_ball.bmp';
@@ -62,7 +63,7 @@ const getSupportedFeatures = (currentMapProvider?: string) => {
     draggable: isFeatureSupported(
       currentMapProvider,
       Platform.OS === 'ios'
-        ? iOSProvidersWithout(['Apple'])
+        ? IOS_SUPPORTED_PROVIDERS
         : androidProvidersWithout(['AzureMaps'])
     ),
     alpha: isFeatureSupported(
@@ -93,6 +94,14 @@ const getSupportedFeatures = (currentMapProvider?: string) => {
       currentMapProvider,
       Platform.OS === 'ios'
         ? iOSProvidersWithout(['Apple'])
+        : ANDROID_SUPPORTED_PROVIDERS
+    ),
+    toggling: isFeatureSupported(
+      currentMapProvider,
+      Platform.OS === 'ios'
+        ? // On iOS, by default, the info window is always open on press and
+          // this behaviour cannot be changed
+          iOSProvidersWithout(['Google', 'Apple'])
         : ANDROID_SUPPORTED_PROVIDERS
     ),
   };
@@ -132,6 +141,19 @@ export const MarkerMapScreen = () => {
     getSupportedFeatures()
   );
   const [disabledOptions, setDisabledOptions] = useState(getDisabledOptions());
+
+  const configurableMarkerRef = useRef<OmhMarkerRef | null>(null);
+  const iconMarkerRef = useRef<OmhMarkerRef | null>(null);
+  const coloredMarkerRef = useRef<OmhMarkerRef | null>(null);
+
+  const markersRefs = useMemo(() => {
+    return {
+      [MarkerIWTitles.CONFIGURABLE_TEST_MARKER]: configurableMarkerRef,
+      [MarkerIWTitles.STATIC_ICON_MARKER_NON_DRAGGABLE]: iconMarkerRef,
+      [MarkerIWTitles.STATIC_COLORED_MARKER_DRAGGABLE]: coloredMarkerRef,
+      [MarkerIWTitles.STATIC_COLORED_MARKER_NON_DRAGGABLE]: coloredMarkerRef,
+    };
+  }, [configurableMarkerRef, iconMarkerRef, coloredMarkerRef]);
 
   const [mountCustomizableMarker, setMountCustomizableMarker] = useState(true);
   const [customizableMarkerVisible, setCustomizableMarkerVisible] =
@@ -174,14 +196,27 @@ export const MarkerMapScreen = () => {
 
       showSnackbar(message);
 
+      if (supportedFeatures.toggling) {
+        if (showInfoWindow[title]) {
+          markersRefs[title]?.current?.hideInfoWindow();
+        } else {
+          markersRefs[title]?.current?.showInfoWindow();
+        }
+      }
+
       setShowInfoWindow({
         ...showInfoWindow,
         [title]: !showInfoWindow[title],
       });
     },
-    [showSnackbar, logger, showInfoWindow]
+    [
+      logger,
+      showSnackbar,
+      supportedFeatures.toggling,
+      showInfoWindow,
+      markersRefs,
+    ]
   );
-
   const genMarkerOnIWPressHandler = useCallback(
     (title: MarkerIWTitles) => () => {
       const message = `${_.capitalize(title)} info window clicked`;
@@ -189,12 +224,24 @@ export const MarkerMapScreen = () => {
 
       showSnackbar(message);
 
+      markersRefs[title]?.current?.hideInfoWindow();
+
       setShowInfoWindow({
         ...showInfoWindow,
-        [title]: !showInfoWindow[title],
+        [title]: false,
       });
     },
-    [showSnackbar, logger, showInfoWindow]
+    [logger, showSnackbar, markersRefs, showInfoWindow]
+  );
+
+  const genMarkerOnIWCloseHandler = useCallback(
+    (title: MarkerIWTitles) => () => {
+      setShowInfoWindow({
+        ...showInfoWindow,
+        [title]: false,
+      });
+    },
+    [showInfoWindow]
   );
 
   const onCustomizableMarkerDragStart = useCallback(
@@ -290,9 +337,7 @@ export const MarkerMapScreen = () => {
           }}>
           {mountCustomizableMarker && (
             <OmhMarker
-              showInfoWindow={
-                showInfoWindow[MarkerIWTitles.CONFIGURABLE_TEST_MARKER]
-              }
+              ref={configurableMarkerRef}
               title={MarkerIWTitles.CONFIGURABLE_TEST_MARKER}
               position={customizableMarkerPosition}
               draggable={customizableMarkerDraggable}
@@ -308,6 +353,9 @@ export const MarkerMapScreen = () => {
                 MarkerIWTitles.CONFIGURABLE_TEST_MARKER
               )}
               onInfoWindowPress={genMarkerOnIWPressHandler(
+                MarkerIWTitles.CONFIGURABLE_TEST_MARKER
+              )}
+              onInfoWindowClose={genMarkerOnIWCloseHandler(
                 MarkerIWTitles.CONFIGURABLE_TEST_MARKER
               )}
               onDragStart={onCustomizableMarkerDragStart}
@@ -340,10 +388,8 @@ export const MarkerMapScreen = () => {
           )}
 
           <OmhMarker
+            ref={iconMarkerRef}
             isVisible={showStaticIconMarker}
-            showInfoWindow={
-              showInfoWindow[MarkerIWTitles.STATIC_ICON_MARKER_NON_DRAGGABLE]
-            }
             title={MarkerIWTitles.STATIC_ICON_MARKER_NON_DRAGGABLE}
             position={{
               latitude: Constants.Maps.GREENWICH_COORDINATE.latitude + 0.0016,
@@ -355,12 +401,15 @@ export const MarkerMapScreen = () => {
             onInfoWindowPress={genMarkerOnIWPressHandler(
               MarkerIWTitles.STATIC_ICON_MARKER_NON_DRAGGABLE
             )}
+            onInfoWindowClose={genMarkerOnIWCloseHandler(
+              MarkerIWTitles.STATIC_ICON_MARKER_NON_DRAGGABLE
+            )}
             markerZIndex={1.9}
             icon={soccerBallIcon}
           />
 
           <OmhMarker
-            showInfoWindow={showInfoWindow[staticColoredMarkerTitle]}
+            ref={coloredMarkerRef}
             title={staticColoredMarkerTitle}
             position={{
               latitude: Constants.Maps.GREENWICH_COORDINATE.latitude + 0.0016,
@@ -370,6 +419,9 @@ export const MarkerMapScreen = () => {
             draggable={true}
             onPress={genMarkerOnPressHandler(staticColoredMarkerTitle)}
             onInfoWindowPress={genMarkerOnIWPressHandler(
+              staticColoredMarkerTitle
+            )}
+            onInfoWindowClose={genMarkerOnIWCloseHandler(
               staticColoredMarkerTitle
             )}
             markerZIndex={2.9}

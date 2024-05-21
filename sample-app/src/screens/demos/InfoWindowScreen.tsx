@@ -1,5 +1,5 @@
-import React, { useCallback, useRef, useState } from 'react';
-import { ScrollView, StyleSheet, View } from 'react-native';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
+import { Platform, ScrollView, StyleSheet, View } from 'react-native';
 import { Button, Subheading } from 'react-native-paper';
 
 import {
@@ -11,6 +11,7 @@ import {
   OmhMapViewRef,
   OmhMarker,
   OmhMarkerConstants,
+  OmhMarkerRef,
 } from '@omh/react-native-maps-core';
 
 import { Anchor } from '../../../../packages/core/src/components/marker/RNOmhMapsMarkerNativeComponent';
@@ -22,13 +23,78 @@ import { demoStyles } from '../../styles/demoStyles';
 import { Constants } from '../../utils/Constants';
 import { formatPosition } from '../../utils/converters';
 import { MarkerIWTitles } from './MarkerMapScreen';
+import {
+  androidProvidersWithout,
+  iOSProvidersWithout,
+  isFeatureSupported,
+} from '../../utils/SupportUtils';
+import ANDROID_SUPPORTED_PROVIDERS = Constants.Demo.ANDROID_SUPPORTED_PROVIDERS;
+
+const getSupportedFeatures = (currentMapProvider?: string) => {
+  return {
+    infoWindowAnchor: isFeatureSupported(
+      currentMapProvider,
+      Platform.OS === 'ios'
+        ? iOSProvidersWithout(['Apple'])
+        : ANDROID_SUPPORTED_PROVIDERS
+    ),
+    clickable: isFeatureSupported(
+      currentMapProvider,
+      Platform.OS === 'ios'
+        ? iOSProvidersWithout(['Apple'])
+        : ANDROID_SUPPORTED_PROVIDERS
+    ),
+    rotation: isFeatureSupported(
+      currentMapProvider,
+      Platform.OS === 'ios'
+        ? iOSProvidersWithout(['Apple'])
+        : ANDROID_SUPPORTED_PROVIDERS
+    ),
+    anchor: isFeatureSupported(
+      currentMapProvider,
+      Platform.OS === 'ios'
+        ? iOSProvidersWithout(['Apple'])
+        : ANDROID_SUPPORTED_PROVIDERS
+    ),
+    onInfoWindowOpen: isFeatureSupported(
+      currentMapProvider,
+      Platform.OS === 'ios'
+        ? iOSProvidersWithout(['Google', 'Apple'])
+        : androidProvidersWithout(['GoogleMaps'])
+    ),
+    onInfoWindowClose: isFeatureSupported(
+      currentMapProvider,
+      Platform.OS === 'ios'
+        ? iOSProvidersWithout(['Google', 'Apple'])
+        : ANDROID_SUPPORTED_PROVIDERS
+    ),
+    onInfoWindowPress: isFeatureSupported(
+      currentMapProvider,
+      Platform.OS === 'ios'
+        ? iOSProvidersWithout(['Google'])
+        : ANDROID_SUPPORTED_PROVIDERS
+    ),
+    toggling: isFeatureSupported(
+      currentMapProvider,
+      Platform.OS === 'ios'
+        ? // On iOS, by default, the info window is always open on press and
+          // this behaviour cannot be changed
+          iOSProvidersWithout(['Google', 'Apple'])
+        : ANDROID_SUPPORTED_PROVIDERS
+    ),
+  };
+};
 
 export const InfoWindowScreen = () => {
   const logger = useLogger('InfoWindowScreen');
   const { showSnackbar } = useSnackbar();
 
   const omhMapRef = useRef<OmhMapViewRef | null>(null);
+  const omhMarkerRef = useRef<OmhMarkerRef | null>(null);
 
+  const [supportedFeatures, setSupportedFeatures] = useState(
+    getSupportedFeatures()
+  );
   // IW properties
   const [snippetVisible, setSnippetVisible] = useState(false);
   const [IWAnchor, setIWAnchor] = useState<Anchor>({
@@ -41,9 +107,13 @@ export const InfoWindowScreen = () => {
   });
 
   // demo behaviour
+  const hasNecessaryCallbacksToSyncIsInfoWindowVisible =
+    supportedFeatures.onInfoWindowClose;
   const [toggleIWOnMarkerClick, setToggleIWOnMarkerClick] = useState(true);
-  const [hideIWOnClick, setHideIWOnClick] = useState(true);
-  const [showInfoWindow, setShowInfoWindow] = useState(false);
+  const [hideIWOnClick, setHideIWOnClick] = useState(
+    supportedFeatures.onInfoWindowPress
+  );
+  const [isInfoWindowVisible, setIsInfoWindowVisible] = useState(false);
 
   // marker properties
   const [markerVisible, setMarkerVisible] = useState(true);
@@ -97,6 +167,28 @@ export const InfoWindowScreen = () => {
     [logger, showSnackbar]
   );
 
+  useEffect(() => {
+    setHideIWOnClick(supportedFeatures.onInfoWindowPress);
+  }, [supportedFeatures.onInfoWindowPress]);
+
+  const hideInfoWindow = useCallback(() => {
+    omhMarkerRef.current?.hideInfoWindow();
+    if (!supportedFeatures.onInfoWindowClose) {
+      // this handles synchronizing the state variable with actual IW state even when onInfoWindowClose is not support
+      // e.g. iOS Apple and Google
+      setIsInfoWindowVisible(false);
+    }
+  }, [omhMarkerRef, supportedFeatures]);
+
+  const showInfoWindow = useCallback(() => {
+    omhMarkerRef.current?.showInfoWindow();
+    if (!supportedFeatures.onInfoWindowOpen) {
+      // this handles synchronizing the state variable with actual IW state even when onInfoWindowOpen is not support
+      // e.g. Android Google Maps
+      setIsInfoWindowVisible(true);
+    }
+  }, [omhMarkerRef, supportedFeatures]);
+
   return (
     <View style={demoStyles.rootContainer}>
       <View style={demoStyles.mapContainer}>
@@ -108,12 +200,17 @@ export const InfoWindowScreen = () => {
           onMapReady={() => {
             logger.log("OmhMapView's OmhMap has become ready");
 
+            const providerName = omhMapRef.current?.getProviderName();
+
+            setSupportedFeatures(getSupportedFeatures(providerName));
+
             omhMapRef.current?.setCameraCoordinate(
               Constants.Maps.GREENWICH_COORDINATE,
               15.0
             );
           }}>
           <OmhMarker
+            ref={omhMarkerRef}
             title={MarkerIWTitles.CONFIGURABLE_TEST_MARKER}
             position={markerPosition}
             snippet={
@@ -129,10 +226,9 @@ export const InfoWindowScreen = () => {
             clickable={markerClickable}
             rotation={markerRotation}
             anchor={markerAnchor}
-            showInfoWindow={showInfoWindow}
             onInfoWindowPress={() => {
               if (hideIWOnClick) {
-                setShowInfoWindow(false);
+                hideInfoWindow();
               } else {
                 showSnackbar('Info window pressed');
               }
@@ -142,15 +238,26 @@ export const InfoWindowScreen = () => {
             }}
             onInfoWindowOpen={() => {
               showSnackbar('Info window has been opened');
-              setShowInfoWindow(true); // this handles synchronizing the state variable with actual IW state
+              setIsInfoWindowVisible(true); // this handles synchronizing the state variable with actual IW state
             }}
             onInfoWindowClose={() => {
               showSnackbar('Info window has been closed');
-              setShowInfoWindow(false); // this handles synchronizing the state variable with actual IW state
+              setIsInfoWindowVisible(false); // this handles synchronizing the state variable with actual IW state
             }}
             onPress={() => {
-              if (toggleIWOnMarkerClick) {
-                setShowInfoWindow(!showInfoWindow);
+              if (!supportedFeatures.toggling) {
+                // Opening is handled by component, we only update the state
+                setIsInfoWindowVisible(true);
+                return;
+              }
+              if (!toggleIWOnMarkerClick) {
+                return;
+              }
+
+              if (isInfoWindowVisible) {
+                hideInfoWindow();
+              } else {
+                showInfoWindow();
               }
             }}
             infoWindowAnchor={IWAnchor}
@@ -175,6 +282,7 @@ export const InfoWindowScreen = () => {
           />
 
           <Slider
+            disabled={!supportedFeatures.infoWindowAnchor}
             label={`Info window anchor U: ${(IWAnchor.u * 100).toFixed(0)}%`}
             onChange={u =>
               setIWAnchor({
@@ -189,6 +297,7 @@ export const InfoWindowScreen = () => {
           />
 
           <Slider
+            disabled={!supportedFeatures.infoWindowAnchor}
             label={`Info window anchor V: ${(IWAnchor.v * 100).toFixed(0)}%`}
             onChange={v =>
               setIWAnchor({
@@ -207,12 +316,14 @@ export const InfoWindowScreen = () => {
           </Subheading>
 
           <PanelCheckbox
-            label="Info win. toggles on marker click"
+            enabled={supportedFeatures.toggling}
+            label={`Info win. ${supportedFeatures.toggling ? 'toggles' : 'opens'} on marker click`}
             value={toggleIWOnMarkerClick}
             onValueChange={setToggleIWOnMarkerClick}
           />
 
           <PanelCheckbox
+            enabled={supportedFeatures.onInfoWindowPress}
             label="Info win. hides on click"
             value={hideIWOnClick}
             onValueChange={setHideIWOnClick}
@@ -225,9 +336,14 @@ export const InfoWindowScreen = () => {
           <Button
             mode="contained"
             style={styles.button}
-            disabled={showInfoWindow}
+            disabled={
+              !(
+                !isInfoWindowVisible ||
+                !hasNecessaryCallbacksToSyncIsInfoWindowVisible
+              )
+            }
             onPress={() => {
-              setShowInfoWindow(true);
+              showInfoWindow();
             }}>
             Open info window
           </Button>
@@ -235,9 +351,14 @@ export const InfoWindowScreen = () => {
           <Button
             mode="contained"
             style={styles.button}
-            disabled={!showInfoWindow}
+            disabled={
+              !(
+                isInfoWindowVisible ||
+                !hasNecessaryCallbacksToSyncIsInfoWindowVisible
+              )
+            }
             onPress={() => {
-              setShowInfoWindow(false);
+              hideInfoWindow();
             }}>
             Close info window
           </Button>
@@ -253,12 +374,14 @@ export const InfoWindowScreen = () => {
           />
 
           <PanelCheckbox
+            enabled={supportedFeatures.clickable}
             label="Clickable"
             value={markerClickable}
             onValueChange={setMarkerClickable}
           />
 
           <Slider
+            disabled={!supportedFeatures.rotation}
             label={`Rotation: ${markerRotation.toFixed(0)}°`}
             onChange={zIndex => setMarkerRotation(zIndex)}
             defaultValue={0}
@@ -268,6 +391,7 @@ export const InfoWindowScreen = () => {
           />
 
           <Slider
+            disabled={!supportedFeatures.anchor}
             label={`Anchor U: ${(markerAnchor.u * 100).toFixed(0)}%`}
             onChange={u =>
               setMarkerAnchor({
@@ -282,6 +406,7 @@ export const InfoWindowScreen = () => {
           />
 
           <Slider
+            disabled={!supportedFeatures.anchor}
             label={`Anchor V: ${(markerAnchor.v * 100).toFixed(0)}%`}
             onChange={v =>
               setMarkerAnchor({
