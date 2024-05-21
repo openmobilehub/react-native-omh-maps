@@ -2,7 +2,7 @@ import React from 'react';
 import { ScrollView, StyleSheet } from 'react-native';
 import { useTheme } from 'react-native-paper';
 
-import { OmhMapProvider, OmhMapsModule } from '@omh/react-native-maps-core';
+import { OmhMapProvider, OmhMapsModule } from '@openmobilehub/maps-core';
 
 import Route, { RoutesDescriptions } from '../Routes';
 import MapProviderPicker from '../components/MapProviderPicker';

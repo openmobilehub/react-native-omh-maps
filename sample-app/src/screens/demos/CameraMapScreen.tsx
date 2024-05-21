@@ -6,7 +6,7 @@ import {
   OmhCameraMoveStartedReason,
   OmhMapView,
   OmhMapViewRef,
-} from '@omh/react-native-maps-core';
+} from '@openmobilehub/maps-core';
 
 import { PanelButton } from '../../components/controls/PanelButton';
 import useSnackbar from '../../hooks/useSnackbar';

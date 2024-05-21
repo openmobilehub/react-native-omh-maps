@@ -3,7 +3,7 @@ import React, { useCallback, useMemo, useRef, useState } from 'react';
 import { ScrollView, StyleSheet, View } from 'react-native';
 import { MD2Colors, Subheading } from 'react-native-paper';
 
-import { OmhMapView, OmhMapViewRef } from '@omh/react-native-maps-core';
+import { OmhMapView, OmhMapViewRef } from '@openmobilehub/maps-core';
 
 import { Slider } from '../../components/controls/Slider';
 import useLogger from '../../hooks/useLogger';

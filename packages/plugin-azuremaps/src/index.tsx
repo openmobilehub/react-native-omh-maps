@@ -1,9 +1,9 @@
 /**
  * React Native OMH Maps Azure Maps Plugin
- * @module @omh/react-native-maps-plugin-azuremaps
+ * @module @openmobilehub/maps-plugin-azuremaps
  */
 
-import { OmhMapProvider } from '@omh/react-native-maps-core';
+import { OmhMapProvider } from '@openmobilehub/maps-core';
 
 export const OmhMapsAzureMapsProvider: OmhMapProvider = {
   name: 'AzureMaps',

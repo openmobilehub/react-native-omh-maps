@@ -5,6 +5,7 @@ import {
   Float,
   Int32,
 } from 'react-native/Libraries/Types/CodegenTypes';
+import codegenNativeCommands from 'react-native/Libraries/Utilities/codegenNativeCommands';
 import codegenNativeComponent from 'react-native/Libraries/Utilities/codegenNativeComponent';
 
 export type NativeOmhCoordinate = {
@@ -40,7 +41,6 @@ export interface NativeOmhMarkerProps extends ViewProps {
   isFlat?: boolean;
   rotation?: Float;
   backgroundColor?: Double; // note: Int32 is too small, there is no Int64, so Double is used
-  showInfoWindow?: boolean;
   markerZIndex?: Float; // note: the name is not just zIndex, since this somehow collides with RN's property and fails to compile
   icon?: {
     uri?: string;
@@ -60,6 +60,19 @@ export interface NativeOmhMarkerProps extends ViewProps {
 
 export type RNOmhMapsMarkerNativeComponent =
   HostComponent<NativeOmhMarkerProps>;
+
+export interface NativeCommands {
+  showInfoWindow: (
+    viewRef: React.ElementRef<RNOmhMapsMarkerNativeComponent>
+  ) => void;
+  hideInfoWindow: (
+    viewRef: React.ElementRef<RNOmhMapsMarkerNativeComponent>
+  ) => void;
+}
+
+export const Commands: NativeCommands = codegenNativeCommands<NativeCommands>({
+  supportedCommands: ['showInfoWindow', 'hideInfoWindow'],
+});
 
 export default codegenNativeComponent<NativeOmhMarkerProps>(
   'RNOmhMapsMarkerView',

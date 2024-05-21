@@ -1,6 +1,7 @@
 package com.openmobilehub.android.rn.maps.core
 
 import android.view.View
+import com.facebook.react.bridge.ReadableArray
 import com.facebook.react.bridge.ReadableMap
 import com.facebook.react.module.annotations.ReactModule
 import com.facebook.react.uimanager.ThemedReactContext
@@ -14,6 +15,19 @@ import com.openmobilehub.android.rn.maps.core.viewmanagers.RNOmhMapsMarkerViewMa
 class RNOmhMapsMarkerViewManager :
     ViewGroupManager<OmhMarkerEntity>() {
     private val omhMapMarkerComponentManagerImpl = RNOmhMapsMarkerViewManagerImpl()
+
+    override fun receiveCommand(root: OmhMarkerEntity, commandId: String?, args: ReadableArray?) {
+      super.receiveCommand(root, commandId, args)
+
+      when (commandId) {
+        "showInfoWindow" -> {
+          omhMapMarkerComponentManagerImpl.showInfoWindow(root)
+        }
+        "hideInfoWindow" -> {
+          omhMapMarkerComponentManagerImpl.hideInfoWindow(root)
+        }
+      }
+    }
 
     override fun createViewInstance(reactContext: ThemedReactContext): OmhMarkerEntity {
         return omhMapMarkerComponentManagerImpl.createViewInstance(reactContext)
@@ -82,11 +96,6 @@ class RNOmhMapsMarkerViewManager :
     @ReactProp(name = "markerZIndex")
     fun setMarkerZIndex(entity: OmhMarkerEntity, value: Float) {
         omhMapMarkerComponentManagerImpl.setZIndex(entity, value)
-    }
-
-    @ReactProp(name = "showInfoWindow")
-    fun setShowInfoWindow(entity: OmhMarkerEntity, value: Boolean) {
-        omhMapMarkerComponentManagerImpl.setShowInfoWindow(entity, value)
     }
 
     @ReactProp(name = "consumeMarkerClicks")

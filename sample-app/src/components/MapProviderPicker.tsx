@@ -1,9 +1,9 @@
-import React, { ReactNode, useMemo } from 'react';
+import React, { useMemo } from 'react';
 import { View, ViewProps } from 'react-native';
 import { useTheme } from 'react-native-paper';
 import RNPickerSelect from 'react-native-picker-select';
 
-import { OmhMapsModule, OmhMapProvider } from '@omh/react-native-maps-core';
+import { OmhMapsModule, OmhMapProvider } from '@openmobilehub/maps-core';
 
 import useLogger from '../hooks/useLogger';
 import ControlParagraph from './controls/ControlParagraph';
@@ -37,7 +37,6 @@ export default function MapProviderPicker({
     <View style={style}>
       <ControlParagraph centered={centeredLabel}>{label}</ControlParagraph>
       <RNPickerSelect
-        InputAccessoryView={(() => null) as unknown as ReactNode}
         onValueChange={(newProviderName: string) => {
           const newProvider = availableProviders.find(
             ({ name }) => name === newProviderName
@@ -65,6 +64,8 @@ export default function MapProviderPicker({
           inputIOS: {
             paddingLeft: 16,
           },
+          chevronUp: { display: 'none' },
+          chevronDown: { display: 'none' },
         }}
       />
     </View>

@@ -39,11 +39,6 @@ object RNOmhMapsPluginMapboxModuleImpl {
     }
   }
 
-  fun relayoutMapView(viewRef: Double, context: ReactContext) {
-    val mapView = getMapView(viewRef, context)
-    relayoutMapView(mapView)
-  }
-
   private fun relayoutMapView(mapView: MapView) {
     // Workaround for layout issues
     // https://github.com/rnmapbox/maps/blob/main/android/src/main/java/com/rnmapbox/rnmbx/components/mapview/RNMBXMapView.kt#L1336

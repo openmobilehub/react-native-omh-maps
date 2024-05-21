@@ -9,7 +9,7 @@ import {
   OmhMapView,
   OmhMapViewRef,
   OmhPolyline,
-} from '@omh/react-native-maps-core';
+} from '@openmobilehub/maps-core';
 
 import soccerBallIcon from '../../assets/img/soccer_ball.bmp';
 import { PanelButton } from '../../components/controls/PanelButton';

@@ -1,5 +1,5 @@
 {
-  "name": "@omh/react-native-maps-plugin-azuremaps",
+  "name": "@openmobilehub/maps-plugin-azuremaps",
   "version": "1.0.0-beta",
   "description": "React Native OMH Maps Azure Maps Plugin",
   "main": "lib/commonjs/index",
@@ -51,7 +51,7 @@
     "registry": "https://registry.npmjs.org/"
   },
   "peerDependencies": {
-    "@omh/react-native-maps-core": "1.0.0-beta",
+    "@openmobilehub/maps-core": "1.0.0-beta",
     "react": "*",
     "react-native": "*"
   },

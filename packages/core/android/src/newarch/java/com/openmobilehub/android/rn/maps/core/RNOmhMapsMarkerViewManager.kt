@@ -1,10 +1,13 @@
 package com.openmobilehub.android.rn.maps.core
 
+import com.facebook.react.bridge.ReadableArray
 import com.facebook.react.bridge.ReadableMap
 import com.facebook.react.module.annotations.ReactModule
 import com.facebook.react.uimanager.ThemedReactContext
 import com.facebook.react.uimanager.ViewGroupManager
+import com.facebook.react.uimanager.ViewManagerDelegate
 import com.facebook.react.uimanager.annotations.ReactProp
+import com.facebook.react.viewmanagers.RNOmhMapsMarkerViewManagerDelegate
 import com.facebook.react.viewmanagers.RNOmhMapsMarkerViewManagerInterface
 import com.openmobilehub.android.rn.maps.core.entities.OmhMarkerEntity
 import com.openmobilehub.android.rn.maps.core.viewmanagers.RNOmhMapsMarkerViewManagerImpl
@@ -15,6 +18,14 @@ class RNOmhMapsMarkerViewManager :
     ViewGroupManager<OmhMarkerEntity>(),
     RNOmhMapsMarkerViewManagerInterface<OmhMarkerEntity> {
     private val omhMapMarkerComponentManagerImpl = RNOmhMapsMarkerViewManagerImpl()
+
+    private val mDelegate = RNOmhMapsMarkerViewManagerDelegate(this)
+
+    override fun getDelegate(): ViewManagerDelegate<OmhMarkerEntity> = mDelegate
+
+    override fun receiveCommand(root: OmhMarkerEntity, commandId: String?, args: ReadableArray?) {
+      mDelegate.receiveCommand(root, commandId, args)
+    }
 
     override fun createViewInstance(reactContext: ThemedReactContext): OmhMarkerEntity {
         return omhMapMarkerComponentManagerImpl.createViewInstance(reactContext)
@@ -85,11 +96,6 @@ class RNOmhMapsMarkerViewManager :
         omhMapMarkerComponentManagerImpl.setZIndex(entity, value)
     }
 
-    @ReactProp(name = "showInfoWindow")
-    override fun setShowInfoWindow(entity: OmhMarkerEntity, value: Boolean) {
-        omhMapMarkerComponentManagerImpl.setShowInfoWindow(entity, value)
-    }
-
     @ReactProp(name = "consumeMarkerClicks")
     override fun setConsumeMarkerClicks(entity: OmhMarkerEntity, value: Boolean) {
         omhMapMarkerComponentManagerImpl.setConsumeMarkerClicks(entity, value)
@@ -98,6 +104,14 @@ class RNOmhMapsMarkerViewManager :
     @ReactProp(name = "icon")
     override fun setIcon(view: OmhMarkerEntity, value: ReadableMap?) {
         omhMapMarkerComponentManagerImpl.setIcon(view, value)
+    }
+
+    override fun showInfoWindow(view: OmhMarkerEntity) {
+      omhMapMarkerComponentManagerImpl.showInfoWindow(view)
+    }
+
+    override fun hideInfoWindow(view: OmhMarkerEntity) {
+      omhMapMarkerComponentManagerImpl.hideInfoWindow(view)
     }
 
     override fun getName(): String = RNOmhMapsMarkerViewManagerImpl.NAME

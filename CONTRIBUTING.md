@@ -3,8 +3,8 @@
 This project is a monorepo managed using [Yarn workspaces](https://yarnpkg.com/features/workspaces). It contains the following packages:
 
 - An example app in the `sample-app/` directory.
-- The core library in the `packages/react-native-maps-core/` directory.
-- Plugin packages in the `packages/react-native-maps-plugin-*/` directories.
+- The core library in the `packages/core/` directory.
+- Plugin packages in the `packages/plugin-*/` directories.
 
 To get started with the project, run `yarn` in the root directory to install the required dependencies for each package:
 

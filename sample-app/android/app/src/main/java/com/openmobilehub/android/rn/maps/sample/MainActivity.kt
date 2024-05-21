@@ -10,10 +10,10 @@ import com.mapbox.common.MapboxOptions
 
 class MainActivity : ReactActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
-        // below: setup required by @omh/react-native-maps-plugin-mapbox
+        // below: setup required by @openmobilehub/maps-plugin-mapbox
         MapboxOptions.accessToken = BuildConfig.MAPBOX_PUBLIC_TOKEN
 
-        // below: setup required by @omh/react-native-maps-plugin-azuremaps
+        // below: setup required by @openmobilehub/maps-plugin-azuremaps
         AzureMaps.setSubscriptionKey(BuildConfig.AZURE_MAPS_SUBSCRIPTION_KEY)
 
         super.onCreate(null) // setup required by react-native-screens

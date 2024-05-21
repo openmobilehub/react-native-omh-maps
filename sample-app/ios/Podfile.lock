@@ -31,111 +31,6 @@ PODS:
   - hermes-engine (0.74.0):
     - hermes-engine/Pre-built (= 0.74.0)
   - hermes-engine/Pre-built (0.74.0)
-  - omh-react-native-maps-core (1.0.0-beta):
-    - DoubleConversion
-    - glog
-    - hermes-engine
-    - RCT-Folly (= 2024.01.01.00)
-    - RCTRequired
-    - RCTTypeSafety
-    - React-Codegen
-    - React-Core
-    - React-debug
-    - React-Fabric
-    - React-featureflags
-    - React-graphics
-    - React-ImageManager
-    - React-NativeModulesApple
-    - React-RCTFabric
-    - React-rendererdebug
-    - React-utils
-    - ReactCommon/turbomodule/bridging
-    - ReactCommon/turbomodule/core
-    - Yoga
-  - omh-react-native-maps-plugin-azuremaps (1.0.0-beta):
-    - DoubleConversion
-    - glog
-    - hermes-engine
-    - RCT-Folly (= 2024.01.01.00)
-    - RCTRequired
-    - RCTTypeSafety
-    - React-Codegen
-    - React-Core
-    - React-debug
-    - React-Fabric
-    - React-featureflags
-    - React-graphics
-    - React-ImageManager
-    - React-NativeModulesApple
-    - React-RCTFabric
-    - React-rendererdebug
-    - React-utils
-    - ReactCommon/turbomodule/bridging
-    - ReactCommon/turbomodule/core
-    - Yoga
-  - omh-react-native-maps-plugin-googlemaps (1.0.0-beta):
-    - DoubleConversion
-    - glog
-    - hermes-engine
-    - RCT-Folly (= 2024.01.01.00)
-    - RCTRequired
-    - RCTTypeSafety
-    - React-Codegen
-    - React-Core
-    - React-debug
-    - React-Fabric
-    - React-featureflags
-    - React-graphics
-    - React-ImageManager
-    - React-NativeModulesApple
-    - React-RCTFabric
-    - React-rendererdebug
-    - React-utils
-    - ReactCommon/turbomodule/bridging
-    - ReactCommon/turbomodule/core
-    - Yoga
-  - omh-react-native-maps-plugin-mapbox (1.0.0-beta):
-    - DoubleConversion
-    - glog
-    - hermes-engine
-    - RCT-Folly (= 2024.01.01.00)
-    - RCTRequired
-    - RCTTypeSafety
-    - React-Codegen
-    - React-Core
-    - React-debug
-    - React-Fabric
-    - React-featureflags
-    - React-graphics
-    - React-ImageManager
-    - React-NativeModulesApple
-    - React-RCTFabric
-    - React-rendererdebug
-    - React-utils
-    - ReactCommon/turbomodule/bridging
-    - ReactCommon/turbomodule/core
-    - Yoga
-  - omh-react-native-maps-plugin-openstreetmap (1.0.0-beta):
-    - DoubleConversion
-    - glog
-    - hermes-engine
-    - RCT-Folly (= 2024.01.01.00)
-    - RCTRequired
-    - RCTTypeSafety
-    - React-Codegen
-    - React-Core
-    - React-debug
-    - React-Fabric
-    - React-featureflags
-    - React-graphics
-    - React-ImageManager
-    - React-NativeModulesApple
-    - React-RCTFabric
-    - React-rendererdebug
-    - React-utils
-    - ReactCommon/turbomodule/bridging
-    - ReactCommon/turbomodule/core
-    - Yoga
   - RCT-Folly (2024.01.01.00):
     - boost
     - DoubleConversion
@@ -1380,11 +1275,6 @@ DEPENDENCIES:
   - fmt (from `../../node_modules/react-native/third-party-podspecs/fmt.podspec`)
   - glog (from `../../node_modules/react-native/third-party-podspecs/glog.podspec`)
   - hermes-engine (from `../../node_modules/react-native/sdks/hermes-engine/hermes-engine.podspec`)
-  - "omh-react-native-maps-core (from `../../node_modules/@omh/react-native-maps-core`)"
-  - "omh-react-native-maps-plugin-azuremaps (from `../../node_modules/@omh/react-native-maps-plugin-azuremaps`)"
-  - "omh-react-native-maps-plugin-googlemaps (from `../../node_modules/@omh/react-native-maps-plugin-googlemaps`)"
-  - "omh-react-native-maps-plugin-mapbox (from `../../node_modules/@omh/react-native-maps-plugin-mapbox`)"
-  - "omh-react-native-maps-plugin-openstreetmap (from `../../node_modules/@omh/react-native-maps-plugin-openstreetmap`)"
   - RCT-Folly (from `../../node_modules/react-native/third-party-podspecs/RCT-Folly.podspec`)
   - RCT-Folly/Fabric (from `../../node_modules/react-native/third-party-podspecs/RCT-Folly.podspec`)
   - RCTDeprecation (from `../../node_modules/react-native/ReactApple/Libraries/RCTFoundation/RCTDeprecation`)
@@ -1465,16 +1355,6 @@ EXTERNAL SOURCES:
   hermes-engine:
     :podspec: "../../node_modules/react-native/sdks/hermes-engine/hermes-engine.podspec"
     :tag: hermes-2024-02-20-RNv0.74.0-999cfd9979b5f57b1269119679ab8cdf60897de9
-  omh-react-native-maps-core:
-    :path: "../../node_modules/@omh/react-native-maps-core"
-  omh-react-native-maps-plugin-azuremaps:
-    :path: "../../node_modules/@omh/react-native-maps-plugin-azuremaps"
-  omh-react-native-maps-plugin-googlemaps:
-    :path: "../../node_modules/@omh/react-native-maps-plugin-googlemaps"
-  omh-react-native-maps-plugin-mapbox:
-    :path: "../../node_modules/@omh/react-native-maps-plugin-mapbox"
-  omh-react-native-maps-plugin-openstreetmap:
-    :path: "../../node_modules/@omh/react-native-maps-plugin-openstreetmap"
   RCT-Folly:
     :podspec: "../../node_modules/react-native/third-party-podspecs/RCT-Folly.podspec"
   RCTDeprecation:
@@ -1599,11 +1479,6 @@ SPEC CHECKSUMS:
   Google-Maps-iOS-Utils: f77eab4c4326d7e6a277f8e23a0232402731913a
   GoogleMaps: 032f676450ba0779bd8ce16840690915f84e57ac
   hermes-engine: 6eae7edb2f563ee41d7c1f91f4f2e57c26d8a5c3
-  omh-react-native-maps-core: 774254314a2f01350995f6b69f5041320bbf8adb
-  omh-react-native-maps-plugin-azuremaps: cbdf9c655537146fea17dd2ce894f08cc7fbe341
-  omh-react-native-maps-plugin-googlemaps: 3c7f3766abd54c3043af25f7cd136a9dd1c87998
-  omh-react-native-maps-plugin-mapbox: 4426d089058f21fa9e091fb8abb121a962206051
-  omh-react-native-maps-plugin-openstreetmap: d9d2a8e425a1f97b88c2d390a6cf7b869559504c
   RCT-Folly: 045d6ecaa59d826c5736dfba0b2f4083ff8d79df
   RCTDeprecation: 3ca8b6c36bfb302e1895b72cfe7db0de0c92cd47
   RCTRequired: 9fc183af555fd0c89a366c34c1ae70b7e03b1dc5
