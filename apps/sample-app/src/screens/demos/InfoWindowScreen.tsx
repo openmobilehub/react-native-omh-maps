@@ -12,9 +12,9 @@ import {
   OmhMarker,
   OmhMarkerConstants,
   OmhMarkerRef,
+  OmhAnchor,
 } from '@openmobilehub/maps-core';
 
-import { Anchor } from '@omh/react-native-maps-core/src/components/marker/RNOmhMapsMarkerNativeComponent';
 import { PanelCheckbox } from '../../components/controls/PanelCheckbox';
 import Slider from '../../components/controls/Slider';
 import useLogger from '../../hooks/useLogger';
@@ -97,7 +97,7 @@ export const InfoWindowScreen = () => {
   );
   // IW properties
   const [snippetVisible, setSnippetVisible] = useState(false);
-  const [IWAnchor, setIWAnchor] = useState<Anchor>({
+  const [IWAnchor, setIWAnchor] = useState<OmhAnchor>({
     u: OmhInfoWindowConstants.IW_ANCHOR_CENTER_ABOVE.u,
     v: OmhInfoWindowConstants.IW_ANCHOR_CENTER_ABOVE.v,
   });
@@ -119,7 +119,7 @@ export const InfoWindowScreen = () => {
   const [markerVisible, setMarkerVisible] = useState(true);
   const [markerClickable, setMarkerClickable] = useState(true);
   const [markerRotation, setMarkerRotation] = useState(0);
-  const [markerAnchor, setMarkerAnchor] = useState<Anchor>({
+  const [markerAnchor, setMarkerAnchor] = useState<OmhAnchor>({
     u: OmhMarkerConstants.ANCHOR_CENTER.u,
     v: OmhMarkerConstants.ANCHOR_CENTER.v,
   });

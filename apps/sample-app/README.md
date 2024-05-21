@@ -6,7 +6,7 @@ This is a new [**React Native**](https://reactnative.dev) project, bootstrapped 
 
 ## Prerequisites
 
-Create a new file in sample-app/ios called: `Secrets.xcconfig` and add Google Maps API key like this:
+Create a new file in `apps/sample-app/ios called: `Secrets.xcconfig` and add Google Maps API key like this:
 
 ```
 GOOGLE_MAPS_API_KEY = YOUR_GOOGLE_MAPS_API_KEY

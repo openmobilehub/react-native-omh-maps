@@ -60,7 +60,7 @@ jobs:
 
     env:
       TURBO_CACHE_DIR: .turbo/android
-      APK_PATH: sample-app/android/app/build/outputs/apk/release/app-release.apk
+      APK_PATH: apps/sample-app/android/app/build/outputs/apk/release/app-release.apk
 
     steps:
       - name: Checkout
@@ -102,7 +102,7 @@ jobs:
           path: |
             ~/.gradle/wrapper
             ~/.gradle/caches
-          key: ${{ runner.os }}-gradle-${{ hashFiles('sample-app/android/gradle/wrapper/gradle-wrapper.properties') }}
+          key: ${{ runner.os }}-gradle-${{ hashFiles('apps/sample-app/android/gradle/wrapper/gradle-wrapper.properties') }}
           restore-keys: |
             ${{ runner.os }}-gradle-
 
@@ -129,7 +129,7 @@ jobs:
     name: Build iOS sample app
     runs-on: macos-14
     env:
-      SAMPLE_APP_PATH: 'sample-app/ios'
+      SAMPLE_APP_PATH: 'apps/sample-app/ios'
 
     steps:
       - name: Checkout
@@ -159,7 +159,7 @@ jobs:
 
       - name: Install Gems
         run: |
-          cd ./sample-app && bundle install
+          cd ./apps/sample-app && bundle install
         shell: bash
 
       - name: Cache Pods
@@ -173,14 +173,14 @@ jobs:
 
       - name: Install Pods
         run: |
-          cd ./sample-app && bundle exec pod install --project-directory=./ios
+          cd ./apps/sample-app && bundle exec pod install --project-directory=./ios
         shell: bash
 
       - name: Setup Secrets
         env:
           IOS_SECRETS_BASE_64: ${{ secrets.IOS_SECRETS_BASE_64 }}
         run: |
-          echo -n $IOS_SECRETS_BASE_64 | base64 --decode -o ./sample-app/ios/Secrets.xcconfig
+          echo -n $IOS_SECRETS_BASE_64 | base64 --decode -o ./apps/sample-app/ios/Secrets.xcconfig
         shell: bash
 
       - name: Install the Apple certificate and provisioning profile
