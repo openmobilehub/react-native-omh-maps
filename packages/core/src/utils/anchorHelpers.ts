@@ -1,4 +1,4 @@
-import { OmhAnchor } from '@omh/react-native-maps-core';
+import { OmhAnchor } from '@openmobilehub/maps-core';
 import { Point } from 'react-native-maps';
 
 export function anchorToPoint(

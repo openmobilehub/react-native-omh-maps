@@ -1,6 +1,6 @@
 import type { RGB } from 'color-convert/conversions';
 
-import { OmhCoordinate } from '@omh/react-native-maps-core';
+import { OmhCoordinate } from '@openmobilehub/maps-core';
 
 /**
  * Converts an RGB color to an ARGB Android color-like integer.

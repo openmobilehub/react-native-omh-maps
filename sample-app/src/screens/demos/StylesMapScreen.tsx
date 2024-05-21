@@ -6,7 +6,7 @@ import {
   OmhMapView,
   OmhMapViewProps,
   OmhMapViewRef,
-} from '@omh/react-native-maps-core';
+} from '@openmobilehub/maps-core';
 
 import { PanelRadioButtonItem } from '../../components/controls/PanelRadioButtonItem';
 import { demoStyles } from '../../styles/demoStyles';

@@ -19,7 +19,7 @@ import {
   OmhMarker,
   OmhMarkerConstants,
   OmhMarkerRef,
-} from '@omh/react-native-maps-core';
+} from '@openmobilehub/maps-core';
 import { Anchor } from '../../../../packages/core/src/components/marker/RNOmhMapsMarkerNativeComponent';
 import soccerBallIcon from '../../assets/img/soccer_ball.bmp';
 import { PanelCheckbox } from '../../components/controls/PanelCheckbox';

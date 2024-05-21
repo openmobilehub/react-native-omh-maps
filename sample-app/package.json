@@ -1,5 +1,5 @@
 {
-  "name": "@omh/react-native-maps-sample-app",
+  "name": "@openmobilehub/maps-sample-app",
   "version": "1.0.0",
   "private": true,
   "scripts": {
@@ -16,11 +16,11 @@
     "build:ios:release": "cd ios && xcodebuild -workspace RnOmhMapsExample.xcworkspace -scheme RnOmhMapsExample -configuration Release -sdk iphonesimulator CC=clang CPLUSPLUS=clang++ LD=clang LDPLUSPLUS=clang++ GCC_OPTIMIZATION_LEVEL=0 GCC_PRECOMPILE_PREFIX_HEADER=YES ASSETCATALOG_COMPILER_OPTIMIZATION=time DEBUG_INFORMATION_FORMAT=dwarf COMPILER_INDEX_STORE_ENABLE=NO"
   },
   "dependencies": {
-    "@omh/react-native-maps-core": "workspace:^",
-    "@omh/react-native-maps-plugin-azuremaps": "workspace:^",
-    "@omh/react-native-maps-plugin-googlemaps": "workspace:^",
-    "@omh/react-native-maps-plugin-mapbox": "workspace:^",
-    "@omh/react-native-maps-plugin-openstreetmap": "workspace:^",
+    "@openmobilehub/maps-core": "workspace:^",
+    "@openmobilehub/maps-plugin-azuremaps": "workspace:^",
+    "@openmobilehub/maps-plugin-googlemaps": "workspace:^",
+    "@openmobilehub/maps-plugin-mapbox": "workspace:^",
+    "@openmobilehub/maps-plugin-openstreetmap": "workspace:^",
     "@react-native-community/geolocation": "^3.2.1",
     "@react-native-community/hooks": "^3.0.0",
     "@react-native-community/slider": "^4.5.2",

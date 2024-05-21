@@ -1,4 +1,4 @@
-import { OmhLineJoin } from '@omh/react-native-maps-core';
+import { OmhLineJoin } from '@openmobilehub/maps-core';
 
 export type JointTypeItem = {
   label: string;

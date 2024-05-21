@@ -21,5 +21,30 @@ module.exports = {
         android: null,
       },
     },
+    '@openmobilehub/maps-core': {
+      platforms: {
+        ios: null,
+      },
+    },
+    '@openmobilehub/maps-plugin-azuremaps': {
+      platforms: {
+        ios: null,
+      },
+    },
+    '@openmobilehub/maps-plugin-googlemaps': {
+      platforms: {
+        ios: null,
+      },
+    },
+    '@openmobilehub/maps-plugin-mapbox': {
+      platforms: {
+        ios: null,
+      },
+    },
+    '@openmobilehub/maps-plugin-openstreetmap': {
+      platforms: {
+        ios: null,
+      },
+    },
   },
 };

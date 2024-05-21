@@ -5,7 +5,7 @@ import {
   OmhMapView,
   OmhMapViewRef,
   OmhMapsModule,
-} from '@omh/react-native-maps-core';
+} from '@openmobilehub/maps-core';
 import { useDeviceOrientation } from '@react-native-community/hooks';
 
 import useLogger from '../../hooks/useLogger';

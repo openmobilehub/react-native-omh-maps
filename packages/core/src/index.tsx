@@ -1,6 +1,6 @@
 /**
  * React Native OMH Maps Core Package
- * @module @omh/react-native-maps-core
+ * @module @openmobilehub/maps-core
  */
 
 export * from './components/mapView/OmhMapView';
