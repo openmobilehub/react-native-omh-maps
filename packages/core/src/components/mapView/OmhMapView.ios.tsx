@@ -44,6 +44,7 @@ export const OmhMapView = forwardRef<OmhMapViewRef, OmhMapViewProps>(
     forwardedRef
   ) => {
     const mapViewRef = React.useRef<MapView>(null);
+    const mapLoadedRef = useRef(false);
 
     const isRegionChangeInProgress = useRef(false);
     const mapDimensions = useRef<{ width: number; height: number } | null>(
@@ -181,6 +182,30 @@ export const OmhMapView = forwardRef<OmhMapViewRef, OmhMapViewProps>(
       return safeMapStyle;
     }, [mapStyle]);
 
+    const handleMapLoaded = useCallback(() => {
+      // The react-native-maps library calls onMapLoaded callback multiple times on iOS Google Maps.
+      // This is a workaround to call it only once when the map is fully loaded for the first time
+      // as it is on Android.
+      // Note: iOS Apple Maps does not call onMapLoaded callback.
+      const isMapLoaded = mapLoadedRef.current;
+
+      if (!isMapLoaded) {
+        onMapLoaded?.(provider.name);
+        mapLoadedRef.current = true;
+      }
+    }, [onMapLoaded, provider.name]);
+
+    const handleMapReady = useCallback(() => {
+      // The react-native-maps library does not support onMapLoaded callback on Apple Maps.
+      // This is a workaround to call onMapLoaded and onMapReady callbacks when the map is ready.
+      if (provider.name === 'Apple') {
+        onMapReady?.();
+        onMapLoaded?.(provider.name);
+      } else {
+        onMapReady?.();
+      }
+    }, [onMapReady, onMapLoaded, provider.name]);
+
     return (
       <MapView
         ref={mapViewRef}
@@ -193,10 +218,8 @@ export const OmhMapView = forwardRef<OmhMapViewRef, OmhMapViewProps>(
         rotateEnabled={rotateEnabled}
         onRegionChangeComplete={handleCameraIdle}
         onRegionChange={handleRegionChange}
-        onMapReady={onMapReady}
-        onMapLoaded={() => {
-          onMapLoaded?.(provider.name);
-        }}
+        onMapReady={handleMapReady}
+        onMapLoaded={handleMapLoaded}
         showsUserLocation={myLocationEnabled}
         showsMyLocationButton={myLocationEnabled}
         customMapStyle={customMapStyle}
