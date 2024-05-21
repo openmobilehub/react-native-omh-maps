@@ -31,7 +31,10 @@ export const OmhMapView = forwardRef<OmhMapViewRef, OmhMapViewProps>(
       zoomEnabled,
       rotateEnabled,
       onMapLoaded,
-      onMapReady,
+      // If onMapReady is undefined on AppleMaps it will throw an error on some RN versions.
+      // Read more: https://github.com/react-native-maps/react-native-maps/pull/4887
+      // Assigning an empty function to prevent this error.
+      onMapReady = () => {},
       onCameraIdle,
       onCameraMoveStarted,
       children,
