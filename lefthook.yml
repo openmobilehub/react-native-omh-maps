@@ -3,7 +3,7 @@ pre-commit:
   commands:
     lint-android-sample-app:
       glob: '*.kt'
-      run: cd sample-app/android && ./gradlew detekt -PautoCorrect=true --parallel --continue
+      run: cd apps/sample-app/android && ./gradlew detekt -PautoCorrect=true --parallel --continue
 
     lint-ts:
       glob: '*.{js,ts,jsx,tsx}'

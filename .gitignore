@@ -48,7 +48,7 @@ android.iml
 **/Pods
 
 # Ruby
-sample-app/vendor/
+apps/sample-app/vendor/
 
 # node.js
 #

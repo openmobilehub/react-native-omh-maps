@@ -1,9 +1,11 @@
 const path = require('path');
 const fs = require('fs');
+const root = require('./config-constants');
 
 const alias = {};
 
-const packagesPath = path.join(__dirname, '..', 'packages');
+const packagesPath = path.join(root, 'packages');
+
 for (const file of fs.readdirSync(packagesPath)) {
   const packageDirPath = path.join(packagesPath, file);
   const packageJsonPath = path.join(packageDirPath, 'package.json');

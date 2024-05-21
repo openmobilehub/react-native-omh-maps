@@ -19,8 +19,8 @@ import {
   OmhMarker,
   OmhMarkerConstants,
   OmhMarkerRef,
+  OmhAnchor,
 } from '@openmobilehub/maps-core';
-import { Anchor } from '../../../../packages/core/src/components/marker/RNOmhMapsMarkerNativeComponent';
 import soccerBallIcon from '../../assets/img/soccer_ball.bmp';
 import { PanelCheckbox } from '../../components/controls/PanelCheckbox';
 import Picker from '../../components/controls/Picker';
@@ -173,7 +173,7 @@ export const MarkerMapScreen = () => {
   const [customizableMarkerRotation, setCustomizableMarkerRotation] =
     useState(0);
   const [customizableMarkerAnchor, setCustomizableMarkerAnchor] =
-    useState<Anchor>({
+    useState<OmhAnchor>({
       u: OmhMarkerConstants.ANCHOR_CENTER.u,
       v: OmhMarkerConstants.ANCHOR_CENTER.v,
     });
