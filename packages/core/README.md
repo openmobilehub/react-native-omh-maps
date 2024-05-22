@@ -131,7 +131,7 @@ It's recommended to use the [react-native-permissions](https://github.com/zoonte
 
 :::
 
-[API Reference](https://legendary-broccoli-93ze846.pages.github.io/todo/add/relative/link)
+[API Reference](https://legendary-broccoli-93ze846.pages.github.io/docs/api/modules/openmobilehub_maps_core/#omhmapslocationmodule)
 
 ---
 
