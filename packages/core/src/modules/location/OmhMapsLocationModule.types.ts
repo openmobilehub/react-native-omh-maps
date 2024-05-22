@@ -1,4 +1,5 @@
 import { OmhCoordinate } from '../../types/common';
+
 /**
  * The interface for the OmhMapsLocationModule.
  */
