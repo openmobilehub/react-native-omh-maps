@@ -22,6 +22,7 @@ export * from './modules/core/OmhMapsModule';
 export * from './modules/core/OmhMapsModule.types';
 
 export * from './modules/location/OmhMapsLocationModule';
+export * from './modules/location/OmhMapsLocationModule.types';
 
 export * from './types/common';
 

@@ -6,6 +6,9 @@ import {
   OmhPatternItem,
 } from '../../types/common';
 
+/**
+ * The OMH Polygon properties.
+ */
 export type OmhPolygonProps = ViewProps & {
   /**
    * The points that make up the polygon.
