@@ -1,4 +1,4 @@
-import { OmhMapProvider } from '@omh/react-native-maps-core';
+import { OmhMapProvider } from '../../types/common';
 
 export const OmhMapsGoogleMapsIOSProvider: OmhMapProvider = {
   name: 'Google',

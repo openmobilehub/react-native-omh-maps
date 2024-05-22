@@ -6,10 +6,10 @@ sidebar_position: 1
 
 React Native OMH Maps is a project that brings various native maps providers to React Native. It provides a single API to use different maps providers:
 
-- Google Maps via `@omh/react-native-maps-plugin-googlemaps`
-- OpenStreetMap via `@omh/react-native-maps-plugin-openstreetmap`
-- Mapbox via `@omh/react-native-maps-plugin-mapbox`
-- Azure Maps via `@omh/react-native-maps-plugin-azuremaps`
+- Google Maps via `@openmobilehub/maps-plugin-googlemaps`
+- OpenStreetMap via `@openmobilehub/maps-plugin-openstreetmap`
+- Mapbox via `@openmobilehub/maps-plugin-mapbox`
+- Azure Maps via `@openmobilehub/maps-plugin-azuremaps`
 
 ## Prerequisites
 
@@ -27,25 +27,25 @@ Additionally, the current versions of Android OMH libraries have a minimum Andro
 
 ## Installation
 
-To integrate React Native OMH Maps into your React Native project, you need to install the core package (`@omh/react-native-maps-core`) and at least one of the plugins:
+To integrate React Native OMH Maps into your React Native project, you need to install the core package (`@openmobilehub/maps-core`) and at least one of the plugins:
 
 | Provider      | Package                                       |
 | ------------- | --------------------------------------------- |
-| GoogleMaps    | `@omh/react-native-maps-plugin-googlemaps`    |
-| OpenStreetMap | `@omh/react-native-maps-plugin-openstreetmap` |
-| Mapbox        | `@omh/react-native-maps-plugin-mapbox`        |
-| Azure Maps    | `@omh/react-native-maps-plugin-azuremaps`     |
+| GoogleMaps    | `@openmobilehub/maps-plugin-googlemaps`    |
+| OpenStreetMap | `@openmobilehub/maps-plugin-openstreetmap` |
+| Mapbox        | `@openmobilehub/maps-plugin-mapbox`        |
+| Azure Maps    | `@openmobilehub/maps-plugin-azuremaps`     |
 
 For example, using yarn:
 
 ```bash
-yarn add @omh/react-native-maps-core @omh/react-native-maps-plugin-*
+yarn add @openmobilehub/maps-core @openmobilehub/maps-plugin-*
 ```
 
 or using NPM:
 
 ```bash
-npm install --save @omh/react-native-maps-core @omh/react-native-maps-plugin-*
+npm install --save @openmobilehub/maps-core @openmobilehub/maps-plugin-*
 ```
 
 ## Provider configuration

@@ -3899,9 +3899,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@omh/react-native-maps-core@workspace:^, @omh/react-native-maps-core@workspace:packages/core":
+"@openmobilehub/maps-core@workspace:^, @openmobilehub/maps-core@workspace:packages/core":
   version: 0.0.0-use.local
-  resolution: "@omh/react-native-maps-core@workspace:packages/core"
+  resolution: "@openmobilehub/maps-core@workspace:packages/core"
   dependencies:
     "@react-native-community/geolocation": "npm:^3.2.1"
     "@types/node": "npm:*"
@@ -3920,9 +3920,9 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@omh/react-native-maps-docs@workspace:docs":
+"@openmobilehub/maps-docs@workspace:docs":
   version: 0.0.0-use.local
-  resolution: "@omh/react-native-maps-docs@workspace:docs"
+  resolution: "@openmobilehub/maps-docs@workspace:docs"
   dependencies:
     "@docusaurus/core": "npm:3.1.1"
     typescript: "npm:*"
@@ -3932,9 +3932,9 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@omh/react-native-maps-plugin-azuremaps@workspace:^, @omh/react-native-maps-plugin-azuremaps@workspace:packages/plugin-azuremaps":
+"@openmobilehub/maps-plugin-azuremaps@workspace:^, @openmobilehub/maps-plugin-azuremaps@workspace:packages/plugin-azuremaps":
   version: 0.0.0-use.local
-  resolution: "@omh/react-native-maps-plugin-azuremaps@workspace:packages/plugin-azuremaps"
+  resolution: "@openmobilehub/maps-plugin-azuremaps@workspace:packages/plugin-azuremaps"
   dependencies:
     "@types/node": "npm:*"
     del-cli: "npm:*"
@@ -3944,15 +3944,15 @@ __metadata:
     ts-node: "npm:*"
     typescript: "npm:*"
   peerDependencies:
-    "@omh/react-native-maps-core": 1.0.0-beta
+    "@openmobilehub/maps-core": 1.0.0-beta
     react: "*"
     react-native: "*"
   languageName: unknown
   linkType: soft
 
-"@omh/react-native-maps-plugin-googlemaps@workspace:^, @omh/react-native-maps-plugin-googlemaps@workspace:packages/plugin-googlemaps":
+"@openmobilehub/maps-plugin-googlemaps@workspace:^, @openmobilehub/maps-plugin-googlemaps@workspace:packages/plugin-googlemaps":
   version: 0.0.0-use.local
-  resolution: "@omh/react-native-maps-plugin-googlemaps@workspace:packages/plugin-googlemaps"
+  resolution: "@openmobilehub/maps-plugin-googlemaps@workspace:packages/plugin-googlemaps"
   dependencies:
     "@types/node": "npm:*"
     del-cli: "npm:*"
@@ -3962,15 +3962,15 @@ __metadata:
     ts-node: "npm:*"
     typescript: "npm:*"
   peerDependencies:
-    "@omh/react-native-maps-core": 1.0.0-beta
+    "@openmobilehub/maps-core": 1.0.0-beta
     react: "*"
     react-native: "*"
   languageName: unknown
   linkType: soft
 
-"@omh/react-native-maps-plugin-mapbox@workspace:^, @omh/react-native-maps-plugin-mapbox@workspace:packages/plugin-mapbox":
+"@openmobilehub/maps-plugin-mapbox@workspace:^, @openmobilehub/maps-plugin-mapbox@workspace:packages/plugin-mapbox":
   version: 0.0.0-use.local
-  resolution: "@omh/react-native-maps-plugin-mapbox@workspace:packages/plugin-mapbox"
+  resolution: "@openmobilehub/maps-plugin-mapbox@workspace:packages/plugin-mapbox"
   dependencies:
     "@types/node": "npm:*"
     del-cli: "npm:*"
@@ -3980,15 +3980,15 @@ __metadata:
     ts-node: "npm:*"
     typescript: "npm:*"
   peerDependencies:
-    "@omh/react-native-maps-core": 1.0.0-beta
+    "@openmobilehub/maps-core": 1.0.0-beta
     react: "*"
     react-native: "*"
   languageName: unknown
   linkType: soft
 
-"@omh/react-native-maps-plugin-openstreetmap@workspace:^, @omh/react-native-maps-plugin-openstreetmap@workspace:packages/plugin-openstreetmap":
+"@openmobilehub/maps-plugin-openstreetmap@workspace:^, @openmobilehub/maps-plugin-openstreetmap@workspace:packages/plugin-openstreetmap":
   version: 0.0.0-use.local
-  resolution: "@omh/react-native-maps-plugin-openstreetmap@workspace:packages/plugin-openstreetmap"
+  resolution: "@openmobilehub/maps-plugin-openstreetmap@workspace:packages/plugin-openstreetmap"
   dependencies:
     "@types/node": "npm:*"
     del-cli: "npm:*"
@@ -3998,21 +3998,21 @@ __metadata:
     ts-node: "npm:*"
     typescript: "npm:*"
   peerDependencies:
-    "@omh/react-native-maps-core": 1.0.0-beta
+    "@openmobilehub/maps-core": 1.0.0-beta
     react: "*"
     react-native: "*"
   languageName: unknown
   linkType: soft
 
-"@omh/react-native-maps-sample-app@workspace:sample-app":
+"@openmobilehub/maps-sample-app@workspace:apps/sample-app":
   version: 0.0.0-use.local
-  resolution: "@omh/react-native-maps-sample-app@workspace:sample-app"
+  resolution: "@openmobilehub/maps-sample-app@workspace:apps/sample-app"
   dependencies:
-    "@omh/react-native-maps-core": "workspace:^"
-    "@omh/react-native-maps-plugin-azuremaps": "workspace:^"
-    "@omh/react-native-maps-plugin-googlemaps": "workspace:^"
-    "@omh/react-native-maps-plugin-mapbox": "workspace:^"
-    "@omh/react-native-maps-plugin-openstreetmap": "workspace:^"
+    "@openmobilehub/maps-core": "workspace:^"
+    "@openmobilehub/maps-plugin-azuremaps": "workspace:^"
+    "@openmobilehub/maps-plugin-googlemaps": "workspace:^"
+    "@openmobilehub/maps-plugin-mapbox": "workspace:^"
+    "@openmobilehub/maps-plugin-openstreetmap": "workspace:^"
     "@react-native-community/geolocation": "npm:^3.2.1"
     "@react-native-community/hooks": "npm:^3.0.0"
     "@react-native-community/slider": "npm:^4.5.2"
@@ -4035,17 +4035,17 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@omh/react-native-maps-scripts@workspace:scripts":
+"@openmobilehub/maps-scripts@workspace:scripts":
   version: 0.0.0-use.local
-  resolution: "@omh/react-native-maps-scripts@workspace:scripts"
+  resolution: "@openmobilehub/maps-scripts@workspace:scripts"
   dependencies:
     tsx: "npm:*"
   languageName: unknown
   linkType: soft
 
-"@omh/react-native-maps@workspace:.":
+"@openmobilehub/maps@workspace:.":
   version: 0.0.0-use.local
-  resolution: "@omh/react-native-maps@workspace:."
+  resolution: "@openmobilehub/maps@workspace:."
   dependencies:
     "@babel/core": "npm:^7.24.3"
     "@babel/preset-env": "npm:^7.24.3"

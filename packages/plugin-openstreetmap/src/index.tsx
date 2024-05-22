@@ -1,9 +1,9 @@
 /**
  * React Native OMH Maps OpenStreetMap Plugin
- * @module @omh/react-native-maps-plugin-openstreetmap
+ * @module @openmobilehub/maps-plugin-openstreetmap
  */
 
-import { OmhMapProvider } from '@omh/react-native-maps-core';
+import { OmhMapProvider } from '@openmobilehub/maps-core';
 
 export const OmhMapsOpenStreetMapProvider: OmhMapProvider = {
   name: 'OpenStreetMap',

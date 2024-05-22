@@ -1,5 +1,5 @@
 {
-  "name": "@omh/react-native-maps",
+  "name": "@openmobilehub/maps",
   "version": "1.0.0",
   "description": "React Native OMH Maps Workspace",
   "private": true,
@@ -63,10 +63,10 @@
     "react-native": "^0.74.0"
   },
   "scripts": {
-    "sample-app": "cross-env FORCE_COLOR=1 yarn workspace @omh/react-native-maps-sample-app",
-    "docs": "cross-env FORCE_COLOR=1 yarn workspace @omh/react-native-maps-docs",
-    "scripts": "cross-env FORCE_COLOR=1 yarn workspace @omh/react-native-maps-scripts",
-    "core": "cross-env FORCE_COLOR=1 yarn workspace @omh/react-native-maps-core",
+    "sample-app": "cross-env FORCE_COLOR=1 yarn workspace @openmobilehub/maps-sample-app",
+    "docs": "cross-env FORCE_COLOR=1 yarn workspace @openmobilehub/maps-docs",
+    "scripts": "cross-env FORCE_COLOR=1 yarn workspace @openmobilehub/maps-scripts",
+    "core": "cross-env FORCE_COLOR=1 yarn workspace @openmobilehub/maps-core",
     "build:packages": "yarn run prepare",
     "build:android:debug": "npx turbo build:android:debug",
     "build:ios:debug": "npx turbo build:ios:debug",
@@ -75,15 +75,15 @@
     "test": "cross-env FORCE_COLOR=1 yarn workspaces foreach -A -p run test",
     "typecheck": "cross-env FORCE_COLOR=1 yarn workspaces foreach -A -p run typecheck",
     "lint": "eslint \"**/*.{js,ts,tsx}\"",
-    "clean": "cross-env FORCE_COLOR=1 yarn workspaces foreach -A -p --exclude @omh/react-native-maps-sample-app run clean",
-    "prepare": "cross-env FORCE_COLOR=1 yarn workspaces foreach -A -p --exclude @omh/react-native-maps-sample-app run prepare",
-    "release": "cross-env FORCE_COLOR=1 yarn workspaces foreach -A -p --exclude @omh/react-native-maps-sample-app run release",
+    "clean": "cross-env FORCE_COLOR=1 yarn workspaces foreach -A -p --exclude @openmobilehub/maps-sample-app run clean",
+    "prepare": "cross-env FORCE_COLOR=1 yarn workspaces foreach -A -p --exclude @openmobilehub/maps-sample-app run prepare",
+    "release": "cross-env FORCE_COLOR=1 yarn workspaces foreach -A -p --exclude @openmobilehub/maps-sample-app run release",
     "postinstall": "npx lefthook install",
-    "codegen:android": "./sample-app/android/gradlew -p sample-app/android generateCodegenArtifactsFromSchema -t android",
-    "codegen:ios": "node node_modules/react-native/scripts/generate-codegen-artifacts.js --path . --outputPath ./sample-app/ios -t ios"
+    "codegen:android": "./apps/sample-app/android/gradlew -p apps/sample-app/android generateCodegenArtifactsFromSchema -t android",
+    "codegen:ios": "node node_modules/react-native/scripts/generate-codegen-artifacts.js --path . --outputPath ./apps/sample-app/ios -t ios"
   },
   "workspaces": [
-    "sample-app",
+    "apps/sample-app",
     "scripts",
     "docs",
     "packages/*"

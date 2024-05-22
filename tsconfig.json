@@ -1,17 +1,17 @@
 {
   "compilerOptions": {
     "paths": {
-      "@omh/react-native-maps-core": ["./packages/core/src/index"],
-      "@omh/react-native-maps-plugin-googlemaps": [
+      "@openmobilehub/maps-core": ["./packages/core/src/index"],
+      "@openmobilehub/maps-plugin-googlemaps": [
         "./packages/plugin-googlemaps/src/index"
       ],
-      "@omh/react-native-maps-plugin-openstreetmap": [
+      "@openmobilehub/maps-plugin-openstreetmap": [
         "./packages/plugin-openstreetmap/src/index"
       ],
-      "@omh/react-native-maps-plugin-mapbox": [
+      "@openmobilehub/maps-plugin-mapbox": [
         "./packages/plugin-mapbox/src/index"
       ],
-      "@omh/react-native-maps-plugin-azuremaps": [
+      "@openmobilehub/maps-plugin-azuremaps": [
         "./packages/plugin-azuremaps/src/index"
       ]
     },
