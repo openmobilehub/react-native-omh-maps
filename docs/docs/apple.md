@@ -11,21 +11,12 @@ sidebar_label: 'Apple'
 |  Android   |     ❌      |
 |    iOS     |     ✅      |
 
-## Installation
-
-```bash
-yarn add react-native-maps
-
-pod install --project-directory=./ios
-# or
-bundle install && bundle exec pod install --project-directory=./ios
-```
 
 ## Configuration
 
 :::info[Prerequisites]
 
-Each plugin requires you to follow the `@openmobilehub/maps-core` setup guide. You can find it [here](https://todo.add.link).
+Each plugin requires you to follow the `@openmobilehub/maps-core` setup guide. You can find it [here](/docs/core).
 
 :::
 

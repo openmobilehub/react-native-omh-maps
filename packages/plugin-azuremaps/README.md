@@ -18,7 +18,7 @@ yarn add @openmobilehub/maps-plugin-azuremaps
 
 :::info[Prerequisites]
 
-Each plugin requires you to follow the `@openmobilehub/maps-core` setup guide. You can find it [here](https://todo.add.link).
+Each plugin requires you to follow the `@openmobilehub/maps-core` setup guide. You can find it [here](/docs/core).
 
 :::
 
