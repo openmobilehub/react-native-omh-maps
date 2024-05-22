@@ -1,40 +1,33 @@
-
+---
+id: 'apple'
+title: 'Apple'
+sidebar_label: 'Apple'
 ---
 
 ## Platforms
 
-|  Platform  |  Supported  |
-|:----------:|:-----------:|
-|  Android   |      ✅      |
-|    iOS     |      ❌      |
+|  Platform  | Supported  |
+|:----------:|:----------:|
+|  Android   |     ❌      |
+|    iOS     |     ✅      |
 
 ## Installation
 
 ```bash
-yarn add @openmobilehub/maps-plugin-openstreetmap
+yarn add react-native-maps
+
+pod install --project-directory=./ios
+# or
+bundle install && bundle exec pod install --project-directory=./ios
 ```
 
 ## Configuration
 
 :::info[Prerequisites]
 
-Each plugin requires you to follow the `@openmobilehub/maps-core` setup guide. You can find it [here](/docs/core).
+Each plugin requires you to follow the `@openmobilehub/maps-core` setup guide. You can find it [here](https://todo.add.link).
 
 :::
-
-### [Optional] Permissions
-
-If you plan to use location services, you need to add the following permissions to your `AndroidManifest.xml` file:
-
-```xml
-<manifest ...>
-   <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
-   <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
-   <application ...>
-      ...
-   </application>
-</manifest>
-```
 
 ## Usage
 
@@ -48,9 +41,9 @@ import {OmhMapsOpenStreetMapProvider} from '@openmobilehub/maps-plugin-openstree
 // For Android, you can use different providers for devices with and without Google Play Services.
 // Remember to initialize the module before using any of its components.
 OmhMapsModule.initialize({
+  iosProvider: OmhMapsAppleMapsIOSProvider,
   gmsProvider: OmhMapsOpenStreetMapProvider,
   nonGmsProvider: OmhMapsOpenStreetMapProvider,
-  iosProvider: OmhMapsAppleMapsIOSProvider,
 });
 
 const App = () => {
@@ -60,7 +53,8 @@ const App = () => {
 
 ### Usage Guide
 
-Interacting with the Openstreetmap provider follows the same pattern as other providers, as they all implement the same interface. For a comprehensive list of available modules, components, and props, refer to the [Quick Start](https://todo.add.link) guide.
+Interacting with the Apple Maps provider follows the same pattern as other providers, as they all implement the same interface. For a comprehensive list of available modules, components, and props, refer to the [Quick Start](https://todo.add.link) guide.
+
 
 ## Parity Matrix
 
@@ -80,22 +74,22 @@ Legend of support levels:
 |---------------------|:---------:|
 | scaleFactor         |     ✅     |
 | mapStyle            |     ❌     |
-| rotateEnabled       |     ✅     |
+| rotateEnabled       |     ❌     |
 | zoomEnabled         |     ✅     |
-| myLocationEnabled   |     ✅     |
+| myLocationEnabled   |     🟨     |
 | onMapReady          |     ✅     |
-| onMapLoaded         |     ✅     |
+| onMapLoaded         |     ❌     |
 | onCameraIdle        |     ✅     |
 | onMyLocationClicked |     ✅     |
-| onCameraMoveStarted |     🟨     |
+| onCameraMoveStarted |     ✅     |
 
 Comments for partially supported properties:
 | Property | Comments |
 | --------------------- | -------- |
-| onCameraMoveStarted | Described in the OMH Android SDK [Plugin OpenStreetMap documentation](https://www.openmobilehub.com/android-omh-maps/advanced-docs/plugin-openstreetmap/README/) for `setOnCameraMoveStartedListener` |
+| myLocationEnabled | On iOS Apple Maps provider, the property only controls the display of user's current location; on this provider, 'move to current location' button is not supported |
 
-| Ref                 | Supported |
-|---------------------|:---------:|
+  | Ref                 | Supported |
+  |---------------------|:---------:|
 | getCameraCoordinate |     ✅     |
 | setCameraCoordinate |     ✅     |
 | getProviderName     |     ✅     |
@@ -107,27 +101,32 @@ Comments for partially supported properties:
 |-----------------------|:---------:|
 | position              |     ✅     |
 | title                 |     ✅     |
-| clickable             |     ✅     |
+| clickable             |     🟨     |
 | draggable             |     ✅     |
-| anchor                |     ✅     |
-| infoWindowAnchor      |     ✅     |
-| alpha                 |     ✅     |
+| anchor                |     ❌     |
+| infoWindowAnchor      |     ❌     |
+| alpha                 |     ❌     |
 | snippet               |     ✅     |
 | isVisible             |     ✅     |
-| isFlat                |     ✅     |
-| rotation              |     ✅     |
-| backgroundColor       |     ❌     |
-| markerZIndex          |     ❌     |
-| icon                  |     ✅     |
-| consumeMarkerClicks   |     ✅     |
+| isFlat                |     ❌     |
+| rotation              |     ❌     |
+| backgroundColor       |     ✅     |
+| markerZIndex          |     ✅     |
+| icon                  |     ❌     |
+| consumeMarkerClicks   |     ❌     |
 | onPress               |     ✅     |
 | onDragStart           |     ✅     |
 | onDrag                |     ✅     |
 | onDragEnd             |     ✅     |
 | onInfoWindowPress     |     ✅     |
-| onInfoWindowLongPress |     ✅     |
-| onInfoWindowClose     |     ✅     |
-| onInfoWindowOpen      |     ✅     |
+| onInfoWindowLongPress |     ❌     |
+| onInfoWindowClose     |     ❌     |
+| onInfoWindowOpen      |     ❌     |
+
+Comments for partially supported properties:
+| Property | Comments |
+| --------------------- | -------- |
+| clickable | On iOS Apple Maps provider, marker is always clickable; property value is ignored. |
 
 | Ref            | Supported |
 |----------------|:---------:|
@@ -146,8 +145,8 @@ For advanced usage of `OmhMarker`, see the [Advanced Usage](https://legendary-br
 | width                 |     ✅     |
 | isVisible             |     ✅     |
 | zIndex                |     ❌     |
-| jointType             |     ❌     |
-| pattern               |     ❌     |
+| jointType             |     ✅     |
+| pattern               |     🟨     |
 | onPolylineClick       |     ✅     |
 | consumePolylineClicks |     ✅     |
 | spans                 |     ❌     |
@@ -158,7 +157,8 @@ For advanced usage of `OmhMarker`, see the [Advanced Usage](https://legendary-br
 Comments for partially supported properties:
 | Property | Comments |
 | --------------------- | -------- |
-| cap | Described in the OMH Android SDK [Plugin OpenStreetMap documentation](https://www.openmobilehub.com/android-omh-maps/advanced-docs/plugin-openstreetmap/README/) for `setCap` |
+| pattern | iOS Apple Maps provider only supports alternating dashes and gaps that form the dash pattern. |
+| cap |  iOS Apple Maps provider supports BUTT, SQUARE and ROUND caps. Does not support CUSTOM. |
 
 ### OmhPolygon
 
@@ -168,15 +168,20 @@ Comments for partially supported properties:
 | clickable            |     ✅     |
 | strokeColor          |     ✅     |
 | fillColor            |     ✅     |
-| holes                |     ✅     |
+| holes                |     ❌     |
 | strokeWidth          |     ✅     |
 | isVisible            |     ✅     |
 | zIndex               |     ❌     |
-| strokeJointType      |     ❌     |
-| strokePattern        |     ❌     |
+| strokeJointType      |     🟨     |
+| strokePattern        |     🟨     |
 | onPolygonClick       |     ✅     |
 | consumePolygonClicks |     ✅     |
 
+Comments for partially supported properties:
+| Property | Comments |
+| --------------------- | -------- |
+| strokeJointType | iOS Apple Maps provider supports ROUND and BEVEL. Does not support MITER. |
+| strokePattern | iOS Apple Maps provider only supports alternating dashes and gaps that form the dash pattern. |
 
 ## License
 

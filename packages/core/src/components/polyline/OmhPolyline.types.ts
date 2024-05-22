@@ -7,7 +7,7 @@ import {
 } from '../../types/common';
 
 /**
- * Common properties for the OmhSpan types.
+ * Common properties for the OmhSpan type.
  */
 type OmhSpanCommon = {
   /** The number of segments in the span. */
@@ -56,6 +56,11 @@ export type OmhCap =
       refWidth: number;
     };
 
+/**
+ * Cap variants for polyline.
+ * Depending on the provider, start cap and end cap can be set separately.
+ * If only cap is set, it will be used for both start and end.
+ */
 export type OmhCapProps =
   | {
       cap?: OmhCap;
@@ -68,6 +73,9 @@ export type OmhCapProps =
       endCap?: OmhCap;
     };
 
+/**
+ * The Omh Polyline properties.
+ */
 export type OmhPolylineProps = OmhCapProps &
   ViewProps & {
     /**

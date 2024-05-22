@@ -18,9 +18,8 @@ export const OmhPolyline = ({
   cap,
 }: OmhPolylineProps) => {
   const onPress = useCallback(() => {
-    if (clickable) {
-      onPolylineClick?.(consumePolylineClicks || true);
-    }
+    // tappable is supported on Google Maps only
+    if (clickable) onPolylineClick?.(consumePolylineClicks || true);
   }, [clickable, consumePolylineClicks, onPolylineClick]);
 
   const linePattern = useMemo(() => {

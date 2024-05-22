@@ -17,16 +17,6 @@ export type OmhCoordinate = {
 };
 
 /**
- * A point in a 2D space.
- */
-export type OmhPoint = {
-  /** The x-coordinate of the point. */
-  x: number;
-  /** The y-coordinate of the point. */
-  y: number;
-};
-
-/**
  * A color value.
  */
 export type OmhColor = number;
@@ -54,19 +44,17 @@ export type OmhAnchor = {
 export type OmhLineJoin = 'miter' | 'round' | 'bevel';
 
 /**
- * The variant of a pattern.
- */
-export type OmhPatternVariant = 'gap' | 'dash' | 'dot';
-
-/**
  * An item in a pattern.
  */
 export type OmhPatternItem =
   | {
+      /** The type of the pattern item. */
       variant: 'dot';
     }
   | {
+      /** The type of the pattern item. */
       variant: 'dash' | 'gap';
+      /** The length of the pattern item. */
       length: number;
     };
 
@@ -76,15 +64,12 @@ export type OmhPatternItem =
 export type OmhMapProviderName = string;
 
 /**
- * A tag for a map element.
- */
-export type OmhTag = any;
-
-/**
  * A map provider, used to initialize the map view.
  */
 export type OmhMapProvider = {
+  /** The name of the provider. */
   name: OmhMapProviderName;
+  /** Android only: path to the implementation class. */
   path: string;
 };
 
@@ -92,6 +77,9 @@ export type OmhMapProvider = {
  * A map provider pair.
  */
 export type Providers = {
+  /** Provider for devices with Google Play Services availability. */
   gmsProvider: OmhMapProvider;
+  /** Provider for devices without Google Play Services availability. */
   nonGmsProvider: OmhMapProvider;
+  iosProvider: OmhMapProvider;
 };

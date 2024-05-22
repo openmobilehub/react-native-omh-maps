@@ -60,9 +60,12 @@ export default function MapProviderPicker({
           value: name,
           color: theme.colors.onSurface,
         }))}
+        textInputProps={{
+          hitSlop: { top: 16, right: 16, bottom: 16, left: 16 },
+        }}
         style={{
           inputIOS: {
-            paddingLeft: 16,
+            padding: 16,
           },
           chevronUp: { display: 'none' },
           chevronDown: { display: 'none' },
