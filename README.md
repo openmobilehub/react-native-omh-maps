@@ -181,9 +181,9 @@ Comments for partially supported properties:
 
 ## Sample App
 
-This repository includes a [maps-sample](/sample-app) that demonstrates the functionality of the OMH Maps Client Library. By cloning the repo and executing the app, you can explore the various features offered by the library.
+This repository includes a [maps-sample](https://github.com/openmobilehub/react-native-omh-maps/apps/sample-app) that demonstrates the functionality of the OMH Maps Client Library. By cloning the repo and executing the app, you can explore the various features offered by the library.
 
-However, if you prefer a step-by-step approach to learn the SDK from scratch, we recommend following the detailed [Getting Started](/getting-started) guide provided in this repository. The guide will walk you through the implementation process and help you integrate the OMH Maps Client Library into your projects effectively.
+However, if you prefer a step-by-step approach to learn the SDK from scratch, we recommend following the detailed [Getting Started](https://legendary-broccoli-93ze846.pages.github.io/docs/getting-started) guide provided in this repository. The guide will walk you through the implementation process and help you integrate the OMH Maps Client Library into your projects effectively.
 
 ## Documentation
 
