@@ -18,13 +18,7 @@ yarn add @openmobilehub/maps-plugin-googlemaps
 
 ### iOS
 
-```bash
-yarn add react-native-maps
-
-pod install --project-directory=./ios
-# or
-bundle install && bundle exec pod install --project-directory=./ios
-```
+No additional steps are required.
 
 ## Configuration
 
