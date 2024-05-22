@@ -15,7 +15,10 @@ sidebar_label: 'Apple'
 
 ```bash
 yarn add react-native-maps
-yarn cd ios && pod install
+
+pod install --project-directory=./ios
+# or
+bundle install && bundle exec pod install --project-directory=./ios
 ```
 
 ## Configuration
