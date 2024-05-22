@@ -41,7 +41,7 @@ If you plan to use location services, you need to add the following permissions 
 Before interacting with any maps plugin, it is necessary to initialize the maps module.
 
 ```typescript
-import {OmhMapsModule, OmhMapsAppleMapsIOSProvider} from '@openmobilehub/maps-core';
+import {OmhMapView, OmhMapsModule, OmhMapsAppleMapsIOSProvider} from '@openmobilehub/maps-core';
 import {OmhMapsOpenStreetMapProvider} from '@openmobilehub/maps-plugin-openstreetmap';
 
 // You can use different providers for iOS and Android.
@@ -69,10 +69,10 @@ The below matrix presents the compatibility matrix, denoting support levels for 
 Legend of support levels:
 
 | Support level       | Symbol |
-|---------------------|:------:|
-| Fully supported     |   ✅    |
+| ------------------- | :----: |
+| Fully supported     |   ✅   |
 | Partially supported |   🟨   |
-| Not supported       |   ❌    |
+| Not supported       |   ❌   |
 
 ### OmhMapView
 
@@ -87,7 +87,7 @@ Legend of support levels:
 | onMapLoaded         |     ✅     |
 | onCameraIdle        |     ✅     |
 | onMyLocationClicked |     ✅     |
-| onCameraMoveStarted |    🟨     |
+| onCameraMoveStarted |     🟨     |
 
 Comments for partially supported properties:
 | Property | Comments |
@@ -151,7 +151,7 @@ For advanced usage of `OmhMarker`, see the [Advanced Usage](https://legendary-br
 | onPolylineClick       |     ✅     |
 | consumePolylineClicks |     ✅     |
 | spans                 |     ❌     |
-| cap                   |    🟨     |
+| cap                   |     🟨     |
 | startCap              |     ❌     |
 | endCap                |     ❌     |
 

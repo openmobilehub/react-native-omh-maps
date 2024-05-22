@@ -31,7 +31,7 @@ Each plugin requires you to follow the `@openmobilehub/maps-core` setup guide. Y
 Before interacting with any maps plugin, it is necessary to initialize the maps module.
 
 ```typescript
-import {OmhMapsModule, OmhMapsAppleMapsIOSProvider} from '@openmobilehub/maps-core';
+import {OmhMapView, OmhMapsModule, OmhMapsAppleMapsIOSProvider} from '@openmobilehub/maps-core';
 import {OmhMapsOpenStreetMapProvider} from '@openmobilehub/maps-plugin-openstreetmap';
 
 // You can use different providers for iOS and Android.
@@ -50,7 +50,7 @@ const App = () => {
 
 ### Usage Guide
 
-Interacting with the Google Maps provider follows the same pattern as other providers, as they all implement the same interface. For a comprehensive list of available modules, components, and props, refer to the [Quick Start](https://todo.add.link) guide.
+Interacting with the Apple Maps provider follows the same pattern as other providers, as they all implement the same interface. For a comprehensive list of available modules, components, and props, refer to the [Quick Start](https://todo.add.link) guide.
 
 
 ## Parity Matrix
@@ -60,10 +60,10 @@ The below matrix presents the compatibility matrix, denoting support levels for 
 Legend of support levels:
 
 | Support level       | Symbol |
-|---------------------|:------:|
-| Fully supported     |   ✅    |
+| ------------------- | :----: |
+| Fully supported     |   ✅   |
 | Partially supported |   🟨   |
-| Not supported       |   ❌    |
+| Not supported       |   ❌   |
 
 ### OmhMapView
 
@@ -73,7 +73,7 @@ Legend of support levels:
 | mapStyle            |     ❌     |
 | rotateEnabled       |     ❌     |
 | zoomEnabled         |     ✅     |
-| myLocationEnabled   |    🟨     |
+| myLocationEnabled   |     🟨     |
 | onMapReady          |     ✅     |
 | onMapLoaded         |     ❌     |
 | onCameraIdle        |     ✅     |
@@ -98,7 +98,7 @@ Comments for partially supported properties:
 |-----------------------|:---------:|
 | position              |     ✅     |
 | title                 |     ✅     |
-| clickable             |    🟨     |
+| clickable             |     🟨     |
 | draggable             |     ✅     |
 | anchor                |     ❌     |
 | infoWindowAnchor      |     ❌     |
@@ -137,37 +137,48 @@ For advanced usage of `OmhMarker`, see the [Advanced Usage](https://legendary-br
 | Props                 | Supported |
 |-----------------------|:---------:|
 | points                |     ✅     |
-| clickable             |     ❌     |
+| clickable             |     ✅     |
 | color                 |     ✅     |
 | width                 |     ✅     |
 | isVisible             |     ✅     |
 | zIndex                |     ❌     |
 | jointType             |     ✅     |
-| pattern               |     ✅     |
+| pattern               |     🟨     |
 | onPolylineClick       |     ✅     |
 | consumePolylineClicks |     ✅     |
-| spans                 |     ✅     |
-| cap                   |     ✅     |
-| startCap              |     ✅     |
-| endCap                |     ✅     |
+| spans                 |     ❌     |
+| cap                   |     🟨     |
+| startCap              |     ❌     |
+| endCap                |     ❌     |
+
+Comments for partially supported properties:
+| Property | Comments |
+| --------------------- | -------- |
+| pattern | iOS Apple Maps provider only supports alternating dashes and gaps that form the dash pattern. |
+| cap |  iOS Apple Maps provider supports BUTT, SQUARE and ROUND caps. Does not support CUSTOM. |
 
 ### OmhPolygon
 
 | Props                | Supported |
 |----------------------|:---------:|
 | outline              |     ✅     |
-| clickable            |     ❌     |
+| clickable            |     ✅     |
 | strokeColor          |     ✅     |
 | fillColor            |     ✅     |
-| holes                |     ✅     |
+| holes                |     ❌     |
 | strokeWidth          |     ✅     |
 | isVisible            |     ✅     |
 | zIndex               |     ❌     |
-| strokeJointType      |     ✅     |
-| strokePattern        |     ✅     |
+| strokeJointType      |     🟨     |
+| strokePattern        |     🟨     |
 | onPolygonClick       |     ✅     |
 | consumePolygonClicks |     ✅     |
 
+Comments for partially supported properties:
+| Property | Comments |
+| --------------------- | -------- |
+| strokeJointType | iOS Apple Maps provider supports ROUND and BEVEL. Does not support MITER. |
+| strokePattern | iOS Apple Maps provider only supports alternating dashes and gaps that form the dash pattern. |
 
 ## License
 

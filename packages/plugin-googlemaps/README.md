@@ -71,7 +71,7 @@ Each plugin requires you to follow the `@openmobilehub/maps-core` setup guide. Y
 Before interacting with any maps plugin, it is necessary to initialize the maps module.
 
 ```typescript
-import {OmhMapsModule, OmhMapsGoogleMapsIOSProvider} from '@openmobilehub/maps-core';
+import {OmhMapView, OmhMapsModule, OmhMapsGoogleMapsIOSProvider} from '@openmobilehub/maps-core';
 import {OmhMapsGoogleMapsProvider} from '@openmobilehub/maps-plugin-googlemaps';
 import {OmhMapsOpenStreetMapProvider} from '@openmobilehub/maps-plugin-openstreetmap';
 
@@ -100,10 +100,10 @@ The below matrix presents the compatibility matrix, denoting support levels for 
 Legend of support levels:
 
 | Support level       | Symbol |
-|---------------------|:------:|
-| Fully supported     |   ✅    |
+| ------------------- | :----: |
+| Fully supported     |   ✅   |
 | Partially supported |   🟨   |
-| Not supported       |   ❌    |
+| Not supported       |   ❌   |
 
 ### OmhMapView
 
@@ -147,14 +147,14 @@ Legend of support levels:
 | markerZIndex          |         ✅         |       ✅       |
 | icon                  |         ✅         |       ✅       |
 | consumeMarkerClicks   |         ✅         |       ❌       |
-| onPress               |        🟨         |       ✅       |
+| onPress               |         🟨         |       ✅       |
 | onDragStart           |         ✅         |       ✅       |
 | onDrag                |         ✅         |       ✅       |
 | onDragEnd             |         ✅         |       ✅       |
 | onInfoWindowPress     |         ✅         |       ❌       |
 | onInfoWindowLongPress |         ✅         |       ❌       |
-| onInfoWindowClose     |        🟨         |       ❌       |
-| onInfoWindowOpen      |        🟨         |       ❌       |
+| onInfoWindowClose     |         🟨         |       ❌       |
+| onInfoWindowOpen      |         🟨         |       ❌       |
 
 Comments for partially supported properties:
 | Property | Comments |
@@ -171,22 +171,22 @@ For advanced usage of `OmhMarker`, see the [Advanced Usage](https://legendary-br
 
 ### OmhPolyline
 
-| Props                 | Android | iOS |
-|-----------------------|:-------:|:---:|
-| points                |    ✅    |  ✅  |
-| clickable             |    ✅    |  ✅  |
-| color                 |    ✅    |  ✅  |
-| width                 |    ✅    |  ✅  |
-| isVisible             |    ✅    |  ✅  |
-| zIndex                |    ✅    |  ✅  |
-| jointType             |    ✅    |  ❌  |
-| pattern               |    ✅    |  ✅  |
-| onPolylineClick       |    ✅    |  ✅  |
-| consumePolylineClicks |    ✅    |  ✅  |
-| spans                 |    ✅    |  ✅  |
-| cap                   |    ✅    |  ❌  |
-| startCap              |    ✅    |  ✅  |
-| endCap                |    ✅    |  ✅  |
+| Props                 | Android |   iOS   |
+|-----------------------|:-------:|:-------:|
+| points                |    ✅    |    ✅    |
+| clickable             |    ✅    |    ✅    |
+| color                 |    ✅    |    ✅    |
+| width                 |    ✅    |    ✅    |
+| isVisible             |    ✅    |    ✅    |
+| zIndex                |    ✅    |    ✅    |
+| jointType             |    ✅    |    ❌    |
+| pattern               |    ✅    |    ❌    |
+| onPolylineClick       |    ✅    |    ✅    |
+| consumePolylineClicks |    ✅    |    ✅    |
+| spans                 |    ✅    |    ✅    |
+| cap                   |    ✅    |    ❌    |
+| startCap              |    ✅    |    ❌    |
+| endCap                |    ✅    |    ❌    |
 
 ### OmhPolygon
 

@@ -69,7 +69,7 @@ If you plan to use location services, you need to add the following permissions 
 Before interacting with any maps plugin, it is necessary to initialize the maps module.
 
 ```typescript
-import {OmhMapsModule, OmhMapsAppleMapsIOSProvider} from '@openmobilehub/maps-core';
+import {OmhMapView, OmhMapsModule, OmhMapsAppleMapsIOSProvider} from '@openmobilehub/maps-core';
 import {OmhMapsMapboxProvider, OmhMapsPluginMapboxModule} from '@openmobilehub/maps-plugin-mapbox';
 
 // You can use different providers for iOS and Android.
@@ -100,10 +100,10 @@ The below matrix presents the compatibility matrix, denoting support levels for 
 Legend of support levels:
 
 | Support level       | Symbol |
-|---------------------|:------:|
-| Fully supported     |   ✅    |
+| ------------------- | :----: |
+| Fully supported     |   ✅   |
 | Partially supported |   🟨   |
-| Not supported       |   ❌    |
+| Not supported       |   ❌   |
 
 ### OmhMapView
 
@@ -118,7 +118,7 @@ Legend of support levels:
 | onMapLoaded         |     ✅     |
 | onCameraIdle        |     ✅     |
 | onMyLocationClicked |     ✅     |
-| onCameraMoveStarted |    🟨     |
+| onCameraMoveStarted |     🟨     |
 
 Comments for partially supported properties:
 | Property | Comments |
@@ -140,7 +140,7 @@ Comments for partially supported properties:
 | title                 |     ✅     |
 | clickable             |     ✅     |
 | draggable             |     ✅     |
-| anchor                |    🟨     |
+| anchor                |     🟨     |
 | infoWindowAnchor      |     ✅     |
 | alpha                 |     ✅     |
 | snippet               |     ✅     |

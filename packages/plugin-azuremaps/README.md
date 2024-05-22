@@ -63,7 +63,7 @@ If you plan to use location services, you need to add the following permissions 
 Before interacting with any maps plugin, it is necessary to initialize the maps module.
 
 ```typescript
-import {OmhMapsModule, OmhMapsAppleMapsIOSProvider} from '@openmobilehub/maps-core';
+import {OmhMapView, OmhMapsModule, OmhMapsAppleMapsIOSProvider} from '@openmobilehub/maps-core';
 import {OmhMapsAzureMapsProvider, OmhMapsPluginAzureMapsModule} from '@openmobilehub/maps-plugin-azuremaps';
 
 // You can use different providers for iOS and Android.
@@ -95,10 +95,10 @@ The below matrix presents the compatibility matrix, denoting support levels for 
 Legend of support levels:
 
 | Support level       | Symbol |
-|---------------------|:------:|
-| Fully supported     |   ✅    |
+| ------------------- | :----: |
+| Fully supported     |   ✅   |
 | Partially supported |   🟨   |
-| Not supported       |   ❌    |
+| Not supported       |   ❌   |
 
 ### OmhMapView
 
@@ -130,7 +130,7 @@ Legend of support levels:
 | title                 |     ✅     |
 | clickable             |     ✅     |
 | draggable             |     ❌     |
-| anchor                |    🟨     |
+| anchor                |     🟨     |
 | infoWindowAnchor      |     ✅     |
 | alpha                 |     ✅     |
 | snippet               |     ✅     |
@@ -173,11 +173,11 @@ For advanced usage of `OmhMarker`, see the [Advanced Usage](https://legendary-br
 | isVisible             |     ✅     |
 | zIndex                |     ❌     |
 | jointType             |     ✅     |
-| pattern               |    🟨     |
+| pattern               |     🟨     |
 | onPolylineClick       |     ✅     |
 | consumePolylineClicks |     ✅     |
 | spans                 |     ❌     |
-| cap                   |    🟨     |
+| cap                   |     🟨     |
 | startCap              |     ❌     |
 | endCap                |     ❌     |
 
@@ -200,7 +200,7 @@ Comments for partially supported properties:
 | isVisible            |     ✅     |
 | zIndex               |     ❌     |
 | strokeJointType      |     ✅     |
-| strokePattern        |    🟨     |
+| strokePattern        |     🟨     |
 | onPolygonClick       |     ✅     |
 | consumePolygonClicks |     ✅     |
 

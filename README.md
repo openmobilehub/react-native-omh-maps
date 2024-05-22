@@ -136,47 +136,48 @@ For advanced usage of `OmhMarker`, see the [Advanced Usage](https://legendary-br
 | Props                 | Android GoogleMaps | Android OpenStreetMaps | Android Mapbox | Android AzureMaps | iOS GoogleMaps | iOS AppleMaps |
 | --------------------- | :----------------: | :--------------------: | :------------: | :---------------: | :------------: | :-----------: |
 | points                |         ✅         |           ✅           |       ✅       |        ✅         |       ✅       |      ✅       |
-| clickable             |         ✅         |           ✅           |       ✅       |        ✅         |       ✅       |      ❌       |
+| clickable             |         ✅         |           ✅           |       ✅       |        ✅         |       ✅       |      ✅       |
 | color                 |         ✅         |           ✅           |       ✅       |        ✅         |       ✅       |      ✅       |
 | width                 |         ✅         |           ✅           |       ✅       |        ✅         |       ✅       |      ✅       |
 | isVisible             |         ✅         |           ✅           |       ✅       |        ✅         |       ✅       |      ✅       |
 | zIndex                |         ✅         |           ❌           |       ❌       |        ❌         |       ✅       |      ❌       |
 | jointType             |         ✅         |           ❌           |       ✅       |        ✅         |       ❌       |      ✅       |
-| pattern               |         ✅         |           ❌           |       ❌       |        🟨         |       ✅       |      ✅       |
+| pattern               |         ✅         |           ❌           |       ❌       |        🟨         |       ❌       |      🟨       |
 | onPolylineClick       |         ✅         |           ✅           |       ✅       |        ✅         |       ✅       |      ✅       |
 | consumePolylineClicks |         ✅         |           ✅           |       ✅       |        ✅         |       ✅       |      ✅       |
-| spans                 |         ✅         |           ❌           |       ❌       |        ❌         |       ✅       |      ✅       |
-| cap                   |         ✅         |           🟨           |       ✅       |        🟨         |       ❌       |      ✅       |
-| startCap              |         ✅         |           ❌           |       ❌       |        ❌         |       ✅       |      ✅       |
-| endCap                |         ✅         |           ❌           |       ❌       |        ❌         |       ✅       |      ✅       |
+| spans                 |         ✅         |           ❌           |       ❌       |        ❌         |       ✅       |      ❌       |
+| cap                   |         ✅         |           🟨           |       ✅       |        🟨         |       ❌       |      🟨       |
+| startCap              |         ✅         |           ❌           |       ❌       |        ❌         |       ❌       |      ❌       |
+| endCap                |         ✅         |           ❌           |       ❌       |        ❌         |       ❌       |      ❌       |
 
 Comments for partially supported properties:
 | Property | Comments |
 | --------------------- | -------- |
-| pattern | Described in the OMH Android SDK [Plugin AzureMaps documentation](https://www.openmobilehub.com/android-omh-maps/advanced-docs/plugin-azuremaps/README/) for `pattern` |
-| cap | Described in the OMH Android SDK [Plugin OpenStreetMap documentation](https://www.openmobilehub.com/android-omh-maps/advanced-docs/plugin-openstreetmap/README/), [Plugin AzureMaps documentation](https://www.openmobilehub.com/android-omh-maps/advanced-docs/plugin-azuremaps/README/) for `setCap` |
+| pattern | Described in the OMH Android SDK [Plugin AzureMaps documentation](https://www.openmobilehub.com/android-omh-maps/advanced-docs/plugin-azuremaps/README/) and OMH iOS [Plugin AppleMaps documentation](https://legendary-broccoli-93ze846.pages.github.io/apple) for `pattern` |
+| cap | Described in the OMH Android SDK [Plugin OpenStreetMap documentation](https://www.openmobilehub.com/android-omh-maps/advanced-docs/plugin-openstreetmap/README/), [Plugin AzureMaps documentation](https://www.openmobilehub.com/android-omh-maps/advanced-docs/plugin-azuremaps/README/) for `setCap` and OMH iOS [Plugin AppleMaps documentation](https://legendary-broccoli-93ze846.pages.github.io/apple) for `cap` |
 
 ### OmhPolygon
 
 | Props                | Android GoogleMaps | Android OpenStreetMaps | Android Mapbox | Android AzureMaps | iOS GoogleMaps | iOS AppleMaps |
 | -------------------- | :----------------: | :--------------------: | :------------: | :---------------: | :------------: | :-----------: |
 | outline              |         ✅         |           ✅           |       ✅       |        ✅         |       ✅       |      ✅       |
-| clickable            |         ✅         |           ✅           |       ✅       |        ✅         |       ✅       |      ❌       |
+| clickable            |         ✅         |           ✅           |       ✅       |        ✅         |       ✅       |      ✅       |
 | strokeColor          |         ✅         |           ✅           |       ✅       |        ✅         |       ✅       |      ✅       |
 | fillColor            |         ✅         |           ✅           |       ✅       |        ✅         |       ✅       |      ✅       |
-| holes                |         ✅         |           ✅           |       ✅       |        ✅         |       ✅       |      ✅       |
+| holes                |         ✅         |           ✅           |       ✅       |        ✅         |       ✅       |      ❌       |
 | strokeWidth          |         ✅         |           ✅           |       ✅       |        ✅         |       ✅       |      ✅       |
 | isVisible            |         ✅         |           ✅           |       ✅       |        ✅         |       ✅       |      ✅       |
 | zIndex               |         ✅         |           ❌           |       ❌       |        ❌         |       ✅       |      ❌       |
-| strokeJointType      |         ✅         |           ❌           |       ✅       |        ✅         |       ❌       |      ✅       |
-| strokePattern        |         ✅         |           ❌           |       ❌       |        🟨         |       ❌       |      ✅       |
+| strokeJointType      |         ✅         |           ❌           |       ✅       |        ✅         |       ❌       |      🟨       |
+| strokePattern        |         ✅         |           ❌           |       ❌       |        🟨         |       ❌       |      🟨       |
 | onPolygonClick       |         ✅         |           ✅           |       ✅       |        ✅         |       ✅       |      ✅       |
 | consumePolygonClicks |         ✅         |           ✅           |       ✅       |        ✅         |       ✅       |      ✅       |
 
 Comments for partially supported properties:
 | Property | Comments |
 | --------------------- | -------- |
-| strokePattern | Described in the OMH Android SDK [Plugin AzureMaps documentation](https://www.openmobilehub.com/android-omh-maps/advanced-docs/plugin-azuremaps/README/) for `strokePattern` |
+| strokeJointType | Described in the OMH iOS [Plugin AppleMaps documentation](https://legendary-broccoli-93ze846.pages.github.io/apple) for `strokeJointType` |
+| strokePattern | Described in the OMH Android SDK [Plugin AzureMaps documentation](https://www.openmobilehub.com/android-omh-maps/advanced-docs/plugin-azuremaps/README/) and OMH iOS [Plugin AppleMaps documentation](https://legendary-broccoli-93ze846.pages.github.io/apple) for `strokePattern` |
 
 ## Documentation
 
