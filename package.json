@@ -79,11 +79,11 @@
     "prepare": "cross-env FORCE_COLOR=1 yarn workspaces foreach -A -p --exclude @openmobilehub/maps-sample-app run prepare",
     "release": "cross-env FORCE_COLOR=1 yarn workspaces foreach -A -p --exclude @openmobilehub/maps-sample-app run release",
     "postinstall": "node ./scripts/postInstall.js",
-    "codegen:android": "./sample-app/android/gradlew -p sample-app/android generateCodegenArtifactsFromSchema -t android",
-    "codegen:ios": "node node_modules/react-native/scripts/generate-codegen-artifacts.js --path . --outputPath ./sample-app/ios -t ios"
+    "codegen:android": "./apps/sample-app/android/gradlew -p apps/sample-app/android generateCodegenArtifactsFromSchema -t android",
+    "codegen:ios": "node node_modules/react-native/scripts/generate-codegen-artifacts.js --path . --outputPath ./apps/sample-app/ios -t ios"
   },
   "workspaces": [
-    "sample-app",
+    "apps/sample-app",
     "scripts",
     "docs",
     "packages/*"

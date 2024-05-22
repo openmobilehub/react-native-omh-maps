@@ -4004,9 +4004,9 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@openmobilehub/maps-sample-app@workspace:sample-app":
+"@openmobilehub/maps-sample-app@workspace:apps/sample-app":
   version: 0.0.0-use.local
-  resolution: "@openmobilehub/maps-sample-app@workspace:sample-app"
+  resolution: "@openmobilehub/maps-sample-app@workspace:apps/sample-app"
   dependencies:
     "@openmobilehub/maps-core": "workspace:^"
     "@openmobilehub/maps-plugin-azuremaps": "workspace:^"
