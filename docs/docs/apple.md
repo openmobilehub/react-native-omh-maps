@@ -1,17 +1,24 @@
-
+---
+id: 'apple'
+title: 'Apple'
+sidebar_label: 'Apple'
 ---
 
 ## Platforms
 
-|  Platform  |  Supported  |
-|:----------:|:-----------:|
-|  Android   |      ✅      |
-|    iOS     |      ❌      |
+|  Platform  | Supported  |
+|:----------:|:----------:|
+|  Android   |     ❌      |
+|    iOS     |     ✅      |
 
 ## Installation
 
 ```bash
-yarn add @openmobilehub/maps-plugin-mapbox
+yarn add react-native-maps
+
+pod install --project-directory=./ios
+# or
+bundle install && bundle exec pod install --project-directory=./ios
 ```
 
 ## Configuration
@@ -22,67 +29,22 @@ Each plugin requires you to follow the `@openmobilehub/maps-core` setup guide. Y
 
 :::
 
-### Credentials
-
-1. Configure your secret token according to the [official documentation](https://docs.mapbox.com/android/maps/guides/install/#configure-your-secret-token).
-2. Create your public token according to the [official documentation](https://docs.mapbox.com/android/maps/guides/install/#configure-credentials) and save it for later use.
-
-### Maven
-
-Add the following maven setup to your `android/build.gradle` file:
-
-```groovy
-// ...
-allprojects {
-    repositories { repositoryHandler ->
-        google()
-        mavenCentral()
-        // Mapbox Maven repository
-        maven {
-            url = uri("https://api.mapbox.com/downloads/v2/releases/maven")
-            // Do not change the username below. It should always be "mapbox" (not your username).
-            credentials.username = "mapbox"
-            // Use the secret token stored in gradle.properties as the password
-            credentials.password = providers.gradleProperty("MAPBOX_DOWNLOADS_TOKEN").get()
-            authentication { basic(BasicAuthentication) }
-        }
-    }
-}
-```
-
-### [Optional] Permissions
-
-If you plan to use location services, you need to add the following permissions to your `AndroidManifest.xml` file:
-
-```xml
-<manifest ...>
-   <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
-   <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
-   <application ...>
-      ...
-   </application>
-</manifest>
-```
-
 ## Usage
 
 Before interacting with any maps plugin, it is necessary to initialize the maps module.
 
 ```typescript
 import {OmhMapView, OmhMapsModule, OmhMapsAppleMapsIOSProvider} from '@openmobilehub/maps-core';
-import {OmhMapsMapboxProvider, OmhMapsPluginMapboxModule} from '@openmobilehub/maps-plugin-mapbox';
+import {OmhMapsOpenStreetMapProvider} from '@openmobilehub/maps-plugin-openstreetmap';
 
 // You can use different providers for iOS and Android.
 // For Android, you can use different providers for devices with and without Google Play Services.
 // Remember to initialize the module before using any of its components.
 OmhMapsModule.initialize({
-  gmsProvider: OmhMapsMapboxProvider,
-  nonGmsProvider: OmhMapsMapboxProvider,
   iosProvider: OmhMapsAppleMapsIOSProvider,
+  gmsProvider: OmhMapsOpenStreetMapProvider,
+  nonGmsProvider: OmhMapsOpenStreetMapProvider,
 });
-
-// Credentials setup must be done before using the map view.
-OmhMapsPluginMapboxModule.setPublicToken('<YOUR_PUBLIC_TOKEN>');
 
 const App = () => {
   return <OmhMapView />;
@@ -91,7 +53,8 @@ const App = () => {
 
 ### Usage Guide
 
-Interacting with the Mapbox provider follows the same pattern as other providers, as they all implement the same interface. For a comprehensive list of available modules, components, and props, refer to the [Quick Start](https://todo.add.link) guide.
+Interacting with the Apple Maps provider follows the same pattern as other providers, as they all implement the same interface. For a comprehensive list of available modules, components, and props, refer to the [Quick Start](https://todo.add.link) guide.
+
 
 ## Parity Matrix
 
@@ -110,23 +73,23 @@ Legend of support levels:
 | Props               | Supported |
 |---------------------|:---------:|
 | scaleFactor         |     ✅     |
-| mapStyle            |     ✅     |
-| rotateEnabled       |     ✅     |
+| mapStyle            |     ❌     |
+| rotateEnabled       |     ❌     |
 | zoomEnabled         |     ✅     |
-| myLocationEnabled   |     ✅     |
+| myLocationEnabled   |     🟨     |
 | onMapReady          |     ✅     |
-| onMapLoaded         |     ✅     |
+| onMapLoaded         |     ❌     |
 | onCameraIdle        |     ✅     |
 | onMyLocationClicked |     ✅     |
-| onCameraMoveStarted |     🟨     |
+| onCameraMoveStarted |     ✅     |
 
 Comments for partially supported properties:
 | Property | Comments |
 | --------------------- | -------- |
-| onCameraMoveStarted | Described in the OMH Android SDK [Plugin Mapbox documentation](https://www.openmobilehub.com/android-omh-maps/advanced-docs/plugin-mapbox/README/) for `setOnCameraMoveStartedListener` |
+| myLocationEnabled | On iOS Apple Maps provider, the property only controls the display of user's current location; on this provider, 'move to current location' button is not supported |
 
-| Ref                 | Supported |
-|---------------------|:---------:|
+  | Ref                 | Supported |
+  |---------------------|:---------:|
 | getCameraCoordinate |     ✅     |
 | setCameraCoordinate |     ✅     |
 | getProviderName     |     ✅     |
@@ -138,32 +101,32 @@ Comments for partially supported properties:
 |-----------------------|:---------:|
 | position              |     ✅     |
 | title                 |     ✅     |
-| clickable             |     ✅     |
+| clickable             |     🟨     |
 | draggable             |     ✅     |
-| anchor                |     🟨     |
-| infoWindowAnchor      |     ✅     |
-| alpha                 |     ✅     |
+| anchor                |     ❌     |
+| infoWindowAnchor      |     ❌     |
+| alpha                 |     ❌     |
 | snippet               |     ✅     |
 | isVisible             |     ✅     |
-| isFlat                |     ✅     |
-| rotation              |     ✅     |
+| isFlat                |     ❌     |
+| rotation              |     ❌     |
 | backgroundColor       |     ✅     |
-| markerZIndex          |     ❌     |
-| icon                  |     ✅     |
-| consumeMarkerClicks   |     ✅     |
+| markerZIndex          |     ✅     |
+| icon                  |     ❌     |
+| consumeMarkerClicks   |     ❌     |
 | onPress               |     ✅     |
 | onDragStart           |     ✅     |
 | onDrag                |     ✅     |
 | onDragEnd             |     ✅     |
 | onInfoWindowPress     |     ✅     |
-| onInfoWindowLongPress |     ✅     |
-| onInfoWindowClose     |     ✅     |
-| onInfoWindowOpen      |     ✅     |
+| onInfoWindowLongPress |     ❌     |
+| onInfoWindowClose     |     ❌     |
+| onInfoWindowOpen      |     ❌     |
 
 Comments for partially supported properties:
 | Property | Comments |
 | --------------------- | -------- |
-| anchor | On Mapbox provider, values are discretized as described in the OMH Android SDK [Plugin Mapbox documentation](https://www.openmobilehub.com/android-omh-maps/advanced-docs/plugin-mapbox/README/) for `anchor` |
+| clickable | On iOS Apple Maps provider, marker is always clickable; property value is ignored. |
 
 | Ref            | Supported |
 |----------------|:---------:|
@@ -183,13 +146,19 @@ For advanced usage of `OmhMarker`, see the [Advanced Usage](https://legendary-br
 | isVisible             |     ✅     |
 | zIndex                |     ❌     |
 | jointType             |     ✅     |
-| pattern               |     ❌     |
+| pattern               |     🟨     |
 | onPolylineClick       |     ✅     |
 | consumePolylineClicks |     ✅     |
 | spans                 |     ❌     |
-| cap                   |     ✅     |
+| cap                   |     🟨     |
 | startCap              |     ❌     |
 | endCap                |     ❌     |
+
+Comments for partially supported properties:
+| Property | Comments |
+| --------------------- | -------- |
+| pattern | iOS Apple Maps provider only supports alternating dashes and gaps that form the dash pattern. |
+| cap |  iOS Apple Maps provider supports BUTT, SQUARE and ROUND caps. Does not support CUSTOM. |
 
 ### OmhPolygon
 
@@ -199,15 +168,20 @@ For advanced usage of `OmhMarker`, see the [Advanced Usage](https://legendary-br
 | clickable            |     ✅     |
 | strokeColor          |     ✅     |
 | fillColor            |     ✅     |
-| holes                |     ✅     |
+| holes                |     ❌     |
 | strokeWidth          |     ✅     |
 | isVisible            |     ✅     |
 | zIndex               |     ❌     |
-| strokeJointType      |     ✅     |
-| strokePattern        |     ❌     |
+| strokeJointType      |     🟨     |
+| strokePattern        |     🟨     |
 | onPolygonClick       |     ✅     |
 | consumePolygonClicks |     ✅     |
 
+Comments for partially supported properties:
+| Property | Comments |
+| --------------------- | -------- |
+| strokeJointType | iOS Apple Maps provider supports ROUND and BEVEL. Does not support MITER. |
+| strokePattern | iOS Apple Maps provider only supports alternating dashes and gaps that form the dash pattern. |
 
 ## License
 
