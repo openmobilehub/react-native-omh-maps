@@ -142,7 +142,7 @@ const questions: PromptObject[] = [
         `--author-email="${pluginAuthorEmail}"`,
         `--author-url="${pluginAuthorUrl}"`,
         `--repo-url=https://github.com/openmobilehub/react-native-omh-maps`,
-        `--type=view-mixed`, // use new architecture (Fabric views) with backward compat; see https://github.com/callstack/react-native-builder-bob/blob/main/packages/create-react-native-library/src/index.ts#L176
+        `--type=module-mixed`, // use new architecture (Turbo Modules) with backward compat; see https://github.com/callstack/react-native-builder-bob/blob/main/packages/create-react-native-library/src/index.ts#L176
         `--languages=kotlin-objc`, // see https://github.com/callstack/react-native-builder-bob/blob/main/packages/create-react-native-library/src/index.ts#L92
         `--local=false`, // create a library in the directory passed in as first positional arg
         `--example=false`, // don't create an example app
@@ -318,17 +318,14 @@ const questions: PromptObject[] = [
     const oldFilePath = fullFilePath[0],
       fileContent = fs.readFileSync(oldFilePath, 'utf-8');
     const newFileContent = fileContent
-      .replace(/ReactNativeMapsPlugin/g, 'RNOmhMapsPlugin')
-      .replace(/ReactNativeMapsPlugin(.*)View/g, 'RNOmhMapsPlugin$1')
+      .replace(/MapsPlugin/g, 'RNOmhMapsPlugin')
+      .replace(/MapsPlugin(.*)View/g, 'RNOmhMapsPlugin$1')
       .replace(
-        /"com\.omh\.reactnativemapsplugin.*"/g,
+        /"com\.(omh|openmobilehub)\.mapsplugin.*"/g,
         `"${androidPackageName}"`
       );
 
-    const newFilePath = oldFilePath.replace(
-      /ReactNativeMapsPlugin/g,
-      'RNOmhMapsPlugin'
-    );
+    const newFilePath = oldFilePath.replace(/MapsPlugin/g, 'RNOmhMapsPlugin');
 
     if (newFilePath !== oldFilePath) fs.rmSync(oldFilePath);
 
@@ -352,17 +349,17 @@ const questions: PromptObject[] = [
     ]) as Array<[string, string]>) {
     const fileContent = fs.readFileSync(fullFilePath[0], 'utf-8');
     const newFileContent = fileContent.replace(
-      /ReactNativeMapsPlugin/g,
+      /MapsPlugin/g,
       'RNOmhMapsPlugin'
     );
 
     console.log(
-      `Re-writing TS source file ${fullFilePath[0].replace(rootWorkspacePath, '')}}`
+      `Re-writing TS source file ${fullFilePath[0].replace(rootWorkspacePath, '')}`
     );
 
     fs.rmSync(fullFilePath[0]);
     fs.writeFileSync(
-      fullFilePath[0].replace(/ReactNativeMapsPlugin/, 'RNOmhMapsPlugin'),
+      fullFilePath[0].replace(/MapsPlugin/, 'RNOmhMapsPlugin'),
       await prettier.format(newFileContent, getPrettierConfig('typescript'))
     );
   }
@@ -424,13 +421,11 @@ const questions: PromptObject[] = [
 
     const newFileContent = fileContent
       .replace(/^package .*$/m, `package ${androidPackageName}`)
-      .replace(/ReactNativeMapsPlugin/g, 'RNOmhMapsPlugin');
+      .replace(/MapsPlugin/g, 'RNOmhMapsPlugin');
 
     const destFilePath = path.join(
       targetDirPath,
-      path.basename(
-        fileFullPath.replace(/ReactNativeMapsPlugin/g, 'RNOmhMapsPlugin')
-      )
+      path.basename(fileFullPath.replace(/MapsPlugin/g, 'RNOmhMapsPlugin'))
     );
     console.log(
       `Re-writing source Kotlin file ${fileFullPath.replace(rootWorkspacePath, '')} to ${destFilePath.replace(rootWorkspacePath, '')}`
@@ -514,7 +509,31 @@ const questions: PromptObject[] = [
     });
   } catch (err: any) {
     spinner.fail(
-      `Failed to create the new plugin (yarn exited with code ${err.code}). Full output below:`
+      `Failed to add the new plugin to sample-app dependencies (yarn exited with code ${err.code}). Full output below:`
+    );
+    process.exit(err.code ?? -2);
+  }
+
+  spinner.text = 'Running codegen for Android';
+
+  const sampleAppAndroidProjectPath = path.join(
+    rootWorkspacePath,
+    'apps',
+    'sample-app',
+    'android'
+  );
+
+  try {
+    await Utils.spawnWrapper(
+      './gradlew',
+      ['generateCodegenArtifactsFromSchema'],
+      {
+        cwd: sampleAppAndroidProjectPath,
+      }
+    );
+  } catch (err: any) {
+    spinner.fail(
+      `Failed to run codegen for Android (gradlew exited with code ${err.code}). Full output below:`
     );
     process.exit(err.code ?? -2);
   }

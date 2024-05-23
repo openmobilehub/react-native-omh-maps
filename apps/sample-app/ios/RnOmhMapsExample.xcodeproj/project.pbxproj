@@ -500,7 +500,7 @@
 					"-ObjC",
 					"-lc++",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.omh.maps.sample;
+				PRODUCT_BUNDLE_IDENTIFIER = com.openmobilehub.maps.sample;
 				PRODUCT_NAME = RnOmhMapsExample;
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				"PROVISIONING_PROFILE_SPECIFIER[sdk=iphoneos*]" = "Omh Maps Sample Ad hoc";
@@ -532,7 +532,7 @@
 					"-ObjC",
 					"-lc++",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.omh.maps.sample;
+				PRODUCT_BUNDLE_IDENTIFIER = com.openmobilehub.maps.sample;
 				PRODUCT_NAME = RnOmhMapsExample;
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				"PROVISIONING_PROFILE_SPECIFIER[sdk=iphoneos*]" = "Omh Maps Sample Ad hoc";
