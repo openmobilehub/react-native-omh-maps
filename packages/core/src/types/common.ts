@@ -81,4 +81,5 @@ export type Providers = {
   gmsProvider: OmhMapProvider;
   /** Provider for devices without Google Play Services availability. */
   nonGmsProvider: OmhMapProvider;
+  iosProvider: OmhMapProvider;
 };

@@ -93,30 +93,29 @@ Comments for partially supported properties:
 
 | Props                 | Android GoogleMaps | Android OpenStreetMaps | Android Mapbox | Android AzureMaps | iOS GoogleMaps | iOS AppleMaps |
 | --------------------- | :----------------: | :--------------------: | :------------: | :---------------: | :------------: | :-----------: |
-| position              |         ✅         |           ✅           |       ✅       |        ✅         |       ?        |       ?       |
-| title                 |         ✅         |           ✅           |       ✅       |        ✅         |       ?        |       ?       |
-| clickable             |         ✅         |           ✅           |       ✅       |        ✅         |       ?        |       ?       |
-| draggable             |         ✅         |           ✅           |       ✅       |        ❌         |       ?        |       ?       |
-| anchor                |         ✅         |           ✅           |       🟨       |        🟨         |       ?        |       ?       |
-| infoWindowAnchor      |         ✅         |           ✅           |       ✅       |        ✅         |       ?        |       ?       |
-| alpha                 |         ✅         |           ✅           |       ✅       |        ✅         |       ?        |       ?       |
-| snippet               |         ✅         |           ✅           |       ✅       |        ✅         |       ?        |       ?       |
-| isVisible             |         ✅         |           ✅           |       ✅       |        ✅         |       ?        |       ?       |
-| isFlat                |         ✅         |           ✅           |       ✅       |        ✅         |       ?        |       ?       |
-| rotation              |         ✅         |           ✅           |       ✅       |        ✅         |       ?        |       ?       |
-| backgroundColor       |         ✅         |           ❌           |       ✅       |        ✅         |       ?        |       ?       |
-| isInfoWindowShown     |         ✅         |           ✅           |       ✅       |        ✅         |       ?        |       ?       |
-| markerZIndex          |         ✅         |           ❌           |       ❌       |        ❌         |       ?        |       ?       |
-| icon                  |         ✅         |           ✅           |       ✅       |        ✅         |       ?        |       ?       |
-| consumeMarkerClicks   |         ✅         |           ✅           |       ✅       |        ✅         |       ?        |       ?       |
-| onPress               |         🟨         |           ✅           |       ✅       |        ✅         |       ?        |       ?       |
-| onDragStart           |         ✅         |           ✅           |       ✅       |        ❌         |       ?        |       ?       |
-| onDrag                |         ✅         |           ✅           |       ✅       |        ❌         |       ?        |       ?       |
-| onDragEnd             |         ✅         |           ✅           |       ✅       |        ❌         |       ?        |       ?       |
-| onInfoWindowPress     |         ✅         |           ✅           |       ✅       |        ✅         |       ?        |       ?       |
-| onInfoWindowLongPress |         ✅         |           ✅           |       ✅       |        ✅         |       ?        |       ?       |
-| onInfoWindowClose     |         🟨         |           ✅           |       ✅       |        ✅         |       ?        |       ?       |
-| onInfoWindowOpen      |         🟨         |           ✅           |       ✅       |        ✅         |       ?        |       ?       |
+| position              |         ✅         |           ✅           |       ✅       |        ✅         |       ✅       |      ✅       |
+| title                 |         ✅         |           ✅           |       ✅       |        ✅         |       ✅       |      ✅       |
+| clickable             |         ✅         |           ✅           |       ✅       |        ✅         |       ✅       |      🟨       |
+| draggable             |         ✅         |           ✅           |       ✅       |        ❌         |       ✅       |      ✅       |
+| anchor                |         ✅         |           ✅           |       🟨       |        🟨         |       ✅       |      ❌       |
+| infoWindowAnchor      |         ✅         |           ✅           |       ✅       |        ✅         |       ✅       |      ❌       |
+| alpha                 |         ✅         |           ✅           |       ✅       |        ✅         |       ✅       |      ❌       |
+| snippet               |         ✅         |           ✅           |       ✅       |        ✅         |       ✅       |      ✅       |
+| isVisible             |         ✅         |           ✅           |       ✅       |        ✅         |       ✅       |      ✅       |
+| isFlat                |         ✅         |           ✅           |       ✅       |        ✅         |       ✅       |      ❌       |
+| rotation              |         ✅         |           ✅           |       ✅       |        ✅         |       ✅       |      ❌       |
+| backgroundColor       |         ✅         |           ❌           |       ✅       |        ✅         |       ✅       |      ✅       |
+| markerZIndex          |         ✅         |           ❌           |       ❌       |        ❌         |       ✅       |      ✅       |
+| icon                  |         ✅         |           ✅           |       ✅       |        ✅         |       ✅       |      ❌       |
+| consumeMarkerClicks   |         ✅         |           ✅           |       ✅       |        ✅         |       ❌       |      ❌       |
+| onPress               |         🟨         |           ✅           |       ✅       |        ✅         |       ✅       |      ✅       |
+| onDragStart           |         ✅         |           ✅           |       ✅       |        ❌         |       ✅       |      ✅       |
+| onDrag                |         ✅         |           ✅           |       ✅       |        ❌         |       ✅       |      ✅       |
+| onDragEnd             |         ✅         |           ✅           |       ✅       |        ❌         |       ✅       |      ✅       |
+| onInfoWindowPress     |         ✅         |           ✅           |       ✅       |        ✅         |       ❌       |      ✅       |
+| onInfoWindowLongPress |         ✅         |           ✅           |       ✅       |        ✅         |       ❌       |      ❌       |
+| onInfoWindowClose     |         🟨         |           ✅           |       ✅       |        ✅         |       ❌       |      ❌       |
+| onInfoWindowOpen      |         🟨         |           ✅           |       ✅       |        ✅         |       ❌       |      ❌       |
 
 Comments for partially supported properties:
 | Property | Comments |
@@ -125,6 +124,11 @@ Comments for partially supported properties:
 | onPress | Described in the OMH Android SDK [Plugin GoogleMaps documentation](https://www.openmobilehub.com/android-omh-maps/advanced-docs/plugin-googlemaps/README/) for `setOnMarkerClickListener` |
 | onInfoWindowClose, onInfoWindowOpen | Described in the OMH Android SDK [Plugin GoogleMaps documentation](https://www.openmobilehub.com/android-omh-maps/advanced-docs/plugin-googlemaps/README/) for `setOnInfoWindowOpenStatusChangeListener` |
 
+| Ref            | Android GoogleMaps | Android OpenStreetMaps | Android Mapbox | Android AzureMaps | iOS GoogleMaps | iOS AppleMaps |
+| -------------- | :----------------: | :--------------------: | :------------: | :---------------: | :------------: | :-----------: |
+| showInfoWindow |         ✅         |           ✅           |       ✅       |        ✅         |       ✅       |      ✅       |
+| hideInfoWindow |         ✅         |           ✅           |       ✅       |        ✅         |       ✅       |      ✅       |
+
 For advanced usage of `OmhMarker`, see the [Advanced Usage](https://www.openmobilehub.com/react-native-omh-maps/docs/advanced-usage) section.
 
 ### OmhPolyline
@@ -132,47 +136,54 @@ For advanced usage of `OmhMarker`, see the [Advanced Usage](https://www.openmobi
 | Props                 | Android GoogleMaps | Android OpenStreetMaps | Android Mapbox | Android AzureMaps | iOS GoogleMaps | iOS AppleMaps |
 | --------------------- | :----------------: | :--------------------: | :------------: | :---------------: | :------------: | :-----------: |
 | points                |         ✅         |           ✅           |       ✅       |        ✅         |       ✅       |      ✅       |
-| clickable             |         ✅         |           ✅           |       ✅       |        ✅         |       ✅       |      ❌       |
+| clickable             |         ✅         |           ✅           |       ✅       |        ✅         |       ✅       |      ✅       |
 | color                 |         ✅         |           ✅           |       ✅       |        ✅         |       ✅       |      ✅       |
 | width                 |         ✅         |           ✅           |       ✅       |        ✅         |       ✅       |      ✅       |
 | isVisible             |         ✅         |           ✅           |       ✅       |        ✅         |       ✅       |      ✅       |
 | zIndex                |         ✅         |           ❌           |       ❌       |        ❌         |       ✅       |      ❌       |
 | jointType             |         ✅         |           ❌           |       ✅       |        ✅         |       ❌       |      ✅       |
-| pattern               |         ✅         |           ❌           |       ❌       |        🟨         |       ✅       |      ✅       |
+| pattern               |         ✅         |           ❌           |       ❌       |        🟨         |       ❌       |      🟨       |
 | onPolylineClick       |         ✅         |           ✅           |       ✅       |        ✅         |       ✅       |      ✅       |
 | consumePolylineClicks |         ✅         |           ✅           |       ✅       |        ✅         |       ✅       |      ✅       |
-| spans                 |         ✅         |           ❌           |       ❌       |        ❌         |       ✅       |      ✅       |
-| cap                   |         ✅         |           🟨           |       ✅       |        🟨         |       ❌       |      ✅       |
-| startCap              |         ✅         |           ❌           |       ❌       |        ❌         |       ✅       |      ✅       |
-| endCap                |         ✅         |           ❌           |       ❌       |        ❌         |       ✅       |      ✅       |
+| spans                 |         ✅         |           ❌           |       ❌       |        ❌         |       ✅       |      ❌       |
+| cap                   |         ✅         |           🟨           |       ✅       |        🟨         |       ❌       |      🟨       |
+| startCap              |         ✅         |           ❌           |       ❌       |        ❌         |       ❌       |      ❌       |
+| endCap                |         ✅         |           ❌           |       ❌       |        ❌         |       ❌       |      ❌       |
 
 Comments for partially supported properties:
 | Property | Comments |
 | --------------------- | -------- |
-| pattern | Described in the OMH Android SDK [Plugin AzureMaps documentation](https://www.openmobilehub.com/android-omh-maps/advanced-docs/plugin-azuremaps/README/) for `pattern` |
-| cap | Described in the OMH Android SDK [Plugin OpenStreetMap documentation](https://www.openmobilehub.com/android-omh-maps/advanced-docs/plugin-openstreetmap/README/) for `setCap` |
+| pattern | Described in the OMH Android SDK [Plugin AzureMaps documentation](https://www.openmobilehub.com/android-omh-maps/advanced-docs/plugin-azuremaps/README/) and OMH iOS [Plugin AppleMaps documentation](https://legendary-broccoli-93ze846.pages.github.io/apple) for `pattern` |
+| cap | Described in the OMH Android SDK [Plugin OpenStreetMap documentation](https://www.openmobilehub.com/android-omh-maps/advanced-docs/plugin-openstreetmap/README/), [Plugin AzureMaps documentation](https://www.openmobilehub.com/android-omh-maps/advanced-docs/plugin-azuremaps/README/) for `setCap` and OMH iOS [Plugin AppleMaps documentation](https://legendary-broccoli-93ze846.pages.github.io/apple) for `cap` |
 
 ### OmhPolygon
 
 | Props                | Android GoogleMaps | Android OpenStreetMaps | Android Mapbox | Android AzureMaps | iOS GoogleMaps | iOS AppleMaps |
 | -------------------- | :----------------: | :--------------------: | :------------: | :---------------: | :------------: | :-----------: |
 | outline              |         ✅         |           ✅           |       ✅       |        ✅         |       ✅       |      ✅       |
-| clickable            |         ✅         |           ✅           |       ✅       |        ✅         |       ✅       |      ❌       |
+| clickable            |         ✅         |           ✅           |       ✅       |        ✅         |       ✅       |      ✅       |
 | strokeColor          |         ✅         |           ✅           |       ✅       |        ✅         |       ✅       |      ✅       |
 | fillColor            |         ✅         |           ✅           |       ✅       |        ✅         |       ✅       |      ✅       |
-| holes                |         ✅         |           ✅           |       ✅       |        ✅         |       ✅       |      ✅       |
+| holes                |         ✅         |           ✅           |       ✅       |        ✅         |       ✅       |      ❌       |
 | strokeWidth          |         ✅         |           ✅           |       ✅       |        ✅         |       ✅       |      ✅       |
 | isVisible            |         ✅         |           ✅           |       ✅       |        ✅         |       ✅       |      ✅       |
 | zIndex               |         ✅         |           ❌           |       ❌       |        ❌         |       ✅       |      ❌       |
-| strokeJointType      |         ✅         |           ❌           |       ✅       |        ✅         |       ❌       |      ✅       |
-| strokePattern        |         ✅         |           ❌           |       ❌       |        🟨         |       ❌       |      ✅       |
+| strokeJointType      |         ✅         |           ❌           |       ✅       |        ✅         |       ❌       |      🟨       |
+| strokePattern        |         ✅         |           ❌           |       ❌       |        🟨         |       ❌       |      🟨       |
 | onPolygonClick       |         ✅         |           ✅           |       ✅       |        ✅         |       ✅       |      ✅       |
 | consumePolygonClicks |         ✅         |           ✅           |       ✅       |        ✅         |       ✅       |      ✅       |
 
 Comments for partially supported properties:
 | Property | Comments |
 | --------------------- | -------- |
-| strokePattern | Described in the OMH Android SDK [Plugin AzureMaps documentation](https://www.openmobilehub.com/android-omh-maps/advanced-docs/plugin-azuremaps/README/) for `strokePattern` |
+| strokeJointType | Described in the OMH iOS [Plugin AppleMaps documentation](https://legendary-broccoli-93ze846.pages.github.io/apple) for `strokeJointType` |
+| strokePattern | Described in the OMH Android SDK [Plugin AzureMaps documentation](https://www.openmobilehub.com/android-omh-maps/advanced-docs/plugin-azuremaps/README/) and OMH iOS [Plugin AppleMaps documentation](https://legendary-broccoli-93ze846.pages.github.io/apple) for `strokePattern` |
+
+## Sample App
+
+This repository includes a [maps-sample](https://github.com/openmobilehub/react-native-omh-maps/apps/sample-app) that demonstrates the functionality of the OMH Maps Client Library. By cloning the repo and executing the app, you can explore the various features offered by the library.
+
+However, if you prefer a step-by-step approach to learn the SDK from scratch, we recommend following the detailed [Getting Started](https://legendary-broccoli-93ze846.pages.github.io/docs/getting-started) guide provided in this repository. The guide will walk you through the implementation process and help you integrate the OMH Maps Client Library into your projects effectively.
 
 ## Documentation
 

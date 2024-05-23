@@ -36,11 +36,11 @@
              To get one, follow the directions here:
                 https://developers.google.com/maps/documentation/android-sdk/get-api-key
              Once you have your API key (it starts with "AIza"), define a new property in your
-             project's local.properties file (e.g. MAPS_API_KEY=AIza...).
+             project's local.properties file (e.g. GOOGLE_MAPS_API_KEY=AIza...).
         -->
         <meta-data
             android:name="com.google.android.geo.API_KEY"
-            android:value="${MAPS_API_KEY}" />
+            android:value="${GOOGLE_MAPS_API_KEY}" />
 
     </application>
 </manifest>
