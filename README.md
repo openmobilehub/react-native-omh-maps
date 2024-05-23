@@ -1,3 +1,7 @@
+---
+sidebar_position: 1
+---
+
 <p align="center">
   <a href="https://www.openmobilehub.com/">
     <img width="160px" src="https://www.openmobilehub.com/images/logo/omh_logo.png"/><br/>
@@ -18,7 +22,12 @@
 
 ---
 
-**React Native OMH Maps** eases the process to implement interactive maps in React Native apps on both iOS and Android. Under the hood, for Android it uses the Android [OMH Maps Client Library](https://github.com/openmobilehub/android-omh-maps). Supports both Google Mobile Services (GMS) and non-GMS configurations, with a unified interface for easy incorporation of Google Maps, OpenStreetMap, Mapbox, Azure Maps and other supported third-party maps providers.
+**React Native OMH Maps** eases the process to implement interactive maps in React Native apps on both iOS and Android. Under the hood, for Android it uses the Android [OMH Maps Client Library](https://github.com/openmobilehub/android-omh-maps). Supports both Google Mobile Services (GMS) and non-GMS configurations, with a unified interface for easy incorporation of Google Maps, OpenStreetMap, Mapbox, Azure Maps and other supported third-party maps providers. It provides a single API to use different maps providers:
+
+- Google Maps via `@openmobilehub/maps-plugin-googlemaps`
+- OpenStreetMap via `@openmobilehub/maps-plugin-openstreetmap`
+- Mapbox via `@openmobilehub/maps-plugin-mapbox`
+- Azure Maps via `@openmobilehub/maps-plugin-azuremaps`
 
 ## Features
 
@@ -26,6 +35,20 @@
 - 🔗 Identical API across all providers
 - 🌱 Easy configuration and setup
 - 💨 Lightweight modules
+
+## Prerequisites
+
+Before getting started, the documentation assumes you are able to create a project with React Native. If you do not meet these prerequisites, follow the links below:
+
+[React Native - Setting up the development environment](https://reactnative.dev/docs/environment-setup)
+
+Additionally, the current versions of Android OMH libraries have a minimum Android API level requirement of **23**. In order for your Android application to build successfully, make sure that `minSdkVersion` is set to a value greater or equal to **23** in your [**android/build.gradle**](https://github.com/openmobilehub/react-native-omh-maps/blob/main/apps/sample-app/android/build.gradle#L4) file.
+
+## Compatibility
+
+| React Native | 2.1.0 |
+| ------------ | ----- |
+| 0.73.6       | ✅    |
 
 ## OMH Maps Modules
 
@@ -35,19 +58,26 @@ To get started, you need to install the [Core package](https://www.openmobilehub
 
 Additionally, you need providers that will be used to render the map (at least one). Their availability depends on both the platform (Android / iOS) and - on Android - the support for and actual availability of GMS.
 
-1. Providers for Android:
+Providers compatibility:
 
-| Provider name & docs link                                                               | Supports GMS | Supports non-GMS |
-| --------------------------------------------------------------------------------------- | :----------: | :--------------: |
-| [Google Maps](https://www.openmobilehub.com/react-native-omh-maps/docs/googlemaps)      |      ✅      |        ✅        |
-| [OpenStreetMap](https://www.openmobilehub.com/react-native-omh-maps/docs/openstreetmap) |      ✅      |        ✅        |
-| [Mapbox](https://www.openmobilehub.com/react-native-omh-maps/docs/mapbox)               |      ✅      |        ✅        |
-| [Azure Maps](https://www.openmobilehub.com/react-native-omh-maps/docs/azuremaps)        |      ✅      |        ✅        |
+| Provider name & docs link                                                               | Supports GMS | Supports non-GMS | Supports Apple iOS |
+| --------------------------------------------------------------------------------------- | :----------: | :--------------: | :----------------: |
+| [Google Maps](https://www.openmobilehub.com/react-native-omh-maps/docs/googlemaps)      |      ✅      |        ❌        |         ✅         |
+| [OpenStreetMap](https://www.openmobilehub.com/react-native-omh-maps/docs/openstreetmap) |      ✅      |        ✅        |         ❌         |
+| [Mapbox](https://www.openmobilehub.com/react-native-omh-maps/docs/mapbox)               |      ✅      |        ✅        |         ❌         |
+| [Azure Maps](https://www.openmobilehub.com/react-native-omh-maps/docs/azuremaps)        |      ✅      |        ✅        |         ❌         |
+| [Apple Maps](https://www.openmobilehub.com/react-native-omh-maps/docs/apple)            |      ❌      |        ❌        |         ✅         |
 
-2. Providers for iOS:
+## Sample App
 
-- [Google Maps](https://www.openmobilehub.com/react-native-omh-maps/docs/googlemaps)
-- [Apple Maps](https://www.openmobilehub.com/react-native-omh-maps/docs/openstreetmap)
+This repository includes a [maps-sample](https://github.com/openmobilehub/react-native-omh-maps/apps/sample-app) that demonstrates the functionality of the OMH Maps Client Library. By cloning the repo and executing the app, you can explore the various features offered by the library.
+
+However, if you prefer a step-by-step approach to learn the SDK from scratch, we recommend following the detailed [Getting Started](https://legendary-broccoli-93ze846.pages.github.io/docs/getting-started) guide provided in this repository. The guide will walk you through the implementation process and help you integrate the OMH Maps Client Library into your projects effectively.
+
+## Documentation
+
+- [Quick Start](https://www.openmobilehub.com/react-native-omh-maps/docs/getting-started)
+- [Reference API](https://www.openmobilehub.com/react-native-omh-maps/docs/api)
 
 ## Compatibility matrix
 
@@ -61,7 +91,10 @@ Legend of support levels:
 | Partially supported |   🟨   |
 | Not supported       |   ❌   |
 
-### OmhMapView
+### MapView
+
+<details>
+  <summary>Show details</summary>
 
 | Props               | Android GoogleMaps | Android OpenStreetMaps | Android Mapbox | Android AzureMaps | iOS GoogleMaps | iOS AppleMaps |
 | ------------------- | :----------------: | :--------------------: | :------------: | :---------------: | :------------: | :-----------: |
@@ -89,7 +122,12 @@ Comments for partially supported properties:
 | getProviderName     |         ✅         |           ✅           |       ✅       |        ✅         |       ✅       |      ✅       |
 | takeSnapshot        |         ✅         |           ✅           |       ✅       |        ❌         |       ✅       |      ✅       |
 
-### OmhMarker
+</details>
+
+### Marker
+
+<details>
+  <summary>Show details</summary>
 
 | Props                 | Android GoogleMaps | Android OpenStreetMaps | Android Mapbox | Android AzureMaps | iOS GoogleMaps | iOS AppleMaps |
 | --------------------- | :----------------: | :--------------------: | :------------: | :---------------: | :------------: | :-----------: |
@@ -131,7 +169,12 @@ Comments for partially supported properties:
 
 For advanced usage of `OmhMarker`, see the [Advanced Usage](https://www.openmobilehub.com/react-native-omh-maps/docs/advanced-usage) section.
 
-### OmhPolyline
+</details>
+
+### Polyline
+
+<details>
+  <summary>Show details</summary>
 
 | Props                 | Android GoogleMaps | Android OpenStreetMaps | Android Mapbox | Android AzureMaps | iOS GoogleMaps | iOS AppleMaps |
 | --------------------- | :----------------: | :--------------------: | :------------: | :---------------: | :------------: | :-----------: |
@@ -156,7 +199,12 @@ Comments for partially supported properties:
 | pattern | Described in the OMH Android SDK [Plugin AzureMaps documentation](https://www.openmobilehub.com/android-omh-maps/advanced-docs/plugin-azuremaps/README/) and OMH iOS [Plugin AppleMaps documentation](https://legendary-broccoli-93ze846.pages.github.io/apple) for `pattern` |
 | cap | Described in the OMH Android SDK [Plugin OpenStreetMap documentation](https://www.openmobilehub.com/android-omh-maps/advanced-docs/plugin-openstreetmap/README/), [Plugin AzureMaps documentation](https://www.openmobilehub.com/android-omh-maps/advanced-docs/plugin-azuremaps/README/) for `setCap` and OMH iOS [Plugin AppleMaps documentation](https://legendary-broccoli-93ze846.pages.github.io/apple) for `cap` |
 
-### OmhPolygon
+</details>
+
+### Polygon
+
+<details>
+  <summary>Show details</summary>
 
 | Props                | Android GoogleMaps | Android OpenStreetMaps | Android Mapbox | Android AzureMaps | iOS GoogleMaps | iOS AppleMaps |
 | -------------------- | :----------------: | :--------------------: | :------------: | :---------------: | :------------: | :-----------: |
@@ -179,16 +227,7 @@ Comments for partially supported properties:
 | strokeJointType | Described in the OMH iOS [Plugin AppleMaps documentation](https://legendary-broccoli-93ze846.pages.github.io/apple) for `strokeJointType` |
 | strokePattern | Described in the OMH Android SDK [Plugin AzureMaps documentation](https://www.openmobilehub.com/android-omh-maps/advanced-docs/plugin-azuremaps/README/) and OMH iOS [Plugin AppleMaps documentation](https://legendary-broccoli-93ze846.pages.github.io/apple) for `strokePattern` |
 
-## Sample App
-
-This repository includes a [maps-sample](https://github.com/openmobilehub/react-native-omh-maps/apps/sample-app) that demonstrates the functionality of the OMH Maps Client Library. By cloning the repo and executing the app, you can explore the various features offered by the library.
-
-However, if you prefer a step-by-step approach to learn the SDK from scratch, we recommend following the detailed [Getting Started](https://legendary-broccoli-93ze846.pages.github.io/docs/getting-started) guide provided in this repository. The guide will walk you through the implementation process and help you integrate the OMH Maps Client Library into your projects effectively.
-
-## Documentation
-
-- [Quick Start](https://www.openmobilehub.com/react-native-omh-maps/docs/getting-started)
-- [Reference API](https://www.openmobilehub.com/react-native-omh-maps/docs/api)
+</details>
 
 ## Contributing
 
@@ -198,4 +237,18 @@ However, if you prefer a step-by-step approach to learn the SDK from scratch, we
 
 ## License
 
-- See [LICENSE](https://github.com/openmobilehub/react-native-omh-maps/blob/main/LICENSE)
+```
+Copyright 2023 Open Mobile Hub
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+    https://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+```
