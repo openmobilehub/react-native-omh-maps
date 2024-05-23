@@ -44,7 +44,7 @@ def supportsNamespace() {
 
 android {
     if (supportsNamespace()) {
-        namespace "com.omh.RNOmhMapsPluginGooglemaps"
+        namespace "com.openmobilehub.android.rn.maps.plugin.googlemaps"
 
         sourceSets {
             main {
