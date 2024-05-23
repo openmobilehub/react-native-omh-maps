@@ -51,7 +51,7 @@ export const OmhMarker = forwardRef<OmhMarkerRef, OmhMarkerProps>(
 
     const markerRef = useRef<MapMarker | null>(null);
 
-    const [key, setKey] = useState(_.uniqueId);
+    const [key, setKey] = useState(_.uniqueId());
 
     useEffect(() => {
       // Apple has a bug where only the initial value of the draggable prop is taken to the consideration.
