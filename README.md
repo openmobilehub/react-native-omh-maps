@@ -31,23 +31,23 @@
 
 This is the main directory of the monorepo for React Native OMH Maps. Below are listed all possible packages that belong to the React Native OMH Maps ecosystem.
 
-To get started, you need to install the [Core package](https://legendary-broccoli-93ze846.pages.github.io/docs/core).
+To get started, you need to install the [Core package](https://www.openmobilehub.com/react-native-omh-maps/docs/core).
 
 Additionally, you need providers that will be used to render the map (at least one). Their availability depends on both the platform (Android / iOS) and - on Android - the support for and actual availability of GMS.
 
 1. Providers for Android:
 
-| Provider name & docs link                                                              | Supports GMS | Supports non-GMS |
-| -------------------------------------------------------------------------------------- | :----------: | :--------------: |
-| [Google Maps](https://legendary-broccoli-93ze846.pages.github.io/docs/googlemaps)      |      ✅      |        ✅        |
-| [OpenStreetMap](https://legendary-broccoli-93ze846.pages.github.io/docs/openstreetmap) |      ✅      |        ✅        |
-| [Mapbox](https://legendary-broccoli-93ze846.pages.github.io/docs/mapbox)               |      ✅      |        ✅        |
-| [Azure Maps](https://legendary-broccoli-93ze846.pages.github.io/docs/azuremaps)        |      ✅      |        ✅        |
+| Provider name & docs link                                                               | Supports GMS | Supports non-GMS |
+| --------------------------------------------------------------------------------------- | :----------: | :--------------: |
+| [Google Maps](https://www.openmobilehub.com/react-native-omh-maps/docs/googlemaps)      |      ✅      |        ✅        |
+| [OpenStreetMap](https://www.openmobilehub.com/react-native-omh-maps/docs/openstreetmap) |      ✅      |        ✅        |
+| [Mapbox](https://www.openmobilehub.com/react-native-omh-maps/docs/mapbox)               |      ✅      |        ✅        |
+| [Azure Maps](https://www.openmobilehub.com/react-native-omh-maps/docs/azuremaps)        |      ✅      |        ✅        |
 
 2. Providers for iOS:
 
-- [Google Maps](https://legendary-broccoli-93ze846.pages.github.io/docs/googlemaps)
-- [Apple Maps](https://legendary-broccoli-93ze846.pages.github.io/docs/openstreetmap)
+- [Google Maps](https://www.openmobilehub.com/react-native-omh-maps/docs/googlemaps)
+- [Apple Maps](https://www.openmobilehub.com/react-native-omh-maps/docs/openstreetmap)
 
 ## Compatibility matrix
 
@@ -93,29 +93,29 @@ Comments for partially supported properties:
 
 | Props                 | Android GoogleMaps | Android OpenStreetMaps | Android Mapbox | Android AzureMaps | iOS GoogleMaps | iOS AppleMaps |
 | --------------------- | :----------------: | :--------------------: | :------------: | :---------------: | :------------: | :-----------: |
-| position              |         ✅         |           ✅           |       ✅       |        ✅         |       ✅        |       ✅       |
-| title                 |         ✅         |           ✅           |       ✅       |        ✅         |       ✅        |       ✅       |
-| clickable             |         ✅         |           ✅           |       ✅       |        ✅         |       ✅        |       🟨       |
-| draggable             |         ✅         |           ✅           |       ✅       |        ❌         |       ✅        |       ✅       |
-| anchor                |         ✅         |           ✅           |       🟨       |        🟨         |       ✅        |       ❌       |
-| infoWindowAnchor      |         ✅         |           ✅           |       ✅       |        ✅         |       ✅        |       ❌       |
-| alpha                 |         ✅         |           ✅           |       ✅       |        ✅         |       ✅        |       ❌       |
-| snippet               |         ✅         |           ✅           |       ✅       |        ✅         |       ✅        |       ✅       |
-| isVisible             |         ✅         |           ✅           |       ✅       |        ✅         |       ✅        |       ✅       |
-| isFlat                |         ✅         |           ✅           |       ✅       |        ✅         |       ✅        |       ❌       |
-| rotation              |         ✅         |           ✅           |       ✅       |        ✅         |       ✅        |       ❌       |
-| backgroundColor       |         ✅         |           ❌           |       ✅       |        ✅         |       ✅        |       ✅       |
-| markerZIndex          |         ✅         |           ❌           |       ❌       |        ❌         |       ✅        |       ✅       |
-| icon                  |         ✅         |           ✅           |       ✅       |        ✅         |       ✅        |       ❌       |
-| consumeMarkerClicks   |         ✅         |           ✅           |       ✅       |        ✅         |       ❌        |       ❌       |
-| onPress               |         🟨         |           ✅           |       ✅       |        ✅         |       ✅        |       ✅       |
-| onDragStart           |         ✅         |           ✅           |       ✅       |        ❌         |       ✅        |       ✅       |
-| onDrag                |         ✅         |           ✅           |       ✅       |        ❌         |       ✅        |       ✅       |
-| onDragEnd             |         ✅         |           ✅           |       ✅       |        ❌         |       ✅        |       ✅       |
-| onInfoWindowPress     |         ✅         |           ✅           |       ✅       |        ✅         |       ❌        |       ✅       |
-| onInfoWindowLongPress |         ✅         |           ✅           |       ✅       |        ✅         |       ❌        |       ❌       |
-| onInfoWindowClose     |         🟨         |           ✅           |       ✅       |        ✅         |       ❌        |       ❌       |
-| onInfoWindowOpen      |         🟨         |           ✅           |       ✅       |        ✅         |       ❌        |       ❌       |
+| position              |         ✅         |           ✅           |       ✅       |        ✅         |       ✅       |      ✅       |
+| title                 |         ✅         |           ✅           |       ✅       |        ✅         |       ✅       |      ✅       |
+| clickable             |         ✅         |           ✅           |       ✅       |        ✅         |       ✅       |      🟨       |
+| draggable             |         ✅         |           ✅           |       ✅       |        ❌         |       ✅       |      ✅       |
+| anchor                |         ✅         |           ✅           |       🟨       |        🟨         |       ✅       |      ❌       |
+| infoWindowAnchor      |         ✅         |           ✅           |       ✅       |        ✅         |       ✅       |      ❌       |
+| alpha                 |         ✅         |           ✅           |       ✅       |        ✅         |       ✅       |      ❌       |
+| snippet               |         ✅         |           ✅           |       ✅       |        ✅         |       ✅       |      ✅       |
+| isVisible             |         ✅         |           ✅           |       ✅       |        ✅         |       ✅       |      ✅       |
+| isFlat                |         ✅         |           ✅           |       ✅       |        ✅         |       ✅       |      ❌       |
+| rotation              |         ✅         |           ✅           |       ✅       |        ✅         |       ✅       |      ❌       |
+| backgroundColor       |         ✅         |           ❌           |       ✅       |        ✅         |       ✅       |      ✅       |
+| markerZIndex          |         ✅         |           ❌           |       ❌       |        ❌         |       ✅       |      ✅       |
+| icon                  |         ✅         |           ✅           |       ✅       |        ✅         |       ✅       |      ❌       |
+| consumeMarkerClicks   |         ✅         |           ✅           |       ✅       |        ✅         |       ❌       |      ❌       |
+| onPress               |         🟨         |           ✅           |       ✅       |        ✅         |       ✅       |      ✅       |
+| onDragStart           |         ✅         |           ✅           |       ✅       |        ❌         |       ✅       |      ✅       |
+| onDrag                |         ✅         |           ✅           |       ✅       |        ❌         |       ✅       |      ✅       |
+| onDragEnd             |         ✅         |           ✅           |       ✅       |        ❌         |       ✅       |      ✅       |
+| onInfoWindowPress     |         ✅         |           ✅           |       ✅       |        ✅         |       ❌       |      ✅       |
+| onInfoWindowLongPress |         ✅         |           ✅           |       ✅       |        ✅         |       ❌       |      ❌       |
+| onInfoWindowClose     |         🟨         |           ✅           |       ✅       |        ✅         |       ❌       |      ❌       |
+| onInfoWindowOpen      |         🟨         |           ✅           |       ✅       |        ✅         |       ❌       |      ❌       |
 
 Comments for partially supported properties:
 | Property | Comments |
@@ -124,12 +124,12 @@ Comments for partially supported properties:
 | onPress | Described in the OMH Android SDK [Plugin GoogleMaps documentation](https://www.openmobilehub.com/android-omh-maps/advanced-docs/plugin-googlemaps/README/) for `setOnMarkerClickListener` |
 | onInfoWindowClose, onInfoWindowOpen | Described in the OMH Android SDK [Plugin GoogleMaps documentation](https://www.openmobilehub.com/android-omh-maps/advanced-docs/plugin-googlemaps/README/) for `setOnInfoWindowOpenStatusChangeListener` |
 
-| Ref                 | Android GoogleMaps | Android OpenStreetMaps | Android Mapbox | Android AzureMaps | iOS GoogleMaps | iOS AppleMaps |
-| ------------------- | :----------------: | :--------------------: | :------------: | :---------------: | :------------: | :-----------: |
+| Ref            | Android GoogleMaps | Android OpenStreetMaps | Android Mapbox | Android AzureMaps | iOS GoogleMaps | iOS AppleMaps |
+| -------------- | :----------------: | :--------------------: | :------------: | :---------------: | :------------: | :-----------: |
 | showInfoWindow |         ✅         |           ✅           |       ✅       |        ✅         |       ✅       |      ✅       |
 | hideInfoWindow |         ✅         |           ✅           |       ✅       |        ✅         |       ✅       |      ✅       |
 
-For advanced usage of `OmhMarker`, see the [Advanced Usage](https://legendary-broccoli-93ze846.pages.github.io/docs/advanced-usage) section.
+For advanced usage of `OmhMarker`, see the [Advanced Usage](https://www.openmobilehub.com/react-native-omh-maps/docs/advanced-usage) section.
 
 ### OmhPolyline
 
@@ -187,12 +187,12 @@ However, if you prefer a step-by-step approach to learn the SDK from scratch, we
 
 ## Documentation
 
-- [Quick Start](https://legendary-broccoli-93ze846.pages.github.io/docs/getting-started)
-- [Reference API](https://legendary-broccoli-93ze846.pages.github.io/docs/api)
+- [Quick Start](https://www.openmobilehub.com/react-native-omh-maps/docs/getting-started)
+- [Reference API](https://www.openmobilehub.com/react-native-omh-maps/docs/api)
 
 ## Contributing
 
-- [Overview](https://legendary-broccoli-93ze846.pages.github.io/docs/contributing)
+- [Overview](https://www.openmobilehub.com/react-native-omh-maps/docs/contributing)
 - [Issues](https://github.com/openmobilehub/react-native-omh-maps/issues)
 - [PRs](https://github.com/openmobilehub/react-native-omh-maps/pulls)
 

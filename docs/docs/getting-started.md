@@ -29,8 +29,8 @@ Additionally, the current versions of Android OMH libraries have a minimum Andro
 
 To integrate React Native OMH Maps into your React Native project, you need to install the core package (`@openmobilehub/maps-core`) and at least one of the plugins:
 
-| Provider      | Package                                       |
-| ------------- | --------------------------------------------- |
+| Provider      | Package                                    |
+| ------------- | ------------------------------------------ |
 | GoogleMaps    | `@openmobilehub/maps-plugin-googlemaps`    |
 | OpenStreetMap | `@openmobilehub/maps-plugin-openstreetmap` |
 | Mapbox        | `@openmobilehub/maps-plugin-mapbox`        |
@@ -52,10 +52,10 @@ npm install --save @openmobilehub/maps-core @openmobilehub/maps-plugin-*
 
 Each provider requires you to specify different secrets. Please follow the individual provider configuration:
 
-- [GoogleMaps](https://legendary-broccoli-93ze846.pages.github.io/docs/googlemaps#configuration)
-- [OpenStreetMap](https://legendary-broccoli-93ze846.pages.github.io/docs/facebook#configuration)
-- [Mapbox](https://legendary-broccoli-93ze846.pages.github.io/docs/microsoft#configuration)
-- [Azure Maps](https://legendary-broccoli-93ze846.pages.github.io/docs/dropbox#configuration)
+- [GoogleMaps](https://www.openmobilehub.com/react-native-omh-maps/docs/googlemaps#configuration)
+- [OpenStreetMap](https://www.openmobilehub.com/react-native-omh-maps/docs/facebook#configuration)
+- [Mapbox](https://www.openmobilehub.com/react-native-omh-maps/docs/microsoft#configuration)
+- [Azure Maps](https://www.openmobilehub.com/react-native-omh-maps/docs/dropbox#configuration)
 
 ## iOS configuration
 
