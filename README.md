@@ -65,7 +65,6 @@ Legend of support levels:
 
 | Props               | Android GoogleMaps | Android OpenStreetMaps | Android Mapbox | Android AzureMaps | iOS GoogleMaps | iOS AppleMaps |
 | ------------------- | :----------------: | :--------------------: | :------------: | :---------------: | :------------: | :-----------: |
-| scaleFactor         |         ✅         |           ✅           |       ✅       |        ✅         |       ✅       |      ✅       |
 | mapStyle            |         ✅         |           ❌           |       ✅       |        ❌         |       ✅       |      ❌       |
 | rotateEnabled       |         ✅         |           ✅           |       ✅       |        ❌         |       ✅       |      ❌       |
 | zoomEnabled         |         ✅         |           ✅           |       ✅       |        ✅         |       ✅       |      ✅       |

@@ -106,7 +106,6 @@ Legend of support levels:
 
 | Props               | Android | iOS |
 |---------------------|:-------:|:---:|
-| scaleFactor         |    ✅    |  ✅  |
 | mapStyle            |    ✅    |  ✅  |
 | rotateEnabled       |    ✅    |  ✅  |
 | zoomEnabled         |    ✅    |  ✅  |
