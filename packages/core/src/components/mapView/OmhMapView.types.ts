@@ -20,8 +20,6 @@ export type OmhSnapshotFormat = 'png' | 'jpg' | 'base64';
  * The OMH Map View properties.
  */
 export type OmhMapViewProps = ViewProps & {
-  /** The scale factor of the map. */
-  scaleFactor?: number;
   /** The custom JSON map style */
   mapStyle?: string | object;
   /** If true, rotation is enabled on the map. */

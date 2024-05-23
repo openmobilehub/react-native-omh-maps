@@ -109,7 +109,6 @@ Legend of support levels:
 
 | Props               | Supported |
 |---------------------|:---------:|
-| scaleFactor         |     ✅     |
 | mapStyle            |     ✅     |
 | rotateEnabled       |     ✅     |
 | zoomEnabled         |     ✅     |
