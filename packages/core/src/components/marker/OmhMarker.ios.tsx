@@ -1,11 +1,9 @@
 import React, {
   forwardRef,
   useCallback,
-  useEffect,
   useImperativeHandle,
   useMemo,
   useRef,
-  useState,
 } from 'react';
 import { MapMarker, Marker, MarkerPressEvent } from 'react-native-maps';
 import { OmhMarkerProps, OmhMarkerRef } from './OmhMarker.types';
@@ -16,8 +14,8 @@ import {
   MarkerDragStartEndEvent,
 } from 'react-native-maps/lib/sharedTypes';
 import { anchorToPoint } from '../../utils/anchorHelpers';
-import _ from 'lodash';
 import { OmhMapsModule } from '../../modules/core/OmhMapsModule.ios';
+import { useDraggableFix } from './OmhMarkerHelpers';
 
 /**
  * The OMH Marker component.
@@ -51,16 +49,7 @@ export const OmhMarker = forwardRef<OmhMarkerRef, OmhMarkerProps>(
 
     const markerRef = useRef<MapMarker | null>(null);
 
-    const [key, setKey] = useState(_.uniqueId());
-
-    useEffect(() => {
-      // Apple has a bug where only the initial value of the draggable prop is taken to the consideration.
-      // By using key prop we force refresh of the component. Note that markerRef?.current?.redraw() cant be used here
-      // either as the command is not implemented on the native side - another bug.
-      if (provider.name === 'Apple') {
-        setKey(_.uniqueId());
-      }
-    }, [provider, draggable]);
+    const key = useDraggableFix(provider.name, draggable);
 
     useImperativeHandle(forwardedRef, () => ({
       showInfoWindow: () => {
