@@ -41,6 +41,7 @@ import ANDROID_SUPPORTED_PROVIDERS = Constants.Demo.ANDROID_SUPPORTED_PROVIDERS;
 export enum MarkerIWTitles {
   CONFIGURABLE_TEST_MARKER = 'Configurable test marker',
   STATIC_ICON_MARKER_NON_DRAGGABLE = 'Static icon marker (non-draggable)',
+  STATIC_MARKER_NON_DRAGGABLE = 'Static marker (non-draggable)',
   STATIC_COLORED_MARKER_DRAGGABLE = 'Static colored marker (draggable)',
   STATIC_COLORED_MARKER_NON_DRAGGABLE = 'Static colored marker (non-draggable)',
 }
@@ -137,9 +138,9 @@ export const MarkerMapScreen = () => {
   const { showSnackbar } = useSnackbar();
 
   const omhMapRef = useRef<OmhMapViewRef | null>(null);
-  const [supportedFeatures, setSupportedFeatures] = useState(
-    getSupportedFeatures()
-  );
+  const [supportedFeatures, setSupportedFeatures] = useState<ReturnType<
+    typeof getSupportedFeatures
+  > | null>(null);
   const [disabledOptions, setDisabledOptions] = useState(getDisabledOptions());
 
   const configurableMarkerRef = useRef<OmhMarkerRef | null>(null);
@@ -150,6 +151,7 @@ export const MarkerMapScreen = () => {
     return {
       [MarkerIWTitles.CONFIGURABLE_TEST_MARKER]: configurableMarkerRef,
       [MarkerIWTitles.STATIC_ICON_MARKER_NON_DRAGGABLE]: iconMarkerRef,
+      [MarkerIWTitles.STATIC_MARKER_NON_DRAGGABLE]: iconMarkerRef,
       [MarkerIWTitles.STATIC_COLORED_MARKER_DRAGGABLE]: coloredMarkerRef,
       [MarkerIWTitles.STATIC_COLORED_MARKER_NON_DRAGGABLE]: coloredMarkerRef,
     };
@@ -185,6 +187,7 @@ export const MarkerMapScreen = () => {
   const [showInfoWindow, setShowInfoWindow] = useState({
     [MarkerIWTitles.CONFIGURABLE_TEST_MARKER]: false,
     [MarkerIWTitles.STATIC_ICON_MARKER_NON_DRAGGABLE]: false,
+    [MarkerIWTitles.STATIC_MARKER_NON_DRAGGABLE]: false,
     [MarkerIWTitles.STATIC_COLORED_MARKER_DRAGGABLE]: false,
     [MarkerIWTitles.STATIC_COLORED_MARKER_NON_DRAGGABLE]: false,
   } as Record<MarkerIWTitles, boolean>);
@@ -196,7 +199,7 @@ export const MarkerMapScreen = () => {
 
       showSnackbar(message);
 
-      if (supportedFeatures.toggling) {
+      if (supportedFeatures?.toggling) {
         if (showInfoWindow[title]) {
           markersRefs[title]?.current?.hideInfoWindow();
         } else {
@@ -212,7 +215,7 @@ export const MarkerMapScreen = () => {
     [
       logger,
       showSnackbar,
-      supportedFeatures.toggling,
+      supportedFeatures?.toggling,
       showInfoWindow,
       markersRefs,
     ]
@@ -292,7 +295,7 @@ export const MarkerMapScreen = () => {
     [customizableMarkerColorHue]
   );
 
-  const showStaticIconMarker = useMemo(
+  const showStaticIcon = useMemo(
     () =>
       !disabledOptions.markerAppearance.includes(
         DemoMarkerAppearance.LOCAL_ASSET_ICON
@@ -300,19 +303,27 @@ export const MarkerMapScreen = () => {
     [disabledOptions.markerAppearance]
   );
 
+  const staticIconMarkerTitle = useMemo(
+    () =>
+      showStaticIcon
+        ? MarkerIWTitles.STATIC_ICON_MARKER_NON_DRAGGABLE
+        : MarkerIWTitles.STATIC_MARKER_NON_DRAGGABLE,
+    [showStaticIcon]
+  );
+
   const staticColoredMarkerTitle = useMemo(
     () =>
-      supportedFeatures.draggable
+      supportedFeatures?.draggable
         ? MarkerIWTitles.STATIC_COLORED_MARKER_DRAGGABLE
         : MarkerIWTitles.STATIC_COLORED_MARKER_NON_DRAGGABLE,
-    [supportedFeatures.draggable]
+    [supportedFeatures?.draggable]
   );
 
   useEffect(() => {
-    if (!supportedFeatures.draggable) {
+    if (supportedFeatures?.draggable === false) {
       setCustomizableMarkerDraggable(false);
     }
-  }, [supportedFeatures.draggable]);
+  }, [supportedFeatures?.draggable]);
 
   return (
     <View style={demoStyles.rootContainer}>
@@ -389,23 +400,17 @@ export const MarkerMapScreen = () => {
 
           <OmhMarker
             ref={iconMarkerRef}
-            isVisible={showStaticIconMarker}
-            title={MarkerIWTitles.STATIC_ICON_MARKER_NON_DRAGGABLE}
+            title={staticIconMarkerTitle}
             position={{
               latitude: Constants.Maps.GREENWICH_COORDINATE.latitude + 0.0016,
               longitude: Constants.Maps.GREENWICH_COORDINATE.longitude + 0.002,
             }}
-            onPress={genMarkerOnPressHandler(
-              MarkerIWTitles.STATIC_ICON_MARKER_NON_DRAGGABLE
-            )}
-            onInfoWindowPress={genMarkerOnIWPressHandler(
-              MarkerIWTitles.STATIC_ICON_MARKER_NON_DRAGGABLE
-            )}
-            onInfoWindowClose={genMarkerOnIWCloseHandler(
-              MarkerIWTitles.STATIC_ICON_MARKER_NON_DRAGGABLE
-            )}
+            onPress={genMarkerOnPressHandler(staticIconMarkerTitle)}
+            onInfoWindowPress={genMarkerOnIWPressHandler(staticIconMarkerTitle)}
+            onInfoWindowClose={genMarkerOnIWCloseHandler(staticIconMarkerTitle)}
             markerZIndex={1.9}
-            icon={soccerBallIcon}
+            icon={showStaticIcon ? soccerBallIcon : undefined}
+            backgroundColor={!showStaticIcon ? 0x0000ff : undefined}
           />
 
           <OmhMarker
@@ -445,21 +450,21 @@ export const MarkerMapScreen = () => {
           />
 
           <PanelCheckbox
-            enabled={supportedFeatures.flat}
+            enabled={supportedFeatures?.flat}
             label="Flat"
             value={customizableMarkerFlat}
             onValueChange={setCustomizableMarkerFlat}
           />
 
           <PanelCheckbox
-            enabled={supportedFeatures.clickable}
+            enabled={supportedFeatures?.clickable}
             label="Clickable"
             value={customizableMarkerClickable}
             onValueChange={setCustomizableMarkerClickable}
           />
 
           <PanelCheckbox
-            enabled={supportedFeatures.draggable}
+            enabled={supportedFeatures?.draggable}
             label="Draggable"
             value={customizableMarkerDraggable}
             onValueChange={setCustomizableMarkerDraggable}
@@ -472,7 +477,7 @@ export const MarkerMapScreen = () => {
           />
 
           <Slider
-            disabled={!supportedFeatures.rotation}
+            disabled={!supportedFeatures?.rotation}
             label={`Rotation: ${customizableMarkerRotation.toFixed(0)}°`}
             onChange={zIndex => setCustomizableMarkerRotation(zIndex)}
             defaultValue={0}
@@ -482,7 +487,7 @@ export const MarkerMapScreen = () => {
           />
 
           <Slider
-            disabled={!supportedFeatures.anchor}
+            disabled={!supportedFeatures?.anchor}
             label={`Anchor U: ${(customizableMarkerAnchor.u * 100).toFixed(0)}%`}
             onChange={u =>
               setCustomizableMarkerAnchor({
@@ -497,7 +502,7 @@ export const MarkerMapScreen = () => {
           />
 
           <Slider
-            disabled={!supportedFeatures.anchor}
+            disabled={!supportedFeatures?.anchor}
             label={`Anchor V: ${(customizableMarkerAnchor.v * 100).toFixed(0)}%`}
             onChange={v =>
               setCustomizableMarkerAnchor({
@@ -512,7 +517,7 @@ export const MarkerMapScreen = () => {
           />
 
           <Slider
-            disabled={!supportedFeatures.alpha}
+            disabled={!supportedFeatures?.alpha}
             label={`Alpha: ${(customizableMarkerAlpha * 100).toFixed(0)}%`}
             onChange={alpha => setCustomizableMarkerAlpha(alpha)}
             defaultValue={1}
@@ -552,7 +557,7 @@ export const MarkerMapScreen = () => {
           />
 
           <Slider
-            disabled={!supportedFeatures.zIndex}
+            disabled={!supportedFeatures?.zIndex}
             label={`Z Index: ${customizableMarkerZIndex.toFixed(0)}`}
             onChange={zIndex => setCustomizableMarkerZIndex(zIndex)}
             defaultValue={0}

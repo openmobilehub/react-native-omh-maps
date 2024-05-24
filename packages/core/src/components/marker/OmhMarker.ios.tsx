@@ -14,6 +14,8 @@ import {
   MarkerDragStartEndEvent,
 } from 'react-native-maps/lib/sharedTypes';
 import { anchorToPoint } from '../../utils/anchorHelpers';
+import { OmhMapsModule } from '../../modules/core/OmhMapsModule.ios';
+import { useDraggableFix } from './OmhMarkerHelpers';
 
 /**
  * The OMH Marker component.
@@ -43,7 +45,11 @@ export const OmhMarker = forwardRef<OmhMarkerRef, OmhMarkerProps>(
     },
     forwardedRef
   ) => {
+    const provider = OmhMapsModule.getSelectedMapProvider();
+
     const markerRef = useRef<MapMarker | null>(null);
+
+    const key = useDraggableFix(provider.name, draggable);
 
     useImperativeHandle(forwardedRef, () => ({
       showInfoWindow: () => {
@@ -135,6 +141,7 @@ export const OmhMarker = forwardRef<OmhMarkerRef, OmhMarkerProps>(
     return (
       isVisible && (
         <Marker
+          key={key}
           coordinate={position}
           title={title}
           description={snippet}
