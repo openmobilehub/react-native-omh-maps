@@ -72,7 +72,7 @@ Providers compatibility:
 
 This repository includes a [maps-sample](https://github.com/openmobilehub/react-native-omh-maps/apps/sample-app) that demonstrates the functionality of the OMH Maps Client Library. By cloning the repo and executing the app, you can explore the various features offered by the library.
 
-However, if you prefer a step-by-step approach to learn the SDK from scratch, we recommend following the detailed [Getting Started](https://legendary-broccoli-93ze846.pages.github.io/docs/getting-started) guide provided in this repository. The guide will walk you through the implementation process and help you integrate the OMH Maps Client Library into your projects effectively.
+However, if you prefer a step-by-step approach to learn the SDK from scratch, we recommend following the detailed [Getting Started](https://www.openmobilehub.com/react-native-omh-maps/docs/getting-started) guide provided in this repository. The guide will walk you through the implementation process and help you integrate the OMH Maps Client Library into your projects effectively.
 
 ## Documentation
 
@@ -196,8 +196,8 @@ For advanced usage of `OmhMarker`, see the [Advanced Usage](https://www.openmobi
 Comments for partially supported properties:
 | Property | Comments |
 | --------------------- | -------- |
-| pattern | Described in the OMH Android SDK [Plugin AzureMaps documentation](https://www.openmobilehub.com/android-omh-maps/advanced-docs/plugin-azuremaps/README/) and OMH iOS [Plugin AppleMaps documentation](https://legendary-broccoli-93ze846.pages.github.io/apple) for `pattern` |
-| cap | Described in the OMH Android SDK [Plugin OpenStreetMap documentation](https://www.openmobilehub.com/android-omh-maps/advanced-docs/plugin-openstreetmap/README/), [Plugin AzureMaps documentation](https://www.openmobilehub.com/android-omh-maps/advanced-docs/plugin-azuremaps/README/) for `setCap` and OMH iOS [Plugin AppleMaps documentation](https://legendary-broccoli-93ze846.pages.github.io/apple) for `cap` |
+| pattern | Described in the OMH Android SDK [Plugin AzureMaps documentation](https://www.openmobilehub.com/android-omh-maps/advanced-docs/plugin-azuremaps/README/) and OMH iOS [Plugin AppleMaps documentation](https://www.openmobilehub.com/react-native-omh-maps/docs/apple) for `pattern` |
+| cap | Described in the OMH Android SDK [Plugin OpenStreetMap documentation](https://www.openmobilehub.com/android-omh-maps/advanced-docs/plugin-openstreetmap/README/), [Plugin AzureMaps documentation](https://www.openmobilehub.com/android-omh-maps/advanced-docs/plugin-azuremaps/README/) for `setCap` and OMH iOS [Plugin AppleMaps documentation](https://www.openmobilehub.com/react-native-omh-maps/docs/apple) for `cap` |
 
 </details>
 
@@ -224,8 +224,8 @@ Comments for partially supported properties:
 Comments for partially supported properties:
 | Property | Comments |
 | --------------------- | -------- |
-| strokeJointType | Described in the OMH iOS [Plugin AppleMaps documentation](https://legendary-broccoli-93ze846.pages.github.io/apple) for `strokeJointType` |
-| strokePattern | Described in the OMH Android SDK [Plugin AzureMaps documentation](https://www.openmobilehub.com/android-omh-maps/advanced-docs/plugin-azuremaps/README/) and OMH iOS [Plugin AppleMaps documentation](https://legendary-broccoli-93ze846.pages.github.io/apple) for `strokePattern` |
+| strokeJointType | Described in the OMH iOS [Plugin AppleMaps documentation](https://www.openmobilehub.com/react-native-omh-maps/docs/apple) for `strokeJointType` |
+| strokePattern | Described in the OMH Android SDK [Plugin AzureMaps documentation](https://www.openmobilehub.com/android-omh-maps/advanced-docs/plugin-azuremaps/README/) and OMH iOS [Plugin AppleMaps documentation](https://www.openmobilehub.com/react-native-omh-maps/docs/apple) for `strokePattern` |
 
 </details>
 
