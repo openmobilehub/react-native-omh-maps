@@ -325,8 +325,6 @@ export const MarkerMapScreen = () => {
     }
   }, [supportedFeatures?.draggable]);
 
-  console.log(customizableMarkerColorRGB);
-
   return (
     <View style={demoStyles.rootContainer}>
       <View style={demoStyles.mapContainer}>
@@ -340,7 +338,6 @@ export const MarkerMapScreen = () => {
 
             const providerName = omhMapRef.current?.getProviderName();
 
-            console.log('provider name ' + providerName);
             setSupportedFeatures(getSupportedFeatures(providerName));
             setDisabledOptions(getDisabledOptions(providerName));
 
