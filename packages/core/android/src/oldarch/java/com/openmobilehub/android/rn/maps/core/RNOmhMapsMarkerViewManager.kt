@@ -26,6 +26,9 @@ class RNOmhMapsMarkerViewManager :
         "hideInfoWindow" -> {
           omhMapMarkerComponentManagerImpl.hideInfoWindow(root)
         }
+        "remove" -> {
+          omhMapMarkerComponentManagerImpl.remove(view)
+        }
       }
     }
 

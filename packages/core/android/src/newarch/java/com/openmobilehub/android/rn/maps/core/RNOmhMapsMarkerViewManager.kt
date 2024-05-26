@@ -114,6 +114,10 @@ class RNOmhMapsMarkerViewManager :
       omhMapMarkerComponentManagerImpl.hideInfoWindow(view)
     }
 
+    override fun remove(view: OmhMarkerEntity) {
+        omhMapMarkerComponentManagerImpl.remove(view)
+    }
+
     override fun getName(): String = RNOmhMapsMarkerViewManagerImpl.NAME
 
     override fun getExportedCustomDirectEventTypeConstants(): Map<String, Any> {

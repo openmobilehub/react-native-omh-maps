@@ -118,7 +118,7 @@ class RNOmhMapsCoreViewManagerImpl(private val reactContext: ReactContext) {
             }
         }
     }
-
+    
     fun removeViewAt(index: Int) {
         // note: on old RN architecture, RN unmounts the fragment first, and then the children
         // which causes a NullPointerException when unmountEntity() triggers calls to underlying
