@@ -345,7 +345,11 @@ export const MarkerMapScreen = () => {
 
             omhMapRef.current?.setCameraCoordinate(
               Constants.Maps.GREENWICH_COORDINATE,
-              Platform.OS === 'ios' && providerName === 'Apple' ? 14.0 : 15.0
+              Platform.OS === 'ios' && providerName === 'Apple'
+                ? 14.0
+                : providerName === 'OpenStreetMap'
+                  ? 17.0
+                  : 15.0
             );
           }}>
           {mountCustomizableMarker && (
