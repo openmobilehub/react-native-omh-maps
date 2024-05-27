@@ -58,7 +58,7 @@ const getSupportedFeatures = (currentMapProvider?: string) => {
     zIndex: isFeatureSupported(
       currentMapProvider,
       Platform.OS === 'ios'
-        ? IOS_SUPPORTED_PROVIDERS
+        ? iOSProvidersWithout(['Apple'])
         : androidProvidersWithout(['OpenStreetMap', 'Mapbox', 'AzureMaps'])
     ),
     draggable: isFeatureSupported(

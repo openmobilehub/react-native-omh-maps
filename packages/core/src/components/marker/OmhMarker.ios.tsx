@@ -35,7 +35,6 @@ export const OmhMarker = forwardRef<OmhMarkerRef, OmhMarkerProps>(
       isFlat,
       rotation,
       backgroundColor,
-      markerZIndex,
       icon,
       onPress,
       onDragStart,
@@ -153,7 +152,6 @@ export const OmhMarker = forwardRef<OmhMarkerRef, OmhMarkerProps>(
           pinColor={pinColor}
           flat={isFlat}
           rotation={rotation}
-          zIndex={markerZIndex}
           icon={icon}
           onPress={handleOnPress}
           onDragStart={handleOnDragStart}
