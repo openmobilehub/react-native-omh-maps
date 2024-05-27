@@ -16,6 +16,7 @@ import {
 import { anchorToPoint } from '../../utils/anchorHelpers';
 import { OmhMapsModule } from '../../modules/core/OmhMapsModule.ios';
 import { useDraggableFix } from './OmhMarkerHelpers';
+import { OmhMarkerConstants } from './OmhMarkerConstants';
 
 /**
  * The OMH Marker component.
@@ -35,7 +36,6 @@ export const OmhMarker = forwardRef<OmhMarkerRef, OmhMarkerProps>(
       isFlat,
       rotation,
       backgroundColor,
-      markerZIndex,
       icon,
       onPress,
       onDragStart,
@@ -69,9 +69,13 @@ export const OmhMarker = forwardRef<OmhMarkerRef, OmhMarkerProps>(
     }, [infoWindowAnchor]);
 
     const pinColor = useMemo(() => {
-      if (!backgroundColor) return undefined;
-      return omhColorToString(backgroundColor);
-    }, [backgroundColor]);
+      if (icon) return undefined;
+      if (backgroundColor) return omhColorToString(backgroundColor);
+      // There is an issue in the react-native-maps library.
+      // When the icon changes to undefined and color is undefined, the marker does not update.
+      // To fix this, we set a default color when the icon is undefined.
+      return OmhMarkerConstants.DEFAULT_COLOR;
+    }, [backgroundColor, icon]);
 
     const handleOnPress = useCallback(
       (event: MarkerPressEvent) => {
@@ -153,7 +157,6 @@ export const OmhMarker = forwardRef<OmhMarkerRef, OmhMarkerProps>(
           pinColor={pinColor}
           flat={isFlat}
           rotation={rotation}
-          zIndex={markerZIndex}
           icon={icon}
           onPress={handleOnPress}
           onDragStart={handleOnDragStart}

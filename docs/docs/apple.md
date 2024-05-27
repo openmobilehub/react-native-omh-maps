@@ -101,7 +101,7 @@ Comments for partially supported properties:
 | isFlat                |     ❌     |
 | rotation              |     ❌     |
 | backgroundColor       |     ✅     |
-| markerZIndex          |     ✅     |
+| markerZIndex          |     ❌     |
 | icon                  |     ❌     |
 | consumeMarkerClicks   |     ❌     |
 | onPress               |     ✅     |
