@@ -245,25 +245,30 @@ class RNOmhMapsMarkerViewManagerImpl {
     }
 
     fun showInfoWindow(entity: OmhMarkerEntity) {
-      toggleInfoWindow(entity, true)
+        toggleInfoWindow(entity, true)
     }
 
     fun hideInfoWindow(entity: OmhMarkerEntity) {
-      toggleInfoWindow(entity, false)
+        toggleInfoWindow(entity, false)
+    }
+
+    fun remove(entity: OmhMarkerEntity) {
+        handleMarkerRemoved(entity)
+        entity.unmountEntity()
     }
 
     private fun toggleInfoWindow(entity: OmhMarkerEntity, visible: Boolean) {
-      entity.queueOnMapReadyAction { marker, _, omhMapView ->
-        UiThreadUtil.runOnUiThread {
-          if (visible) {
-            marker?.showInfoWindow()
-          } else {
-            marker?.hideInfoWindow()
-          }
+        entity.queueOnMapReadyAction { marker, _, omhMapView ->
+            UiThreadUtil.runOnUiThread {
+                if (visible) {
+                    marker?.showInfoWindow()
+                } else {
+                    marker?.hideInfoWindow()
+                }
 
-          omhMapView?.getView()?.manuallyLayoutView()
+                omhMapView?.getView()?.manuallyLayoutView()
+            }
         }
-      }
     }
 
     companion object {

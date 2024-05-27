@@ -1,4 +1,9 @@
-import React, { forwardRef, useImperativeHandle, useMemo } from 'react';
+import React, {
+  forwardRef,
+  useEffect,
+  useImperativeHandle,
+  useMemo,
+} from 'react';
 import { PixelRatio } from 'react-native';
 
 import useOmhMarkerOSMFix from '../../hooks/useOmhMarkerOSMFix';
@@ -55,6 +60,16 @@ export const OmhMarker = forwardRef<OmhMarkerRef, OmhMarkerProps>(
       () => (_backgroundColor === undefined ? -1 : _backgroundColor),
       [_backgroundColor]
     );
+
+    // unmount effect - remove marker
+    useEffect(() => {
+      return () => {
+        if (nativeComponentRef.current) {
+          // eslint-disable-next-line react-hooks/exhaustive-deps
+          Commands.remove(nativeComponentRef.current);
+        }
+      };
+    }, []);
 
     return (
       <RNOmhMapsMarkerNativeComponent

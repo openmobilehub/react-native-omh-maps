@@ -14,13 +14,14 @@ import {
   MarkerDragEndEvent,
   MarkerDragEvent,
   MarkerDragStartEvent,
+  OmhAnchor,
   OmhMapView,
   OmhMapViewRef,
   OmhMarker,
   OmhMarkerConstants,
   OmhMarkerRef,
-  OmhAnchor,
 } from '@openmobilehub/maps-core';
+
 import soccerBallIcon from '../../assets/img/soccer_ball.bmp';
 import { PanelCheckbox } from '../../components/controls/PanelCheckbox';
 import Picker from '../../components/controls/Picker';
@@ -29,12 +30,13 @@ import useLogger from '../../hooks/useLogger';
 import useSnackbar from '../../hooks/useSnackbar';
 import { demoStyles } from '../../styles/demoStyles';
 import { Constants } from '../../utils/Constants';
-import { formatPosition, rgbToInt } from '../../utils/converters';
 import {
   androidProvidersWithout,
   iOSProvidersWithout,
   isFeatureSupported,
 } from '../../utils/SupportUtils';
+import { formatPosition, rgbToInt } from '../../utils/converters';
+
 import IOS_SUPPORTED_PROVIDERS = Constants.Demo.IOS_SUPPORTED_PROVIDERS;
 import ANDROID_SUPPORTED_PROVIDERS = Constants.Demo.ANDROID_SUPPORTED_PROVIDERS;
 
