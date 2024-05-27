@@ -29,6 +29,12 @@ sidebar_position: 1
 - Mapbox via `@openmobilehub/maps-plugin-mapbox`
 - Azure Maps via `@openmobilehub/maps-plugin-azuremaps`
 
+iOS implementation relies on `react-native-maps` library and supports the following providers:
+- Apple Maps
+- Google Maps
+
+All of the iOS providers are available by installing @openmobilehub/maps-core.
+
 ## Features
 
 - 📱 GMS and non-GMS support for all maps providers
