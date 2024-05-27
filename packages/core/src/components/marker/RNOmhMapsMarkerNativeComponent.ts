@@ -68,10 +68,11 @@ export interface NativeCommands {
   hideInfoWindow: (
     viewRef: React.ElementRef<RNOmhMapsMarkerNativeComponent>
   ) => void;
+  remove: (viewRef: React.ElementRef<RNOmhMapsMarkerNativeComponent>) => void;
 }
 
 export const Commands: NativeCommands = codegenNativeCommands<NativeCommands>({
-  supportedCommands: ['showInfoWindow', 'hideInfoWindow'],
+  supportedCommands: ['showInfoWindow', 'hideInfoWindow', 'remove'],
 });
 
 export default codegenNativeComponent<NativeOmhMarkerProps>(
