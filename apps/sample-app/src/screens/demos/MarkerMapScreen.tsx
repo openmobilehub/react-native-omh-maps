@@ -361,6 +361,7 @@ export const MarkerMapScreen = () => {
               isFlat={customizableMarkerFlat}
               clickable={customizableMarkerClickable}
               isVisible={customizableMarkerVisible}
+              consumeMarkerClicks={true}
               snippet={
                 customizableMarkerSnippet
                   ? 'A sample snippet with long description'
@@ -415,6 +416,7 @@ export const MarkerMapScreen = () => {
             onInfoWindowPress={genMarkerOnIWPressHandler(staticIconMarkerTitle)}
             onInfoWindowClose={genMarkerOnIWCloseHandler(staticIconMarkerTitle)}
             markerZIndex={1.9}
+            consumeMarkerClicks={true}
             icon={showStaticIcon ? soccerBallIcon : undefined}
             backgroundColor={!showStaticIcon ? 0x0000ff : undefined}
           />
@@ -436,6 +438,7 @@ export const MarkerMapScreen = () => {
               staticColoredMarkerTitle
             )}
             markerZIndex={2.9}
+            consumeMarkerClicks={true}
           />
         </OmhMapView>
       </View>
