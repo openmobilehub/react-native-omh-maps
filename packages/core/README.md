@@ -108,7 +108,7 @@ import {OmhMapsModule} from '@openmobilehub/maps-core';
 const provider = OmhMapsModule.getDefaultMapProvider();
 ```
 
-[API Reference](https://legendary-broccoli-93ze846.pages.github.io/docs/api/modules/openmobilehub_maps_core)
+[API Reference](https://www.openmobilehub.com/react-native-omh-maps/docs/api/modules/openmobilehub_maps_core)
 
 ---
 
@@ -126,12 +126,12 @@ const lastLocation = await OmhMapsLocationModule.getLastLocation();
 :::warning
 
 Before using the `OmhMapsLocationModule`, make sure to request the necessary permissions.
-Otherwise, the module will throw an [OmhLocationError](https://legendary-broccoli-93ze846.pages.github.io/docs/api/classes/openmobilehub_maps_core.OmhLocationError).
+Otherwise, the module will throw an [OmhLocationError](https://www.openmobilehub.com/react-native-omh-maps/docs/api/classes/openmobilehub_maps_core.OmhLocationError).
 It's recommended to use the [react-native-permissions](https://github.com/zoontek/react-native-permissions) library.
 
 :::
 
-[API Reference](https://legendary-broccoli-93ze846.pages.github.io/docs/api/modules/openmobilehub_maps_core/#omhmapslocationmodule)
+[API Reference](https://www.openmobilehub.com/react-native-omh-maps/docs/api/modules/openmobilehub_maps_core/#omhmapslocationmodule)
 
 ---
 
@@ -147,7 +147,7 @@ const App = () => {
 }
 ```
 
-[Api Reference](https://legendary-broccoli-93ze846.pages.github.io/docs/api/modules/openmobilehub_maps_core#omhmapview)
+[Api Reference](https://www.openmobilehub.com/react-native-omh-maps/docs/api/modules/openmobilehub_maps_core/#omhmapview)
 
 ---
 
@@ -171,7 +171,7 @@ const App = () => {
 
 ---
 
-[Api Reference](https://legendary-broccoli-93ze846.pages.github.io/docs/api/modules/openmobilehub_maps_core#omhmarker)
+[Api Reference](https://www.openmobilehub.com/react-native-omh-maps/docs/api/modules/openmobilehub_maps_core/#omhmarker)
 
 ### OmhPolyline
 
@@ -193,7 +193,7 @@ const App = () => {
 
 ---
 
-[Api Reference](https://legendary-broccoli-93ze846.pages.github.io/docs/api/modules/openmobilehub_maps_core#omhpolyline)
+[Api Reference](https://www.openmobilehub.com/react-native-omh-maps/docs/api/modules/openmobilehub_maps_core/#omhpolyline)
 
 ### OmhPolygon
 
@@ -213,8 +213,22 @@ const App = () => {
 }
 ```
 
-[Api Reference](https://legendary-broccoli-93ze846.pages.github.io/docs/api/modules/openmobilehub_maps_core#omhpolygon)
+[Api Reference](https://www.openmobilehub.com/react-native-omh-maps/docs/api/modules/openmobilehub_maps_core/#omhpolygon)
 
 ## License
 
-- See [LICENSE](https://todo.add.link) file.
+```
+Copyright 2023 Open Mobile Hub
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+    https://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+```

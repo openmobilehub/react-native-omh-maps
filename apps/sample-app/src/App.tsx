@@ -142,12 +142,6 @@ export default function App() {
                 component={SharedLocationMapScreen}
                 options={screenOptions}
               />
-
-              {/* <Stack.Screen
-              name={Route.multipleMaps}
-              component={MultipleMapsScreen}
-              options={screenOptions}
-            /> */}
             </Stack.Navigator>
           </NavigationContainer>
         </SnackbarProvider>
