@@ -2,7 +2,7 @@
 
 yarn lerna version --no-push --no-git-tag-version --no-changelog --no-private
 
-PACKAGE_VERSION=$(jq -r .version < lerna.json)
+PACKAGE_VERSION=$(awk -F: '/"version"/ { gsub(/[,"]/,"",$2); gsub(/^[ \t]+|[ \t]+$/, "", $2); print $2; exit }' lerna.json)
 
 echo "Creating a release branch..."
 git checkout -b "v$PACKAGE_VERSION"
