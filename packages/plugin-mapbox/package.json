@@ -1,6 +1,6 @@
 {
   "name": "@openmobilehub/maps-plugin-mapbox",
-  "version": "1.0.0-alpha.0",
+  "version": "1.0.0-alpha.1",
   "description": "React Native OMH Maps Mapbox Plugin",
   "main": "lib/commonjs/index",
   "module": "lib/module/index",
@@ -42,12 +42,13 @@
     "url": "git+https://github.com/openmobilehub/react-native-omh-maps.git"
   },
   "author": "OpenMobileHub <contact@openmobilehub.com> (https://github.com/openmobilehub)",
-  "license": "MIT",
+  "license": "Apache-2.0",
   "bugs": {
     "url": "https://github.com/openmobilehub/react-native-omh-maps/issues"
   },
   "homepage": "https://github.com/openmobilehub/react-native-omh-maps#readme",
   "publishConfig": {
+    "access": "public",
     "registry": "https://registry.npmjs.org/"
   },
   "peerDependencies": {
