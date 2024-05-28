@@ -1,6 +1,6 @@
 {
   "name": "@openmobilehub/maps-plugin-mapbox",
-  "version": "1.0.0-beta",
+  "version": "1.0.0-alpha.0",
   "description": "React Native OMH Maps Mapbox Plugin",
   "main": "lib/commonjs/index",
   "module": "lib/module/index",
