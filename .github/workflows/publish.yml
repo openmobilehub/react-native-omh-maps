@@ -59,13 +59,13 @@ jobs:
         run: |
           bash ./.github/scripts/check-version.sh
 
+      - name: 'Publish packages'
+        if: env.version_changed == 'true'
+        run: |
+          npx lerna publish from-package --no-changelog --yes
+
       - name: 'Create new tag'
         if: env.version_changed == 'true'
         run: |
           git tag v${{ env.PACKAGE_VERSION }}
           git push origin v${{ env.PACKAGE_VERSION }}
-
-      - name: 'Publish packages'
-        if: env.version_changed == 'true'
-        run: |
-          npx lerna publish from-package --no-changelog --yes
