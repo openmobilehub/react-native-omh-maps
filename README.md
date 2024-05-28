@@ -1,7 +1,3 @@
----
-sidebar_position: 1
----
-
 <p align="center">
   <a href="https://www.openmobilehub.com/">
     <img width="160px" src="https://www.openmobilehub.com/images/logo/omh_logo.png"/><br/>
@@ -76,7 +72,7 @@ Providers compatibility:
 
 ## Sample App
 
-This repository includes a [maps-sample](https://github.com/openmobilehub/react-native-omh-maps/apps/sample-app) that demonstrates the functionality of the OMH Maps Client Library. By cloning the repo and executing the app, you can explore the various features offered by the library.
+This repository includes a [Sample App](https://www.openmobilehub.com/react-native-omh-maps/docs/sample-app) that demonstrates the functionality of the OMH Maps Client Library. By cloning the repo and executing the app, you can explore the various features offered by the library.
 
 However, if you prefer a step-by-step approach to learn the SDK from scratch, we recommend following the detailed [Getting Started](https://www.openmobilehub.com/react-native-omh-maps/docs/getting-started) guide provided in this repository. The guide will walk you through the implementation process and help you integrate the OMH Maps Client Library into your projects effectively.
 
