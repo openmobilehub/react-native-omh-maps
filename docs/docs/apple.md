@@ -90,7 +90,7 @@ Comments for partially supported properties:
 | Props                 | Supported |
 |-----------------------|:---------:|
 | position              |     ✅     |
-| title                 |     ✅     |
+| title                 |     🟨     |
 | clickable             |     🟨     |
 | draggable             |     ✅     |
 | anchor                |     ❌     |
