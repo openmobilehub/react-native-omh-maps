@@ -110,7 +110,7 @@ dependencies {
     implementation "com.facebook.react:react-native:+"
     implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
 
-    api group: "com.openmobilehub.android.maps", name: "plugin-googlemaps", version: "2.0.0-SNAPSHOT", changing: true
+    api group: "com.openmobilehub.android.maps", name: "plugin-googlemaps", version: "2.1.0"
 }
 
 if (isNewArchitectureEnabled()) {

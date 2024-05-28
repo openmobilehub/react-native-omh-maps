@@ -110,9 +110,8 @@ dependencies {
     implementation "com.facebook.react:react-native:+"
     implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
 
-    api("com.openmobilehub.android.maps:plugin-azuremaps:2.0.0-SNAPSHOT") {
+    api("com.openmobilehub.android.maps:plugin-azuremaps:2.1.0") {
         exclude(group: "org.maplibre.gl", module: "android-sdk-geojson")
-        changing(true)
     }
     // This is required for th eplugin to work when the mapbox plugin is also used.
     api("com.mapbox.mapboxsdk:mapbox-sdk-geojson:6.9.0")
