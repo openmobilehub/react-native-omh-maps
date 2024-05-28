@@ -20,50 +20,13 @@ To develop, it is required that the [React Native Codegen](https://github.com/re
 yarn codegen:android
 ```
 
-The [example app](https://github.com/openmobilehub/react-native-omh-maps/tree/main/apps/sample-app/) demonstrates usage of the library. You need to run it to test any changes you make.
+## Sample App
+
+The Sample App demonstrates usage of the library. To run the the application follow the instructions [here](https://www.openmobilehub.com/react-native-omh-maps/docs/sample-app).
 
 It is configured to use the local version of the library, so any changes you make to the library's source code will be reflected in the example app. Changes to the library's JavaScript code will be reflected in the example app without a rebuild, but native code changes will require a rebuild of the example app.
 
-To edit the Java or Kotlin files, open `apps/sample-app/android` in Android studio and find the source files at `omh_rn-maps-core` under `Android`.
-
-You can use various commands from the root directory to work with the project.
-
-To start the packager:
-
-```sh
-yarn sample-app start
-```
-
-To run the example app on Android:
-
-```sh
-yarn sample-app android
-```
-
-To run the example app on iOS:
-
-```sh
-yarn sample-app ios
-```
-
-Make sure your code passes TypeScript and ESLint. Run the following to verify:
-
-```sh
-yarn typecheck
-yarn lint
-```
-
-To fix formatting errors, run the following:
-
-```sh
-yarn lint --fix
-```
-
-Remember to add tests for your change if possible. Run the unit tests by:
-
-```sh
-yarn test
-```
+To edit the Kotlin files, open `apps/sample-app/android` in Android studio and find the source files at `openmobilehub_rn-maps-core` under `Android`.
 
 ## Creating a new package
 
@@ -109,13 +72,11 @@ Our pre-commit hooks verify that the linter and tests pass when committing.
 
 ## Publishing to npm
 
-We use [release-it](https://github.com/release-it/release-it) to make it easier to publish new versions. It handles common tasks like bumping version based on semver, creating tags and releases etc.
+To publish new version to the NPM we use `lerna`. Packages are published automatically after merging a commit that contains a version bump.
 
-To publish new versions, run the following:
-
-```sh
-yarn release
-```
+1. Run `yarn version:bump`
+2. Create PR with a new version
+3. After merging the PR with a version bump, package will be released automatically and a corresponding git tag will be created by the Github Actions Workflow
 
 ## Writing documentation
 
