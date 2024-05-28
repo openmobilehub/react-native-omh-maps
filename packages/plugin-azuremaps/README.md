@@ -159,7 +159,7 @@ Comments for partially supported properties:
 | showInfoWindow |     ✅     |
 | hideInfoWindow |     ✅     |
 
-For advanced usage of `OmhMarker`, see the [Advanced Usage](https://legendary-broccoli-93ze846.pages.github.io/docs/advanced-usage) section.
+For advanced usage of `OmhMarker`, see the [Advanced Usage](https://www.openmobilehub.com/react-native-omh-maps/docs/advanced-usage) section.
 
 ### OmhPolyline
 
