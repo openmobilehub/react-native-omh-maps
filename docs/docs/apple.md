@@ -90,13 +90,13 @@ Comments for partially supported properties:
 | Props                 | Supported |
 |-----------------------|:---------:|
 | position              |     ✅     |
-| title                 |     ✅     |
+| title                 |     🟨     |
 | clickable             |     🟨     |
 | draggable             |     ✅     |
 | anchor                |     ❌     |
 | infoWindowAnchor      |     ❌     |
 | alpha                 |     ❌     |
-| snippet               |     ✅     |
+| snippet               |     🟨     |
 | isVisible             |     ✅     |
 | isFlat                |     ❌     |
 | rotation              |     ❌     |
@@ -117,6 +117,7 @@ Comments for partially supported properties:
 | Property | Comments |
 | --------------------- | -------- |
 | clickable | On iOS Apple Maps provider, marker is always clickable; property value is ignored. |
+| title, snippet | title and snippet are not fully reactive. Properties gets updated on every info window open. |
 
 | Ref            | Supported |
 |----------------|:---------:|
