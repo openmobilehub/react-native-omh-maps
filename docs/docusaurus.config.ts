@@ -158,6 +158,8 @@ const config: Config = {
         entryPoints,
         tsconfig: '../tsconfig.json',
         cleanOutputDir: true,
+        // exclude the readme from automatic generation within docs/api outputs
+        readme: 'none',
 
         // sanitize README.md link to CONTRIBUTING.md
         plugin: ['typedoc-plugin-replace-text'],

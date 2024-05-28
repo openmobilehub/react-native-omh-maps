@@ -26,6 +26,11 @@ Each plugin requires you to follow the `@openmobilehub/maps-core` setup guide. Y
 
 1. Configure your secret token according to the [official documentation](https://docs.mapbox.com/android/maps/guides/install/#configure-your-secret-token).
 2. Create your public token according to the [official documentation](https://docs.mapbox.com/android/maps/guides/install/#configure-credentials) and save it for later use.
+3. Add this code in your App: 
+```typescript
+  // Credentials setup must be done before using the map view.
+  OmhMapsPluginMapboxModule.setPublicToken('<YOUR_PUBLIC_TOKEN>');
+```
 
 ### Maven
 
@@ -91,7 +96,7 @@ const App = () => {
 
 ### Usage Guide
 
-Interacting with the Mapbox provider follows the same pattern as other providers, as they all implement the same interface. For a comprehensive list of available modules, components, and props, refer to the [Quick Start](https://todo.add.link) guide.
+Interacting with the Mapbox provider follows the same pattern as other providers, as they all implement the same interface. For a comprehensive list of available modules, components, and props, refer to the [Quick Start](https://www.openmobilehub.com/react-native-omh-maps/docs/getting-started) guide.
 
 ## Parity Matrix
 
@@ -210,4 +215,19 @@ For advanced usage of `OmhMarker`, see the [Advanced Usage](https://www.openmobi
 
 ## License
 
-- See [LICENSE](https://todo.add.link)
+```
+Copyright 2023 Open Mobile Hub
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+    https://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+```
+

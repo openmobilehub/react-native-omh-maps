@@ -44,7 +44,7 @@ const App = () => {
 
 ### Usage Guide
 
-Interacting with the Apple Maps provider follows the same pattern as other providers, as they all implement the same interface. For a comprehensive list of available modules, components, and props, refer to the [Quick Start](https://todo.add.link) guide.
+Interacting with the Apple Maps provider follows the same pattern as other providers, as they all implement the same interface. For a comprehensive list of available modules, components, and props, refer to the [Quick Start](https://www.openmobilehub.com/react-native-omh-maps/docs/getting-started) guide.
 
 
 ## Parity Matrix
@@ -176,4 +176,19 @@ Comments for partially supported properties:
 
 ## License
 
-- See [LICENSE](https://todo.add.link)
+```
+Copyright 2023 Open Mobile Hub
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+    https://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+```
+
