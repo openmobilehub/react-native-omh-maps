@@ -125,7 +125,9 @@ class RNOmhMapsMarkerViewManagerImpl {
 
     fun setIsVisible(entity: OmhMarkerEntity, value: Boolean) {
         if (entity.isMounted()) {
-            entity.getEntity()!!.setIsVisible(value)
+            UiThreadUtil.runOnUiThread {
+              entity.getEntity()!!.setIsVisible(value)
+            }
         } else {
             entity.initialOptions.isVisible = value
         }
