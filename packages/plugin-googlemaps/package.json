@@ -1,6 +1,6 @@
 {
   "name": "@openmobilehub/maps-plugin-googlemaps",
-  "version": "1.0.0-alpha.2",
+  "version": "1.0.0-alpha.3",
   "description": "React Native OMH Maps Googlemaps Plugin",
   "main": "lib/commonjs/index",
   "module": "lib/module/index",
