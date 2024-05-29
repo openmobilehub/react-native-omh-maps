@@ -121,6 +121,11 @@ dependencies {
     }
 }
 
+// Required as the app uses both Mapbox and Azure Maps
+configurations.all {
+    exclude group:  "org.maplibre.gl", module: "android-sdk-geojson"
+}
+
 detekt {
     autoCorrect = true
 }
