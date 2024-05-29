@@ -3,7 +3,7 @@ import React from 'react';
 import { NativeOmhMapViewComponent } from './RNOmhMapsCoreViewNativeComponent';
 import { getViewRefHandle } from './OmhMapViewHelpers';
 
-export const tweakCompass = (
+export const tweakCompass = async (
   nativeComponentRef: React.MutableRefObject<NativeOmhMapViewComponent | null>
 ) => {
   try {
@@ -11,7 +11,7 @@ export const tweakCompass = (
     const providerName = NativeOmhMapsCoreModule.getProviderName(viewRef);
 
     if (providerName === 'Mapbox') {
-      const mapboxPlugin = require('@openmobilehub/maps-plugin-mapbox');
+      const mapboxPlugin = (await import('./optionalMapboxPlugin')).default;
       mapboxPlugin.OmhMapsPluginMapboxModule.tweakCompass(viewRef);
     }
   } catch (error) {
@@ -24,14 +24,14 @@ export const useOSMMapViewRelayout =
     nativeComponentRef: React.MutableRefObject<NativeOmhMapViewComponent | null> | null,
     providerName: string | null
   ) =>
-  () => {
+  async () => {
     if (!nativeComponentRef) return;
 
     const viewRef = getViewRefHandle(nativeComponentRef, false);
     if (!viewRef) return;
 
     if (providerName === 'OpenStreetMap') {
-      const osmPlugin = require('@openmobilehub/maps-plugin-openstreetmap');
+      const osmPlugin = (await import('./optionalOpenstreetmapPlugin')).default;
       osmPlugin.OmhMapsPluginOpenstreetmapModule.relayoutMapView(viewRef);
     }
   };

@@ -98,6 +98,19 @@ const App = () => {
 
 Interacting with the Mapbox provider follows the same pattern as other providers, as they all implement the same interface. For a comprehensive list of available modules, components, and props, refer to the [Quick Start](https://www.openmobilehub.com/react-native-omh-maps/docs/getting-started) guide.
 
+<details>
+  <summary>Using Azure Maps and Mapbox is single application?</summary>
+  
+  While using both Azure Maps and Mapbox in a single application, you may face issues with duplicated native dependencies. To resolve this, you have to exclude the duplicated dependency. In `app/build.gradle` add the following code:
+
+  ```gradle
+  configurations.all {
+    exclude group:  "org.maplibre.gl", module: "android-sdk-geojson"
+  }
+  ```
+  
+</details>
+
 ## Parity Matrix
 
 The below matrix presents the compatibility matrix, denoting support levels for each of the functionalities.
