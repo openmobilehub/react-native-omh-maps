@@ -10,4 +10,4 @@ export const OmhMapsAzureMapsProvider: OmhMapProvider = {
   path: 'com.openmobilehub.android.maps.plugin.azuremaps.presentation.OmhMapFactoryImpl',
 };
 
-export { default as OmhMapsPluginAzureMapsModule } from './NativeOmhMapsPluginAzureMapsModule';
+export { OmhMapsPluginAzureMapsModule } from './OmhMapsPluginAzureMapsModule';

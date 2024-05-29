@@ -10,4 +10,4 @@ export const OmhMapsOpenStreetMapProvider: OmhMapProvider = {
   path: 'com.openmobilehub.android.maps.plugin.openstreetmap.presentation.OmhMapFactoryImpl',
 };
 
-export { default as OmhMapsPluginOpenstreetmapModule } from './NativeOmhMapsPluginOpenstreetmapModule';
+export { OmhMapsPluginOpenstreetmapModule } from './OmhMapsPluginOpenstreetmapModule';

@@ -10,4 +10,4 @@ export const OmhMapsMapboxProvider: OmhMapProvider = {
   path: 'com.openmobilehub.android.maps.plugin.mapbox.presentation.OmhMapFactoryImpl',
 };
 
-export { default as OmhMapsPluginMapboxModule } from './NativeOmhMapsPluginMapboxModule';
+export { OmhMapsPluginMapboxModule } from './OmhMapsPluginMapboxModule';
