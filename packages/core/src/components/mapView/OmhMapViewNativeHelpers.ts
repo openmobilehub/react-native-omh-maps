@@ -11,7 +11,8 @@ export const tweakCompass = async (
     const providerName = NativeOmhMapsCoreModule.getProviderName(viewRef);
 
     if (providerName === 'Mapbox') {
-      const mapboxPlugin = (await import('./optionalMapboxPlugin')).default;
+      const mapboxPlugin =
+        await require('../../utils/optionalPlugins/optionalMapboxPlugin').getPlugin();
       mapboxPlugin.OmhMapsPluginMapboxModule.tweakCompass(viewRef);
     }
   } catch (error) {
@@ -31,7 +32,8 @@ export const useOSMMapViewRelayout =
     if (!viewRef) return;
 
     if (providerName === 'OpenStreetMap') {
-      const osmPlugin = (await import('./optionalOpenstreetmapPlugin')).default;
+      const osmPlugin =
+        await require('../../utils/optionalPlugins/optionalOpenstreetmapPlugin').getPlugin();
       osmPlugin.OmhMapsPluginOpenstreetmapModule.relayoutMapView(viewRef);
     }
   };

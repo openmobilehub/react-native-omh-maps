@@ -7,6 +7,9 @@ const root = require('./config-constants');
 
 const modules = Object.keys({ ...pak.peerDependencies });
 
+const defaultSourceExts =
+  require('metro-config/src/defaults/defaults').sourceExts;
+
 /**
  * Metro configuration
  * https://reactnative.dev/docs/metro
@@ -29,6 +32,7 @@ const config = {
       acc[name] = path.join(root, 'node_modules', name);
       return acc;
     }, {}),
+    sourceExts: ['workspace.ts', 'workspace.tsx', ...defaultSourceExts],
   },
 
   transformer: {
