@@ -1,5 +1,6 @@
 package com.openmobilehub.android.rn.maps.core.fragments
 
+import androidx.annotation.Keep
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -24,6 +25,7 @@ class OmhMapViewFragment : Fragment() {
     internal var omhMapView: OmhMapView? = null
     internal var omhMap: OmhMap? = null
 
+    @Keep
     fun requireOmhMap(): OmhMap {
         return omhMap ?: error("OmhMap in OmhMapViewFragment is not available")
     }
