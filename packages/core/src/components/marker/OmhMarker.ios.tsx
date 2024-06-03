@@ -42,6 +42,7 @@ export const OmhMarker = forwardRef<OmhMarkerRef, OmhMarkerProps>(
       onDrag,
       onDragEnd,
       onInfoWindowPress,
+      markerZIndex,
     },
     forwardedRef
   ) => {
@@ -164,6 +165,7 @@ export const OmhMarker = forwardRef<OmhMarkerRef, OmhMarkerProps>(
           onDrag={handleOnDrag}
           onCalloutPress={handleOnCalloutPress}
           ref={markerRef}
+          zIndex={markerZIndex}
         />
       )
     );
