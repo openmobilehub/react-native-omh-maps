@@ -133,7 +133,7 @@ Legend of support levels:
 | clickable             |         ✅         |       ✅       |
 | draggable             |         ✅         |       ✅       |
 | anchor                |         ✅         |       ✅       |
-| infoWindowAnchor      |         ✅         |       ✅       |
+| infoWindowAnchor      |         🟨         |       ✅       |
 | alpha                 |         ✅         |       ✅       |
 | snippet               |         ✅         |       ✅       |
 | isVisible             |         ✅         |       ✅       |
@@ -157,6 +157,7 @@ Comments for partially supported properties:
 | --------------------- | -------- |
 | onPress | Described in the OMH Android SDK [Plugin GoogleMaps documentation](https://www.openmobilehub.com/android-omh-maps/advanced-docs/plugin-googlemaps/README/) for `setOnMarkerClickListener` |
 | onInfoWindowClose, onInfoWindowOpen | Described in the OMH Android SDK [Plugin GoogleMaps documentation](https://www.openmobilehub.com/android-omh-maps/advanced-docs/plugin-googlemaps/README/) for `setOnInfoWindowOpenStatusChangeListener` |
+| infoWindowAnchor | Described in the OMH Android SDK [Plugin GoogleMaps documentation](https://www.openmobilehub.com/android-omh-maps/advanced-docs/plugin-googlemaps/README/) for `setInfoWindowAnchor` |
 
 | Ref            |      Android      |      iOS      |
 |----------------|:-----------------:|:-------------:|

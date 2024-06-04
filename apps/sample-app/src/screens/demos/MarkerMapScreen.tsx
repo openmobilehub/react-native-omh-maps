@@ -488,7 +488,7 @@ export const MarkerMapScreen = () => {
           <Slider
             disabled={!supportedFeatures?.rotation}
             label={`Rotation: ${customizableMarkerRotation.toFixed(0)}°`}
-            onChange={zIndex => setCustomizableMarkerRotation(zIndex)}
+            onChange={rotation => setCustomizableMarkerRotation(rotation)}
             defaultValue={0}
             step={1}
             minimumValue={0}
