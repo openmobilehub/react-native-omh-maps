@@ -1,6 +1,6 @@
 <p align="center">
-  <a href="https://www.openmobilehub.com/">
-    <img width="160px" src="https://www.openmobilehub.com/images/logo/omh_logo.png"/><br/>
+  <a href="https://openmobilehub.org/">
+    <img width="160px" src="https://openmobilehub.org/wp-content/uploads/sites/13/2024/06/OpenMobileHub-horizontal-color.svg"/><br/>
   </a>
   <h2 align="center">React Native OMH Maps</h2>
 </p>
@@ -56,7 +56,7 @@ Additionally, the current versions of Android OMH libraries have a minimum Andro
 
 This is the main directory of the monorepo for React Native OMH Maps. Below are listed all possible packages that belong to the React Native OMH Maps ecosystem.
 
-To get started, you need to install the [Core package](https://www.openmobilehub.com/react-native-omh-maps/docs/core).
+To get started, you need to install the [Core package](https://openmobilehub.github.io/react-native-omh-maps/docs/core).
 
 Additionally, you need providers that will be used to render the map (at least one). Their availability depends on both the platform (Android / iOS) and - on Android - the support for and actual availability of GMS.
 
@@ -64,22 +64,22 @@ Providers compatibility:
 
 | Provider name & docs link                                                               | Supports GMS | Supports non-GMS | Supports Apple iOS |
 | --------------------------------------------------------------------------------------- | :----------: | :--------------: | :----------------: |
-| [Google Maps](https://www.openmobilehub.com/react-native-omh-maps/docs/googlemaps)      |      ✅      |        ❌        |         ✅         |
-| [OpenStreetMap](https://www.openmobilehub.com/react-native-omh-maps/docs/openstreetmap) |      ✅      |        ✅        |         ❌         |
-| [Mapbox](https://www.openmobilehub.com/react-native-omh-maps/docs/mapbox)               |      ✅      |        ✅        |         ❌         |
-| [Azure Maps](https://www.openmobilehub.com/react-native-omh-maps/docs/azuremaps)        |      ✅      |        ✅        |         ❌         |
-| [Apple Maps](https://www.openmobilehub.com/react-native-omh-maps/docs/apple)            |      ❌      |        ❌        |         ✅         |
+| [Google Maps](https://openmobilehub.github.io/react-native-omh-maps/docs/googlemaps)      |      ✅      |        ❌        |         ✅         |
+| [OpenStreetMap](https://openmobilehub.github.io/react-native-omh-maps/docs/openstreetmap) |      ✅      |        ✅        |         ❌         |
+| [Mapbox](https://openmobilehub.github.io/react-native-omh-maps/docs/mapbox)               |      ✅      |        ✅        |         ❌         |
+| [Azure Maps](https://openmobilehub.github.io/react-native-omh-maps/docs/azuremaps)        |      ✅      |        ✅        |         ❌         |
+| [Apple Maps](https://openmobilehub.github.io/react-native-omh-maps/docs/apple)            |      ❌      |        ❌        |         ✅         |
 
 ## Sample App
 
-This repository includes a [Sample App](https://www.openmobilehub.com/react-native-omh-maps/docs/sample-app) that demonstrates the functionality of the OMH Maps Client Library. By cloning the repo and executing the app, you can explore the various features offered by the library.
+This repository includes a [Sample App](https://openmobilehub.github.io/react-native-omh-maps/docs/sample-app) that demonstrates the functionality of the OMH Maps Client Library. By cloning the repo and executing the app, you can explore the various features offered by the library.
 
-However, if you prefer a step-by-step approach to learn the SDK from scratch, we recommend following the detailed [Getting Started](https://www.openmobilehub.com/react-native-omh-maps/docs/getting-started) guide provided in this repository. The guide will walk you through the implementation process and help you integrate the OMH Maps Client Library into your projects effectively.
+However, if you prefer a step-by-step approach to learn the SDK from scratch, we recommend following the detailed [Getting Started](https://openmobilehub.github.io/react-native-omh-maps/docs/getting-started) guide provided in this repository. The guide will walk you through the implementation process and help you integrate the OMH Maps Client Library into your projects effectively.
 
 ## Documentation
 
-- [Quick Start](https://www.openmobilehub.com/react-native-omh-maps/docs/getting-started)
-- [Reference API](https://www.openmobilehub.com/react-native-omh-maps/docs/api)
+- [Quick Start](https://openmobilehub.github.io/react-native-omh-maps/docs/getting-started)
+- [Reference API](https://openmobilehub.github.io/react-native-omh-maps/docs/api)
 
 ## Compatibility matrix
 
@@ -114,7 +114,7 @@ Comments for partially supported properties:
 | Property | Comments |
 | --------------------- | -------- |
 | myLocationEnabled | On iOS Apple Maps provider, the property only controls the display of user's current location; on this provider, 'move to current location' button is not supported |
-| onCameraMoveStarted | Described in the OMH Android SDK [Plugin OpenStreetMap documentation](https://www.openmobilehub.com/android-omh-maps/advanced-docs/plugin-openstreetmap/README/), [Plugin Mapbox documentation](https://www.openmobilehub.com/android-omh-maps/advanced-docs/plugin-mapbox/README/) for `setOnCameraMoveStartedListener` |
+| onCameraMoveStarted | Described in the OMH Android SDK [Plugin OpenStreetMap documentation](https://openmobilehub.github.io/android-omh-maps/advanced-docs/plugin-openstreetmap/README/), [Plugin Mapbox documentation](https://openmobilehub.github.io/android-omh-maps/advanced-docs/plugin-mapbox/README/) for `setOnCameraMoveStartedListener` |
 
 | Ref                 | Android GoogleMaps | Android OpenStreetMaps | Android Mapbox | Android AzureMaps | iOS GoogleMaps | iOS AppleMaps |
 | ------------------- | :----------------: | :--------------------: | :------------: | :---------------: | :------------: | :-----------: |
@@ -159,17 +159,17 @@ Comments for partially supported properties:
 Comments for partially supported properties:
 | Property | Comments |
 | --------------------- | -------- |
-| anchor | On Mapbox and Azure Maps providers, values are discretized as described in - respectively - the OMH Android SDK [Plugin Mapbox documentation](https://www.openmobilehub.com/android-omh-maps/advanced-docs/plugin-mapbox/README/) and the OMH Android SDK [Plugin AzureMaps documentation](https://www.openmobilehub.com/android-omh-maps/advanced-docs/plugin-azuremaps/README/) for `anchor` |
-| onPress | Described in the OMH Android SDK [Plugin GoogleMaps documentation](https://www.openmobilehub.com/android-omh-maps/advanced-docs/plugin-googlemaps/README/) for `setOnMarkerClickListener` |
-| onInfoWindowClose, onInfoWindowOpen | Described in the OMH Android SDK [Plugin GoogleMaps documentation](https://www.openmobilehub.com/android-omh-maps/advanced-docs/plugin-googlemaps/README/) for `setOnInfoWindowOpenStatusChangeListener` |
-| title, snippet | Described in OMH iOS [Plugin AppleMaps documentation](https://www.openmobilehub.com/react-native-omh-maps/docs/apple) for `title` and `snippet` |
+| anchor | On Mapbox and Azure Maps providers, values are discretized as described in - respectively - the OMH Android SDK [Plugin Mapbox documentation](https://openmobilehub.github.io/android-omh-maps/advanced-docs/plugin-mapbox/README/) and the OMH Android SDK [Plugin AzureMaps documentation](https://openmobilehub.github.io/android-omh-maps/advanced-docs/plugin-azuremaps/README/) for `anchor` |
+| onPress | Described in the OMH Android SDK [Plugin GoogleMaps documentation](https://openmobilehub.github.io/android-omh-maps/advanced-docs/plugin-googlemaps/README/) for `setOnMarkerClickListener` |
+| onInfoWindowClose, onInfoWindowOpen | Described in the OMH Android SDK [Plugin GoogleMaps documentation](https://openmobilehub.github.io/android-omh-maps/advanced-docs/plugin-googlemaps/README/) for `setOnInfoWindowOpenStatusChangeListener` |
+| title, snippet | Described in OMH iOS [Plugin AppleMaps documentation](https://openmobilehub.github.io/react-native-omh-maps/docs/apple) for `title` and `snippet` |
 
 | Ref            | Android GoogleMaps | Android OpenStreetMaps | Android Mapbox | Android AzureMaps | iOS GoogleMaps | iOS AppleMaps |
 | -------------- | :----------------: | :--------------------: | :------------: | :---------------: | :------------: | :-----------: |
 | showInfoWindow |         ✅         |           ✅           |       ✅       |        ✅         |       ✅       |      ✅       |
 | hideInfoWindow |         ✅         |           ✅           |       ✅       |        ✅         |       ✅       |      ✅       |
 
-For advanced usage of `OmhMarker`, see the [Advanced Usage](https://www.openmobilehub.com/react-native-omh-maps/docs/advanced-usage) section.
+For advanced usage of `OmhMarker`, see the [Advanced Usage](https://openmobilehub.github.io/react-native-omh-maps/docs/advanced-usage) section.
 
 </details>
 
@@ -198,8 +198,8 @@ For advanced usage of `OmhMarker`, see the [Advanced Usage](https://www.openmobi
 Comments for partially supported properties:
 | Property | Comments |
 | --------------------- | -------- |
-| pattern | Described in the OMH Android SDK [Plugin AzureMaps documentation](https://www.openmobilehub.com/android-omh-maps/advanced-docs/plugin-azuremaps/README/) and OMH iOS [Plugin AppleMaps documentation](https://www.openmobilehub.com/react-native-omh-maps/docs/apple) for `pattern` |
-| cap | Described in the OMH Android SDK [Plugin OpenStreetMap documentation](https://www.openmobilehub.com/android-omh-maps/advanced-docs/plugin-openstreetmap/README/), [Plugin AzureMaps documentation](https://www.openmobilehub.com/android-omh-maps/advanced-docs/plugin-azuremaps/README/) for `setCap` and OMH iOS [Plugin AppleMaps documentation](https://www.openmobilehub.com/react-native-omh-maps/docs/apple) for `cap` |
+| pattern | Described in the OMH Android SDK [Plugin AzureMaps documentation](https://openmobilehub.github.io/android-omh-maps/advanced-docs/plugin-azuremaps/README/) and OMH iOS [Plugin AppleMaps documentation](https://openmobilehub.github.io/react-native-omh-maps/docs/apple) for `pattern` |
+| cap | Described in the OMH Android SDK [Plugin OpenStreetMap documentation](https://openmobilehub.github.io/android-omh-maps/advanced-docs/plugin-openstreetmap/README/), [Plugin AzureMaps documentation](https://openmobilehub.github.io/android-omh-maps/advanced-docs/plugin-azuremaps/README/) for `setCap` and OMH iOS [Plugin AppleMaps documentation](https://openmobilehub.github.io/react-native-omh-maps/docs/apple) for `cap` |
 
 </details>
 
@@ -226,14 +226,14 @@ Comments for partially supported properties:
 Comments for partially supported properties:
 | Property | Comments |
 | --------------------- | -------- |
-| strokeJointType | Described in the OMH iOS [Plugin AppleMaps documentation](https://www.openmobilehub.com/react-native-omh-maps/docs/apple) for `strokeJointType` |
-| strokePattern | Described in the OMH Android SDK [Plugin AzureMaps documentation](https://www.openmobilehub.com/android-omh-maps/advanced-docs/plugin-azuremaps/README/) and OMH iOS [Plugin AppleMaps documentation](https://www.openmobilehub.com/react-native-omh-maps/docs/apple) for `strokePattern` |
+| strokeJointType | Described in the OMH iOS [Plugin AppleMaps documentation](https://openmobilehub.github.io/react-native-omh-maps/docs/apple) for `strokeJointType` |
+| strokePattern | Described in the OMH Android SDK [Plugin AzureMaps documentation](https://openmobilehub.github.io/android-omh-maps/advanced-docs/plugin-azuremaps/README/) and OMH iOS [Plugin AppleMaps documentation](https://openmobilehub.github.io/react-native-omh-maps/docs/apple) for `strokePattern` |
 
 </details>
 
 ## Contributing
 
-- [Overview](https://www.openmobilehub.com/react-native-omh-maps/docs/contributing)
+- [Overview](https://openmobilehub.github.io/react-native-omh-maps/docs/contributing)
 - [Issues](https://github.com/openmobilehub/react-native-omh-maps/issues)
 - [PRs](https://github.com/openmobilehub/react-native-omh-maps/pulls)
 
