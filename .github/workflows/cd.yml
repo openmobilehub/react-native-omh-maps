@@ -4,6 +4,7 @@ on:
   push:
     branches:
       - main
+  workflow_dispatch:
 
 # GITHUB_TOKEN needs to be granted the permissions required to make a Pages deployment
 permissions:
