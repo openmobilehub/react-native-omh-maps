@@ -38,6 +38,80 @@ All of the iOS providers are available by installing @openmobilehub/maps-core.
 - 🌱 Easy configuration and setup
 - 💨 Lightweight modules
 
+### A single codebase, running seamlessly on any device
+
+For instance, the following screenshots showcase multiple devices with Android, both with GMS and Non-GMS, and iOS. The same app works without changing a single line of code, supporting multiple map provider implementations (Google Maps, Mapbox, OpenStreetMap, Azure Maps).
+
+Android:
+
+<div align="center">
+
+| Google Maps                                                                                                        | Open Street Maps                                                                                                 | MapBox                                                                                                              | Azure Maps                                                                                                         |
+|--------------------------------------------------------------------------------------------------------------------|------------------------------------------------------------------------------------------------------------------|---------------------------------------------------------------------------------------------------------------------|--------------------------------------------------------------------------------------------------------------------|
+| Camera Map                                                                                                         |
+| <img src="https://raw.githubusercontent.com/openmobilehub/omh-assets/main/react-native-omh-maps/demo/gmaps_1.gif"> | <img src="https://raw.githubusercontent.com/openmobilehub/omh-assets/main/react-native-omh-maps/demo/osm_1.gif"> | <img src="https://raw.githubusercontent.com/openmobilehub/omh-assets/main/react-native-omh-maps/demo/mapbox_1.gif"> | <img src="https://raw.githubusercontent.com/openmobilehub/omh-assets/main/react-native-omh-maps/demo/azure_1.gif"> |
+
+</div>
+
+iOS:
+
+<div align="center">
+
+| Google Maps                                                                                                            | Apple Maps                                                                                                         |
+|------------------------------------------------------------------------------------------------------------------------|--------------------------------------------------------------------------------------------------------------------|
+| Camera Map                                                                                                             |
+| <img src="https://raw.githubusercontent.com/openmobilehub/omh-assets/main/react-native-omh-maps/demo/gmaps_ios_1.gif"> | <img src="https://raw.githubusercontent.com/openmobilehub/omh-assets/main/react-native-omh-maps/demo/apple_1.gif"> |
+
+</div>
+
+<details>
+  <summary>Show more</summary>
+
+Android:
+
+<div align="center">
+
+| Google Maps                                                                                                        | Open Street Maps                                                                                                 | MapBox                                                                                                              | Azure Maps                                                                                                         |
+|--------------------------------------------------------------------------------------------------------------------|------------------------------------------------------------------------------------------------------------------|---------------------------------------------------------------------------------------------------------------------|--------------------------------------------------------------------------------------------------------------------|
+| Location Sharing Map                                                                                               |
+| <img src="https://raw.githubusercontent.com/openmobilehub/omh-assets/main/react-native-omh-maps/demo/gmaps_2.gif"> | <img src="https://raw.githubusercontent.com/openmobilehub/omh-assets/main/react-native-omh-maps/demo/osm_2.gif"> | <img src="https://raw.githubusercontent.com/openmobilehub/omh-assets/main/react-native-omh-maps/demo/mapbox_2.gif"> | <img src="https://raw.githubusercontent.com/openmobilehub/omh-assets/main/react-native-omh-maps/demo/azure_2.gif"> |
+| Marker Map                                                                                                         |
+| <img src="https://raw.githubusercontent.com/openmobilehub/omh-assets/main/react-native-omh-maps/demo/gmaps_3.gif"> | <img src="https://raw.githubusercontent.com/openmobilehub/omh-assets/main/react-native-omh-maps/demo/osm_3.gif"> | <img src="https://raw.githubusercontent.com/openmobilehub/omh-assets/main/react-native-omh-maps/demo/mapbox_3.gif"> | <img src="https://raw.githubusercontent.com/openmobilehub/omh-assets/main/react-native-omh-maps/demo/azure_3.gif"> |
+| Info Windows Map                                                                                                   |
+| <img src="https://raw.githubusercontent.com/openmobilehub/omh-assets/main/react-native-omh-maps/demo/gmaps_4.gif"> | <img src="https://raw.githubusercontent.com/openmobilehub/omh-assets/main/react-native-omh-maps/demo/osm_4.gif"> | <img src="https://raw.githubusercontent.com/openmobilehub/omh-assets/main/react-native-omh-maps/demo/mapbox_4.gif"> | <img src="https://raw.githubusercontent.com/openmobilehub/omh-assets/main/react-native-omh-maps/demo/azure_4.gif"> |
+| Polyline Map                                                                                                       |
+| <img src="https://raw.githubusercontent.com/openmobilehub/omh-assets/main/react-native-omh-maps/demo/gmaps_5.gif"> | <img src="https://raw.githubusercontent.com/openmobilehub/omh-assets/main/react-native-omh-maps/demo/osm_5.gif"> | <img src="https://raw.githubusercontent.com/openmobilehub/omh-assets/main/react-native-omh-maps/demo/mapbox_5.gif"> | <img src="https://raw.githubusercontent.com/openmobilehub/omh-assets/main/react-native-omh-maps/demo/azure_5.gif"> |
+| Polygon Map                                                                                                        |
+| <img src="https://raw.githubusercontent.com/openmobilehub/omh-assets/main/react-native-omh-maps/demo/gmaps_6.gif"> | <img src="https://raw.githubusercontent.com/openmobilehub/omh-assets/main/react-native-omh-maps/demo/osm_6.gif"> | <img src="https://raw.githubusercontent.com/openmobilehub/omh-assets/main/react-native-omh-maps/demo/mapbox_6.gif"> | <img src="https://raw.githubusercontent.com/openmobilehub/omh-assets/main/react-native-omh-maps/demo/azure_6.gif"> |
+| Custom Styles Map                                                                                                  |
+| <img src="https://raw.githubusercontent.com/openmobilehub/omh-assets/main/react-native-omh-maps/demo/gmaps_7.gif"> | <img src="https://raw.githubusercontent.com/openmobilehub/omh-assets/main/react-native-omh-maps/demo/osm_7.png"> | <img src="https://raw.githubusercontent.com/openmobilehub/omh-assets/main/react-native-omh-maps/demo/mapbox_7.gif"> | <img src="https://raw.githubusercontent.com/openmobilehub/omh-assets/main/react-native-omh-maps/demo/azure_7.png"> |
+
+</div>
+
+
+iOS:
+
+<div align="center">
+
+| Google Maps                                                                                                            | Apple Maps                                                                                                         |
+|------------------------------------------------------------------------------------------------------------------------|--------------------------------------------------------------------------------------------------------------------|
+| Location Sharing Map                                                                                                   |
+| <img src="https://raw.githubusercontent.com/openmobilehub/omh-assets/main/react-native-omh-maps/demo/gmaps_ios_2.gif"> | <img src="https://raw.githubusercontent.com/openmobilehub/omh-assets/main/react-native-omh-maps/demo/apple_2.gif"> |
+| Marker Map                                                                                                             |
+| <img src="https://raw.githubusercontent.com/openmobilehub/omh-assets/main/react-native-omh-maps/demo/gmaps_ios_3.gif"> | <img src="https://raw.githubusercontent.com/openmobilehub/omh-assets/main/react-native-omh-maps/demo/apple_3.gif"> |
+| Info Windows Map                                                                                                       |
+| <img src="https://raw.githubusercontent.com/openmobilehub/omh-assets/main/react-native-omh-maps/demo/gmaps_ios_4.gif"> | <img src="https://raw.githubusercontent.com/openmobilehub/omh-assets/main/react-native-omh-maps/demo/apple_4.gif"> |
+| Polyline Map                                                                                                           |
+| <img src="https://raw.githubusercontent.com/openmobilehub/omh-assets/main/react-native-omh-maps/demo/gmaps_ios_5.gif"> | <img src="https://raw.githubusercontent.com/openmobilehub/omh-assets/main/react-native-omh-maps/demo/apple_5.gif"> |
+| Polygon Map                                                                                                            |
+| <img src="https://raw.githubusercontent.com/openmobilehub/omh-assets/main/react-native-omh-maps/demo/gmaps_ios_6.gif"> | <img src="https://raw.githubusercontent.com/openmobilehub/omh-assets/main/react-native-omh-maps/demo/apple_6.gif"> |
+| Custom Styles Map                                                                                                      |
+| <img src="https://raw.githubusercontent.com/openmobilehub/omh-assets/main/react-native-omh-maps/demo/gmaps_ios_7.gif"> | <img src="https://raw.githubusercontent.com/openmobilehub/omh-assets/main/react-native-omh-maps/demo/apple_7.png"> |
+
+</div>
+
+</details>
+
 ## Prerequisites
 
 Before getting started, the documentation assumes you are able to create a project with React Native. If you do not meet these prerequisites, follow the links below:
