@@ -44,8 +44,13 @@ bundle exec pod install --project-directory=./ios
 
 ## Step 2: Start your Application
 
-Let Metro Bundler run in its _own_ terminal. 
+- Let Metro Bundler run in its _own_ terminal. 
+```bash
+#start Metro
+yarn start
+```
 
+- Run the app:
 Open a _new_ terminal from the _root_ of your React Native project. Run the following command to start your _Android_ or _iOS_ app:
 
 ### For Android
