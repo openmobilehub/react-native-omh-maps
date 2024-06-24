@@ -6,15 +6,27 @@ The Sample App showcases the capabilities of the OMH Maps plugins, featuring all
 
 > **Note**: Make sure you have completed the [React Native - Environment Setup](https://reactnative.dev/docs/environment-setup) instructions till "Creating a new application" step, before proceeding.
 
-## Prerequisites
 
-Create a new file in `apps/sample-app/ios called: `Secrets.xcconfig` and add Google Maps API key like this:
+## Step 1 Setup
+
+#### Clone the repo and install all required dependencies
+
+```bash
+git clone https://github.com/openmobilehub/react-native-omh-maps.git
+cd apps/sample-app
+# using yarn
+yarn install
+```
+
+#### Create secrets files:
+  
+Create a new file in `apps/sample-app/ios` called: `Secrets.xcconfig` and add Google Maps API key like this:
 
 ```
 GOOGLE_MAPS_API_KEY = YOUR_GOOGLE_MAPS_API_KEY
 ```
 
-Create a new file in sample-app/android called `local.properties` and add API keys for Google Maps, Mapbox, Azure Maps like this:
+Create a new file in `sample-app/android` called `local.properties` and add API keys for Google Maps, Mapbox, Azure Maps like this:
 
 ```
 GOOGLE_MAPS_API_KEY = YOUR_GOOGLE_MAPS_API_KEY
@@ -22,14 +34,7 @@ MAPBOX_PUBLIC_TOKEN = YOUR_MAPBOX_MAPS_API_KEY
 AZURE_MAPS_SUBSCRIPTION_KEY = YOUR_AZURE_MAPS_API_KEY
 ```
 
-## Step 1: Install all needed dependencies
-
-```bash
-# using yarn
-yarn install
-```
-
-If you want to start iOS application, there are two additional steps:
+_Note: To run iOS application, there are two additional steps:_
 
 ```bash
 cd sample-app/
@@ -39,7 +44,14 @@ bundle exec pod install --project-directory=./ios
 
 ## Step 2: Start your Application
 
-Let Metro Bundler run in its _own_ terminal. Open a _new_ terminal from the _root_ of your React Native project. Run the following command to start your _Android_ or _iOS_ app:
+- Let Metro Bundler run in its _own_ terminal. 
+```bash
+#start Metro
+yarn start
+```
+
+- Run the app:
+Open a _new_ terminal from the _root_ of your React Native project. Run the following command to start your _Android_ or _iOS_ app:
 
 ### For Android
 
