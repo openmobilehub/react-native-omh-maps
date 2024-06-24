@@ -130,8 +130,11 @@ Additionally, the current versions of Android OMH libraries have a minimum Andro
 
 This is the main directory of the monorepo for React Native OMH Maps. Below are listed all possible packages that belong to the React Native OMH Maps ecosystem.
 
-To get started, you need to install the [Core package](https://openmobilehub.github.io/react-native-omh-maps/docs/core).
+#### Core Package
+To get started, you need to install the [Core package](https://openmobilehub.github.io/react-native-omh-maps/docs/core). 
+Then follow the step-by-step instructions to set up and use a map module.
 
+#### Maps Providers
 Additionally, you need providers that will be used to render the map (at least one). Their availability depends on both the platform (Android / iOS) and - on Android - the support for and actual availability of GMS.
 
 Providers compatibility:
