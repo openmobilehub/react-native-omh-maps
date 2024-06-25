@@ -2,59 +2,10 @@ name: CD
 
 on:
   push:
-    branches:
-      - main
+    branches: [main]
   workflow_dispatch:
 
-# GITHUB_TOKEN needs to be granted the permissions required to make a Pages deployment
-permissions:
-  contents: read
-  pages: write # to deploy to Pages
-  id-token: write # to verify the deployment originates from an appropriate source
-
 jobs:
-  build-documentation:
-    name: Build documentation
-    runs-on: ubuntu-latest
-
-    steps:
-      - name: Check out code
-        uses: actions/checkout@v4
-
-      - name: Setup
-        uses: ./.github/actions/setup
-        with:
-          MAPBOX_SECRET_TOKEN: ${{ secrets.MAPBOX_SECRET_TOKEN }}
-          MAPBOX_PUBLIC_TOKEN: ${{ secrets.MAPBOX_PUBLIC_TOKEN }}
-          GOOGLE_MAPS_API_KEY: ${{ secrets.GOOGLE_MAPS_API_KEY }}
-          AZURE_MAPS_SUBSCRIPTION_KEY: ${{ secrets.AZURE_MAPS_SUBSCRIPTION_KEY }}
-
-      - name: Setup Pages
-        id: pages
-        uses: actions/configure-pages@v4
-
-      - name: Build documentation with Docusaurus
-        run: yarn docs build
-
-      - name: Upload artifact
-        uses: actions/upload-pages-artifact@v3
-        with:
-          path: docs/build
-
-  deploy-documentation:
-    needs: build-documentation
-    name: Deploy documentation to GitHub Pages
-    runs-on: ubuntu-latest
-
-    environment:
-      name: github-pages
-      url: ${{ steps.deployment.outputs.page_url }}
-
-    steps:
-      - name: Deploy to GitHub Pages
-        id: deployment
-        uses: actions/deploy-pages@v4
-
   sample-app-android:
     name: Build and publish Android app
     runs-on: ubuntu-latest
