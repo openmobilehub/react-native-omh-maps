@@ -1,8 +1,8 @@
-name: CI
+name: Continuous Integration
 
 on:
   pull_request:
-    branches: [main, develop, 'release/**']
+    branches: [main]
     types: [opened, synchronize]
 
 jobs:

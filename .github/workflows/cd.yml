@@ -1,21 +1,24 @@
-name: CD
+name: Continuous Deployment
 
 on:
   push:
-    branches: [main]
+    branches: [main, ci]
   workflow_dispatch:
 
+env:
+  SAMPLE_APP_PATH: 'apps/sample-app'
+
 jobs:
-  sample-app-android:
-    name: Build and publish Android app
+  build-android-sample-app:
+    name: Build Android Sample App
+
     runs-on: ubuntu-latest
 
     env:
       TURBO_CACHE_DIR: .turbo/android
-      APK_PATH: apps/sample-app/android/app/build/outputs/apk/release/app-release.apk
 
     steps:
-      - name: Checkout
+      - name: Checkout repository
         uses: actions/checkout@v4
 
       - name: Setup
@@ -64,33 +67,25 @@ jobs:
         run: |
           yarn turbo run build:android:release --cache-dir="${{ env.TURBO_CACHE_DIR }}"
 
-      # Publishes the app to App Center
-      - name: Publish app to App Center
-        uses: wzieba/AppCenter-Github-Action@v1
+      - name: Upload .apk
+        uses: actions/upload-artifact@v4
         with:
-          appName: ${{ secrets.APP_CENTER_APP_NAME }}
-          group: ${{ secrets.APP_CENTER_GROUP }}
-          token: ${{ secrets.APP_CENTER_TOKEN }}
-          file: ${{ env.APK_PATH }}
-          notifyTesters: true
-          debug: true
-          gitReleaseNotes: true
+          name: apk
+          path: ${{ env.SAMPLE_APP_PATH }}/android/app/build/outputs/apk/release/app-release.apk
 
-  # Build and publish iOS app is split into two jobs because the App Center step does not support macOS.
-  build-sample-app-ios:
+  build-ios-sample-app:
     name: Build iOS sample app
+
     runs-on: macos-14
-    env:
-      SAMPLE_APP_PATH: 'apps/sample-app/ios'
 
     steps:
-      - name: Checkout
+      - name: Checkout repository
         uses: actions/checkout@v4
 
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version-file: .nvmrc
+          node-version: 'lts/iron'
 
       - name: Cache JS dependencies
         id: yarn-cache
@@ -123,10 +118,11 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-pods-
 
-      - name: Install Pods
+      - name: install CocoaPods dependencies
         run: |
-          cd ./apps/sample-app && bundle exec pod install --project-directory=./ios
-        shell: bash
+          cd ${{ env.SAMPLE_APP_PATH }}/ios
+          pod repo update
+          pod install
 
       - name: Setup Secrets
         env:
@@ -168,7 +164,7 @@ jobs:
 
       - name: Build archive
         run: |
-          cd ${{ env.SAMPLE_APP_PATH }}
+          cd ${{ env.SAMPLE_APP_PATH }}/ios
           xcodebuild -workspace RnOmhMapsExample.xcworkspace \
           -scheme "RnOmhMapsExample" \
           -sdk iphoneos \
@@ -191,25 +187,38 @@ jobs:
           # extract .ipa
           xcodebuild -exportArchive -archivePath $RUNNER_TEMP/RnOmhMapsExample.xcarchive -exportOptionsPlist $EXPORT_OPTS_PATH -exportPath $RUNNER_TEMP/build
 
-      - name: Upload artifact
+      - name: Upload .ipa
         uses: actions/upload-artifact@v4
         with:
-          name: RnOmhMapsExample.ipa
+          name: ipa
           path: ${{ runner.temp }}/build/RnOmhMapsExample.ipa
 
-  distribute-sample-app-ios:
-    name: Distribute iOS app
-    needs: build-sample-app-ios
+  deploy-android-and-ios-sample-app:
+    name: Deploy Android and iOS Sample App to AppCenter
+
+    needs: [build-android-sample-app, build-ios-sample-app]
+
     runs-on: ubuntu-latest
 
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Download artifact
+      - name: Download .apk & .ipa files
         uses: actions/download-artifact@v4
         with:
-          name: RnOmhMapsExample.ipa
+          merge-multiple: true
+
+      - name: Upload .apk to App Center
+        uses: wzieba/AppCenter-Github-Action@v1
+        with:
+          appName: ${{ secrets.APP_CENTER_APP_NAME }}
+          group: ${{ secrets.APP_CENTER_GROUP }}
+          token: ${{ secrets.APP_CENTER_TOKEN }}
+          file: app-release.apk
+          notifyTesters: true
+          debug: true
+          gitReleaseNotes: true
 
       - name: Upload ipa to AppCenter
         uses: wzieba/AppCenter-Github-Action@v1
@@ -221,3 +230,113 @@ jobs:
           notifyTesters: true
           debug: true
           gitReleaseNotes: true
+
+  check-version:
+    name: Check if version changed
+
+    runs-on: ubuntu-latest
+
+    outputs:
+      package_version: ${{ steps.check_version.outputs.package_version }}
+      version_changed: ${{ steps.check_version.outputs.version_changed }}
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Check if version changed
+        id: check_version
+        run: bash ./.github/scripts/check-version.sh
+
+  publish-packages:
+    name: Publish NPM packages
+
+    needs: check-version
+
+    runs-on: ubuntu-latest
+
+    if: needs.check-version.outputs.version_changed == 'true'
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 'lts/iron'
+
+      - name: Enable corepack
+        run: corepack enable
+
+      - name: Cache JS dependencies
+        id: yarn-cache
+        uses: actions/cache@v4
+        with:
+          path: |
+            **/node_modules
+            .yarn/install-state.gz
+          key: ${{ runner.os }}-yarn-${{ hashFiles('yarn.lock') }}-${{ hashFiles('**/package.json', '!node_modules/**') }}
+          restore-keys: |
+            ${{ runner.os }}-yarn-${{ hashFiles('yarn.lock') }}
+            ${{ runner.os }}-yarn-
+
+      - name: Install JS dependencies
+        if: steps.yarn-cache.outputs.cache-hit != 'true'
+        run: yarn install --immutable
+        shell: bash
+
+      - name: Build packages
+        run: yarn build:packages
+
+      - name: Setup NPM token
+        run: echo "//registry.npmjs.org/:_authToken=${NPM_TOKEN}" > .npmrc
+        env:
+          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
+
+      - name: Publish packages
+        run: npx lerna publish from-package --no-changelog --yes
+
+  create-release:
+    name: Create Release and Upload Artifacts
+
+    needs: [build-android-sample-app, build-ios-sample-app, check-version]
+
+    runs-on: ubuntu-latest
+
+    if: needs.check-version.outputs.version_changed == 'true'
+
+    env:
+      TAG_NAME: v${{ needs.check-version.outputs.package_version }}
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup git user
+        run: |
+          git config user.name "${{ github.actor }}"
+          git config user.email "openmobilehub@users.noreply.github.com"
+
+      - name: Create new tag
+        run: |
+          git tag ${{ env.TAG_NAME }}
+          git push origin ${{ env.TAG_NAME }}
+
+      - name: Download .apk & .ipa files
+        uses: actions/download-artifact@v4
+        with:
+          merge-multiple: true
+
+      - name: Rename .apk & .ipa files
+        run: |
+          mv app-release.apk sample-app.apk
+          mv RnOmhMapsExample.ipa sample-app.ipa
+
+      - name: Create GitHub Release
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: ${{ env.TAG_NAME }}
+          files: |
+            sample-app.apk
+            sample-app.ipa
