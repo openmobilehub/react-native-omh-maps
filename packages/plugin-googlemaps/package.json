@@ -1,6 +1,6 @@
 {
   "name": "@openmobilehub/maps-plugin-googlemaps",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "React Native OMH Maps Googlemaps Plugin",
   "main": "lib/commonjs/index",
   "module": "lib/module/index",
@@ -52,7 +52,7 @@
     "registry": "https://registry.npmjs.org/"
   },
   "peerDependencies": {
-    "@openmobilehub/maps-core": "1.0.1",
+    "@openmobilehub/maps-core": "1.0.2",
     "react": "*",
     "react-native": "*"
   },
