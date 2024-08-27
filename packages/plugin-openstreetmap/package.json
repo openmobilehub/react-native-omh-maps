@@ -1,6 +1,6 @@
 {
   "name": "@openmobilehub/maps-plugin-openstreetmap",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "React Native OMH Maps OpenStreetMap Plugin",
   "main": "lib/commonjs/index",
   "module": "lib/module/index",
