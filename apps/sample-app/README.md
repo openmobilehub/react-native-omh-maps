@@ -19,6 +19,14 @@ yarn install
 ```
 
 #### Create secrets files:
+
+:::info[Prerequisites]
+
+Most of the providers require some API Keys to be created before when one wants to use the Sample App. 
+Please refer to our [Getting Started docs](https://openmobilehub.github.io/react-native-omh-maps/docs/getting-started) on how one can create them for given provider.  
+
+:::
+
   
 Create a new file in `apps/sample-app/ios` called: `Secrets.xcconfig` and add Google Maps API key like this:
 
@@ -30,7 +38,8 @@ Create a new file in `sample-app/android` called `local.properties` and add API 
 
 ```
 GOOGLE_MAPS_API_KEY = YOUR_GOOGLE_MAPS_API_KEY
-MAPBOX_PUBLIC_TOKEN = YOUR_MAPBOX_MAPS_API_KEY
+MAPBOX_PUBLIC_TOKEN = YOUR_MAPBOX_MAPS_PUBLIC_API_KEY
+MAPBOX_DOWNLOADS_TOKEN = YOUR_MAPBOX_MAPS_API_SECRET_KEY
 AZURE_MAPS_SUBSCRIPTION_KEY = YOUR_AZURE_MAPS_API_KEY
 ```
 
