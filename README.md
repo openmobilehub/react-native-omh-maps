@@ -120,6 +120,9 @@ Before getting started, the documentation assumes you are able to create a proje
 
 Additionally, the current versions of Android OMH libraries have a minimum Android API level requirement of **23**. In order for your Android application to build successfully, make sure that `minSdkVersion` is set to a value greater or equal to **23** in your [**android/build.gradle**](https://github.com/openmobilehub/react-native-omh-maps/blob/main/apps/sample-app/android/build.gradle#L4) file.
 
+_Note: Expo is currently not supported!_
+
+
 ## Compatibility
 
 | React Native | 2.1.0 |
