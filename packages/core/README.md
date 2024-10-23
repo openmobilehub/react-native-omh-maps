@@ -147,7 +147,7 @@ const App = () => {
 }
 ```
 
-[Api Reference](https://openmobilehub.github.io/react-native-omh-maps/docs/api/modules/openmobilehub_maps_core#omhmapview)
+[API Reference](https://openmobilehub.github.io/react-native-omh-maps/docs/api/modules/openmobilehub_maps_core#omhmapview)
 
 ---
 
@@ -171,7 +171,7 @@ const App = () => {
 
 ---
 
-[Api Reference](https://openmobilehub.github.io/react-native-omh-maps/docs/api/modules/openmobilehub_maps_core#omhmarker)
+[API Reference](https://openmobilehub.github.io/react-native-omh-maps/docs/api/modules/openmobilehub_maps_core#omhmarker)
 
 ### OmhPolyline
 
@@ -193,7 +193,7 @@ const App = () => {
 
 ---
 
-[Api Reference](https://openmobilehub.github.io/react-native-omh-maps/docs/api/modules/openmobilehub_maps_core#omhpolyline)
+[API Reference](https://openmobilehub.github.io/react-native-omh-maps/docs/api/modules/openmobilehub_maps_core#omhpolyline)
 
 ### OmhPolygon
 
@@ -213,7 +213,7 @@ const App = () => {
 }
 ```
 
-[Api Reference](https://openmobilehub.github.io/react-native-omh-maps/docs/api/modules/openmobilehub_maps_core#omhpolygon)
+[API Reference](https://openmobilehub.github.io/react-native-omh-maps/docs/api/modules/openmobilehub_maps_core#omhpolygon)
 
 ## License
 
