@@ -60,7 +60,7 @@ const App = () => {
 
 ### Usage Guide
 
-Interacting with the Openstreetmap provider follows the same pattern as other providers, as they all implement the same interface. For a comprehensive list of available modules, components, and props, refer to the [Quick Start](https://www.openmobilehub.com/react-native-omh-maps/docs/getting-started) guide.
+Interacting with the Openstreetmap provider follows the same pattern as other providers, as they all implement the same interface. For a comprehensive list of available modules, components, and props, refer to the [Quick Start](https://openmobilehub.github.io/react-native-omh-maps/docs/getting-started) guide.
 
 ## Parity Matrix
 
@@ -91,7 +91,7 @@ Legend of support levels:
 Comments for partially supported properties:
 | Property | Comments |
 | --------------------- | -------- |
-| onCameraMoveStarted | Described in the OMH Android SDK [Plugin OpenStreetMap documentation](https://www.openmobilehub.com/android-omh-maps/advanced-docs/plugin-openstreetmap/README/) for `setOnCameraMoveStartedListener` |
+| onCameraMoveStarted | Described in the OMH Android SDK [Plugin OpenStreetMap documentation](https://openmobilehub.github.io/android-omh-maps/advanced-docs/plugin-openstreetmap/README/) for `setOnCameraMoveStartedListener` |
 
 | Ref                 | Supported |
 |---------------------|:---------:|
@@ -133,7 +133,7 @@ Comments for partially supported properties:
 | showInfoWindow |     ✅     |
 | hideInfoWindow |     ✅     |
 
-For advanced usage of `OmhMarker`, see the [Advanced Usage](https://www.openmobilehub.com/react-native-omh-maps/docs/advanced-usage) section.
+For advanced usage of `OmhMarker`, see the [Advanced Usage](https://openmobilehub.github.io/react-native-omh-maps/docs/advanced-usage) section.
 
 ### OmhPolyline
 
@@ -157,7 +157,7 @@ For advanced usage of `OmhMarker`, see the [Advanced Usage](https://www.openmobi
 Comments for partially supported properties:
 | Property | Comments |
 | --------------------- | -------- |
-| cap | Described in the OMH Android SDK [Plugin OpenStreetMap documentation](https://www.openmobilehub.com/android-omh-maps/advanced-docs/plugin-openstreetmap/README/) for `setCap` |
+| cap | Described in the OMH Android SDK [Plugin OpenStreetMap documentation](https://openmobilehub.github.io/android-omh-maps/advanced-docs/plugin-openstreetmap/README/) for `setCap` |
 
 ### OmhPolygon
 

@@ -91,7 +91,7 @@ const App = () => {
 
 ### Usage Guide
 
-Interacting with the Azure Maps provider follows the same pattern as other providers, as they all implement the same interface. For a comprehensive list of available modules, components, and props, refer to the [Quick Start](https://www.openmobilehub.com/react-native-omh-maps/docs/getting-started) guide.
+Interacting with the Azure Maps provider follows the same pattern as other providers, as they all implement the same interface. For a comprehensive list of available modules, components, and props, refer to the [Quick Start](https://openmobilehub.github.io/react-native-omh-maps/docs/getting-started) guide.
 
 <details>
   <summary>Using Azure Maps and Mapbox in single application?</summary>
@@ -172,14 +172,14 @@ Legend of support levels:
 Comments for partially supported properties:
 | Property | Comments |
 | --------------------- | -------- |
-| anchor | On Azure Maps provider, values are discretized as described in the OMH Android SDK [Plugin AzureMaps documentation](https://www.openmobilehub.com/android-omh-maps/advanced-docs/plugin-azuremaps/README/) for `anchor` |
+| anchor | On Azure Maps provider, values are discretized as described in the OMH Android SDK [Plugin AzureMaps documentation](https://openmobilehub.github.io/android-omh-maps/advanced-docs/plugin-azuremaps/README/) for `anchor` |
 
 | Ref            | Supported |
 |----------------|:---------:|
 | showInfoWindow |     ✅     |
 | hideInfoWindow |     ✅     |
 
-For advanced usage of `OmhMarker`, see the [Advanced Usage](https://www.openmobilehub.com/react-native-omh-maps/docs/advanced-usage) section.
+For advanced usage of `OmhMarker`, see the [Advanced Usage](https://openmobilehub.github.io/react-native-omh-maps/docs/advanced-usage) section.
 
 ### OmhPolyline
 
@@ -203,8 +203,8 @@ For advanced usage of `OmhMarker`, see the [Advanced Usage](https://www.openmobi
 Comments for partially supported properties:
 | Property | Comments |
 | --------------------- | -------- |
-| pattern | Described in the OMH Android SDK [Plugin AzureMaps documentation](https://www.openmobilehub.com/android-omh-maps/advanced-docs/plugin-azuremaps/README/) for `pattern` |
-| cap | Described in the OMH Android SDK [Plugin AzureMaps documentation](https://www.openmobilehub.com/android-omh-maps/advanced-docs/plugin-azuremaps/README/) for `setCap` |
+| pattern | Described in the OMH Android SDK [Plugin AzureMaps documentation](https://openmobilehub.github.io/android-omh-maps/advanced-docs/plugin-azuremaps/README/) for `pattern` |
+| cap | Described in the OMH Android SDK [Plugin AzureMaps documentation](https://openmobilehub.github.io/android-omh-maps/advanced-docs/plugin-azuremaps/README/) for `setCap` |
 
 ### OmhPolygon
 
@@ -226,7 +226,7 @@ Comments for partially supported properties:
 Comments for partially supported properties:
 | Property | Comments |
 | --------------------- | -------- |
-| strokePattern | Described in the OMH Android SDK [Plugin AzureMaps documentation](https://www.openmobilehub.com/android-omh-maps/advanced-docs/plugin-azuremaps/README/) for `strokePattern` |
+| strokePattern | Described in the OMH Android SDK [Plugin AzureMaps documentation](https://openmobilehub.github.io/android-omh-maps/advanced-docs/plugin-azuremaps/README/) for `strokePattern` |
 
 
 ## License

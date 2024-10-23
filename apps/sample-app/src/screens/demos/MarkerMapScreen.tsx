@@ -396,7 +396,7 @@ export const MarkerMapScreen = () => {
                   : customizableMarkerAppearance ===
                       DemoMarkerAppearance.NETWORK_ASSET
                     ? {
-                        uri: 'https://www.openmobilehub.com/images/logo/omh_logo.png',
+                        uri: 'https://openmobilehub.github.io/images/logo/omh_logo.png',
                         width: 75,
                         height: 75,
                       }
