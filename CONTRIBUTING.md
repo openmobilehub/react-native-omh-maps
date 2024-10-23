@@ -22,7 +22,9 @@ yarn codegen:android
 
 ## Sample App
 
-The Sample App demonstrates usage of the library. To run the the application follow the instructions [here](https://www.openmobilehub.com/react-native-omh-maps/docs/sample-app).
+https://openmobilehub.github.io/react-native-omh-maps/docs/sample-app
+
+The Sample App demonstrates usage of the library. To run the the application follow the instructions [here](https://openmobilehub.github.io/react-native-omh-maps/docs/sample-app).
 
 It is configured to use the local version of the library, so any changes you make to the library's source code will be reflected in the example app. Changes to the library's JavaScript code will be reflected in the example app without a rebuild, but native code changes will require a rebuild of the example app.
 

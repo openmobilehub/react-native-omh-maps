@@ -44,7 +44,7 @@ const App = () => {
 
 ### Usage Guide
 
-Interacting with the Apple Maps provider follows the same pattern as other providers, as they all implement the same interface. For a comprehensive list of available modules, components, and props, refer to the [Quick Start](https://www.openmobilehub.com/react-native-omh-maps/docs/getting-started) guide.
+Interacting with the Apple Maps provider follows the same pattern as other providers, as they all implement the same interface. For a comprehensive list of available modules, components, and props, refer to the [Quick Start](https://openmobilehub.github.io/react-native-omh-maps/docs/getting-started) guide.
 
 
 ## Parity Matrix
@@ -124,7 +124,7 @@ Comments for partially supported properties:
 | showInfoWindow |     ✅     |
 | hideInfoWindow |     ✅     |
 
-For advanced usage of `OmhMarker`, see the [Advanced Usage](https://www.openmobilehub.com/react-native-omh-maps/docs/advanced-usage) section.
+For advanced usage of `OmhMarker`, see the [Advanced Usage](https://openmobilehub.github.io/react-native-omh-maps/docs/advanced-usage) section.
 
 ### OmhPolyline
 

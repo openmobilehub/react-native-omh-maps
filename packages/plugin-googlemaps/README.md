@@ -88,7 +88,7 @@ const App = () => {
 
 ### Usage Guide
 
-Interacting with the Google Maps provider follows the same pattern as other providers, as they all implement the same interface. For a comprehensive list of available modules, components, and props, refer to the [Quick Start](https://www.openmobilehub.com/react-native-omh-maps/docs/getting-started) guide.
+Interacting with the Google Maps provider follows the same pattern as other providers, as they all implement the same interface. For a comprehensive list of available modules, components, and props, refer to the [Quick Start](https://openmobilehub.github.io/react-native-omh-maps/docs/getting-started) guide.
 
 ## Parity Matrix
 
@@ -155,16 +155,16 @@ Legend of support levels:
 Comments for partially supported properties:
 | Property | Comments |
 | --------------------- | -------- |
-| onPress | Described in the OMH Android SDK [Plugin GoogleMaps documentation](https://www.openmobilehub.com/android-omh-maps/advanced-docs/plugin-googlemaps/README/) for `setOnMarkerClickListener` |
-| onInfoWindowClose, onInfoWindowOpen | Described in the OMH Android SDK [Plugin GoogleMaps documentation](https://www.openmobilehub.com/android-omh-maps/advanced-docs/plugin-googlemaps/README/) for `setOnInfoWindowOpenStatusChangeListener` |
-| infoWindowAnchor | Described in the OMH Android SDK [Plugin GoogleMaps documentation](https://www.openmobilehub.com/android-omh-maps/advanced-docs/plugin-googlemaps/README/) for `setInfoWindowAnchor` |
+| onPress | Described in the OMH Android SDK [Plugin GoogleMaps documentation](https://openmobilehub.github.io/android-omh-maps/advanced-docs/plugin-googlemaps/README/) for `setOnMarkerClickListener` |
+| onInfoWindowClose, onInfoWindowOpen | Described in the OMH Android SDK [Plugin GoogleMaps documentation](https://openmobilehub.github.io/android-omh-maps/advanced-docs/plugin-googlemaps/README/) for `setOnInfoWindowOpenStatusChangeListener` |
+| infoWindowAnchor | Described in the OMH Android SDK [Plugin GoogleMaps documentation](https://openmobilehub.github.io/android-omh-maps/advanced-docs/plugin-googlemaps/README/) for `setInfoWindowAnchor` |
 
 | Ref            |      Android      |      iOS      |
 |----------------|:-----------------:|:-------------:|
 | showInfoWindow |         ✅         |       ✅       |
 | hideInfoWindow |         ✅         |       ✅       |
 
-For advanced usage of `OmhMarker`, see the [Advanced Usage](https://www.openmobilehub.com/react-native-omh-maps/docs/advanced-usage) section.
+For advanced usage of `OmhMarker`, see the [Advanced Usage](https://openmobilehub.github.io/react-native-omh-maps/docs/advanced-usage) section.
 
 ### OmhPolyline
 

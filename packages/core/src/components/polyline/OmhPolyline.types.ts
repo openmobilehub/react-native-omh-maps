@@ -130,7 +130,7 @@ export type OmhPolylineProps = OmhCapProps &
      *
      * The reasoning behind this is that RN does not support synchronous bi-directional callbacks for passing data in new architecture.
      *
-     * @see https://www.openmobilehub.com/android-omh-maps/api-docs/packages/core/com.openmobilehub.android.maps.core.presentation.interfaces.maps/-omh-on-polyline-click-listener/on-polyline-click.html
+     * @see https://openmobilehub.github.io/android-omh-maps/api-docs/packages/core/com.openmobilehub.android.maps.core.presentation.interfaces.maps/-omh-on-polyline-click-listener/on-polyline-click.html
      */
     consumePolylineClicks?: boolean;
 
