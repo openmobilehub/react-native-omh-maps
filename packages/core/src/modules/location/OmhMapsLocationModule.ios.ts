@@ -33,5 +33,5 @@ const getLocation = async (
 
 export const OmhMapsLocationModule: IOmhMapsLocationModule = {
   getCurrentLocation: async () => getLocation({ maximumAge: 0 }),
-  getLastLocation: () => getLocation({ maximumAge: Infinity }),
+  getLastLocation: () => getLocation({ maximumAge: Number.MAX_SAFE_INTEGER }),
 };
