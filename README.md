@@ -125,6 +125,7 @@ Additionally, the current versions of Android OMH libraries have a minimum Andro
 | React Native | 2.1.0 |
 | ------------ | ----- |
 | 0.73.6       | ✅    |
+| New Arch support | ✅ | 
 
 ## OMH Maps Modules
 
